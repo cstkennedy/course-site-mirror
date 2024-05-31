@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Refactoring & Regression Testing</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Regression%20Testing"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Refactoring &amp; Regression Testing</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#looking-back">1 Looking Back…</a></div><div class="toc-h1"><a href="#adding-tests">2 Adding Tests</a></div><div class="toc-h2"><a href="#writing-the-tests">2.1 Writing the Tests</a></div><div class="toc-h2"><a href="#introducing-hamcrest-matchers">2.2 Introducing Hamcrest Matchers</a></div><div class="toc-h2"><a href="#back-to-writing-tests">2.3 Back to Writing Tests</a></div><div class="toc-h2"><a href="#parametrizing-the-test">2.4 Parametrizing the Test</a></div><div class="toc-h2"><a href="#testing-the-second-function">2.5 Testing the Second Function</a></div><div class="toc-h1"><a href="#testing-strings">3 Testing Strings</a></div><div class="toc-h2"><a href="#checking-the-first-case">3.1 Checking the First Case</a></div><div class="toc-h2"><a href="#checking-the-second-case">3.2 Checking the Second Case</a></div><div class="toc-h1"><a href="#taking-stock">4 Taking Stock</a></div></div><a id="lookingback"/><h1 id="looking-back">1 Looking Back…</h1><p>In <a class="doc" href="../../Public/functions2/index.html" target="CS263_Public">a lecture during Module 3</a> we discussed a paint example, i.e., <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-03/Painting-2" target="_blank">Module-03/Painting-2</a>. We would like to refactor the code… and fix a few implementation and style quirks.</p>
+    <a id="addingtests"/><h1 id="adding-tests">2 Adding Tests</h1><p>Before we refactor the example… let us write a few tests. This is an opportunity to introduce regression testing. We are going to…</p>
+    <ol>
+  <li>
+  <p>Develop a set of tests for the current code.</p>
+    </li>
+  <li>
+  <p>Refactor the code.</p>
+    </li>
+  <li>
+  <p>Run the tests and confirm that nothing has <em>gone wrong.</em></p>
+    </li>
+  <li>
+  <p>Repeat step 2 and step 3.</p>
+    </li>
+</ol><p>Let us start by introducing two test files.</p>
+    <pre><code class="console">├── compute_paint.py
+├── estimate_paint.py
+└── tests
+    ├── test_compute_paint.py
+    └── test_estimate_paint.py
+</code></pre><p>We have one test file for <code>compute_paint.py</code> and one file for <code>estimate_paint.py</code>.</p>
+    <a id="writingthetests"/><h2 id="writing-the-tests">2.1 Writing the Tests</h2><p>Let us start with the <code>compute_paint</code> module. There are two functions that need tests:</p>
+    <pre><code class="python">def wall_surface_area(length: float, width: float) -&gt; float:
+    area_one_wall = length * width
+    area_four_walls = 4 * area_one_wall
+</code></pre><p>and</p>
+    <pre><code class="python">def gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[int, int]:
+</code></pre><p>Let us start with <code>wall_surface_area</code>…</p>
+    <pre><code class="python">import pytest
+
+from hamcrest import *
+
+from compute_paint import (wall_surface_area, gallons_required)
+</code></pre><p>We need to import:</p>
+    <ol>
+  <li>
+  <p><code>pytest</code> as our testing framework</p>
+    </li>
+  <li>
+  <p><code>hamcrest</code> for matchers (to write our checks)</p>
+    </li>
+  <li>
+  <p><code>wall_surface_area</code> and <code>gallons_required</code> so that we can use (call/invoke) them</p>
+    </li>
+</ol><a id="introducinghamcrestmatchers"/><h2 id="introducing-hamcrest-matchers">2.2 Introducing Hamcrest Matchers</h2><p>Each <em>test</em> takes the form of a function with <em>assertions</em>. Instead of the built-in Python <code>assert</code> or <code>unittest</code> module’s <code>assertTrue</code> or <code>assertFalse</code>… we are using <code>assert_that</code>.</p>
+    <p>If you come from a Java background you may be familiar with <a href="https://hamcrest.org/">Hamcrest Matchers</a>. Instead of writing a boolean expression in the form…</p>
+    <pre><code class="python">assertTrue(num_books == 20)
+</code></pre><p>we would like to write something closer to a sentence…</p>
+    <pre><code class="python">assert_that(num_books, equal_to(20))
+</code></pre><p>or</p>
+    <pre><code class="python">assert_that(num_books, is_(equal_to(20)))
+</code></pre><p>The <code>is_</code> is purely syntactic sugar (i.e., it exists purely for readability).</p>
+    <pre><code class="python">    assert_that(wall_surface_area(10, 12), close_to(480, 1e-1))
+    assert_that(wall_surface_area(10.5, 10), close_to(420, 1e-1))
+</code></pre><a id="backtowritingtests"/><h2 id="back-to-writing-tests">2.3 Back to Writing Tests</h2><p>We know that <code>wall_surface_area</code></p>
+    <ol>
+  <li>
+  <p>takes the length and width of a room</p>
+    </li>
+  <li>
+  <p>returns the total surface area of all four walls</p>
+    </li>
+  <li>
+  <p>uses <code>4 * length * width</code> to compute the surface area</p>
+    </li>
+</ol><p>Writing tests is a fairly quick endeavor…</p>
+    <pre><code class="python">def test_wall_surface_area():
+    assert_that(wall_surface_area(1, 1), equal_to(4))
+    assert_that(wall_surface_area(1, 2), equal_to(8))
+    assert_that(wall_surface_area(2, 2), equal_to(16))
+</code></pre><p>However, wall measurements are seldom a nice whole numbers. Walls are usually something closer to <em>8 feet 5 inches</em> than an even <em>8 feet</em>. Let us write a couple <em>floating point number checks</em>.</p>
+    <pre><code class="python">    assert_that(wall_surface_area(10, 12), close_to(480, 1e-1))
+    assert_that(wall_surface_area(10.5, 10), close_to(420, 1e-1))
+</code></pre><p>Take note of how we are checking for a value within a certain tolerance (e.g., a number that is within <code>0.1</code> of <code>480</code> instead of exactly 480). Keep in mind that <code>1e-1</code> is scientific notation for <code>0.01</code>.</p>
+    <a id="parametrizingthetest"/><h2 id="parametrizing-the-test">2.4 Parametrizing the Test</h2><p>Each check is the same with the exception of the input (length and width) and expected result (total surface area). We can define a three-tuple (3-tuple) in the form…</p>
+    <pre><code class="python">test_data = [
+    (1, 1, 4),
+    (1, 2, 8),
+    (2, 2, 16),
+    (10, 12, 480),
+    (10.5, 10, 420),
+]
+</code></pre><p>where the first entry is length, the second entry is width, and the final entry is the expected surface area.</p>
+    <p>We can then tell <code>pytest</code> to run the test once for each tuple using…</p>
+    <pre><code>@pytest.mark.parametrize("length, width, surface_area", test_data)
+def test_wall_surface_area(length, width, surface_area):
+    assert_that(wall_surface_area(length, width), close_to(surface_area, 1e-1))
+</code></pre><p>The first line (<code>@pytest.mark.parametrize(...)</code>) tells <code>pytest</code> to how to unpack each tuple. The function itself then needs to be modified to accept three arguments.</p>
+    <p>We can now <em>get away with</em> a single assertion.</p>
+    <blockquote>
+  <p>A <a href="https://docs.pytest.org/en/7.1.x/how-to/parametrize.html">parametrized test</a> is ideal when you want to rerun the same test for different inputs.</p>
+    
+</blockquote><a id="testingthesecondfunction"/><h2 id="testing-the-second-function">2.5 Testing the Second Function</h2><p>We still need to test <code>gallons_required</code>. Let us start with a draft…</p>
+    <pre><code class="python">def test_gallons_required():
+    lower, upper = gallons_required(wall_area=1)
+    assert_that(lower, equal_to(1))
+    assert_that(upper, equal_to(1))
+
+    lower, upper = gallons_required(wall_area=10)
+    assert_that(lower, equal_to(1))
+    assert_that(upper, equal_to(1))
+
+    lower, upper = gallons_required(wall_area=100)
+    assert_that(lower, equal_to(1))
+    assert_that(upper, equal_to(1))
+
+    lower, upper = gallons_required(wall_area=1_000)
+    assert_that(lower, equal_to(3))
+    assert_that(upper, equal_to(3))
+
+    lower, upper = gallons_required(wall_area=1_050)
+    assert_that(lower, equal_to(3))
+    assert_that(upper, equal_to(3))
+
+    lower, upper = gallons_required(wall_area=1_200)
+    assert_that(lower, equal_to(3))
+    assert_that(upper, equal_to(4))
+</code></pre><p>We start each <em>check</em> by invoking <code>gallons_required</code> and unpacking the returned <code>tuple</code> into <code>lower</code> and <code>upper</code>.</p>
+    <p>However, we need two checks. Separate checks would make sense if we were dealing with <code>float</code> values. But… <code>gallons_required</code> returns a <code>tuple[int,
+int]</code> (i.e., two <code>int</code> values).</p>
+    <p>We can simplify our <code>test_gallons_required</code> function to…</p>
+    <pre><code class="python">def test_gallons_required():
+    assert_that(gallons_required(wall_area=1), equal_to((1, 1)))
+    assert_that(gallons_required(wall_area=10), equal_to((1, 1)))
+    assert_that(gallons_required(wall_area=100), equal_to((1, 1)))
+    assert_that(gallons_required(wall_area=1_000), equal_to((3, 3)))
+    assert_that(gallons_required(wall_area=1_050), equal_to((3, 3)))
+    assert_that(gallons_required(wall_area=1_200), equal_to((3, 4)))
+</code></pre><p>The trick is recognizing the fact that <code>tuple</code>s can be compared directly in Python.</p>
+    <a id="testingstrings"/><h1 id="testing-strings">3 Testing Strings</h1><p>The tests for <code>test_estimate_paint.py</code> will require a different perspective. We will need to keep in mind:</p>
+    <ol>
+  <li>
+  <p><code>get_report</code> can generate two (2) different reports depending on whether  <code>min_gallons == max_gallons</code>.</p>
+    </li>
+  <li>
+  <p>comparing two entire strings (expected/correct vs actual) is seldom the  best approach.</p>
+    </li>
+  <li>
+  <p>the content of the generated string along with the order of that content  should <del>usually</del> almost always form the basis of any test.</p>
+    </li>
+</ol><a id="checkingthefirstcase"/><h2 id="checking-the-first-case">3.1 Checking the First Case</h2><p>Let us start by examining the first case (i.e., <code>min_gallons == max_gallons</code>).</p>
+    <pre><code class="python">    actual_report = get_report(min_gallons=4, max_gallons=4, price_per_gallon=35.10)
+</code></pre><p>The correct output is known to be…</p>
+    <pre><code class="console">You will need to buy 4 gallons of paint.
+You will spend $ 140.40.
+</code></pre><p>One might start by saying…</p>
+    <ol>
+  <li>
+    <p><code>4</code> must appear since that is the correct number of gallons.</p>
+    
+    <pre><code class="python">assert_that(actual_report, contains_string("4"))
+</code></pre>
+  </li>
+  <li>
+    <p><code>140.40</code> must appear since that is the correct cost.</p>
+    
+    <pre><code class="python">assert_that(actual_report, contains_string("140.40"))
+</code></pre>
+  </li>
+</ol><p>However, that does not really capture what we expect… we expect to see a <code>4</code> and then (later in the report) <code>140.40</code>.</p>
+    <pre><code class="python">    assert_that(actual_report, string_contains_in_order("4", "$ 140.40."))
+</code></pre><p>That is a better check. However, we know the content of the report…</p>
+    <pre><code class="python">    assert_that(
+        actual_report,
+        string_contains_in_order(
+            "You will need to buy "
+            "4",
+            " gallons of paint.",
+            "\n",
+            "You will spend",
+            "$ 140.40."
+        )
+    )
+</code></pre><p>We should (in this case) since the report content is known check for the values that we expect along with the fixed content (including line breaks).</p>
+    <a id="checkingthesecondcase"/><h2 id="checking-the-second-case">3.2 Checking the Second Case</h2><p>The second case can be checked with…</p>
+    <pre><code class="python">def test_get_report_different_min_max():
+    actual_report = get_report(min_gallons=10, max_gallons=14, price_per_gallon=32.50)
+
+    assert_that(
+        actual_report,
+        string_contains_in_order(
+            "You will need to buy "
+            "10 to 14",
+            " gallons of paint.",
+            "\n",
+            "You will spend",
+            "$ 325.00 to $ 455.00."
+        )
+    )
+</code></pre><p>Take note of how different values were selected. While we could parametrize this test and check for different values… this function (<code>get_report</code>) does not compute <code>min_gallons</code> or <code>max_gallons</code>. The values are passed in. We just need to check the two branches (i.e., <code>if</code> and <code>else</code>).</p>
+    <a id="takingstock"/><h1 id="taking-stock">4 Taking Stock</h1><p>The two complete test files can be found in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-08/Painting-3-Tests" target="_blank">Module-08/Painting-3-Tests</a> within the <em>tests</em> directory.</p>
+    <p>The <a class="doc" href="../../Public/refactoring2Style/index.html" target="CS263_Public">next lecture</a> will start the actual refactoring and code review.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Regression%20Testing"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

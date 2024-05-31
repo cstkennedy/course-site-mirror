@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Procedural, Object-Oriented & Functional Programming</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Procedural%2C%20Object-Oriented%20%26%20Functional%20Programming"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Procedural, Object-Oriented &amp; Functional Programming</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#one-program-three-paradigms">2 One Program… Three Paradigms</a></div><div class="toc-h2"><a href="#procedural">2.1 Procedural</a></div><div class="toc-h2"><a href="#object-oriented">2.2 Object Oriented</a></div><div class="toc-h2"><a href="#functional">2.3 Functional</a></div><div class="toc-h1"><a href="#concessions">3 Concessions</a></div></div><h1 id="overview">1 Overview</h1><p>There are generally three styles of code found in Python.</p>
+    <ul>
+  <li>Procedural</li>
+  <li>Object Oriented</li>
+  <li>Functional</li>
+</ul><p>A single codebase may use one paradigm or a combination of paradigms.</p>
+    <a id="oneprogramthreeparadigms"/><h1 id="one-program-three-paradigms">2 One Program… Three Paradigms</h1><p>Suppose that we want to take three (3) points and compute the distance (i.e., $\sqrt{x^2 + y^2}$) from the origin for each point.</p>
+    <h2 id="procedural">2.1 Procedural</h2><p>The procedural approach would</p>
+    <ol>
+  <li>create three points (<code>point1</code>, <code>point2</code>, and <code>point3</code>) as <code>tuple</code>s</li>
+  <li>place the three points in a list</li>
+  <li>loop over the list, compute each distance, and output each distance</li>
+</ol><pre><code class="python"><br/>def main():
+    point1 = (0, 5)
+    point2 = (8, 3)
+    point3 = (1, 7)
+
+    points = [point1, point2, point3]
+
+    for point in points:
+        print(sqrt(point[0] ** 2 + point[1] ** 2))
+
+if __name__ == "__main__":
+    main()
+
+</code></pre><p>We can probably get rid of the three (3) point variables… and store everything in the list immediately.</p>
+    <pre><code class="python"><br/>def main():
+    points = [(0, 5), (8, 3), (1, 7)]
+
+    for point in points:
+        print(sqrt(point[0] ** 2 + point[1] ** 2))
+
+if __name__ == "__main__":
+    main()
+
+</code></pre><p>This procedural approach tends to be how most <em>quick</em> Python programs are written.</p>
+    <a id="objectoriented"/><h2 id="object-oriented">2.2 Object Oriented</h2><p>If we wanted to take the class-based approach… we would start with a class…</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>A <a href="https://docs.python.org/3/library/dataclasses.html" target="_blank">dataclass</a> would be ideal here. However, dataclasses are outside the scope of this lecture.</p>
+    
+</div><pre><code class="python">class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def magnitude(self)
+        return sqrt(self.x ** 2 + self.y ** 2)
+</code></pre><p>The <code>main</code> function would be near identical…</p>
+    <pre><code class="python">def main():
+    points = [Point(0, 5), Point(8, 3), Point(1, 7)]
+
+    for point in points:
+        print(point.magnitude())
+
+if __name__ == "__main__":
+    main()
+</code></pre><p>A proper discussion of object oriented Python would require explanation of the <a class="doc" href="../../Public/classChecklistInPython/index.html" target="CS263_Public">rules of a class checklist</a>… But, those are topics for future discussion.</p>
+    <h2 id="functional">2.3 Functional</h2><p>The functional approach would look at everything a list (more aptly, something that behaves like a list).</p>
+    <pre><code class="python">def main():
+    points = [(0, 5), (8, 3), (1, 7)]
+
+    distances = [sqrt(point[0] ** 2 +  point[1] ** 2) for point in points]
+
+    shortest_distance = min(distances)
+    largest_distance  = max(distances)
+    average_distance  = sum(distances) / len(points)
+</code></pre><p>Note how the distances are stored in a second list.</p>
+    <h1 id="concessions">3 Concessions</h1><p>Each piece of code could be improved. However, these improvements would require familiarity with topics such as <em>generator expressions</em> and dunder functions (which are covered in later modules).</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Procedural%2C%20Object-Oriented%20%26%20Functional%20Programming"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Basic F-Strings</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basic%20F-Strings"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Basic F-Strings</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#whirlwind-introduction">1 Whirlwind Introduction</a></div><div class="toc-h2"><a href="#case-study">1.1 Case Study</a></div><div class="toc-h2"><a href="#a-single-line">1.2 A Single Line</a></div><div class="toc-h1"><a href="#a-few-quick-examples">2 A Few Quick Examples</a></div><div class="toc-h2"><a href="#an-integer">2.1 An Integer</a></div><div class="toc-h2"><a href="#a-floating-point-number">2.2 A Floating Point Number</a></div><div class="toc-h2"><a href="#a-string">2.3 A String</a></div><div class="toc-h1"><a href="#what-about-the-format-function-">3 What About the “format” Function?</a></div><div class="toc-h1"><a href="#what-about-c-printf-style-output-">4 What About C “printf” Style output?</a></div></div><a id="whirlwindintroduction"/><h1 id="whirlwind-introduction">1 Whirlwind Introduction</h1><p>You will find (or have found) that I tend to make use of <em>whirlwind introductions</em>. The f-string (or formatted string literal) lends itself well to such an introduction (i.e., looking at an example and working top down).</p>
+    <a id="casestudy"/><h2 id="case-study">1.1 Case Study</h2><p>Let us take a look a familiar code snippet (i.e., one from the lecture on user input).</p>
+    <pre><code class="python">def main():
+
+    price = float(input("What is the price of your favorite lunch? "))
+    frequency = int(input("How many times a week do you have that lunch? "))
+
+    print(f"On average you spend {price * frequency:.2f}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre><a id="asingleline"/><h2 id="a-single-line">1.2 A Single Line</h2><p>We only interested in a single line.</p>
+    <pre><code class="python">    print(f"On average you spend {price * frequency:.2f}")
+</code></pre><p>Let us break this line down.</p>
+    <ol>
+  <li>
+  <p><code>f"</code> - the ‘f’ before the opening quote indicates that this is an f-string</p>
+    </li>
+  <li>
+  <p><code>"On average you spend</code> - this is treated as a normal string literal</p>
+    </li>
+  <li>
+    <p><code>{price * frequency:.2f}</code> - this is where the f-string <em>magic</em> happens</p>
+    
+    <ol>
+      <li>
+      <p><code>price * frequency</code> - the values stored in the <code>price</code> and <code>frequency</code>  varaibles are retrieved and a multiplication is performed</p>
+    </li>
+      <li>
+      <p>the colon separates the expression from the formatting specification</p>
+    </li>
+      <li>
+      <p>the <code>.2</code> indicates that we want two decimal places to be output</p>
+    </li>
+      <li>
+      <p>the <code>f</code> indicates that we have a floating point value</p>
+    </li>
+    </ol>
+  </li>
+</ol><a id="afewquickexamples"/><h1 id="a-few-quick-examples">2 A Few Quick Examples</h1><p>Let us examine a few quick examples.</p>
+    <a id="aninteger"/><h2 id="an-integer">2.1 An Integer</h2><p>Suppose that we wanted to output an integer (<code>val</code>) and right justify it within three spaces.</p>
+    <pre><code class="python">    val = 7
+    print(f"{val:&gt;3}")
+</code></pre><p>The <code>&gt;</code> indicates right alignment.</p>
+    <a id="afloatingpointnumber"/><h2 id="a-floating-point-number">2.2 A Floating Point Number</h2><p>Suppose that we wanted to output <code>price_per_gallon</code> and have it rounded to two decimal places.</p>
+    <pre><code class="python">    price_per_gallon = 7.552
+    print(f"{price_per_gallon:&gt;4.2f}")
+</code></pre><p>The <code>.2f</code> handles the rounding and the <code>&gt;4</code> handles the right alignment.</p>
+    <a id="astring"/><h2 id="a-string">2.3 A String</h2><p>Suppose that we want to output <code>color</code> as a centered title.</p>
+    <pre><code class="python">    color = "blue"
+    print(f"{color.title():^80}")
+</code></pre><p>The <code>^</code> (caret) indicates center alignment. </p>
+    <a id="whatabouttheformatfunction"/><h1 id="what-about-the-format-function-">3 What About the “format” Function?</h1><p>The <code>.format</code> function predates f-strings and, while it does have a few use cases, is should be avoided when an f-string can be used. Let us rewrite our previous three (3) examples to use <code>.format</code>.</p>
+    <pre><code class="python">    val = 7
+    print("{&gt;3}".format(val))
+</code></pre><pre><code class="python">    price_per_gallon = 7.552
+    print("{4.2f}".format(price_per_gallon))
+</code></pre><pre><code class="python">    color = "blue"
+    print("{^80}".format(color.title()))
+</code></pre><p>The formatting syntax (more aptly grammar) are the same (which makes sense considering f-string syntax was based on that of <code>.format</code>).</p>
+    <a id="whataboutcprintfstyleoutput"/><h1 id="what-about-c-printf-style-output-">4 What About C “printf” Style output?</h1><p>The <code>printf</code> style output predates both f-strings and <code>.format</code>. With the exception of logging output… this method of output formatting should be avoided in modern Python code. The official Python docs even refer to this method as <a href="https://docs.python.org/3/tutorial/inputoutput.html#old-string-formatting">“old string formatting”</a>.</p>
+    <p>Let us rewrite our running examples one last time.</p>
+    <pre><code class="python">    val = 7
+    print("% 3d" % val)
+</code></pre><pre><code class="python">    price_per_gallon = 7.552
+    print("% 4.2f" % price_per_gallon)
+</code></pre><p>The string example is impossible to write with <code>printf</code> style formatting. We have to fall back on invoking (calling) <code>str</code> functions.</p>
+    <pre><code class="python">    color = "blue"
+    print(color.title().center(80))
+</code></pre></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basic%20F-Strings"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

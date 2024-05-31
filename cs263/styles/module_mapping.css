@@ -1,0 +1,31 @@
+.mainBody thead tr th:nth-child(n+3):before
+{
+    /*content: "CLO ";*/
+}
+
+.mainBody td:nth-child(1)
+{
+    width: 2em;
+}
+
+.mainBody td:nth-child(2)
+{
+    width: 400px;
+}
+
+.mainBody td:nth-child(n+3)
+{
+    width: 2em;
+}
+
+h1#module-objectives~table th:nth-child(n+3):before
+{
+    content: "CLO \A";
+    font-size: 0.6em;
+}
+
+h1#lectures-objectives~table th:nth-child(n+3):before
+{
+    content: "MLO \A";
+    font-size: 0.6em;
+}

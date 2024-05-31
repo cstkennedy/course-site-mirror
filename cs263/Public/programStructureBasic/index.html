@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Structure of a Basic Python Program</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Structure%20of%20a%20Basic%20Python%20Program"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Structure of a Basic Python Program</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#python-terminology">1 Python Terminology</a></div><div class="toc-h1"><a href="#if">2 If <code>__main__</code></a></div><div class="toc-h1"><a href="#a-little-better-than-hello-world">3 A Little Better Than “Hello World”</a></div><div class="toc-h1"><a href="#module">4 Module <code>docstring</code></a></div></div><a id="pythonterminology"/><h1 id="python-terminology">1 Python Terminology</h1><p>The term <em>dunder</em> refers to any item that is both preceded and followed by two underscores.</p>
+    <p>If you are familiar with operator overloading in C++…</p>
+    <pre><code class="cpp">bool operator==(const Book&amp; lhs, const Book&amp; rhs);
+</code></pre><p>…or methods such as <code>equals</code>, <code>toString</code>, and <code>hashCode</code> in Java… the so-called Python dunder functions can be considered analogous (but not quite equivalent).</p>
+    <p>Our first example is the dunder main (i.e., <code>__main__</code>) block.</p>
+    <h1 id="if">2 If <code>__main__</code></h1><p>The last chunk is what tells the Python interpreter what to run.</p>
+    <pre><code class="python">if __name__ == "__main__":
+    some_driver_function()
+</code></pre><p>This allows us to run our script directly. If we import the Python script into a larger program… the <code>__name__ == "__main__"</code> will evaluate to <code>False</code>. This will allow us to call our functions from a larger program without having to rewrite any code.</p>
+    <p>The implications and importance of <code>if __name__ == "__main__"</code> cannot be fully discussed until we have, at the very least, discussed functions, modules, and imports later in the course.</p>
+    <a id="alittlebetterthanhelloworld"/><h1 id="a-little-better-than-hello-world">3 A Little Better Than “Hello World”</h1><p>Most programming introductions include a program that, as its name “Hello World” suggests prints…</p>
+    <pre><code>Hello World
+</code></pre><p>I abhor such examples. Let us do something <em>slightly</em> better.</p>
+    <div class="details"><span class="summary"><a href="print_name.py" target="listing">print_name.py</a></span> <input id="but_details_d6e51" onclick="toggleDisplay('_details_d6e51')" type="button" value="+"/><div class="detailPart" id="_details_d6e51"><pre><code id="_details_d6e51_code">"""
+This is a short example module that contains a single driver function and
+outputs a hardcoded name.
+"""
+
+
+def main():
+    name = "Tom"
+
+    print(f"Hello {name}!")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>This program outputs a hardcoded name (in this case <em>Tom</em>). I encourage you to type up the program and replace “Tom” with your name.</p>
+    <p><em>Note that <code>print</code>, f-strings, and variables will be covered in the next module.</em></p>
+    <h1 id="module">4 Module <code>docstring</code></h1><p>The multi-line <del>comment</del> string at the top of the file is known as a module docstring.</p>
+    <pre><code class="python">"""
+This is a short example module that contains a single driver function and
+outputs a hardcoded name.
+"""
+</code></pre><p>It provides a brief overview of the modules as a whole. While our current program is quite simple… such documentation becomes quite useful when we start working with functions grouped into modules.</p>
+    <p>While some resources might call this block a comment… it is actually a multi-line string literal. Python does not have true multi-line comments.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Structure%20of%20a%20Basic%20Python%20Program"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

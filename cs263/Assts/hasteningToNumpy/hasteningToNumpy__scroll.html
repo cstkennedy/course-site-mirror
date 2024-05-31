@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Hastening to NumPy</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Hastening%20to%20NumPy"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Hastening to NumPy</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h2"><a href="#input">1.1 Input</a></div><div class="toc-h2"><a href="#output">1.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">2 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">3 Mechanics</a></div><div class="toc-h1"><a href="#files">4 Files</a></div><div class="toc-h1"><a href="#grading">5 Grading</a></div><div class="toc-h2"><a href="#extra-credit">5.1 Extra Credit</a></div><div class="toc-h1"><a href="#submitting">6 Submitting</a></div></div><a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>A common task undertaken by teachers is evaluating exam questions, specifically student performance. While True/False and Multiple Choice questions are usually binary in their results (i.e., either full credit or no credit)… other types of questions are more granular. These types of questions include:</p>
+    <ul>
+  <li>Essay</li>
+  <li>Short Answer</li>
+  <li>Multiple Selection (select all that apply)</li>
+  <li>Matching</li>
+</ul><p>Partial credit is far more abundant on these types of questions (especially essay). When evaluating performance on questions (or groups of questions)… student performance is normally split into categories. Let us use:</p>
+    <ul>
+  <li><strong>Full Marks</strong> - all points were earned</li>
+  <li><strong>A</strong> - at least 85% of all possible points were earned</li>
+  <li><strong>B</strong> - at least 70% of all possible points were earned</li>
+  <li><strong>C</strong> - at least 55% of all possible points were earned</li>
+  <li><strong>D</strong> - at least 40% of all possible points were earned</li>
+  <li><strong>F</strong> - Below 40% of all possible points were earned</li>
+</ul><p>Since we will have a fairly large data set… multiple sections of a course… across multiple semesters… we will need some NumPy magic for the analysis.</p>
+    <h2 id="input">1.1 Input</h2><p>Data will be located in a text file. Each line will take the form…</p>
+    <pre><code>[semester code] [crn] [question id] [raw score] [points possible]
+</code></pre><p>where</p>
+    <ul>
+  <li>
+    <p><em>semester code</em> takes the form <code>YYYYSS</code> where <code>YYYY</code> is the start of the academic year and <code>SS</code> is the semester code:</p>
+    
+    <ul>
+      <li><code>10</code> for fall</li>
+      <li><code>20</code> for spring</li>
+      <li><code>30</code> for summer</li>
+    </ul>
+  </li>
+  <li>
+  <p><em>crn</em> is the Course Reference Number</p>
+    </li>
+  <li>
+  <p><em>question id</em> is an integer that uniquely identifies a question</p>
+    </li>
+  <li>
+  <p><em>raw score</em> represents the points earned on a problem</p>
+    </li>
+  <li>
+  <p><em>points possible</em> represents the number of points possible for a question</p>
+    </li>
+</ul><h2 id="output">1.2 Output</h2><p>T.B.W.</p>
+    <a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>The input, filtering, and NumPy set up will be handled for you. Your tasks are to implement…</p>
+    <ol>
+  <li>
+    <p>A compute percentage function, that given two <code>np.array</code>s will compute  and store the percent earned.</p>
+    
+    <pre><code class="python">def get_percent_earned(points_earned: np.array, points_possible: np.array) -&gt; np.array:
+</code></pre>
+    <p>If you spend a few minutes reviewing the NumPy <code>np.array</code> broadcast mechanic… this can be done with a single line.</p>
+    
+  </li>
+  <li>
+    <p>A filter to range function that will take an <code>np.array</code>, a lower bound  (inclusive), and an upper bound (exclusive)… and return an <code>np.array</code>  with all values in that range.</p>
+    
+    <pre><code class="python">def filter_to_range(percent_earned: np.array, lower: float, upper: float) -&gt; np.array:
+</code></pre>
+  </li>
+</ol><h1 id="mechanics">3 Mechanics</h1><p>You can run the main program with…</p>
+    <pre><code class="console">python3.11 compute_statistics.py
+</code></pre><p>The test code can be run with…</p>
+    <pre><code class="console">python3.11 -m pytest -v tests
+</code></pre><h1 id="files">4 Files</h1><p>There are two (2) files in this assignment:</p>
+    <ul>
+  <li><code>compute_statistics.py</code></li>
+  <li><code>test/test_compute_statistics.py</code></li>
+</ul><p>You will be working in <code>shapes.py</code>. Do not modify the other files.</p>
+    <p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD/archive/refs/heads/main.zip
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><h1 id="grading">5 Grading</h1><p>Your grade will be based on the following criteria…</p>
+    <ul>
+  <li><strong>test 000</strong> - code passes <code>test_get_percent_earned</code></li>
+  <li><strong>test 001</strong> - code passes <code>test_filter_to_range</code></li>
+</ul><a id="extracredit"/><h2 id="extra-credit">5.1 Extra Credit</h2><p>Note that unlike previous assignments… this one is <strong>extra credit</strong> (i.e., not required). It is worth 100 points added to your <strong>Assignment Total</strong> in Canvas.</p>
+    <h1 id="submitting">6 Submitting</h1><p>You will submit your completed copy of <code>compute_statistics.py</code> as a file upload through Canvas.</p>
+    <p>Do not alter any of the other source code files, nor change the module interface.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Hastening%20to%20NumPy"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

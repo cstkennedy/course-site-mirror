@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Exploring Functions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Exploring%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Exploring Functions</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h2"><a href="#input">1.1 Input</a></div><div class="toc-h2"><a href="#output">1.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">2 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">3 Mechanics</a></div><div class="toc-h1"><a href="#files">4 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">5 Grading</a></div><div class="toc-h1"><a href="#submitting">6 Submitting</a></div></div><a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>You probably recall the various area and perimeter formulae from Geometry. Suppose we want to generate a bunch of practice problems. Let us restrict ourselves to the following shapes and formulae…</p>
+    <ul>
+  <li>
+    <p><strong>Circle</strong></p>
+    
+    <ul>
+      <li>
+      <p>Area</p>
+    </li>
+    </ul>
+    <p>$$\pi r^{2}$$</p>
+    
+    <ul>
+      <li>Perimeter</li>
+    </ul>
+    <p>$$2 \pi r$$</p>
+    
+  </li>
+  <li>
+    <p><strong>Square</strong></p>
+    
+    <ul>
+      <li>
+      <p>Area</p>
+    </li>
+    </ul>
+    <p>$$s^2$$</p>
+    
+    <ul>
+      <li>Perimeter</li>
+    </ul>
+    <p>$$4 * s$$</p>
+    
+  </li>
+  <li>
+    <p><strong>Rectangle</strong></p>
+    
+    <ul>
+      <li>
+      <p>Area</p>
+    </li>
+    </ul>
+    <p>$$b * h$$</p>
+    
+    <ul>
+      <li>Perimeter</li>
+    </ul>
+    <p>$$2 * (b + h)$$</p>
+    
+  </li>
+  <li>
+    <p><strong>Right Triangle</strong></p>
+    
+    <ul>
+      <li>
+      <p>Area</p>
+    </li>
+    </ul>
+    <p>$$\frac{1}{2} * b * h$$</p>
+    
+    <ul>
+      <li>Perimeter</li>
+    </ul>
+    <p>$$b + h + \sqrt{b^2 + h^2}$$</p>
+    
+  </li>
+</ul><p>We would like to have a practice problem generator where we can:</p>
+    <ol>
+  <li>
+  <p>Enter the name of a shape.</p>
+    </li>
+  <li>
+  <p>Enter the dimensions (which vary based on shape).</p>
+    </li>
+  <li>
+  <p>Enter the number of decimal places to include in the answers (rounding).</p>
+    </li>
+  <li>
+  <p>Output the shape name, area, and perimeter.</p>
+    </li>
+</ol><h2 id="input">1.1 Input</h2><p>Input to this program will be interactive (i.e., a prompt will be displayed and the program will wait for keyboard input). User input will include the name of a shape and the corresponding dimensions.</p>
+    <h2 id="output">1.2 Output</h2><p>Suppose that a user wants to create a problem that centers around a circle…</p>
+    <pre><code class="console"><br/>--------------------------------------------------------------------------------
+                                Available Shapes
+--------------------------------------------------------------------------------
+1. Circle
+2. Square
+3. Rectangle
+4. Right Triangle
+
+Select a shape: square 3
+[Error] - "Square 3" is not supported.
+
+--------------------------------------------------------------------------------
+                                Available Shapes
+--------------------------------------------------------------------------------
+1. Circle
+2. Square
+3. Rectangle
+4. Right Triangle
+
+Select a shape: circle
+
+Enter the number of decimal places: 2
+
+A *Circle* with radius *6* has what perimeter and area?
+  - perimeter = 37.70
+  - area = 113.10
+
+Would you like to generate another problem (yes/no)? yes
+
+--------------------------------------------------------------------------------
+                                Available Shapes
+--------------------------------------------------------------------------------
+1. Circle
+2. Square
+3. Rectangle
+4. Right Triangle
+
+Select a shape: rectangle
+
+Enter the number of decimal places: 1
+
+A *Rectangle* with base *7* and length *8* has what perimeter and area?
+  - perimeter = 30.0
+  - area = 56.0
+
+Would you like to generate another problem (yes/no)? no
+</code></pre><a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>To complete this program… we need to make user of user input, conditional blocks, and loops. Since we have not reached those topics yet… that functionality has been provided. Your task will be to write an area and perimeter function for each shape, specifically</p>
+    <ol>
+  <li>
+  <p>
+  <p>Complete</p>
+    
+  <pre><code class="python">def circle_perimeter(radius: float) -&gt; float:
+</code></pre></p>
+    </li>
+  <li>
+  <p>Complete</p>
+    
+  <pre><code class="python">def circle_area(radius: float) -&gt; float:
+</code></pre></li>
+  <li>
+  <p>Complete</p>
+    
+  <pre><code class="python">def square_perimeter(side: float) -&gt; float:
+</code></pre></li>
+  <li>
+  <p>Complete</p>
+    
+  <pre><code class="python">def square_area(side: float) -&gt; float:
+</code></pre></li>
+  <li>
+  <p>Complete</p>
+    
+  <pre><code class="python">def rectangle_perimeter(length: float, height: float) -&gt; float:
+</code></pre></li>
+  <li>
+  <p>Complete</p>
+    
+  <pre><code class="python">def rectangle_area(length: float, height: float) -&gt; float:
+</code></pre></li>
+  <li>
+    <p>Complete</p>
+    
+    <pre><code class="python">def right_triangle_perimeter(base: float, height: float) -&gt; float:
+</code></pre>
+  </li>
+  <li>
+    <p>Complete</p>
+    
+    <pre><code class="python">def right_triangle_area(base: float, height: float) -&gt; float:
+</code></pre>
+  </li>
+</ol><p>You will notice that each function has a placeholder for pydoc documentation…</p>
+    <pre><code class="python">    """
+    T.B.W.
+    """
+</code></pre><p>Completing the pydoc documentation is optional.</p>
+    <h1 id="mechanics">3 Mechanics</h1><p>You can run the main program with…</p>
+    <pre><code class="console">python3.11 generate_problems.py
+</code></pre><p>The test code can be run with…</p>
+    <pre><code class="console">python3.11 -m pytest -v tests
+</code></pre><p>Once you have fully implemented everything… you should see the following test output.</p>
+    <pre><code class="console">tests/test_shapes.py::test_perimeter_circle[1.0-6.28-3.14] PASSED        [  4%]
+tests/test_shapes.py::test_perimeter_circle[2.0-12.56-12.56] PASSED      [  8%]
+tests/test_shapes.py::test_perimeter_circle[10.0-62.8-314.15] PASSED     [ 12%]
+tests/test_shapes.py::test_area_circle[1.0-6.28-3.14] PASSED             [ 16%]
+tests/test_shapes.py::test_area_circle[2.0-12.56-12.56] PASSED           [ 20%]
+tests/test_shapes.py::test_area_circle[10.0-62.8-314.15] PASSED          [ 25%]
+tests/test_shapes.py::test_perimeter_square[1.0-4.0-1.0] PASSED          [ 29%]
+tests/test_shapes.py::test_perimeter_square[2.0-8.0-4.0] PASSED          [ 33%]
+tests/test_shapes.py::test_perimeter_square[10.0-40.0-100.0] PASSED      [ 37%]
+tests/test_shapes.py::test_area_square[1.0-4.0-1.0] PASSED               [ 41%]
+tests/test_shapes.py::test_area_square[2.0-8.0-4.0] PASSED               [ 45%]
+tests/test_shapes.py::test_area_square[10.0-40.0-100.0] PASSED           [ 50%]
+tests/test_shapes.py::test_perimeter_rectangle[dims0-4.0-1.0] PASSED     [ 54%]
+tests/test_shapes.py::test_perimeter_rectangle[dims1-10.0-6.0] PASSED    [ 58%]
+tests/test_shapes.py::test_perimeter_rectangle[dims2-94.0-370.0] PASSED  [ 62%]
+tests/test_shapes.py::test_area_rectangle[dims0-4.0-1.0] PASSED          [ 66%]
+tests/test_shapes.py::test_area_rectangle[dims1-10.0-6.0] PASSED         [ 70%]
+tests/test_shapes.py::test_area_rectangle[dims2-94.0-370.0] PASSED       [ 75%]
+tests/test_shapes.py::test_perimeter_right_triangle[dims0-3.41-0.5] PASSED [ 79%]
+tests/test_shapes.py::test_perimeter_right_triangle[dims1-12.0-6.0] PASSED [ 83%]
+tests/test_shapes.py::test_perimeter_right_triangle[dims2-22.2-10.0] PASSED [ 87%]
+tests/test_shapes.py::test_area_right_right_triangle[dims0-3.41-0.5] PASSED [ 91%]
+tests/test_shapes.py::test_area_right_right_triangle[dims1-12.0-6.0] PASSED [ 95%]
+tests/test_shapes.py::test_area_right_right_triangle[dims2-22.2-10.0] PASSED [100%]
+</code></pre><h1 id="files">4 Files</h1><p>There are four files in this assignment:</p>
+    <ul>
+  <li><code>generate_problems.py</code></li>
+  <li><code>shapes.py</code></li>
+  <li><code>user_prompt.py</code></li>
+  <li><code>tests/test_shapes.py</code></li>
+</ul><p>You will be working in <code>shapes.py</code>. Do not modify the other files.</p>
+    <p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Functions">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Functions/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Functions/archive/refs/heads/main.zip
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">5 Grading</h1><p>Your grade will be based on the following criteria…</p>
+    <ul>
+  <li><strong>test 000</strong> - code passes <code>test_perimeter_circle</code></li>
+  <li><strong>test 001</strong> - code passes <code>test_area_circle</code></li>
+  <li><strong>test 002</strong> - code passes <code>test_perimeter_square</code></li>
+  <li><strong>test 003</strong> - code passes <code>test_area_square</code></li>
+  <li><strong>test 004</strong> - code passes <code>test_perimeter_rectangle</code></li>
+  <li><strong>test 005</strong> - code passes <code>test_area_rectangle</code></li>
+  <li><strong>test 006</strong> - code passes <code>test_perimeter_right_triangle</code></li>
+  <li><strong>test 007</strong> - code passes <code>test_area_right_triangle</code></li>
+</ul><h1 id="submitting">6 Submitting</h1><p>You will submit your completed copy of <code>shapes.py</code> as a file upload through Canvas.</p>
+    <p>Do not alter any of the other source code files, nor change the module interface.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Exploring%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,30 @@
+@startuml
+hide empty members
+
+class QuestionPool
+{
++ __init__(self, title: str, questions: list[EssayQuestion] = None)
+    + __eq__(self) -> bool
+    + __iter__(self) -> Iterator<EssayQuestion>
+    + __repr__(self) -> str
+}
+
+class EssayQuestion
+{
+    question_text: str
+    feedback_correct: Optional[str] = None
+    feedback_incorrect: Optional[str] = None
+    points: int = 0
+
+    + __init__(self, text: str)
+    + __eq__(self) -> bool
+    + __repr__(self) -> str
+    + __str__(self) -> str
+}
+
+
+QuestionPool o-- EssayQuestion
+QuestionBuilder ---> EssayQuestion: "constructs"
+QuestionPoolBuilder ---> QuestionPool: "constructs"
+
+@enduml

@@ -1,0 +1,436 @@
+{ "mapping" : 
+  [
+    {
+      "doc" : "assemblingClasses",
+      "url" : "Assts/assemblingClasses/index.html"
+    },
+    {
+      "doc" : "assignment_structure",
+      "url" : "Assts/assignment_structure/index.html"
+    },
+    {
+      "doc" : "base_page.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/base_page.mmd.html"
+    },
+    {
+      "doc" : "basicDataTypes",
+      "url" : "Public/basicDataTypes/index.html"
+    },
+    {
+      "doc" : "canvasOverviewNavigation",
+      "url" : "Public/canvasOverviewNavigation/index.html"
+    },
+    {
+      "doc" : "clArgs",
+      "url" : "Public/clArgs/index.html"
+    },
+    {
+      "doc" : "classChecklistInCppJava",
+      "url" : "Public/classChecklistInCppJava/index.html"
+    },
+    {
+      "doc" : "classChecklistInPython",
+      "url" : "Public/classChecklistInPython/index.html"
+    },
+    {
+      "doc" : "codeDocumentation1",
+      "url" : "Public/codeDocumentation1/index.html"
+    },
+    {
+      "doc" : "communications",
+      "url" : "Public/communications/index.html"
+    },
+    {
+      "doc" : "comprehensions1",
+      "url" : "Public/comprehensions1/index.html"
+    },
+    {
+      "doc" : "conditionals1",
+      "url" : "Public/conditionals1/index.html"
+    },
+    {
+      "doc" : "contextManagers",
+      "url" : "Public/contextManagers/index.html"
+    },
+    {
+      "doc" : "dataStructures1",
+      "url" : "Public/dataStructures1/index.html"
+    },
+    {
+      "doc" : "dataStructures2Operations",
+      "url" : "Public/dataStructures2Operations/index.html"
+    },
+    {
+      "doc" : "dealingWithExceptions",
+      "url" : "Assts/dealingWithExceptions/index.html"
+    },
+    {
+      "doc" : "exceptions1",
+      "url" : "Public/exceptions1/index.html"
+    },
+    {
+      "doc" : "exceptions2",
+      "url" : "Public/exceptions2/index.html"
+    },
+    {
+      "doc" : "exploringFunctions",
+      "url" : "Assts/exploringFunctions/index.html"
+    },
+    {
+      "doc" : "findingLoopsAndConditions",
+      "url" : "Assts/findingLoopsAndConditions/index.html"
+    },
+    {
+      "doc" : "forLoops1",
+      "url" : "Public/forLoops1/index.html"
+    },
+    {
+      "doc" : "forumHallway",
+      "url" : "Assts/forumHallway/index.html"
+    },
+    {
+      "doc" : "forumJanitorsCloset",
+      "url" : "Assts/forumJanitorsCloset/index.html"
+    },
+    {
+      "doc" : "fstrings1",
+      "url" : "Public/fstrings1/index.html"
+    },
+    {
+      "doc" : "functions1",
+      "url" : "Public/functions1/index.html"
+    },
+    {
+      "doc" : "functions2",
+      "url" : "Public/functions2/index.html"
+    },
+    {
+      "doc" : "gatheringIterables",
+      "url" : "Assts/gatheringIterables/index.html"
+    },
+    {
+      "doc" : "hasteningToNumpy",
+      "url" : "Assts/hasteningToNumpy/index.html"
+    },
+    {
+      "doc" : "introPost",
+      "url" : "Assts/introPost/index.html"
+    },
+    {
+      "doc" : "linkedList1",
+      "url" : "Public/linkedList1/index.html"
+    },
+    {
+      "doc" : "linkedList2",
+      "url" : "Public/linkedList2/index.html"
+    },
+    {
+      "doc" : "linkedList3",
+      "url" : "Public/linkedList3/index.html"
+    },
+    {
+      "doc" : "mappingModuleToCourseObjectives",
+      "url" : "Public/mappingModuleToCourseObjectives/index.html"
+    },
+    {
+      "doc" : "meetTheInstructor",
+      "url" : "Public/meetTheInstructor/index.html"
+    },
+    {
+      "doc" : "meetTheInstructorVideo",
+      "url" : "Public/meetTheInstructorVideo/index.html"
+    },
+    {
+      "doc" : "moduleCompletion",
+      "url" : "Public/moduleCompletion/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_01",
+      "url" : "Public/moduleObjectiveMappings_01/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_02",
+      "url" : "Public/moduleObjectiveMappings_02/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_03",
+      "url" : "Public/moduleObjectiveMappings_03/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_04",
+      "url" : "Public/moduleObjectiveMappings_04/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_05",
+      "url" : "Public/moduleObjectiveMappings_05/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_06",
+      "url" : "Public/moduleObjectiveMappings_06/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_07",
+      "url" : "Public/moduleObjectiveMappings_07/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_08",
+      "url" : "Public/moduleObjectiveMappings_08/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_09",
+      "url" : "Public/moduleObjectiveMappings_09/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_10",
+      "url" : "Public/moduleObjectiveMappings_10/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_11",
+      "url" : "Public/moduleObjectiveMappings_11/index.html"
+    },
+    {
+      "doc" : "moduleObjectiveMappings_12",
+      "url" : "Public/moduleObjectiveMappings_12/index.html"
+    },
+    {
+      "doc" : "module_03.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_03.mmd.html"
+    },
+    {
+      "doc" : "module_04.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_04.mmd.html"
+    },
+    {
+      "doc" : "module_05.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_05.mmd.html"
+    },
+    {
+      "doc" : "module_06.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_06.mmd.html"
+    },
+    {
+      "doc" : "module_07.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_07.mmd.html"
+    },
+    {
+      "doc" : "module_08.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_08.mmd.html"
+    },
+    {
+      "doc" : "module_09.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_09.mmd.html"
+    },
+    {
+      "doc" : "module_10.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_10.mmd.html"
+    },
+    {
+      "doc" : "module_11.mmd",
+      "url" : "Public/mappingModuleToCourseObjectives/module_11.mmd.html"
+    },
+    {
+      "doc" : "navigation",
+      "url" : "Directory/navigation/index.html"
+    },
+    {
+      "doc" : "numpyBroadcasting",
+      "url" : "Public/numpyBroadcasting/index.html"
+    },
+    {
+      "doc" : "numpyCreatingArrays",
+      "url" : "Public/numpyCreatingArrays/index.html"
+    },
+    {
+      "doc" : "numpyMatrixExample",
+      "url" : "Public/numpyMatrixExample/index.html"
+    },
+    {
+      "doc" : "numpyMatrixExampleRefactoring",
+      "url" : "Public/numpyMatrixExampleRefactoring/index.html"
+    },
+    {
+      "doc" : "numpyMatrixRefactoringMagic",
+      "url" : "Public/numpyMatrixRefactoringMagic/index.html"
+    },
+    {
+      "doc" : "numpyStatistics",
+      "url" : "Public/numpyStatistics/index.html"
+    },
+    {
+      "doc" : "officeHours",
+      "url" : "Public/officeHours/index.html"
+    },
+    {
+      "doc" : "outline",
+      "url" : "Directory/outline/index.html"
+    },
+    {
+      "doc" : "paradigmsOverview",
+      "url" : "Public/paradigmsOverview/index.html"
+    },
+    {
+      "doc" : "perspectivePEP20",
+      "url" : "Public/perspectivePEP20/index.html"
+    },
+    {
+      "doc" : "playingWithStrings",
+      "url" : "Assts/playingWithStrings/index.html"
+    },
+    {
+      "doc" : "programStructureBasic",
+      "url" : "Public/programStructureBasic/index.html"
+    },
+    {
+      "doc" : "programStructureWithTests",
+      "url" : "Public/programStructureWithTests/index.html"
+    },
+    {
+      "doc" : "protocolVsABC",
+      "url" : "Public/protocolVsABC/index.html"
+    },
+    {
+      "doc" : "pythonicCode1",
+      "url" : "Public/pythonicCode1/index.html"
+    },
+    {
+      "doc" : "refactoring1TDD",
+      "url" : "Public/refactoring1TDD/index.html"
+    },
+    {
+      "doc" : "refactoring2Style",
+      "url" : "Public/refactoring2Style/index.html"
+    },
+    {
+      "doc" : "refactoring3Adding",
+      "url" : "Public/refactoring3Adding/index.html"
+    },
+    {
+      "doc" : "refactoring4Mistakes",
+      "url" : "Public/refactoring4Mistakes/index.html"
+    },
+    {
+      "doc" : "reviewSyllabusStructureCheck",
+      "url" : "Public/reviewSyllabusStructureCheck/index.html"
+    },
+    {
+      "doc" : "runningTheExamples",
+      "url" : "Assts/runningTheExamples/index.html"
+    },
+    {
+      "doc" : "setUpDevEnvPython",
+      "url" : "Assts/setUpDevEnvPython/index.html"
+    },
+    {
+      "doc" : "strings1",
+      "url" : "Public/strings1/index.html"
+    },
+    {
+      "doc" : "style1PEP8",
+      "url" : "Public/style1PEP8/index.html"
+    },
+    {
+      "doc" : "summaryModule_01",
+      "url" : "Public/summaryModule_01/index.html"
+    },
+    {
+      "doc" : "summaryModule_02",
+      "url" : "Public/summaryModule_02/index.html"
+    },
+    {
+      "doc" : "summaryModule_03",
+      "url" : "Public/summaryModule_03/index.html"
+    },
+    {
+      "doc" : "summaryModule_04",
+      "url" : "Public/summaryModule_04/index.html"
+    },
+    {
+      "doc" : "summaryModule_05",
+      "url" : "Public/summaryModule_05/index.html"
+    },
+    {
+      "doc" : "summaryModule_06",
+      "url" : "Public/summaryModule_06/index.html"
+    },
+    {
+      "doc" : "summaryModule_07",
+      "url" : "Public/summaryModule_07/index.html"
+    },
+    {
+      "doc" : "summaryModule_08",
+      "url" : "Public/summaryModule_08/index.html"
+    },
+    {
+      "doc" : "summaryModule_09",
+      "url" : "Public/summaryModule_09/index.html"
+    },
+    {
+      "doc" : "summaryModule_10",
+      "url" : "Public/summaryModule_10/index.html"
+    },
+    {
+      "doc" : "summaryModule_11",
+      "url" : "Public/summaryModule_11/index.html"
+    },
+    {
+      "doc" : "summaryModule_12",
+      "url" : "Public/summaryModule_12/index.html"
+    },
+    {
+      "doc" : "support",
+      "url" : "Public/support/index.html"
+    },
+    {
+      "doc" : "syllabus",
+      "url" : "Public/syllabus/index.html"
+    },
+    {
+      "doc" : "tdd1",
+      "url" : "Public/tdd1/index.html"
+    },
+    {
+      "doc" : "template.mmd",
+      "url" : "Public/reviewSyllabusStructureCheck/template.mmd.html"
+    },
+    {
+      "doc" : "testingTypes",
+      "url" : "Public/testingTypes/index.html"
+    },
+    {
+      "doc" : "theBeginning",
+      "url" : "Public/theBeginning/index.html"
+    },
+    {
+      "doc" : "theBeginningVideo",
+      "url" : "Public/theBeginningVideo/index.html"
+    },
+    {
+      "doc" : "useClassChecklistCPP",
+      "url" : "Public/useClassChecklistCPP/index.html"
+    },
+    {
+      "doc" : "useClassChecklistJava",
+      "url" : "Public/useClassChecklistJava/index.html"
+    },
+    {
+      "doc" : "useClassChecklistPython",
+      "url" : "Public/useClassChecklistPython/index.html"
+    },
+    {
+      "doc" : "userInput",
+      "url" : "Public/userInput/index.html"
+    },
+    {
+      "doc" : "whatIsAModule",
+      "url" : "Public/whatIsAModule/index.html"
+    },
+    {
+      "doc" : "whyLearnPython",
+      "url" : "Public/whyLearnPython/index.html"
+    },
+    {
+      "doc" : "workingWithData",
+      "url" : "Assts/workingWithData/index.html"
+    }
+  ]
+}

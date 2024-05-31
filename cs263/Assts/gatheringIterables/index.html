@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Gathering Iterables</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Gathering%20Iterables"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Gathering Iterables</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h2"><a href="#input">1.1 Input</a></div><div class="toc-h2"><a href="#output">1.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">2 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">3 Mechanics</a></div><div class="toc-h1"><a href="#files">4 Files</a></div><div class="toc-h1"><a href="#grading">5 Grading</a></div><div class="toc-h1"><a href="#submitting">6 Submitting</a></div></div><a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>This assignment deals with the same problem as <a class="doc" href="../../Assts/assemblingClasses/index.html" target="CS263_Assts">Assembling Classes</a>.</p>
+    <blockquote>
+  <p>Developing questions for quizzes, exams and similar assessments is often difficult. Questions need to have…</p>
+    
+  <ul>
+    <li>
+    <p>multiple variants</p>
+    </li>
+    <li>
+    <p>feedback for correct answers</p>
+    </li>
+    <li>
+    <p>feedback for incorrect answers</p>
+    </li>
+    <li>
+    <p>possible points</p>
+    </li>
+  </ul>
+  <p>Our goal is to work with question pools (i.e., groups of related questions). We want to build a few classes…</p>
+    
+  <p><img alt="Question Pool Class Hierarchy" src="../assemblingClasses/classes.svg"/></p>
+    
+  <p>The two builder classes will be handled by another team. (i.e., they will be provided). Your work will focus on <code>EssayQuestion</code> and <code>QuestionPool</code>. <em>We will pretend that <code>EssayQuestion</code> is the only type of question.</em></p>
+    
+</blockquote><p>This assignment will focus on <code>QuestionPool</code> You will need your copy of <code>EssayQuestion</code> code from the previous assignment.</p>
+    <h2 id="input">1.1 Input</h2><p>There is no input to this program.</p>
+    <h2 id="output">1.2 Output</h2><p>There is no <code>main</code> function in this program. the <code>QuestionPool</code> class will evaluated with a test suite within <code>tests/test_quesion_pool.py</code>.</p>
+    <a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>Start by grabbing a completed copy of <code>EssayQuestion</code> from the <a class="doc" href="../../Assts/assemblingClasses/index.html" target="CS263_Assts">previous assignment</a></p>
+    <p>Your task is to create the <code>QuestionPool</code> class as documented in the UML Class diagram within the <a href="#the-problem">The Problem</a> section. You may either:</p>
+    <ul>
+  <li>
+  <p>implement the <code>QuestionPool</code> class <em>from scratch</em> with a basic class</p>
+    </li>
+  <li>
+  <p>implement the <code>QuestionPool</code> class with the <code>@dataclass</code> decorator</p>
+    </li>
+</ul><p>Your implementation must result in an <code>QuestionPool</code> class with the following data members:</p>
+    <ol>
+  <li>
+  <p><code>title</code> - an <code>str</code> that stores a short name describing the <code>QuestionPool</code>.</p>
+    </li>
+  <li>
+  <p><code>questions</code> - a <code>list</code> of <code>EssayQuestion</code> objects. The starting value must  be an empty <code>list</code>.</p>
+    </li>
+</ol><p>Your <code>QuestionPool</code> implementation must provide the following methods:</p>
+    <ol>
+  <li>
+  <p><code>__init__</code> - the standard constructor. It must accept a single <code>str</code>  parameter (title) which serves as the question text.</p>
+    </li>
+  <li>
+  <p><code>__eq__</code> - compares two <code>QuestionPool</code> objects by comparing the questions  contained in each pool. <em>For two pools to be equal… they must have  matching titles and contain matching questions in the same order.</em></p>
+    </li>
+  <li>
+  <p><code>__iter__</code> - provides an iterator that allows access to the contained  <code>EssayQuestion</code> objects.</p>
+    </li>
+  <li>
+    <p><code>__repr__</code> - generates debugging output. Your implementation must generate  output in the following form…</p>
+    
+    <pre><code class="python">QuestionPool(
+    title="...",
+    questions=[
+        EssayQuestion(
+            question_text="...",
+            feedback_correct="...",
+            feedback_incorrect="...",
+            points=...
+        ),
+        EssayQuestion(
+            question_text="...",
+            feedback_correct="...",
+            feedback_incorrect="...",
+            points=...
+        ),
+        EssayQuestion(
+            question_text="...",
+            feedback_correct="...",
+            feedback_incorrect="...",
+            points=...
+        )
+    ]
+)
+</code></pre>
+    <p>The ellipses are placeholders for the actual values.</p>
+    
+  </li>
+</ol><h1 id="mechanics">3 Mechanics</h1><p>The test code can be run with…</p>
+    <pre><code class="console">python3.11 -m pytest -v tests
+</code></pre><h1 id="files">4 Files</h1><p>There are four (4) files in this assignment:</p>
+    <ul>
+  <li><code>essay_question.py</code></li>
+  <li><code>question_pool.py</code></li>
+  <li><code>test/test_essay_question.py</code></li>
+  <li><code>test/test_question_pool.py</code></li>
+</ul><p>You will be working in <code>question_pool.py</code>. Do not modify the other files.</p>
+    <p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Iterables">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Iterables/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Iterables/archive/refs/heads/main.zip
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><h1 id="grading">5 Grading</h1><p>Your grade will be based on the following criteria…</p>
+    <ul>
+  <li><strong>test 000</strong> - code passes <code>test_all_fields_present</code></li>
+  <li><strong>test 001</strong> - code passes <code>test_default_values</code></li>
+  <li><strong>test 002</strong> - code passes <code>test_eq_identity</code></li>
+  <li><strong>test 003</strong> - code passes <code>test_eq_are_equal</code></li>
+  <li><strong>test 004</strong> - code passes <code>test_eq_not_equal</code></li>
+  <li><strong>test 005</strong> - code passes <code>test_iter_empty</code></li>
+  <li><strong>test 006</strong> - code passes <code>test_iter</code></li>
+  <li><strong>test 007</strong> - code passes <code>test_repr</code></li>
+</ul><h1 id="submitting">6 Submitting</h1><p>You will submit your completed copy of <code>question_pool.py</code> as a file upload through Canvas.</p>
+    <p>Do not alter any of the other source code files, nor change the module interface.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Gathering%20Iterables"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

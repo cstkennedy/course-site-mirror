@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Refactoring & Code Style</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Code%20Style"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Refactoring &amp; Code Style</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#automated-tools">2 Automated Tools</a></div><div class="toc-h2"><a href="#isort">2.1 isort</a></div><div class="toc-h2"><a href="#pylint">2.2 pylint</a></div><div class="toc-h2"><a href="#black">2.3 black</a></div><div class="toc-h2"><a href="#a-quick-breather">2.4 A Quick Breather</a></div></div><h1 id="overview">1 Overview</h1><p>In the <a class="doc" href="../../Public/refactoring1TDD/index.html" target="CS263_Public">previous lecture</a> we added tests to the paint example. We will start with that code… <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-08/Painting-3-Tests" target="_blank">Module-08/Painting-3-Tests</a>.</p>
+    <a id="automatedtools"/><h1 id="automated-tools">2 Automated Tools</h1><p>Before we start refactoring let us…</p>
+    <ol>
+  <li>
+  <p>Run our code through <code>isort</code> to make sure that imports are listed in <em>the  accepted order</em></p>
+    </li>
+  <li>
+  <p>Run our code through <code>black</code> to address formatting issues (e.g., line  breaks, spaces, commas, line width)</p>
+    </li>
+  <li>
+  <p>Run our code through <code>pylint</code> to get a report of issues we need to examine  manually.</p>
+    </li>
+</ol><h2 id="isort">2.1 isort</h2><p>Since both of our <em>actual program logic</em> files contain a single import… nothing needs to be changed.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Imports - estimate_paint.py</div>
+<pre><code class="python">import compute_paint
+</code></pre>
+</blockquote><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Imports - estimate_paint.py</div>
+<pre><code class="python">import math
+</code></pre>
+</blockquote><p>However, our test code has a few issues…</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Imports - test_estimate_paint.py</div>
+<div class="splitColumns"><div class="leftColumn">
+<p><strong>Original</strong></p>
+    
+<pre><code class="python">import pytest
+
+from hamcrest import *
+
+from estimate_paint import get_report
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>After <code>isort</code></strong></p>
+    
+<pre><code class="python">import pytest
+from hamcrest import *
+
+from estimate_paint import get_report
+</code></pre>
+</div></div>
+</blockquote><blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Imports - test_compute_paint.py</div>
+<p><strong>Original</strong></p>
+    
+<pre><code class="python">import pytest
+
+from hamcrest import *
+
+from compute_paint import (wall_surface_area, gallons_required)
+</code></pre>
+<p><strong>After <code>isort</code></strong></p>
+    
+<pre><code class="python">import pytest
+from hamcrest import *
+
+from compute_paint import gallons_required, wall_surface_area
+</code></pre>
+</blockquote><p>In general… imports shold be organized by:</p>
+    <ol>
+  <li>
+  <p>imports for built-in modules (i.e, parts of the Python stnadard library)</p>
+    </li>
+  <li>
+  <p>imports for external libraries</p>
+    </li>
+  <li>
+  <p>imports for other modules that are part of the project</p>
+    </li>
+</ol><h2 id="pylint">2.2 pylint</h2><p>Wild card imports (e.g., <code>from hamcrest import *</code>) will be flagged by pylint. us update our test imports once more…</p>
+    <blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Imports - test_estimate_paint.py</div>
+<pre><code class="python">import pytest
+from hamcrest import assert_that, contains_string, string_contains_in_order
+</code></pre>
+</blockquote><blockquote class="example" id="example6"><div class="exampleTitle">Example 6: Imports - test_compute_paint.py</div>
+<pre><code class="python"><br/>import pytest
+from hamcrest import assert_that, close_to, equal_to
+
+from compute_paint import gallons_required, wall_surface_area
+</code></pre>
+</blockquote><p>That is much better. The formal rule for wildcard imports is…</p>
+    <blockquote>
+  <p><em>Do not pollute your modules namespace and import everything.</em></p>
+    
+</blockquote><p>However, the more pragmatic view is…</p>
+    <blockquote>
+  <p><em>If you import everything… you will not remember what you are actually using from that module… nor will anyone else.</em></p>
+    
+</blockquote><p>Now let us run <code>pylint</code> on our codebase…</p>
+    <pre><code class="console">python3.11 -m pylint compute_paint.py estimate_paint.py tests
+</code></pre><p>Our report is not too bad…</p>
+    <pre><code class="python">************* Module compute_paint
+compute_paint.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+compute_paint.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+compute_paint.py:11:0: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module estimate_paint
+estimate_paint.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+estimate_paint.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+estimate_paint.py:5:4: R1705: Unnecessary "else" after "return",
+                              remove the "else" and de-indent the code inside it (no-else-return)
+estimate_paint.py:28:0: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module test_estimate_paint
+tests/test_estimate_paint.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/test_estimate_paint.py:7:0: C0116: Missing function or method docstring (missing-function-docstring)
+tests/test_estimate_paint.py:26:0: C0116: Missing function or method docstring (missing-function-docstring)
+tests/test_estimate_paint.py:1:0: W0611: Unused import pytest (unused-import)
+************* Module test_compute_paint
+tests/test_compute_paint.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/test_compute_paint.py:15:0: C0116: Missing function or method docstring (missing-function-docstring)
+tests/test_compute_paint.py:19:0: C0116: Missing function or method docstring (missing-function-docstring)
+
+------------------------------------------------------------------
+Your code has been rated at 7.31/10 (previous run: 7.31/10, +0.00)
+</code></pre><blockquote>
+  <p><strong>Most examples of tools like <code>pylint</code> are disingenuous.</strong> The author will say <em>look at how bad this code is and what <code>pylint</code> finds.</em> The focus should be on…</p>
+    
+  <ol>
+    <li>
+    <p>here are the Python style rules</p>
+    </li>
+    <li>
+    <p>let us follow those rules</p>
+    </li>
+    <li>
+    <p>hey… <code>pylint</code> found a few things that we missed</p>
+    </li>
+  </ol>
+</blockquote><p>Most of our issues come down to documentation…</p>
+    <ol>
+  <li>
+  <p>Our modules do not have docstrings</p>
+    </li>
+  <li>
+  <p>Our functions were never fully documented</p>
+    </li>
+</ol><p>Let us start with the documentation for <code>compute_paint</code>.</p>
+    <blockquote class="example" id="example7"><div class="exampleTitle">Example 7: Documentation - compute_paint.py</div>
+<pre><code class="python">"""
+This module provides functions to compute how much paint is needed to paint a
+room, including paint coverage and wall surface area.
+"""
+
+import math
+
+
+def wall_surface_area(length: float, width: float) -&gt; float:
+    """
+    Compute the surface area of all four walls in a room. For the purposes of
+    this estimation... it is assumed that
+
+      1. each wall is a rectangle with no doorways or windows
+      2. there are four (4) walls in the room
+
+    Args:
+        length: room length
+        width: room width
+
+    Returns:
+        Wall surface area for a single room
+    """
+
+    area_one_wall = length * width
+    area_four_walls = 4 * area_one_wall
+
+    return area_four_walls
+
+
+def gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[int, int]:
+    """
+    Compute the number of gallons of paint required for a given surface area.
+
+    Args:
+        wall_area: surface area to be covered
+        min_coverage: minimum area covered by a gallon of paint
+        max_coverage: maximum area covered by a gallon of paint
+
+    Returns:
+        minimum and maximum gallons of paint required rounded up to the next
+        whole gallon.
+    """
+
+    max_gallons = math.ceil(wall_area / min_coverage)
+    min_gallons = math.ceil(wall_area / max_coverage)
+
+    return min_gallons, max_gallons
+</code></pre>
+</blockquote><p>That is much better. <em>(The documentation should have been there from the beginning, but I left it off in preparation for this very discussion.)</em></p>
+    <p>The documentation for <code>estimate_paint</code> can be written fairly quickly.</p>
+    <blockquote class="example" id="example8"><div class="exampleTitle">Example 8: Documentation - estimate_paint.py</div>
+<pre><code class="python">"""
+This program generates a summary that contains the amount of paint required to
+paint a room (in gallons) and the cost of that paint.
+"""
+
+import compute_paint
+
+
+def get_report(min_gallons: int, max_gallons: int, price_per_gallon: float) -&gt; str:
+    """
+    Generate a summary of the amount of paint required to paint a room and the
+    project cost of that paint.
+
+    Args:
+        min_gallons: estimate of the minimum amount of paint required
+        max_gallons: estimate of the maximum amount of paint required
+
+        price_per_gallon: cost for a single gallon of paint (e.g.,  for a
+            single gallon or as part of a five gallon bucket)
+
+    Returns:
+        Summary of the estimated gallons of paint required if the min and max
+        estimates are the same. Otherwise a report listing the min and max
+        values is provided.
+    """
+
+    if min_gallons == max_gallons:
+        gallons = max_gallons
+        cost = gallons * price_per_gallon
+
+        return "\n".join(
+            (
+                f"You will need to buy {gallons} gallons of paint.",
+                f"You will spend $ {cost:.2f}.",
+            )
+        )
+
+    else:
+        min_cost = min_gallons * price_per_gallon
+        max_cost = max_gallons * price_per_gallon
+
+        return "\n".join(
+            (
+                f"You will need to buy {min_gallons} to {max_gallons} gallons of paint.",
+                f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}.",
+            )
+        )
+
+
+def main():
+    """
+    This is the driver logic for the program. The length, width, and price per
+    gallon are currently hardcoded.
+
+    TODO: add user input
+    """
+    # Dimensions in feet
+    length = 50
+    width = 40
+
+    # Price in dollars
+    price_per_gallon = 49.95
+
+    area = compute_paint.wall_surface_area(length, width)
+
+    min_required, max_required = compute_paint.gallons_required(area)
+
+    summary = get_report(min_required, max_required, price_per_gallon)
+    print(summary)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+</blockquote><p>That just leaves us with…</p>
+    <pre><code class="python">************* Module estimate_paint
+estimate_paint.py:5:4: R1705: Unnecessary "else" after "return",
+                              remove the "else" and de-indent the code inside it (no-else-return)
+</code></pre><p><em>Note that we will not be adding documentation to the test code.</em></p>
+    <p>As a general rule code in the form…</p>
+    <pre><code class="python">if condition
+    return ...
+else
+    return ...
+</code></pre><p>should be written as…</p>
+    <pre><code class="python">if condition
+    return ...
+
+return ...
+</code></pre><p>This <em>early return</em> or <em>guard</em> approach decreases the level of scope, but more importantly makes it more clear that the special cases are handled first. The <em>general path</em> can be identified at a glance. <em>This approach is common in Java and Rust.</em></p>
+    <p>Let us rewrite <code>get_report</code>.</p>
+    <pre><code class="python">    if min_gallons == max_gallons:
+        gallons = max_gallons
+        cost = gallons * price_per_gallon
+
+        return "\n".join(
+            (
+                f"You will need to buy {gallons} gallons of paint.",
+                f"You will spend $ {cost:.2f}.",
+            )
+        )
+
+    min_cost = min_gallons * price_per_gallon
+    max_cost = max_gallons * price_per_gallon
+
+    return "\n".join(
+        (
+            f"You will need to buy {min_gallons} to {max_gallons} gallons of paint.",
+            f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}.",
+        )
+    )
+</code></pre><h2 id="black">2.3 black</h2><p>My go-to code reformatter is <code>black</code>. However, in this case neither <code>compute_paint.py</code> nor <code>estimate_paint.py</code> would be changed. So… let us look at our test code…</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p><code>black</code> always adds a trailing comma after the last entry in a sequence. This rule comes from tuple syntax (e.g., <code>(1)</code> is just the number one and <code>(1,)</code> is a one-tuple that contains the value <code>1</code>).</p>
+    
+</div><pre><code class="diff">     assert_that(
+         actual_report,
+         string_contains_in_order(
+-            "You will need to buy "
+-            "4",
++            "You will need to buy " "4",
+             " gallons of paint.",
+             "\n",
+             "You will spend",
+-            "$ 140.40."
+-        )
++            "$ 140.40.",
++        ),
+     )
+</code></pre><p>Our first test function in <code>test_estimate_paint.py</code> was missing a comma between two strings.</p>
+    <pre><code class="python">            "You will need to buy "
+            "4",
+</code></pre><p><code>black</code> sees that as something that should be a single string. Let us manually add the missing comma after the first line.</p>
+    <p>What do you know… I missed a comma in the second test function. Let us add that one as well.</p>
+    <pre><code class="diff"> def test_get_report_different_min_max():
+     actual_report = get_report(min_gallons=10, max_gallons=14, price_per_gallon=32.50)
+ 
+     assert_that(
+         actual_report,
+         string_contains_in_order(
+-            "You will need to buy "
+-            "10 to 14",
++            "You will need to buy " "10 to 14",
+             " gallons of paint.",
+             "\n",
+             "You will spend",
+-            "$ 325.00 to $ 455.00."
+-        )
++            "$ 325.00 to $ 455.00.",
++        ),
+     )
+</code></pre><p>The issue in <code>test_compute_paint.py</code> is more subtle. We need a second blank line between our test data and test function.</p>
+    <pre><code class="diff">     (2, 2, 16),
+     (10, 12, 480),
+     (10.5, 10, 420),
+ ]
+ 
++
+ @pytest.mark.parametrize("length, width, surface_area", test_data)
+ def test_wall_surface_area(length, width, surface_area):
+     assert_that(wall_surface_area(length, width), close_to(surface_area, 1e-1))
+</code></pre><a id="aquickbreather"/><h2 id="a-quick-breather">2.4 A Quick Breather</h2><p>This lecture ended up longer than I had planned… but necessarily so. The complete examples can be found in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-08/Painting-4-Style" target="_blank">Module-08/Painting-4-Style</a>.</p>
+    <p>We will continue working on this code in the next lecture.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Code%20Style"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

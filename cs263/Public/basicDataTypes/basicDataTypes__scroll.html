@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Basic Data Types & Variables</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basic%20Data%20Types%20%26%20Variables"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Basic Data Types &amp; Variables</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#example-values">2 Example Values</a></div><div class="toc-h2"><a href="#bool">2.1 bool</a></div><div class="toc-h2"><a href="#int">2.2 int</a></div><div class="toc-h2"><a href="#float">2.3 float</a></div><div class="toc-h2"><a href="#str">2.4 str</a></div></div><h1 id="overview">1 Overview</h1><p>Python has most of the basic datatypes that you will find in C++, Java, and Rust… with one exception.</p>
+    <blockquote>
+  <p>The datatypes covered in this discussion focus on those that are commonly used (e.g., <code>int</code> in C++ or Java). It is not an exhaustive list.</p>
+    
+</blockquote><table>
+  <thead>
+    <tr>
+      <th align="left">Description </th>
+      <th align="left">Python </th>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="center">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">boolean value </td>
+      <td align="left"><code>bool</code> </td>
+      <td align="left"><code>bool</code> </td>
+      <td align="left"><code>boolean</code> </td>
+      <td align="center"><code>bool</code> </td>
+    </tr>
+    <tr>
+      <td align="left">32-bit integer </td>
+      <td align="left"><code>int</code> </td>
+      <td align="left"><code>int</code> </td>
+      <td align="left"><code>int</code> </td>
+      <td align="center"><code>i32</code> </td>
+    </tr>
+    <tr>
+      <td align="left">64-bit floating point </td>
+      <td align="left"><code>float</code> </td>
+      <td align="left"><code>double</code> </td>
+      <td align="left"><code>double</code> </td>
+      <td align="center"><code>f64</code> </td>
+    </tr>
+    <tr>
+      <td align="left">character </td>
+      <td align="left"> </td>
+      <td align="left"><code>char</code> </td>
+      <td align="left"><code>char</code> </td>
+      <td align="center"><code>char</code> </td>
+    </tr>
+    <tr>
+      <td align="left">null-terminated (C-style) string </td>
+      <td align="left"> </td>
+      <td align="left"><code>char*</code> </td>
+      <td align="left"> </td>
+      <td align="center"><code>&amp;str</code> </td>
+    </tr>
+    <tr>
+      <td align="left">string </td>
+      <td align="left"><code>str</code> </td>
+      <td align="left"><code>std::string</code> </td>
+      <td align="left"><code>String</code> </td>
+      <td align="center"><code>String</code> </td>
+    </tr>
+  </tbody>
+</table><p>The Python <code>float</code> is technically more complicated than <em>just a 64-bit floating point value</em>. However, a simplified perspective will work for now.</p>
+    <p>You probably noticed that Python does not have a character type (<code>char</code>). In most code… a Python string (<code>str</code>) is used instead (albeit with only a single letter at index zero).</p>
+    <p>The Python string (<code>str</code>) is analogous to a C++ <code>std::string</code> and Java <code>String</code> (and Rust <code>String</code>). It is a full-fledged class with functions such as <code>len</code>, <code>startswith</code>, and <code>replace</code>.</p>
+    <a id="examplevalues"/><h1 id="example-values">2 Example Values</h1><p>Let us take the first two columns from the comparison table…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Description </th>
+      <th align="left">Python </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">boolean value </td>
+      <td align="left"><code>bool</code> </td>
+    </tr>
+    <tr>
+      <td align="left">32-bit integer </td>
+      <td align="left"><code>int</code> </td>
+    </tr>
+    <tr>
+      <td align="left">64-bit floating point </td>
+      <td align="left"><code>float</code> </td>
+    </tr>
+    <tr>
+      <td align="left">character </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">null-terminated (C-style) string </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">string </td>
+      <td align="left"><code>str</code> </td>
+    </tr>
+  </tbody>
+</table><p>I think the description column (along with the rows where Python has no equivalent type) can be removed and replaced with example values.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Python </th>
+      <th align="center">Example Values </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><code>bool</code> </td>
+      <td align="center"><code>True</code> or <code>False</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>int</code> </td>
+      <td align="center"><code>7</code>, <code>0</code>, or <code>-40</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>float</code> </td>
+      <td align="center"><code>3.14</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>str</code> </td>
+      <td align="center"><code>"Sample String"</code> </td>
+    </tr>
+  </tbody>
+</table><p>Note that boolean values in Python are capitalized (i.e., <code>True</code> or <code>False</code>) unlike C++, Java, and Rust (i.e., <code>true</code> and <code>false</code>). <em>This is one of <strong>the</strong> common mistakes when learning Python)</em></p>
+    <h2 id="bool">2.1 bool</h2><p>The <code>bool</code> type is normally found within a conditional block. However, the ternary operator does exist in Python…</p>
+    <pre><code class="python">is_blue = True if selected_color.title() == "Blue" else False
+</code></pre><p>But… the expression itself is already a <em>boolean expressiion.</em></p>
+    <pre><code class="python">is_blue = selected_color.title() == "Blue"
+</code></pre><h2 id="int">2.2 int</h2><p>The integer type behaves in Python as it does in C++ and Java… complete with integer division.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Operation </th>
+      <th align="center">Expression </th>
+      <th align="right">Result </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Addition </td>
+      <td align="center"><code>5 + 2</code> </td>
+      <td align="right"><code>7</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Subtraction </td>
+      <td align="center"><code>7 - 12</code> </td>
+      <td align="right"><code>-5</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Multiplication </td>
+      <td align="center"><code>8 * 3</code> </td>
+      <td align="right"><code>24</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Division </td>
+      <td align="center"><code>7 / 2</code> </td>
+      <td align="right"><code>3.5</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Division </td>
+      <td align="center"><code>7 // 2</code> </td>
+      <td align="right"><code>3</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Modulus </td>
+      <td align="center"><code>7 % 2</code> </td>
+      <td align="right"><code>1</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Exponentiation </td>
+      <td align="center"><code>8 ** 2</code> </td>
+      <td align="right"><code>64</code> </td>
+    </tr>
+  </tbody>
+</table><p>Take note of the two divisions. Python 3 (specifically <a href="https://peps.python.org/pep-0238/">PEP 238</a>) introduced a dedicated <code>//</code> operator for integer division.</p>
+    <p>Unlike most languages where a <code>pow</code> or <code>fpow</code> function is needed for exponentiation… Python included the <code>**</code> operator.</p>
+    <h2 id="float">2.3 float</h2><p>Python’s <a href="https://docs.python.org/3/tutorial/floatingpoint.html" target="_blank">float type</a> suffers from the same floating point precision issue as analogous types in other languages. <em>(If you are truly curious… <a href="https://www.cs.odu.edu/~tkennedy/cs417/f23/Public/precisionIntro">CS 417, Computational Methods, discusses why all floating point numbers suffer from precision issues</a>.)</em></p>
+    <p><code>float</code> provides the same operators as <code>int</code>… with the exception of <code>//</code>.</p>
+    <h2 id="str">2.4 str</h2><p>The <code>str</code> type will be covered <a class="doc" href="../../Public/strings1/index.html" target="CS263_Public">in a lecture during the next module</a>. *If you are curious… feel free to look ahead.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basic%20Data%20Types%20%26%20Variables"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>NumPy - Broadcasting</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20-%20Broadcasting"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">NumPy - Broadcasting</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#getting-started">1 Getting Started</a></div><div class="toc-h1"><a href="#loops-comprehensions">2 Loops &amp; Comprehensions</a></div><div class="toc-h1"><a href="#numpy-broadcasting">3 NumPy Broadcasting</a></div><div class="toc-h1"><a href="#benchmarks-performance">4 Benchmarks &amp; Performance</a></div></div><a id="gettingstarted"/><h1 id="getting-started">1 Getting Started</h1><p>The next couple snippets are extracted from <a href="https://github.com/cstkennedy/cs263-examples//blob/main/Module-11/broadcasting.py" target="_blank">broadcasting.py</a>.</p>
+    <a id="loopscomprehensions"/><h1 id="loops-comprehensions">2 Loops &amp; Comprehensions</h1><p>In Python… each element of a list must be updated one at a time. If a list of prices needed to be reduced by 10%, each one would need to be multiplied by 0.9 within a loop…</p>
+    <pre><code class="python">    prices = [1.00, 2.95, 8.40, 3.50, 3.30, 16.91]
+
+    for idx in range(len(prices)):
+        price[idx] *= 0.9
+</code></pre><p>or using a <a class="doc" href="../../Public/comprehensions1/index.html" target="CS263_Public">list comprehension</a>…</p>
+    <pre><code class="python">    prices = [1.00, 2.95, 8.40, 3.50, 3.30, 16.91]
+    prices = [0.9 * price for price in prices]
+
+    print(prices)
+</code></pre><a id="numpybroadcasting"/><h1 id="numpy-broadcasting">3 NumPy Broadcasting</h1><p>NumPy’s broadcasting mechanic allows us to write a simple <code>prices *= 0.9</code>.</p>
+    <pre><code class="python">    prices = np.array([1.00, 2.95, 8.40, 3.50, 3.30, 16.91])
+    prices *= 0.9
+
+    print(prices)
+
+    print()
+    print("*" * 80)
+    print()
+</code></pre><p>The obvious benefit is less typing. The more important one is optimization. NumPy’s core is implemented in C. The official NumPy Documentation provides a succinct overview in its <a href="https://numpy.org/doc/stable/user/whatisnumpy.html#why-is-numpy-fast">Why is NumPy Fast?</a> section. </p>
+    <a id="benchmarksperformance"/><h1 id="benchmarks-performance">4 Benchmarks &amp; Performance</h1><p>How much faster is NumPy? Let us run a quick using <a href="https://github.com/cstkennedy/cs263-examples//blob/main/Module-11/benchmark_broadcasting.py" target="_blank">benchmark_broadcasting.py</a>.</p>
+    <pre><code class="python">    num_values = 1000000
+    num_runs = 100
+
+    def op_wrapper_py():
+        prices = range(1, num_values, 1)
+        prices = [0.9 * price for price in prices]
+
+    py_list = timeit.timeit(op_wrapper_py, number=num_runs)
+
+    def op_wrapper_np():
+        prices = np.arange(0, num_values, 1, dtype=np.float64)
+        prices[:] *= 0.9
+
+    np_array = timeit.timeit(op_wrapper_np, number=num_runs)
+
+    print(f"Python Time: {py_list:.4f}")
+    print(f"NumPy Time : {np_array:.4f}")
+</code></pre><p>On a Core i7-6700k… For 1 million numbers, run 100 times… The NumPy code is a little over 10 times faster than the pure Python code.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left"> </th>
+      <th align="right">Time (sec) </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Python </td>
+      <td align="right">5.1248 </td>
+    </tr>
+    <tr>
+      <td align="left">NumPy </td>
+      <td align="right">0.3168 </td>
+    </tr>
+  </tbody>
+</table></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20-%20Broadcasting"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>
