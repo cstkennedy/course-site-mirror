@@ -1,0 +1,897 @@
+<?xml version="1.0" standalone="no"?>
+
+<svg 
+     version="1.1"
+     baseProfile="full"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:ev="http://www.w3.org/2001/xml-events"
+     x="0px"
+     y="0px"
+     width="849px"
+     height="1152px"
+     viewBox="0 0 849 1152"
+     >
+<title></title>
+<desc>Creator: Quick Sequence Diagram Editor Producer: org.freehep.graphicsio.svg.SVGGraphics2D Revision Source:  Date: Monday, November 26, 2018 6:22:45 PM EST</desc>
+<g stroke-linejoin="miter" stroke-dashoffset="0" stroke-dasharray="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="square">
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffff">
+  <path d="M 0 0 L 849 0 L 849 1152 L 0 1152 L 0 0 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 66.5 67.5 L 66.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 66.5 67.5 L 66.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 62 77 L 70 77 L 70 1144 L 62 1144 L 62 77 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 62.5 77.5 L 70.5 77.5 L 70.5 1144.5 L 62.5 1144.5 L 62.5 77.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 243.5 102.5 L 243.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 243.5 102.5 L 243.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 131 L 247 131 L 247 149 L 239 149 L 239 131 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 131.5 L 247.5 131.5 L 247.5 149.5 L 239.5 149.5 L 239.5 131.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 509 L 247 509 L 247 527 L 239 527 L 239 509 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 509.5 L 247.5 509.5 L 247.5 527.5 L 239.5 527.5 L 239.5 509.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 585 L 247 585 L 247 603 L 239 603 L 239 585 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 585.5 L 247.5 585.5 L 247.5 603.5 L 239.5 603.5 L 239.5 585.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 661 L 247 661 L 247 679 L 239 679 L 239 661 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 661.5 L 247.5 661.5 L 247.5 679.5 L 239.5 679.5 L 239.5 661.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 737 L 247 737 L 247 755 L 239 755 L 239 737 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 737.5 L 247.5 737.5 L 247.5 755.5 L 239.5 755.5 L 239.5 737.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 813 L 247 813 L 247 831 L 239 831 L 239 813 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 813.5 L 247.5 813.5 L 247.5 831.5 L 239.5 831.5 L 239.5 813.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 889 L 247 889 L 247 907 L 239 907 L 239 889 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 889.5 L 247.5 889.5 L 247.5 907.5 L 239.5 907.5 L 239.5 889.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 239 965 L 247 965 L 247 983 L 239 983 L 239 965 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 239.5 965.5 L 247.5 965.5 L 247.5 983.5 L 239.5 983.5 L 239.5 965.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 355.5 174.5 L 355.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 355.5 174.5 L 355.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 351 203 L 359 203 L 359 221 L 351 221 L 351 203 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 351.5 203.5 L 359.5 203.5 L 359.5 221.5 L 351.5 221.5 L 351.5 203.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 351 241 L 359 241 L 359 335 L 351 335 L 351 241 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 351.5 241.5 L 359.5 241.5 L 359.5 335.5 L 351.5 335.5 L 351.5 241.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 351 1003 L 359 1003 L 359 1068 L 351 1068 L 351 1003 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 351.5 1003.5 L 359.5 1003.5 L 359.5 1068.5 L 351.5 1068.5 L 351.5 1003.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 359 1025 L 365 1025 L 365 1035 L 359 1035 L 359 1025 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 359.5 1025.5 L 365.5 1025.5 L 365.5 1035.5 L 359.5 1035.5 L 359.5 1025.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 551.5 67.5 L 551.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 551.5 67.5 L 551.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 547 261 L 555 261 L 555 279 L 547 279 L 547 261 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 547.5 261.5 L 555.5 261.5 L 555.5 279.5 L 547.5 279.5 L 547.5 261.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 547 433 L 555 433 L 555 451 L 547 451 L 547 433 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 547.5 433.5 L 555.5 433.5 L 555.5 451.5 L 547.5 451.5 L 547.5 433.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 547 547 L 555 547 L 555 565 L 547 565 L 547 547 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 547.5 547.5 L 555.5 547.5 L 555.5 565.5 L 547.5 565.5 L 547.5 547.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 547 699 L 555 699 L 555 717 L 547 717 L 547 699 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 547.5 699.5 L 555.5 699.5 L 555.5 717.5 L 547.5 717.5 L 547.5 699.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 547 851 L 555 851 L 555 869 L 547 869 L 547 851 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 547.5 851.5 L 555.5 851.5 L 555.5 869.5 L 547.5 869.5 L 547.5 851.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 663.5 67.5 L 663.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 663.5 67.5 L 663.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 299 L 667 299 L 667 317 L 659 317 L 659 299 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 299.5 L 667.5 299.5 L 667.5 317.5 L 659.5 317.5 L 659.5 299.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 375 L 667 375 L 667 393 L 659 393 L 659 375 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 375.5 L 667.5 375.5 L 667.5 393.5 L 659.5 393.5 L 659.5 375.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 471 L 667 471 L 667 489 L 659 489 L 659 471 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 471.5 L 667.5 471.5 L 667.5 489.5 L 659.5 489.5 L 659.5 471.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 623 L 667 623 L 667 641 L 659 641 L 659 623 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 623.5 L 667.5 623.5 L 667.5 641.5 L 659.5 641.5 L 659.5 623.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 775 L 667 775 L 667 793 L 659 793 L 659 775 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 775.5 L 667.5 775.5 L 667.5 793.5 L 659.5 793.5 L 659.5 775.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 659 927 L 667 927 L 667 945 L 659 945 L 659 927 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 659.5 927.5 L 667.5 927.5 L 667.5 945.5 L 659.5 945.5 L 659.5 927.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 775.5 67.5 L 775.5 1144.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="1,2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 775.5 67.5 L 775.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 771 1088 L 779 1088 L 779 1106 L 771 1106 L 771 1088 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 771.5 1088.5 L 779.5 1088.5 L 779.5 1106.5 L 771.5 1106.5 L 771.5 1088.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#eeeeee">
+  <path d="M 771 1126 L 779 1126 L 779 1144 L 771 1144 L 771 1126 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 771.5 1126.5 L 779.5 1126.5 L 779.5 1144.5 L 771.5 1144.5 L 771.5 1126.5 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip1">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip1)">
+<g transform="matrix(1, 0, 0, 1, 76, 468)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip1 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 471.5 L 659.5 471.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 471 L 653 465 L 653 477 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip2">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip2)">
+<g transform="matrix(1, 0, 0, 1, 76, 582)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(1, tom.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip2 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 585.5 L 239.5 585.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 585 L 233 579 L 233 591 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip3">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip3)">
+<g transform="matrix(1, 0, 0, 1, 76, 372)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setSymbol('X')</text>
+</g> <!-- transform -->
+</g> <!-- clip3 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 375.5 L 659.5 375.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 375 L 653 369 L 653 381 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip4">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip4)">
+<g transform="matrix(1, 0, 0, 1, 76, 658)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(3, jay.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip4 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 661.5 L 239.5 661.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 661 L 233 655 L 233 667 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip5">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip5)">
+<g transform="matrix(1, 0, 0, 1, 76, 1000)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">checkforWin(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip5 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 1003.5 L 351.5 1003.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 351 1003 L 345 997 L 345 1009 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip6">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip6)">
+<g transform="matrix(1, 0, 0, 1, 76, 98)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">new()</text>
+</g> <!-- transform -->
+</g> <!-- clip6 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 101.5 L 192.5 101.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 192 101 L 186 95 L 186 107 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 679.5 L 70.5 679.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 679 L 76 673 L 76 685 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip7">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip7)">
+<g transform="matrix(1, 0, 0, 1, 76, 170)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">new()</text>
+</g> <!-- transform -->
+</g> <!-- clip7 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 173.5 L 304.5 173.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 304 173 L 298 167 L 298 179 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip8">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip8)">
+<g transform="matrix(1, 0, 0, 1, 76, 886)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(9, tom.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip8 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 889.5 L 239.5 889.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 889 L 233 883 L 233 895 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip9">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip9)">
+<g transform="matrix(1, 0, 0, 1, 76, 506)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(5, jay.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip9 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 509.5 L 239.5 509.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 509 L 233 503 L 233 515 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip10">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip10)">
+<g transform="matrix(1, 0, 0, 1, 76, 962)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(8, jay.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip10 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 965.5 L 239.5 965.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 965 L 233 959 L 233 971 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 907.5 L 70.5 907.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 907 L 76 901 L 76 913 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip11">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip11)">
+<g transform="matrix(1, 0, 0, 1, 76, 696)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip11 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 699.5 L 547.5 699.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 547 699 L 541 693 L 541 705 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip12">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip12)">
+<g transform="matrix(1, 0, 0, 1, 76, 430)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setSymbol('O')</text>
+</g> <!-- transform -->
+</g> <!-- clip12 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 433.5 L 547.5 433.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 547 433 L 541 427 L 541 439 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip13">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip13)">
+<g transform="matrix(1, 0, 0, 1, 76, 620)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip13 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 623.5 L 659.5 623.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 623 L 653 617 L 653 629 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip14">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip14)">
+<g transform="matrix(1, 0, 0, 1, 76, 734)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(7, tom.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip14 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 737.5 L 239.5 737.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 737 L 233 731 L 233 743 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip15">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip15)">
+<g transform="matrix(1, 0, 0, 1, 76, 410)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setPlayer2(tom)?</text>
+</g> <!-- transform -->
+</g> <!-- clip15 -->
+<clipPath id="clip16">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip16)">
+<g transform="matrix(1, 0, 0, 1, 76, 544)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip16 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 547.5 L 547.5 547.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 547 547 L 541 541 L 541 553 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip17">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip17)">
+<g transform="matrix(1, 0, 0, 1, 76, 848)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip17 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 851.5 L 547.5 851.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 547 851 L 541 845 L 541 857 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 603.5 L 70.5 603.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 603 L 76 597 L 76 609 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 755.5 L 70.5 755.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 755 L 76 749 L 76 761 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip18">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip18)">
+<g transform="matrix(1, 0, 0, 1, 76, 1123)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">recordMatch(jay, tom)</text>
+</g> <!-- transform -->
+</g> <!-- clip18 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 1126.5 L 771.5 1126.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 771 1126 L 765 1120 L 765 1132 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 149.5 L 70.5 149.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 149 L 76 143 L 76 155 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 527.5 L 70.5 527.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 527 L 76 521 L 76 533 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 831.5 L 70.5 831.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 831 L 76 825 L 76 837 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip19">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip19)">
+<g transform="matrix(1, 0, 0, 1, 76, 352)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setPlayer1(jay)?</text>
+</g> <!-- transform -->
+</g> <!-- clip19 -->
+<clipPath id="clip20">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip20)">
+<g transform="matrix(1, 0, 0, 1, 76, 924)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip20 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 927.5 L 659.5 927.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 927 L 653 921 L 653 933 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip21">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip21)">
+<g transform="matrix(1, 0, 0, 1, 76, 1085)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">awardPoint(jay)</text>
+</g> <!-- transform -->
+</g> <!-- clip21 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 1088.5 L 771.5 1088.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 771 1088 L 765 1082 L 765 1094 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip22">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip22)">
+<g transform="matrix(1, 0, 0, 1, 76, 810)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">setCell(4, jay.getSymbol())</text>
+</g> <!-- transform -->
+</g> <!-- clip22 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 813.5 L 239.5 813.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 239 813 L 233 807 L 233 819 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip23">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip23)">
+<g transform="matrix(1, 0, 0, 1, 76, 238)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">flipCoin()</text>
+</g> <!-- transform -->
+</g> <!-- clip23 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 241.5 L 351.5 241.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 351 241 L 345 235 L 345 247 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip24">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip24)">
+<g transform="matrix(1, 0, 0, 1, 76, 772)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">nextMove(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip24 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 70.5 775.5 L 659.5 775.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 775 L 653 769 L 653 781 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 239.5 983.5 L 70.5 983.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 983 L 76 977 L 76 989 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 351.5 335.5 L 70.5 335.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 335 L 76 329 L 76 341 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip25">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip25)">
+<g transform="matrix(1, 0, 0, 1, 309, 1065)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">winner</text>
+</g> <!-- transform -->
+</g> <!-- clip25 -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 351.5 1068.5 L 70.5 1068.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 1068 L 76 1062 L 76 1074 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 351.5 221.5 L 70.5 221.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 221 L 76 215 L 76 227 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 547.5 565.5 L 70.5 565.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 565 L 76 559 L 76 571 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip26">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip26)">
+<g transform="matrix(1, 0, 0, 1, 386, 1025)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">recognizeHorizontalWin(...)</text>
+</g> <!-- transform -->
+</g> <!-- clip26 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 359.5 1010.5 L 380.5 1010.5 L 380.5 1025.5 L 365.5 1025.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 365 1025 L 371 1019 L 371 1031 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 547.5 451.5 L 70.5 451.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 451 L 76 445 L 76 457 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip27">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip27)">
+<g transform="matrix(1, 0, 0, 1, 365, 258)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">choose()</text>
+</g> <!-- transform -->
+</g> <!-- clip27 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 359.5 261.5 L 547.5 261.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 547 261 L 541 255 L 541 267 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 365.5 1035.5 L 380.5 1035.5 L 380.5 1050.5 L 359.5 1050.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 359 1050 L 365 1044 L 365 1056 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip28">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip28)">
+<g transform="matrix(1, 0, 0, 1, 483, 276)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">tomChoice</text>
+</g> <!-- transform -->
+</g> <!-- clip28 -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 547.5 279.5 L 359.5 279.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 359 279 L 365 273 L 365 285 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip29">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip29)">
+<g transform="matrix(1, 0, 0, 1, 365, 296)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">choose()</text>
+</g> <!-- transform -->
+</g> <!-- clip29 -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 359.5 299.5 L 659.5 299.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 659 299 L 653 293 L 653 305 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 547.5 717.5 L 70.5 717.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 717 L 76 711 L 76 723 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 547.5 869.5 L 70.5 869.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 869 L 76 863 L 76 875 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 489.5 L 70.5 489.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 489 L 76 483 L 76 495 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 393.5 L 70.5 393.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 393 L 76 387 L 76 399 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 945.5 L 70.5 945.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 945 L 76 939 L 76 951 z"/>
+</g> <!-- drawing style -->
+<clipPath id="clip30">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip30)">
+<g transform="matrix(1, 0, 0, 1, 600, 314)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">jayChoice</text>
+</g> <!-- transform -->
+</g> <!-- clip30 -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 317.5 L 359.5 317.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 359 317 L 365 311 L 365 323 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 793.5 L 70.5 793.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 793 L 76 787 L 76 799 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 659.5 641.5 L 70.5 641.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 641 L 76 635 L 76 647 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 771.5 1106.5 L 70.5 1106.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 1106 L 76 1100 L 76 1112 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-dasharray="5,5" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#1e1ec8">
+  <path d="M 771.5 1144.5 L 70.5 1144.5"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="evenodd" stroke="none" fill="#1e1ec8">
+  <path d="M 70 1144 L 76 1138 L 76 1150 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 15 28 L 117 28 L 117 63 L 15 63 L 15 28 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 15.5 28.5 L 117.5 28.5 L 117.5 63.5 L 15.5 63.5 L 15.5 28.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 47 30 L 84 30 L 84 47 L 47 47 L 47 30 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 48.5 47.5 L 85.5 47.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip31">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip31)">
+<g transform="matrix(1, 0, 0, 1, 48, 45)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">:Game</text>
+</g> <!-- transform -->
+</g> <!-- clip31 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 192 83 L 294 83 L 294 118 L 192 118 L 192 83 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 192.5 83.5 L 294.5 83.5 L 294.5 118.5 L 192.5 118.5 L 192.5 83.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 224 85 L 260 85 L 260 102 L 224 102 L 224 85 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 225.5 102.5 L 261.5 102.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip32">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip32)">
+<g transform="matrix(1, 0, 0, 1, 225, 100)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">:Board</text>
+</g> <!-- transform -->
+</g> <!-- clip32 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 304 155 L 406 155 L 406 190 L 304 190 L 304 155 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 304.5 155.5 L 406.5 155.5 L 406.5 190.5 L 304.5 190.5 L 304.5 155.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 331 157 L 378 157 L 378 174 L 331 174 L 331 157 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 332.5 174.5 L 379.5 174.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip33">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip33)">
+<g transform="matrix(1, 0, 0, 1, 332, 172)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">:Referee</text>
+</g> <!-- transform -->
+</g> <!-- clip33 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 500 28 L 602 28 L 602 63 L 500 63 L 500 28 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 500.5 28.5 L 602.5 28.5 L 602.5 63.5 L 500.5 63.5 L 500.5 28.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 521 30 L 579 30 L 579 47 L 521 47 L 521 30 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 522.5 47.5 L 580.5 47.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip34">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip34)">
+<g transform="matrix(1, 0, 0, 1, 522, 45)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">tom:Player</text>
+</g> <!-- transform -->
+</g> <!-- clip34 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 612 28 L 714 28 L 714 63 L 612 63 L 612 28 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 612.5 28.5 L 714.5 28.5 L 714.5 63.5 L 612.5 63.5 L 612.5 28.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 636 30 L 689 30 L 689 47 L 636 47 L 636 30 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 637.5 47.5 L 689.5 47.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip35">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip35)">
+<g transform="matrix(1, 0, 0, 1, 637, 45)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">jay:Player</text>
+</g> <!-- transform -->
+</g> <!-- clip35 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 724 28 L 826 28 L 826 63 L 724 63 L 724 28 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 724.5 28.5 L 826.5 28.5 L 826.5 63.5 L 724.5 63.5 L 724.5 28.5 z"/>
+</g> <!-- drawing style -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffb4">
+  <path d="M 741 30 L 808 30 L 808 47 L 741 47 L 741 30 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 741.5 47.5 L 809.5 47.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip36">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip36)">
+<g transform="matrix(1, 0, 0, 1, 741, 45)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="normal" stroke="none" fill="#000000" font-size="12" x="0" y="0">:ScoreBoard</text>
+</g> <!-- transform -->
+</g> <!-- clip36 -->
+<g fill-opacity="1" fill-rule="nonzero" stroke="none" fill="#ffffdc">
+  <path d="M 5 5 L 117 5 L 117 23 L 5 23 L 5 5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#006400">
+  <path d="M 5.5 5.5 L 838.5 5.5 L 838.5 1148.5 L 5.5 1148.5 L 5.5 5.5 z"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 5.5 23.5 L 116.5 23.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 116.5 23.5 L 118.5 19.5"/>
+</g> <!-- drawing style -->
+<g stroke-linejoin="round" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="1" fill="none" stroke-opacity="1" stroke="#000000">
+  <path d="M 118.5 19.5 L 118.5 5.5"/>
+</g> <!-- drawing style -->
+<clipPath id="clip37">
+  <path d="M 0 0 L 0 1152 L 849 1152 L 849 0 z"/>
+</clipPath>
+<g clip-path="url(#clip37)">
+<g transform="matrix(1, 0, 0, 1, 8, 20)">
+<text fill-opacity="1" font-style="normal" font-family="Helvetica" font-weight="bold" stroke="none" fill="#000000" font-size="13" x="0" y="0">Play One Round  </text>
+</g> <!-- transform -->
+</g> <!-- clip37 -->
+</g> <!-- default stroke -->
+</svg> <!-- bounding box -->

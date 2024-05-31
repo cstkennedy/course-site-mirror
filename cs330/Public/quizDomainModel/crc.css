@@ -1,0 +1,15 @@
+div.crc {background: #ddaa33; display: inline-block; margin-left: 1ex; margin-right: 1ex; max-width: 33%}
+
+div.crcdeck {background: #ddaa33; display: inline-block; margin-left: 1ex; margin-right: 1ex; max-width: 33%; box-shadow: 1ex 1ex 0.5ex #888888; border-bottom: groove 0.5ex #997711; border-right: groove 0.5ex #997711;}
+
+span.noun {text-style: italic; color: #9f0000;}
+span.verb {text-decoration: underline; color: #009f00;}
+
+span.strike {text-decoration: line-through;}
+
+div.crc>table {margin-left: 0ex; margin-right: 0ex; font-size: 90%;}
+
+div.crcdeck>table {margin-left: 0ex; margin-right: 0ex; font-size: 90%;}
+
+
+table.umlClass {background: #ccffff; display: inline-block; margin-left: 1ex; margin-right: 1ex; max-width: 45%}

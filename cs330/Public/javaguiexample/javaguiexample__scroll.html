@@ -1,0 +1,1167 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Example: Building a Java GUI</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Building%20a%20Java%20GUI"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Example: Building a Java GUI</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Dec 19, 2017</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#build-1-the-manual-build">1 Build 1: The “manual” build</a></div><div class="toc-h2"><a href="#develop-the-model">1.1 Develop the Model</a></div><div class="toc-h2"><a href="#develop-the-layout-of-those-elements">1.2 Develop the layout of those elements</a></div><div class="toc-h2"><a href="#add-listeners-to-the-elements">1.3 Add listeners to the elements</a></div><div class="toc-h2"><a href="#implement-custom-drawing">1.4 Implement custom drawing</a></div><div class="toc-h1"><a href="#build-2-an-assisted-build-with-windowbuilder">2 Build 2: An “assisted” build with WindowBuilder</a></div><div class="toc-h2"><a href="#setting-up-the-model">2.1 Setting Up the Model</a></div><div class="toc-h2"><a href="#develop-the-layout-of-the-elements">2.2 Develop the layout of the elements</a></div><div class="toc-h2"><a href="#implement-behaviors-and-custom-drawing">2.3 Implement behaviors and custom drawing</a></div></div><p><strong>The StringArt Program</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="stringArt.png" style="float: right; max-width: 50%;"/><br/>To illustrate Java event handling, we’ll look at a simple, but  typical GUI interface to a graphic application</p>
+    <ul>
+  <li>
+    <span class="file">StringArt.java</span>
+    <ul>
+      <li><a href="StringArt/StringArt.jar">Compiled version</a> of this program.</li>
+    </ul>
+  </li>
+</ul><a id="build1themanualbuild"/><h1 id="build-1-the-manual-build">1 Build 1: The “manual” build</h1><p>We’ll actually build this program twice. First, we’ll do it “manually” as a step-by-step process using ordinary Java editing tools. Then we’ll do a second “assisted” build using <code>WindowBuilder</code>, a GUI design tool that comes with Eclipse.</p>
+    <p>First, a reminder of the process that we need to follow:</p>
+    <p><strong>The Process</strong></p>
+    <ol>
+  <li>Develop the model</li>
+  <li>Select the GUI elements to portray the model</li>
+  <li>Develop the layout of those elements</li>
+  <li>Add listeners to the elements</li>
+  <li>Implement custom drawing</li>
+</ol><a id="developthemodel"/><h2 id="develop-the-model">1.1 Develop the Model</h2><p>The <span class="firstterm">model</span> is the underlying data that is being manipulated and portrayed by the program.</p>
+    <ul>
+  <li>In this example, we need enough info to arrange the “strings” of various colors at appropriate steps around the circle.</li>
+</ul><pre><code class="java">// The Model
+  private Color[] colors;
+  private int stepSize = 5;
+
+</code></pre><ul>
+  <li>The array will hold two colors.</li>
+</ul><hr/><p><strong>Select the GUI elements to portray the model</strong></p>
+    <ul>
+  <li>
+    <p>The core elements we will need:</p>
+    
+    <ul>
+      <li>a “canvas” on which to draw the graphics
+        <ul>
+          <li>This is generally done with a <span class="type">JPanel</span></li>
+        </ul>
+      </li>
+      <li>A text entry box (<span class="type">JTextField</span>) in which to enter the step size</li>
+      <li>Two buttons (<span class="type">JButton</span>) to activate the color choices</li>
+    </ul>
+  </li>
+  <li>
+    <p>How do we choose these?</p>
+    
+    <ul>
+      <li>It helps to know what’s <a href="http://docs.oracle.com/javase/tutorial/uiswing/components/componentlist.html">available</a>.</li>
+    </ul>
+  </li>
+</ul><a id="developthelayoutofthoseelements"/><h2 id="develop-the-layout-of-those-elements">1.2 Develop the layout of those elements</h2><p>There are two common approaches to laying out GUIs</p>
+    <ul>
+  <li>
+    <p>Manual arrangement using a program similar to a graphics editor (Visio, Dia, etc.) but with GUI elements as the building blocks</p>
+    
+    <ul>
+      <li>Easy &amp; quick</li>
+      <li>Resulting layouts are often inflexible
+        <ul>
+          <li>Respond badly to window’s being resized</li>
+          <li>Or to being displayed on smaller screens, different operating systems, window managers, etc.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Programmed arrangement</p>
+    
+    <ul>
+      <li>Takes more effort
+        <ul>
+          <li>Though not much more given the need to program behaviors of the elements</li>
+        </ul>
+      </li>
+      <li>Code can implement policies for resizing</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Programmed Approach in Java</strong></p>
+    <p>Uses a combination of</p>
+    <ul>
+  <li>
+  <p>Container/nesting relationships</p>
+    </li>
+  <li>
+  <p>Layout managers</p>
+    </li>
+</ul><hr/><p><strong>GUI Container Elements</strong></p>
+    <ul>
+  <li>Some GUI elements are containers that hold other elements
+    <ul>
+      <li>The size and position of the container constrains the possible  positions of the elements within it</li>
+      <li>Internal positioning is controlled by a layout manager.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>GUI Elements in StringArt</strong></p>
+    <ul>
+  <li>
+    <p>The outermost container is a window (<span class="type">JFrame</span>)</p>
+    
+    <ul>
+      <li>This is a container.</li>
+      <li>Specifically, it contains a “content pane”</li>
+      <li>We add elements to the content pane</li>
+    </ul>
+  </li>
+  <li>
+    <p>The window’s content pane will contain</p>
+    
+    <ul>
+      <li>Our drawing canvas (<span class="type">JPanel</span>) and, beneath that,</li>
+      <li>A control panel (<span class="type">JPanel</span>)</li>
+    </ul>
+  </li>
+  <li>
+    <p>The control panel will contain</p>
+    
+    <ul>
+      <li>The two buttons for choosing colors</li>
+      <li>the test extry box for the step size</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Structural Summary</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="guiStructure.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Where Did the Control Panel Come From?</strong></p>
+    <ul>
+  <li>
+    <p>Java has a handful of rules for easily arranging elements</p>
+    
+    <ul>
+      <li>horizontal rows</li>
+      <li>vertical columns</li>
+      <li>grids</li>
+      <li>arranged around a center, etc.</li>
+    </ul>
+  </li>
+  <li>
+    <p>It’s easiest to break a desired arrangement down into a combination of these</p>
+    
+    <ul>
+      <li>e.g., horizontal row within the control panel, and vertical within the window</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Programming the Containment</strong></p>
+    <p>GUI container elements are handled much like utility containers</p>
+    <div class="details"><span class="summary"><a href="containment.java" target="listing">containment.java</a></span> <input id="but_details_d6e288" onclick="toggleDisplay('_details_d6e288')" type="button" value="+"/><div class="detailPart" id="_details_d6e288"><pre><code id="_details_d6e288_code">  public void createAndShowGUI() {
+      window = new JFrame();       &#x2780;
+         //...
+      canvas = new JPanel () {     &#x2781;
+	      //...
+          }
+      };
+    canvas.setBackground(Color.white);
+    window.getContentPane().add (canvas, BorderLayout.CENTER);  &#x2782;
+    canvas.setPreferredSize(new Dimension(400, 400));
+    
+    JPanel controls = new JPanel();                             &#x2783;
+    
+    colorChooser1 = new JButton("Color 1");                     &#x2784;
+    controls.add (colorChooser1);
+      //...
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+      //...
+    stepSizeIn = new JTextField (""+stepSize, 5);
+    controls.add (stepSizeIn);
+      //...
+    window.getContentPane().add (controls, BorderLayout.SOUTH);  &#x2785;
+      //...
+    window.pack();                                               &#x2786;
+    window.setVisible(true);
+  }
+</code></pre></div></div><ul>
+  <li>
+  <p><span>➀</span> Create the window</p>
+    </li>
+  <li>
+  <p><span>➁</span> Create the canvas</p>
+    </li>
+  <li>
+  <p><span>➂</span> Add the canvas to the window’s content pane</p>
+    </li>
+  <li>
+  <p><span>➃</span> Create the control panel</p>
+    </li>
+  <li>
+  <p><span>➄</span> Create the buttons and text field and add to the control panel</p>
+    </li>
+  <li>
+  <p><span>➅</span> Add the control panel to the window’s content pane</p>
+    </li>
+  <li>
+  <p><span>➆</span> Arrange the components of the GUI and display the window.</p>
+    </li>
+</ul><hr/><p><strong>Laying out the components</strong></p>
+    <p>Java has several <a href="http://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html">layout managers</a>.</p>
+    <ul>
+  <li>
+  <p>These give us several options for how to arrange our components</p>
+    </li>
+  <li>
+  <p>Need to choose one for each container</p>
+    </li>
+  <li>
+    <p>For the control panel, we want a horizontal row</p>
+    
+    <ul>
+      <li><span class="type">FlowLayout</span>, <span class="type">BoxLayout</span>, or <span class="type">BorderLayout</span> would work</li>
+      <li><span class="type">FlowLayout</span> is already the default for <span class="type">JPanel</span>s, so it’s easiest to stick with that</li>
+    </ul>
+  </li>
+  <li>
+    <p>For the window’s content pane, we want a vertical row</p>
+    
+    <ul>
+      <li><span class="type">BoxLayout</span> or <span class="type">BorderLayout</span> would work</li>
+      <li>I chose <span class="type">BorderLayout</span></li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Using Border Layout</strong></p>
+    <pre><code class="java">  public void createAndShowGUI() {
+      window = new JFrame();
+      // set up the components
+      window.getContentPane().setLayout (
+            new BorderLayout());
+    
+      canvas = new JPanel () {
+          &#x22ee;
+          }
+      };
+      &#x22ee;
+    window.getContentPane().add (canvas, 
+             BorderLayout.CENTER);
+    
+    JPanel controls = new JPanel();
+      &#x22ee;
+    window.getContentPane().add (controls, 
+              BorderLayout.SOUTH);
+      &#x22ee;
+
+</code></pre><hr/><p><strong>Miscellaneous Appearance Code</strong></p>
+    <div class="details"><span class="summary"><a href="appearance.java" target="listing">appearance.java</a></span> <input id="but_details_d6e411" onclick="toggleDisplay('_details_d6e411')" type="button" value="+"/><div class="detailPart" id="_details_d6e411"><pre><code id="_details_d6e411_code">  public void createAndShowGUI() {
+      window = new JFrame();
+      // set up the components
+      window.getContentPane().setLayout (new BorderLayout());
+    
+      canvas = new JPanel () {
+	      //...
+          }
+      };
+    <span class='hli'>canvas.setBackground(Color.white);</span>
+    window.getContentPane().add (canvas, BorderLayout.CENTER);
+<span class='hli'>canvas.setPreferredSize(new Dimension(400, 400));</span>  &#x2780;
+    
+    JPanel controls = new JPanel();
+    
+    colorChooser1 = new JButton("Color 1");
+    controls.add (colorChooser1);
+    <span class='hli'>setColor(colorChooser1, colors[0]);</span>
+    colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+    
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+    <span class='hli'>setColor(colorChooser2, colors[1]);</span>
+    colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+    
+    stepSizeIn = new JTextField (""+stepSize, 5);
+    controls.add (stepSizeIn);
+    stepSizeIn.addActionListener (new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e) {
+          try {
+            Integer newSize = new Integer(stepSizeIn.getText());
+            stepSize = newSize.intValue();
+            canvas.repaint();
+          } catch (Exception ex) {};
+        }
+      });
+
+    window.getContentPane().add (controls, BorderLayout.SOUTH);
+    
+    window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+    
+    window.pack();
+    window.setVisible(true);
+  }
+
+  /**
+   * Sets the background color of a button to the indicated color.
+   * Changes the foreground to wither black or white, depending on
+   * which will give more contrast agasint the new background.
+   * 
+   * @param button
+   * @param color
+   */
+  private void setColor(JButton button, Color color) {   &#x2781;
+    <span class='hli'>button.setBackground(color);</span>
+    int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+    if (brightness &gt; 3*255/2) {
+        // This is a fairly bright color. Use black lettering
+        <span class='hli'>button.setForeground (Color.black);</span>
+    } else {
+        // This is a fairly dark color. Use white lettering
+        <span class='hli'>button.setForeground (Color.white);</span>
+    }
+}
+</code></pre></div></div><p>Most of the highlighted code is self-explanatory</p>
+    <ul>
+  <li>
+  <p><span>➀</span> The canvas, a panel with no internal components, has no “natural” size and tends to shrink to \( 0\times 0 \) if we aren’t careful</p>
+    </li>
+  <li>
+  <p><span>➁</span> This utility function sets the background color of a button to  match the color that it selects, and makes sure that the foreground  color of the text is visible in contrast.</p>
+    </li>
+</ul><a id="addlistenerstotheelements"/><h2 id="add-listeners-to-the-elements">1.3 Add listeners to the elements</h2><p>We need to implement some behaviors</p>
+    <ul>
+  <li>
+  <p>Closing the window shuts down the program</p>
+    </li>
+  <li>
+  <p>Entering a number in the text box changes the step size in the model</p>
+    </li>
+  <li>
+  <p>Clicking a color button pops up a color selection dialog and updates the model</p>
+    </li>
+</ul><hr/><p><strong>Closing the Window</strong></p>
+    <p>Here we use a shorthand technqiue rather than create a full-fledged functor to listen:</p>
+    <pre><code class="java">public void createAndShowGUI() {
+    window = new JFrame();
+       &#x22ee;
+  window.setDefaultCloseOperation(
+    (startedInAnApplet)
+        ? JFrame.DISPOSE_ON_CLOSE 
+        : JFrame.EXIT_ON_CLOSE);
+       &#x22ee;
+}
+
+</code></pre><hr/><p><strong>Entering the Step Size</strong></p>
+    <p>This is handled by an <span class="type">ActionListener</span>, which is triggered when we hit Enter/Return with the cursor positioned in the text box.</p>
+    <pre><code class="java"> stepSizeIn = new JTextField (""+stepSize, 5);
+ controls.add (stepSizeIn);
+ stepSizeIn.addActionListener (new ActionListener()
+   {
+     public void actionPerformed(ActionEvent e) {
+       try {
+         Integer newSize = new Integer(
+                       stepSizeIn.getText());
+         stepSize = newSize.intValue();
+            &#x22ee;
+       } catch (Exception ex) {};
+     }
+   });
+
+</code></pre><hr/><p><strong>Color Selection</strong></p>
+    <p>Buttons notify an <span class="type">ActionListener</span> when a button is clicked</p>
+    <pre><code class="java">    colorChooser1 = new JButton("Color 1");
+    controls.add (colorChooser1);
+    setColor(colorChooser1, colors[0]);
+    colorChooser1.addActionListener (
+        new ColorChooser(colorChooser1, 0));
+    
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+    setColor(colorChooser2, colors[1]);
+    colorChooser2.addActionListener (
+        new ColorChooser(colorChooser2, 1));
+
+</code></pre><p>We implement this with our own subclass of <span class="type">ActionListener</span>, <span class="type">ColorChooser</span>.</p>
+    <hr/><p><strong>ColorChooser</strong></p>
+    <div class="details"><span class="summary"><a href="colorchooser.java" target="listing">colorchooser.java</a></span> <input id="but_details_d6e487" onclick="toggleDisplay('_details_d6e487')" type="button" value="+"/><div class="detailPart" id="_details_d6e487"><pre><code id="_details_d6e487_code">  private class ColorChooser implements ActionListener {
+      private JButton button;          &#x2780;
+      private int colorNum;
+
+      public ColorChooser (JButton button, int colorNum) {
+          this.button = button;        &#x2781;
+          this.colorNum = colorNum;
+      }
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {   &#x2782;
+          Color chosen = JColorChooser.showDialog(window, "Choose a color", 
+                  colors[colorNum]);
+          if (chosen != null) {
+              colors[colorNum] = chosen;   &#x2783;
+              setColor (button, chosen);
+              canvas.repaint();
+          }
+      }
+  };
+</code></pre></div></div><ul>
+  <li>
+  <p><span>➀</span> Each <span class="type">ColorChooser</span> object will remember which button it is attached  to and which of the two colors it controls.</p>
+    </li>
+  <li>
+  <p><span>➁</span> That info is gathered and remembered in the constructor.</p>
+    </li>
+  <li>
+  <p><span>➂</span> Here is the function that we must provide if we are to implement <span class="type">ActionListener</span></p>
+    </li>
+</ul><p>The <span class="type">JColorChooser</span> invoked in the first line pops up the stnadard Java color selection box.</p>
+    <ul>
+  <li><span>➃</span> Once we have a selected color, we update the appropriate element of the model’s <span class="varname">colors</span> array, and also change the button’s coloring.</li>
+</ul><a id="implementcustomdrawing"/><h2 id="implement-custom-drawing">1.4 Implement custom drawing</h2><p>The proper moment for drawing GUI elements is a bit tricky. </p>
+    <p>Think of some of the various situations in which all or part of a window needs to be redrawn:</p>
+    <ul>
+  <li>
+  <p>The program concludes some kind of computation and needs to  display the results (i.e., a program state change).</p>
+    </li>
+  <li>
+  <p>We had previously clicked on the minimize/iconify control to  reduce the window to an icon, and now we click on the icon to open  it back up to a full window. </p>
+    </li>
+  <li>
+  <p>The window was completely or partially hidden beneath other  windows and we <code>Alt-tab</code> to bring it back up to the  top.</p>
+    </li>
+  <li>
+  <p>We drag another window or other item across the front of  window, continuously hiding and revealing different potions of the  window as we do so.</p>
+    </li>
+</ul><p>Any of these can force part or all of an application to need  redrawing. Some of these (state changes) are under direct program  control. Most are not.</p>
+    <hr/><p><strong>paint and repaint</strong></p>
+    <ul>
+  <li>
+  <p>Most GUI elements already take care of drawing  themselves.</p>
+    </li>
+  <li>
+    <p>For elements with customized appearance:</p>
+    
+    <ul>
+      <li>
+      <p>Programmer provides a <code>paint</code> function.</p>
+    </li>
+    </ul>
+  </li>
+</ul><pre><code class="java">    canvas = new JPanel () {
+        public void paint (Graphics g) {
+          super.paint(g);
+          drawLines (g, getSize());
+        }
+      };
+</code></pre><hr/><p><strong>Paint and Repaint</strong></p>
+    <ul>
+  <li>
+  <p>We never call <code>paint</code> directly</p>
+    </li>
+  <li>
+    <p>We call <code>repaint()</code> </p>
+    
+    <ul>
+      <li>That asks the system to schedule a call to <code>paint</code> for sometime  in the near future.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Repainting the StringArt Canvas</strong></p>
+    <div class="details"><span class="summary"><a href="repainting.java" target="listing">repainting.java</a></span> <input id="but_details_d6e614" onclick="toggleDisplay('_details_d6e614')" type="button" value="+"/><div class="detailPart" id="_details_d6e614"><pre><code id="_details_d6e614_code">  private class ColorChooser implements ActionListener {
+      private JButton button;
+      private int colorNum;
+
+      public ColorChooser (JButton button, int colorNum) {
+          this.button = button;
+          this.colorNum = colorNum;
+      }
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+          Color chosen = JColorChooser.showDialog(window, "Choose a color", colors[colorNum]);
+          if (chosen != null) {
+              colors[colorNum] = chosen;
+              setColor (button, chosen);
+              <span class='hli'>canvas.repaint();</span>
+          }
+      }
+  };
+
+
+  public void createAndShowGUI() {
+      window = new JFrame();
+      // set up the components
+      window.getContentPane().setLayout (new BorderLayout());
+    
+      canvas = new JPanel () {
+          public void paint (Graphics g) {
+              super.paint(g);
+              drawLines (g, getSize());
+          }
+      };
+    canvas.setBackground(Color.white);
+    window.getContentPane().add (canvas, BorderLayout.CENTER);
+    canvas.setPreferredSize(new Dimension(400, 400));
+    
+    JPanel controls = new JPanel();
+    
+    colorChooser1 = new JButton("Color 1");
+    controls.add (colorChooser1);
+    setColor(colorChooser1, colors[0]);
+    colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+    
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+    setColor(colorChooser2, colors[1]);
+    colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+    
+    stepSizeIn = new JTextField (""+stepSize, 5);
+    controls.add (stepSizeIn);
+    stepSizeIn.addActionListener (new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e) {
+          try {
+            Integer newSize = new Integer(stepSizeIn.getText());
+            stepSize = newSize.intValue();
+            <span class='hli'>canvas.repaint();</span>
+          } catch (Exception ex) {};
+        }
+      });
+
+    window.getContentPane().add (controls, BorderLayout.SOUTH);
+    
+    window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+    
+    window.pack();
+    window.setVisible(true);
+  }
+</code></pre></div></div><ul>
+  <li>We request a repaint of the canvas after any operation that could change its appearance.</li>
+</ul><hr/><p><strong>The Full Listing</strong></p>
+    <div class="details"><span class="summary"><a href="StringArt.java" target="listing">StringArt.java</a></span> <input id="but_details_d6e623" onclick="toggleDisplay('_details_d6e623')" type="button" value="+"/><div class="detailPart" id="_details_d6e623"><pre><code id="_details_d6e623_code">import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+/**
+ * A simple example of GUI event handling in a Java application.
+ * 
+ * This can be run as a main program or as an applet.
+ * 
+ * @author zeil
+ *
+ */
+
+
+public class StringArt extends JApplet {
+
+  private boolean startedInAnApplet;
+	
+// The Model
+  private Color[] colors;
+  private int stepSize = 5;
+  
+  // The View &amp; Controls
+  private JFrame window;
+  private JPanel canvas;
+  private JButton colorChooser1;
+  private JButton colorChooser2;
+  private JTextField stepSizeIn;
+  
+
+  private class ColorChooser implements ActionListener {
+      private JButton button;
+      private int colorNum;
+
+      public ColorChooser (JButton button, int colorNum) {
+          this.button = button;
+          this.colorNum = colorNum;
+      }
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+          Color chosen = JColorChooser.showDialog(window, "Choose a color", colors[colorNum]);
+          if (chosen != null) {
+              colors[colorNum] = chosen;
+              setColor (button, chosen);
+              canvas.repaint();
+          }
+      }
+  };
+
+  public StringArt()
+  {
+      startedInAnApplet = false;
+      window = null;
+      colors = new Color[2];
+      colors[0] = Color.red;
+      colors[1] = Color.blue;
+  }
+  
+  
+  public static void main (String[] args)
+  {
+      StringArt instance = new StringArt();
+      instance.createAndShowGUI();  
+  }
+  
+  public void createAndShowGUI() {
+      window = new JFrame();
+      // set up the components
+      window.getContentPane().setLayout (new BorderLayout());
+    
+      canvas = new JPanel () {
+          public void paint (Graphics g) {
+              super.paint(g);
+              drawLines (g, getSize());
+          }
+      };
+    canvas.setBackground(Color.white);
+    window.getContentPane().add (canvas, BorderLayout.CENTER);
+    canvas.setPreferredSize(new Dimension(400, 400));
+    
+    JPanel controls = new JPanel();
+    
+    colorChooser1 = new JButton("Color 1");
+    controls.add (colorChooser1);
+    setColor(colorChooser1, colors[0]);
+    colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+    
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+    setColor(colorChooser2, colors[1]);
+    colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+    
+    stepSizeIn = new JTextField (""+stepSize, 5);
+    controls.add (stepSizeIn);
+    stepSizeIn.addActionListener (new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e) {
+          try {
+            Integer newSize = new Integer(stepSizeIn.getText());
+            stepSize = newSize.intValue();
+            canvas.repaint();
+          } catch (Exception ex) {};
+        }
+      });
+
+    window.getContentPane().add (controls, BorderLayout.SOUTH);
+    
+    window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+    
+    window.pack();
+    window.setVisible(true);
+  }
+  
+  /**
+   * Sets the background color of a button to the indicated color.
+   * Changes the foreground to wither black or white, depending on
+   * which will give more contrast agasint the new background.
+   * 
+   * @param button
+   * @param color
+   */
+  private void setColor(JButton button, Color color) {
+    button.setBackground(color);
+    int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+    if (brightness &gt; 3*255/2) {
+        // This is a fairly bright color. Use black lettering
+        button.setForeground (Color.black);
+    } else {
+        // This is a fairly dark color. Use white lettering
+        button.setForeground (Color.white);
+    }
+}
+
+  // Applet functions
+  
+  public void init() {
+      startedInAnApplet = true;
+  }
+
+public void start() {
+    if (window == null)
+        createAndShowGUI();
+  }
+  
+  public void stop() {
+  }
+  
+  public void destroy() {
+  }
+  
+  
+  
+  
+  int interpolate (int x, int y, int i, int steps)
+  {
+    return (i * x + (steps-i)*y) / steps;
+  }
+  
+  
+  Color interpolate(Color c1, Color c2, int i, int steps)
+  {
+    return new Color (interpolate(c1.getRed(), c2.getRed(), i, steps),
+                      interpolate(c1.getGreen(), c2.getGreen(), i, steps),
+                      interpolate(c1.getBlue(), c2.getBlue(), i, steps));
+  }
+  
+
+  class Point {
+    double x;
+    double y;
+  }
+
+  Point ptOnCircle (int degrees, int radius, Point center) 
+  {
+    Point p = new Point();
+    double theta = Math.toRadians((double)degrees);
+    p.x = center.x + (double)radius * Math.cos(theta);
+    p.y = center.y + (double)radius * Math.sin(theta);
+    return p;
+  }
+
+  public void drawLines(Graphics g, Dimension d)
+  {
+    int dmin = (d.width &lt; d.height) ? d.width : d.height;
+    
+    if (stepSize &lt; 1)
+      stepSize = 1;
+
+    Point center = new Point();
+    center.x = (double)d.width/2.0;
+    center.y = (double)d.height/2.0;
+
+    for (int i = 0; i &lt; 60; ++i) {
+      Point origin = ptOnCircle(6*i, dmin/2, center);
+      int j = i + stepSize;
+      while (j &gt;= 60)
+        j -= 60;
+      while (i != j) {
+        Point destination = ptOnCircle(6*j, dmin/2, center);
+        g.setColor(interpolate(interpolate(colors[0], colors[1], i%30, 30),
+                               interpolate(colors[0], colors[1], j, 60),
+                               1, 2));
+        g.drawLine ((int)origin.x, (int)origin.y,
+                    (int)destination.x, (int)destination.y);
+        j += stepSize;
+        while (j &gt;= 60)
+          j -= 60;
+      }
+    }
+  }
+  
+  
+}
+</code></pre></div></div><a id="build2anassistedbuildwithwindowbuilder"/><h1 id="build-2-an-assisted-build-with-windowbuilder">2 Build 2: An “assisted” build with WindowBuilder</h1><p><div class="noFloat"> </div>
+    <img src="WindowBuilder.png" style="float: right; max-width: 75%;"/></p>
+    <p><code>WindowBuilder</code> is a GUI construction tool that is included in the more recent Java-based versions of Eclipse and can be added as an option to older versions.</p>
+    <p><code>WindowBuilder</code> lets you position your GUI elements visually and generates the corresponding source code. It can sometimes be applied to existing GUI code as well, depending upon how complicated the code is.</p>
+    <p><code>WindowBuilder</code> is <strong>not</strong> a replacement for understanding how the GUI elements work in Java, or for understanding the logic of layout managers. It provides only limited help for implementing behaviors – it can insert code skeletons in the appropriate place but you still need to fill those in with the implementation of the behaviors that you need.</p>
+    <p>Let’s look at how we could have used WindowBuilder to streamline the construction of the same string art program.</p>
+    <a id="settingupthemodel"/><h2 id="setting-up-the-model">2.1 Setting Up the Model</h2><p>We still start with the idea of a model containing the basic data about what we are drawing and interacting with. For this build, i will break the model out into a separate class, <code>StringArtModel</code>, shown here:</p>
+    <div class="details"><span class="summary"><a href="StringArtModel.java" target="listing">StringArtModel.java</a></span> <input id="but_details_d6e650" onclick="toggleDisplay('_details_d6e650')" type="button" value="+"/><div class="detailPart" id="_details_d6e650"><pre><code id="_details_d6e650_code">import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JButton;
+
+/**
+ * The core data and drawing algorithm for the CS330 string art program.
+ * 
+ * @author zeil
+ *
+ */
+public class StringArtModel {
+
+	/**
+	 * The two colors used in drawing the picture.
+	 * Lines are shaded gradually from colors[0]
+	 * to colors[1].
+	 */
+    private Color[] colors;    
+	
+	/**
+	 * Each of the 60 points around the circle will get
+	 * a line connecting it to the points k*stepSize away,
+	 * for all values of k (until we start to repeat
+	 * the same lines).
+	 */
+	private int stepSize = 5;    &#x2781;
+
+
+	/**
+	 * Create a new set of model data.
+	 */
+	public StringArtModel() {
+		colors = new Color[2];
+		colors[0] = Color.red;
+		colors[1] = Color.blue;
+	}
+
+	/**
+	 * Get the value of one of the colors.
+	 * @param colorNum an integer in the range 0..1
+	 * @return the requested color.
+	 */
+    public Color getColor(int colorNum) {     &#x2782;
+		return colors[colorNum];
+	}
+
+	/**
+	 * Change the value of one of the colors.
+	 * @param colorNum an integer in the range 0..1
+	 * @param color the desired color
+	 */
+	public void setColor(int colorNum, Color color) {  &#x2782;
+		colors[colorNum] = color;
+	}
+
+	/**
+	 * Get the current step size.  When drawLines is called,
+	 * each of the 60 points around the circle will get
+	 * a line connecting it to the points k*getStepSize() away,
+	 * for all values of k (until we start to repeat
+	 * the same lines).
+	 * 
+	 * @return the step size
+	 */
+	public int getStepSize() {     &#x2782;
+		return stepSize;
+	}
+
+	/**
+	 * Change the step size value.
+	 * @param newStepSize the desired step size
+	 */
+	public void setStepSize (int newStepSize) {    &#x2782;
+		stepSize = newStepSize;
+	}
+
+
+	/**
+	 * Compute the value that lies (i/n) of the way between x and y.
+	 * 
+	 * @param x any integer value
+	 * @param y any integer value
+	 * @param i an integer in the range 0..steps indicating how close to y we want to be
+	 * @param steps how many steps from x to y
+	 * @return an interpolated value between x and y
+	 */
+	private int interpolate (int x, int y, int i, int steps) {
+		return (i * x + (steps-i)*y) / steps;
+	}
+
+	/**
+	 * Compute a color that lies between c1 and c2.  This is the function
+	 * used  to "shade" lines between the two base colors.
+	 *  
+	 * @param c1 any color
+	 * @param c2 any colot
+	 * @param i an integer in the range 0..steps indicating how close to c2 we want to be
+	 * @param steps how many steps from c1 to c2
+	 * @return an interpolated value between c1 and c2
+	 * @return an interpolated color value.
+	 */
+
+	private Color interpolate(Color c1, Color c2, int i, int steps) {
+		return new Color (interpolate(c1.getRed(), c2.getRed(), i, steps),
+				interpolate(c1.getGreen(), c2.getGreen(), i, steps),
+				interpolate(c1.getBlue(), c2.getBlue(), i, steps));
+	}
+
+
+	/**
+	 * An (x,y) Cartesian coordinate.
+	 * @author zeil
+	 *
+	 */
+	private class Point {
+		public double x;
+		public double y;
+	}
+
+	/**
+	 * Get the coordinates of a point on a circle.
+	 * @param degrees The angle around the circle where we want the point.
+	 * @param radius  The radius of the circle.
+	 * @param center  The center of the circle.
+	 * @return  the coordinates of a point on the edge of the circle at the desired angle. 
+	 */
+	private Point ptOnCircle (int degrees, int radius, Point center) {
+		Point p = new Point();
+		double theta = Math.toRadians((double)degrees);
+		p.x = center.x + (double)radius * Math.cos(theta);
+		p.y = center.y + (double)radius * Math.sin(theta);
+		return p;
+	}
+
+	/**
+	 * Draw a series of lines connecting 60 points set around
+	 * a circle.
+	 * 
+	 * @param g the graphics device on which we are to drawn.
+	 * @param d the dimension (width and height) of the available
+	 *          drawing area.
+	 */
+    public void drawLines(Graphics g, Dimension d) {    &#x2783;
+		int dmin = (d.width &lt; d.height) ? d.width : d.height;
+
+		if (stepSize &lt; 1)
+			stepSize = 1;
+
+		Point center = new Point();
+		center.x = (double)d.width/2.0;
+		center.y = (double)d.height/2.0;
+
+		for (int i = 0; i &lt; 60; ++i) {
+			Point origin = ptOnCircle(6*i, dmin/2, center);
+			int j = i + stepSize;
+			while (j &gt;= 60)
+				j -= 60;
+			while (i != j) {
+				Point destination = ptOnCircle(6*j, dmin/2, center);
+				g.setColor(interpolate(interpolate(colors[0], colors[1], i%30, 30),
+						interpolate(colors[0], colors[1], j, 60),
+						1, 2));
+				g.drawLine ((int)origin.x, (int)origin.y,
+						(int)destination.x, (int)destination.y);
+				j += stepSize;
+				while (j &gt;= 60)
+					j -= 60;
+			}
+		}
+	}
+
+
+	/**
+	   * Sets the background color of a button to the indicated color.
+	   * Changes the foreground to either black or white, depending on
+	   * which will give more contrast against the new background.
+	   * 
+	   * @param button
+	   * @param color
+	   */
+	  public void setColor(JButton button, Color color) {  &#x2784;
+	    button.setBackground(color);
+	    int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+	    if (brightness &gt; 3*255/2) {
+	        // This is a fairly bright color. Use black lettering
+	        button.setForeground (Color.black);
+	    } else {
+	        // This is a fairly dark color. Use white lettering
+	        button.setForeground (Color.white);
+	    }
+	}
+}
+</code></pre></div></div><ul>
+  <li>
+    <p>As before, the primary data consists of a pair of colors <span>➀</span> , and  a step size <span>➁</span> .</p>
+    
+    <p>In accordance with our usual ADT practices, though, I have made these private data members and added public <code>get</code>… and <code>set</code>… functions <span>➂</span> to provide access to these attributes.</p>
+    
+  </li>
+  <li>
+  <p>This class also provides the <code>drawLines</code> function <span>➃</span> from our  former code, together with the various functions that it depends  upon.</p>
+    </li>
+  <li>
+  <p>I have also kept the function that sets the background color of  buttons <span>➄</span> , changing the text from black to white and back as  necessary to keep it visible against the changing background.</p>
+    </li>
+</ul><a id="developthelayoutoftheelements"/><h2 id="develop-the-layout-of-the-elements">2.2 Develop the layout of the elements</h2><p>Now we are ready to create a separate <code>StringArtGUI</code> class.</p>
+    <p><img src="../../Directory/outline/video.png"/> View <a href="https://youtu.be/vw_3Oe6e_Vc">recording</a>. </p>
+    <ol>
+  <li>
+  <p>Right-click on the package. Select <code>New</code>… <code>Other</code>… <code>WindowBuilder</code> =&gt;  <code>Swing Designer</code> =&gt; <code>Application Window</code>. Name this as <code>StringArtGUI</code>.</p>
+    </li>
+  <li>
+  <p>We can run this. It brings up an empty window. We want to fill  that window with the same kinds of elements that we used in our  manual example.</p>
+    </li>
+  <li>
+  <p>Click the Design tab at the bottom of the source pane.</p>
+    </li>
+  <li>
+  <p>See the image of our empty window. Click on the top bar. The  properties tab shows that we have a variable named “frame” of type  <code>Jframe</code>. Click on the source tab to ses several uses of the  variable name “frame”, including its initialization in the  <code>initialize()</code> function. Return to the Design window. Let’s rename  “frame” to “mainWindow”. Check the source and see that this change  has been carried out.</p>
+    </li>
+  <li>
+  <p>Click in the main area. It shows that we have a <code>Container</code> and  that it has already been assigned the layout manager  <code>BorderLayout</code>. If you remember, that is what we chose as our overall  layout in the manual design, so we are already one step ahead.  Let’s save the file.</p>
+    </li>
+  <li>
+  <p>In the central area of our window, we want a <code>JPanel</code> that will serve  as our drawing canvas. With the main <code>Container</code> still selected,  click on <code>JPanel</code> in the Palette. Move the cursor over our window’s  <code>Container</code> area, and you see the characteristic NSWE-Central  patterns of a <code>BorderLayout</code>. Click in the central area to deposit  our new panel there.</p>
+    </li>
+  <li>
+    <p>The Properties pane updates to describe out new panel. Change the  variable name to “canvas”. Now visit the source. You can see that  canvas is just a local variable in <code>initialize()</code>. We’re going to  need to allow access to that from a number of different functions,  so let’s change that to a data member.</p>
+    
+    <p>Highlight “canvas”. Right-click and select <code>Refactor</code>…<code>Convert
+   local variable to field</code>… Accept the defaults (private,  initialize in current method).</p>
+    
+  </li>
+  <li>
+  <p>Back to the design. The properties shows that our canvas has a grey background color (238,238,238). Click the small button to bring up a color selector. Change this to white. Save .</p>
+    </li>
+  <li>
+  <p>We want a panel on the south to contain our various controls. Select the container again (easiest to use the Components area). Click on <code>JPanel</code> in the Palette and place this panel in the South area. Let’s rename this variable to “controlPanel”. Save.</p>
+    </li>
+  <li>
+  <p>We can try running again. You can see a white main area with a thin grey (our controlpanel) beneath it.</p>
+    </li>
+  <li>
+  <p>Select the control panel. The layout is shown in the properties area as <code>FlowLayout</code>, which gives us a left-to-righ arrangement. That’s fine. Add two buttons labeled “Color1 “ and “Color 2” by selecting <code>JButton</code> from the palette and depositing them in the control panel, than changing the text property. Also, change the names to <code>colorButton1</code> and <code>colorButton2</code>. Save.</p>
+    </li>
+  <li>
+  <p>Next add a <code>JTextField</code> to the control panel to hold our step size. The default number of columns is 10. Let’s reduce that to 3. Fill in the initial text of 88. We’ll fix that later. Save and run.</p>
+    </li>
+</ol><p>We actually have all of our GUI elements in place at the moment, but we don’t have any behaviors set up yet.</p>
+    <a id="implementbehaviorsandcustomdrawing"/><h2 id="implement-behaviors-and-custom-drawing">2.3 Implement behaviors and custom drawing</h2><p><img src="../../Directory/outline/video.png"/> View <a href="https://youtu.be/Rtch_fU5B64">recording</a>.</p>
+    <ol>
+  <li>
+  <p>Most of the behaviors will need to work with the StringArtModel  info, so let’s get that set up. Return to the source. Add a data  member “art” of type <code>StringArtModel</code> and initialize it in the  <code>StringArtGUI</code> constructor. Save.</p>
+    </li>
+  <li>
+  <p>Search for the place where we put 88 into the GUI text field. Change this to use the initial value from the model. Save.</p>
+    </li>
+  <li>
+  <p>Similarly, we want to set the background colors of the buttons to reflect the model initial values. Easiest way to do that is to use the Design properties box to change the background color, then return to the source pane, find those color settign commands, and replace by calls to our own setColor function.</p>
+    </li>
+  <li>
+  <p>Now let’s get the canvas painting properly. We need to override the paint() function for our canvas (the inherited paint() simply fills in the background color). Here we go back to the source. Look at the initialization of canvas. We will need a subtype of Panel in order to override the Paint function. Easiest to do this as an anonymous subtype overriding paint. Code for the override is almost identical to out manual version. Only change is the use of the “art” data member. Save &amp; run. You can see that now we are really getting somewhere.</p>
+    </li>
+  <li>
+    <p>Back to design. Let’s add an event handler for the color1 button. Right-click on it it in the design view, select <code>Add event
+handler</code> =&gt; <code>action</code> =&gt; <code>actionPerformed</code>.</p>
+    
+    <p>We are immediately taken to the source code with a new event handler attached to the button. We need to fill in the behavior we want. We do that. Note that we get an issue trying to access the local variable <code>colorButton1</code>. So change that into a data member as we did earlier with canvas. Save &amp; run. This time try the button.</p>
+    
+  </li>
+  <li>
+  <p>A simple copy and paste in the source window adds a similar handler for <code>colorButton2</code>.</p>
+    </li>
+  <li>
+  <p>Back to design. Add an event handler to the text box by right-clicking on it and selecting <code>Add event handler</code> =&gt; <code>action</code> =&gt; <code>actionPerformed</code>. </p>
+    </li>
+</ol><p>Final listing:</p>
+    <div class="details"><span class="summary"><a href="StringArtGUI.java" target="listing">StringArtGUI.java</a></span> <input id="but_details_d6e884" onclick="toggleDisplay('_details_d6e884')" type="button" value="+"/><div class="detailPart" id="_details_d6e884"><pre><code id="_details_d6e884_code">import java.awt.EventQueue;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class StringArtGUI {
+
+	private JFrame mainWindow;
+	private JPanel canvas;
+	private JTextField textField;
+	private JTextField stepSizeIn;
+	
+	private StringArtModel art;
+	private JButton colorButton1;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					StringArtGUI window = new StringArtGUI();
+					window.mainWindow.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public StringArtGUI() {
+		art = new StringArtModel();
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		mainWindow = new JFrame();
+		mainWindow.setBounds(100, 100, 450, 300);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		canvas = new JPanel() {
+			public void paint (Graphics g) {
+				super.paint(g);
+				art.drawLines(g, getSize());
+			}
+		};
+		canvas.setBackground(Color.WHITE);
+		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
+		
+		JPanel controlPanel = new JPanel();
+		mainWindow.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+		
+		colorButton1 = new JButton("Color 1");
+		colorButton1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Color chosen = JColorChooser.showDialog(mainWindow, "Choose a color", 
+						art.getColor(0));
+				if (chosen != null) {
+					art.setColor(0, chosen);
+					art.setColor (colorButton1, chosen);
+					canvas.repaint();
+				}
+			}
+		});
+		art.setColor(colorButton1, art.getColor(0));
+		controlPanel.add(colorButton1);
+
+		JButton colorButton2 = new JButton("Color 2");
+		colorButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Color chosen = JColorChooser.showDialog(mainWindow, "Choose a color", 
+						art.getColor(1));
+				JButton button = (JButton)e.getSource();
+				if (chosen != null) {
+					art.setColor(1, chosen);
+					art.setColor (button, chosen);
+					canvas.repaint();
+				}
+			}
+		});
+		art.setColor(colorButton2, art.getColor(1));
+		controlPanel.add(colorButton2);
+		
+		stepSizeIn = new JTextField();
+		stepSizeIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+		            Integer newSize = new Integer(stepSizeIn.getText());
+		            art.setStepSize(newSize.intValue());
+		            canvas.repaint();
+		          } catch (Exception ex) {};
+		        }
+		});
+		stepSizeIn.setText("" + art.getStepSize());
+		controlPanel.add(stepSizeIn);
+		stepSizeIn.setColumns(3);
+		
+	}
+
+}
+</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Building%20a%20Java%20GUI"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

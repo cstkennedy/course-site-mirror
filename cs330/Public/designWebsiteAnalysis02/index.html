@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Web Analysis - Integration Test Methodology</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Integration%20Test%20Methodology"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Web Analysis - Integration Test Methodology</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#integration-tests-high-level-view">1 Integration Tests - High-Level View</a></div><div class="toc-h1"><a href="#testing-the-report-writers">2 Testing the Report Writers</a></div><div class="toc-h2"><a href="#text-writer-test">2.1 Text Writer Test</a></div><div class="toc-h2"><a href="#json-writer-test">2.2 JSON Writer Test</a></div></div><style>
+
+img {
+  max-width: 100%;
+}
+</style><a id="integrationtestshighlevelview"/><h1 id="integration-tests-high-level-view">1 Integration Tests - High-Level View</h1><p>The Report Writers need to be tested. Since the Report Writers need to retrieve data from</p>
+    <ul>
+  <li><code>Website</code></li>
+  <li><code>HTMLDocument</code></li>
+  <li><code>Resource</code> and its associated classes</li>
+</ul><p>and make use of various support libraries… the resulting tests are <em>Integration Tests</em>.</p>
+    <p>For the purpose of this discussion… we will use the following definitions:</p>
+    <ul>
+  <li>
+  <p><strong>Unit Test</strong> - a test that examines a single class without involving other classes.</p>
+    </li>
+  <li>
+  <p><strong>Integration Test</strong> - a test that examines the interaction between two or more classes.</p>
+    </li>
+  <li>
+    <p><strong>System Test</strong> - a test the examines the program as a whole (start to finish).</p>
+    
+    <p><em>The line between integration and system tests is often fuzzy.</em></p>
+    
+  </li>
+</ul><p>For <em>Unit Test</em> suites… the <em>mutator-accessor</em> strategy provides a framework for constructing a test…</p>
+    <ol>
+  <li>Set up the object to be tested</li>
+  <li>Call the <em>mutator</em> function under evaluation</li>
+  <li>Call each accessor to confirm that:
+    <ol>
+      <li>The expected change was made.</li>
+      <li>No unexpected changes were made.</li>
+    </ol>
+  </li>
+</ol><p>Integration tests require a different approach. Our steps will become something along the lines of…</p>
+    <ol>
+  <li>
+    <p>Remember that if we are testing code that uses an existing library, either  built-in (e.g., <code>BufferedReader</code>) or external (e.g., JSoup)…</p>
+    
+    <ol>
+      <li>We are testing our code and how it uses the library.</li>
+      <li>We are not testing the library itself.</li>
+    </ol>
+  </li>
+  <li>
+  <p>Set up a small set of test data (i.e., small enough to check by hand).</p>
+    </li>
+  <li>
+    <p>Check the results of calling the library, not the library itself.</p>
+    
+    <p><em>This is a nuanced difference.</em> Do not worry… there will be an example  later in this discussion.</p>
+    
+  </li>
+</ol><a id="testingthereportwriters"/><h1 id="testing-the-report-writers">2 Testing the Report Writers</h1><p>The Report Writers will be tested with Integration Tests.</p>
+    <a id="textwritertest"/><h2 id="text-writer-test">2.1 Text Writer Test</h2><p>Let us take a quick look of logic involved in testing the <code>TextReportWriter</code>.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e113" onclick="toggleDisplay('_details_d6e113')" type="button" value="+"/><div class="detailsBody" id="_details_d6e113" style="display: none;">
+<pre><code>@startuml test_sequence_03.svg
+autoactivate on
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam sequenceParticipant underline
+
+title Report Generation: Integeration Test Flow
+
+
+participant ":TestTextReportWriter" as driver
+activate driver
+
+driver -&gt; driver: setUp()
+    create "site:Website" as site
+    driver -&gt; site: new()
+    return
+    driver -&gt; site: [populate with "faked" pages]
+    return
+return
+
+create ":StringWriter" as strWriter
+driver -&gt; strWriter: new()
+return
+create ":BufferedWriter" as bufWriter
+driver -&gt; bufWriter: new(strWriter)
+return
+
+create ":TextReportWriter" as textWriter
+driver -&gt; textWriter: new()
+return
+driver -&gt; textWriter: setSourceData(site)
+return
+driver -&gt; textWriter: setBaseName(...)
+return
+driver -&gt; textWriter: write(bufWriter)
+return
+driver -&gt; textWriter !!: delete
+
+driver -&gt;  strWriter: toString()
+return resultStr
+
+note right: [examine "resultStr" with Hamcrest String matchers]
+
+@enduml
+</code></pre>
+</div></div><p><img src="test_sequence_03.svg"/></p>
+    <p>Take note of how a <code>BufferWriter</code> and a <code>StringWriter</code> were used to capture the output. This is a standard trick… and the reason why I emphasize the use of <code>BufferedWriter</code> and <code>BufferedReader</code> so heavily.</p>
+    <a id="jsonwritertest"/><h2 id="json-writer-test">2.2 JSON Writer Test</h2><p>Let us also take a quick look of logic involved in testing the <code>JSONReportWriter</code>.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e136" onclick="toggleDisplay('_details_d6e136')" type="button" value="+"/><div class="detailsBody" id="_details_d6e136" style="display: none;">
+<pre><code>@startuml test_sequence_04.svg
+autoactivate on
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam sequenceParticipant underline
+
+title Report Generation: Integeration Test Flow
+
+
+participant ":TestJSONReportWriter" as driver
+activate driver
+
+driver -&gt; driver: setUp()
+    create "site:Website" as site
+    driver -&gt; site: new()
+    return
+    driver -&gt; site: [populate with "faked" pages]
+    return
+return
+
+create ":StringWriter" as strWriter
+driver -&gt; strWriter: new()
+return
+create ":BufferedWriter" as bufWriter
+driver -&gt; bufWriter: new(strWriter)
+return
+
+create ":JSONReportWriter" as jsonWriter
+driver -&gt; jsonWriter: new()
+return
+driver -&gt; jsonWriter: setSourceData(site)
+return
+driver -&gt; jsonWriter: setBaseName(...)
+return
+driver -&gt; jsonWriter: write(bufWriter)
+return
+driver -&gt; jsonWriter !!: delete
+
+driver -&gt;  strWriter: toString()
+return resultStr
+
+note right: [examine "resultStr" with Hamcrest String matchers]
+
+@enduml
+</code></pre>
+</div></div><p><img src="test_sequence_04.svg"/></p>
+    <p>Do the steps seem familiar? In fact… they are near identical due to the fact that JSON is just formatted text data.</p>
+    <p><strong>Now… what does the code entail? How do we approach these tests?</strong></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Integration%20Test%20Methodology"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

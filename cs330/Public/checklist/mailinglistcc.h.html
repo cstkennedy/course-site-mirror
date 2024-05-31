@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>mailinglistcc.h</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20mailinglistcc.h"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">mailinglistcc.h</h1></div><pre><code>#ifndef MAILINGLIST_H
+#define MAILINGLIST_H
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include "contact.h"
+
+/**
+   A collection of names and addresses
+*/
+class MailingList
+{
+public:
+  MailingList();
+  MailingList(<span class='hlii'>const MailingList&amp;</span>);
+  ~MailingList();
+
+  const MailingList&amp; operator= (<span class='hlii'>const MailingList&amp;</span>);
+
+  // Add a new contact to the list
+  void addContact (<span class='hlii'>const Contact&amp;</span> contact);
+
+  // Remove one matching contact
+  void removeContact (<span class='hlii'>const Contact&amp;</span>);
+  void removeContact (<span class='hlii'>const Name&amp;</span>);
+
+  // Find and retrieve contacts
+  bool contains (<span class='hlii'>const Name&amp;</span> name) <span class='hliii'>const</span>;
+  Contact getContact (<span class='hlii'>const Name&amp;</span> name) <span class='hliii'>const</span>;
+
+
+  // combine two mailing lists
+  void merge (<span class='hlii'>const MailingList&amp;</span> otherList);
+
+  // How many contacts in list?
+  int size() <span class='hliii'>const</span>;
+
+
+  bool operator== (<span class='hlii'>const MailingList&amp;</span> right) <span class='hliii'>const</span>;
+  bool operator&lt; (<span class='hlii'>const MailingList&amp;</span> right) <span class='hliii'>const</span>;
+
+private:
+
+  struct ML_Node {
+    Contact contact;
+    ML_Node* next;
+
+    ML_Node (<span class='hlii'>const Contact&amp;</span> c, <span class='hli'>ML_Node*</span> nxt)
+      : contact(c), next(nxt)
+    {}
+  };
+
+  int theSize;
+  ML_Node* first;
+  ML_Node* last;
+
+  // helper functions
+  void clear();
+  void remove (<span class='hli'>ML_Node*</span> previous, <span class='hli'>ML_Node*</span> current);
+
+  friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class='hlii'>const MailingList&amp;</span> addr);
+};
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class='hlii'>const MailingList&amp;</span> list);
+
+
+#endif
+</code></pre><p><a href="mailinglistcc.h">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20mailinglistcc.h"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

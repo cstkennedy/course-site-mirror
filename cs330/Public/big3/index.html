@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Constructors and the Rule of the Big 3</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Constructors%20and%20the%20Rule%20of%20the%20Big%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Constructors and the Rule of the Big 3</h1><h2 class="author">Steven J Zeil</h2><div class="date">Last modified: Jan 24, 2018</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-default-constructor">1 The Default Constructor</a></div><div class="toc-h2"><a href="#default-constructor-examples">1.1 Default constructor examples</a></div><div class="toc-h1"><a href="#copy-constructors">2 Copy Constructors</a></div><div class="toc-h2"><a href="#copy-constructor-examples">2.1 Copy Constructor Examples</a></div><div class="toc-h2"><a href="#shallow-vs-deep-copy">2.2 Shallow vs Deep Copy</a></div><div class="toc-h2"><a href="#trusting-the-compiler-generated-copy-constructor">2.3 Trusting the Compiler-Generated Copy Constructor</a></div><div class="toc-h1"><a href="#assignment">3 Assignment</a></div><div class="toc-h2"><a href="#assignment-examples">3.1 Assignment Examples</a></div><div class="toc-h2"><a href="#trusting-the-compiler-generated-assignment-operator">3.2 Trusting the Compiler-Generated Assignment Operator</a></div><div class="toc-h1"><a href="#destructors">4 Destructors</a></div><div class="toc-h2"><a href="#destructor-examples">4.1 Destructor Examples</a></div><div class="toc-h2"><a href="#trusting-the-compiler-generated-destructor">4.2 Trusting the Compiler-Generated Destructor</a></div><div class="toc-h1"><a href="#the-rule-of-the-big-3">5 The Rule of the Big 3</a></div></div><a id="thedefaultconstructor"/><h1 id="the-default-constructor">1 The Default Constructor</h1><p>The <span class="firstterm">default constructor</span> is a constructor that  takes no arguments. This is the constructor you are calling when you  declare an object with no parameters. E.g., </p>
+    <pre><code class="cpp">std::string s;
+Book b;
+
+</code></pre><hr/><p><strong>Declaration</strong></p>
+    <p>A default constructor might be declared to take no parameters at  all, like this: </p>
+    <pre><code class="cpp">class Book {
+public:
+   Book();
+    &#x22ee;
+</code></pre><p>or with defaults on all of its parameters:</p>
+    <pre><code class="cpp">namespace std {
+class string {
+public:
+    &#x22ee;
+   string(char* s = "");
+    &#x22ee;
+</code></pre><p>Either way, we can <span class="emph">call</span> it with no  parameters.</p>
+    <hr/><p><strong>Why Default?</strong></p>
+    <p>For example, if we declared: </p>
+    <pre><code class="cpp">std::string words[5000];
+</code></pre><pre><code> then each of the 5000 elements of this array will be initialized using the
+default constructor for `string`
+</code></pre><ul>
+  <li>In fact, if we don’t <span class="emph">have</span> a default constructor for our class, then we <span class="emph">can’t</span> create arrays containing that type of data.</li>
+</ul><hr/><p><strong>Compiler-Generated Default Constructors</strong></p>
+    <p>Because arrays are so common, it is rare that we would actually want  a class with no default constructor. The C++ compiler tries to be helpful:</p>
+    <blockquote>
+  <span class="emph">If we create no constructors at all for a class, the compiler generates a default constructor for us.</span>
+</blockquote><ul>
+  <li>That automatically generated default constructor works by initializing every data member in our class with its own default constructor.
+    <ul>
+      <li>
+      <p>In many cases (e.g., strings), this does something entirely reasonable for our purposes.</p>
+    </li>
+      <li>
+      <p>Be careful, though: the “default constructors” for the primitive types such as <code>int</code>, <code>double</code> and pointers work by doing nothing at all. The value is left <span class="firstterm">uninitialized</span>. </p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="defaultconstructorexamples"/><h2 id="default-constructor-examples">1.1 Default constructor examples</h2><hr/><p><strong>Book default constructor</strong></p>
+    <p>If we haven’t created a default constructor for <code>Book</code>s, we could add one easily enough: </p>
+    <div class="details"><span class="summary"><a href="bookDefault.h" target="listing">bookDefault.h</a></span> <input id="but_details_d6e92" onclick="toggleDisplay('_details_d6e92')" type="button" value="+"/><div class="detailPart" id="_details_d6e92"><pre><code id="_details_d6e92_code">class Book {
+public:
+  typedef AuthorIterator AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+<span class='hli'>  Book();</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+      &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+</code></pre></div></div><p>To implement it, we need to come up with something reasonable for  each data member: </p>
+    <pre><code class="cpp">Book::Book ()
+   numAuthors(0), first(0), last(0)
+{
+}
+</code></pre><p>(We’ll let the strings <code>title</code> and <code>isbn</code> default to the <code>std::string</code> default of <code>""</code>, and we trust that the <code>Publisher</code> class provides a reasonable default constructor of its own.)</p>
+    <hr/><p><strong>Address default constructor</strong></p>
+    <div class="details"><span class="summary"><a href="addDefault.h" target="listing">addDefault.h</a></span> <input id="but_details_d6e113" onclick="toggleDisplay('_details_d6e113')" type="button" value="+"/><div class="detailPart" id="_details_d6e113"><pre><code id="_details_d6e113_code">class Address {
+public:
+  Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);
+
+  std::string getStreet() const;
+  void putStreet (std::string theStreet);
+  
+  std::string getCity() const;
+  void putCity (std::string theCity);
+  
+  std::string getState() const;
+  void putState (std::string theState);
+  
+  std::string getZip() const;
+  void putZip (std::string theZip);
+  
+private:
+  std::string street;
+  std::string city;
+  std::string state;
+  std::string zip;
+};
+</code></pre></div></div><p>This class has no explicit default constructor. It does have  another constructor, however, so the compiler will not generate an  automatic default constructor for us.</p>
+    <p>There’s no good reason why we should not have a default  constructor for this class. We might want arrays of addresses  sometime.</p>
+    <div class="details"><span class="summary"><a href="addrDefault.h" target="listing">addrDefault.h</a></span> <input id="but_details_d6e118" onclick="toggleDisplay('_details_d6e118')" type="button" value="+"/><div class="detailPart" id="_details_d6e118"><pre><code id="_details_d6e118_code">class Address {
+public:
+  Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);
+<span class='hli'>
+  Address () {}</span>
+    &#x22ee;
+
+</code></pre></div></div><p>As you can see, there’s not much to it. All the data members are  strings, and there’s really nothing much better for us to do than just  rely on the default constructors for strings.</p>
+    <a id="copyconstructors"/><h1 id="copy-constructors">2 Copy Constructors</h1><p>The <span class="firstterm">copy constructor</span> for a class <code>Foo</code> is the constructor of the form:</p>
+    <pre><code class="cpp">Foo (const Foo&amp; oldCopy);
+</code></pre><ul>
+  <li>
+    <p>Like the default constructor, there is nothing special about the copy constructor itself.</p>
+    
+    <ul>
+      <li>It’s just an ordinary constructor.</li>
+    </ul>
+  </li>
+  <li>
+    <p>It’s special because of the number of common situations in which it gets <span class="emph">used</span>.</p>
+    
+    <ul>
+      <li>Like the default constructor, the compiler often generates implicit calls to this constructor in places where we might not expect it.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Where are Copy Constructors Used?</strong></p>
+    <p>The copy constructor gets used in 5 situations: </p>
+    <p>1) When you declare a new object as a copy of an old one:</p>
+    <pre><code class="cpp">Book book2 (book1);
+</code></pre><p>or </p>
+    <pre><code class="cpp">Book book2 = book1;
+</code></pre><p>2) When a function call passes a parameter “by copy” (i.e., the  formal parameter does not have a &amp;):</p>
+    <pre><code class="cpp">void foo (Book b, int k);
+  &#x22ee;
+
+Book text361 (0201308787, budd, 
+     "Data Structures in C++ Using the Standard Template Library",
+     1998, 1);
+foo (text361, 0);   // foo actually gets a copy of text361
+</code></pre><p>3) When a function returns an object: </p>
+    <pre><code class="cpp">Book foo (int k);
+{
+  Book b;
+  &#x22ee;
+  return b; // a copy of b is placed in the caller's memory area
+}
+</code></pre><p>4) When data members are initialized in a constructor’s  initialization list: </p>
+    <div class="details"><span class="summary"><a href="copyInInit.cpp" target="listing">copyInInit.cpp</a></span> <input id="but_details_d6e181" onclick="toggleDisplay('_details_d6e181')" type="button" value="+"/><div class="detailPart" id="_details_d6e181"><pre><code id="_details_d6e181_code">Author::Author (std::string theName, 
+                Address theAddress, long id)
+  : name(theName), 
+<span class='hli'>    address(theAddress),</span>
+    identifier(id)
+{
+}
+</code></pre></div></div><p>5) When an object is a data member of another class for which the  compiler has generated its own copy constructor.</p>
+    <hr/><p><strong>Compiler-Generated Copy Constructors</strong></p>
+    <p>As you can see from that list, the copy constructor gets used  a <span class="emph">lot</span>. It would be very awkward to work with a class  that did not provide a copy constructor. </p>
+    <p>So, again, the compiler tries to  be helpful. </p>
+    <blockquote>
+  <p><strong>If we do not create a copy constructor for a  class, the compiler generates one for us.</strong></p>
+    
+</blockquote><ul>
+  <li>
+  <p>This automatically generated version works by copying each data member via <span class="emph">their</span> individual copy constructors.</p>
+    </li>
+  <li>
+    <p>For data members that are primitives, such as <code>int</code> or pointers, the copying is done by copying all the bits of that primitive object. </p>
+    
+    <ul>
+      <li>For things like <code>int</code> or <code>double</code>, that’s just fine.</li>
+      <li>We’ll see shortly, however, that this may or may not be what we want for pointers.</li>
+    </ul>
+  </li>
+</ul><a id="copyconstructorexamples"/><h2 id="copy-constructor-examples">2.1 Copy Constructor Examples</h2><h3 id="address">2.1.1 Address</h3><p>In the case of our <code>Address</code> class, we have not  provided a copy constructor, so the compiler would generate one for us.</p>
+    <p>The implicitly generated copy constructor would behave  as if it had been written this way: </p>
+    <pre><code class="cpp">Address::Address (const Address&amp; a)
+  : street(a.street), city(a.city), 
+    state(a.state), zip(a.zip)
+{
+}
+</code></pre><ul>
+  <li>This is, in fact, a perfectly good copy function for this  class, so we might as well use the compiler-generated  version.</li>
+</ul><a id="booksimplearrays"/><h3 id="book-simple-arrays">2.1.2 Book - simple arrays</h3><div class="details"><span class="summary"><a href="book1.h" target="listing">book1.h</a></span> <input id="but_details_d6e248" onclick="toggleDisplay('_details_d6e248')" type="button" value="+"/><div class="detailPart" id="_details_d6e248"><pre><code id="_details_d6e248_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const;
+  void setTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getISBN() const;
+  void setISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void setPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>Consider the problem of copying a book, and for the moment we will work with our “simple” arrays version.</p>
+    <hr/><p><strong>Book - simple arrays (cont.)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookarr1.png" style="float: right; max-width: 50%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">Book b2 = b1;
+</code></pre><pre><code>   because we have provided no copy constructor, the compiler-generated
+  version is used and each data member is copied.
+</code></pre><hr/><p><strong>Compiler-Generated Copy</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookarr2.png" style="float: right; max-width: 50%;"/> The new result would be something like this, which looks just  fine.</p>
+    <a id="bookdynamicarrays"/><h3 id="book-dynamic-arrays">2.1.3 Book - dynamic arrays</h3><p>Now let’s consider the problem of copying a book implemented using  dynamically allocated arrays.</p>
+    <div class="details"><span class="summary"><a href="book2a.h" target="listing">book2a.h</a></span> <input id="but_details_d6e278" onclick="toggleDisplay('_details_d6e278')" type="button" value="+"/><div class="detailPart" id="_details_d6e278"><pre><code id="_details_d6e278_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+
+#endif
+</code></pre></div></div><hr/><p><strong>Copying dynamic arrays</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr1.png" style="float: right; max-width: 50%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">Book b2 = b1;
+</code></pre><p>because we have provided no copy constructor, the compiler-generated  version is used and each data member is copied.</p>
+    <hr/><p><strong>Compiler-Generated Copy</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr2.png" style="float: right; max-width: 50%;"/> The new result would be something like this. </p>
+    <ul>
+  <li>
+  <p>The <span class="varname">authors</span> pointer is copied bit-by-bit</p>
+    </li>
+  <li>
+  <p>two book objects now share the same author array </p>
+    </li>
+</ul><hr/><p><strong>Co-authors Should Not Share</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr3.png" style="float: right; max-width:  50%;"/> To understand why this is so bad, suppose that we later did</p>
+    <pre><code class="cpp">b1.removeAuthor(b1.begin());
+</code></pre><pre><code>   to remove the first author from book `b1`.
+</code></pre><hr/><p><strong>Unplanned Sharing Leads to Corruption</strong></p>
+    <div class="details"><span class="summary"><a href="addAuthors.cpp" target="listing">addAuthors.cpp</a></span> <input id="but_details_d6e333" onclick="toggleDisplay('_details_d6e333')" type="button" value="+"/><div class="detailPart" id="_details_d6e333"><pre><code id="_details_d6e333_code">void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  if (numAuthors &gt;= MAXAUTHORS)
+    {
+      Author* newAuthors = new Author[2*MAXAUTHORS];
+      for (int i = 0; i &lt; MAXAUTHORS; ++i)
+	newAuthors[i] = authors[i];
+      MAXAUTHORS *= 2;
+      delete [] authors;
+      authors = newAuthors;
+    }
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt; atk) 
+    {
+      authors[i] = authors[i-1];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="bookdarr2.png" style="float: right; max-width: 35%;"/>  That’s not even the worst possible scenario. Recall that our code  for adding authors works by</p>
+    <ul>
+  <li>
+  <p>Checking to see if  there was room in the array.</p>
+    </li>
+  <li>
+    <p>if not,</p>
+    
+    <ol>
+      <li>allocating a larger array,</li>
+      <li>copying the data, and</li>
+      <li>deleting the old array:</li>
+    </ol>
+  </li>
+</ul><p>So if we start from this data state, and then add 3 authors to book 1 (“Doe”, “Smith”, and “Jones”), … </p>
+    <hr/><p><strong>Corrupted Data</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr4.png" style="float: right; max-width: 50%;"/>  … we would end up with the state shown here. </p>
+    <ul>
+  <li>
+  <p><code>b1</code> deleted the old array,</p>
+    </li>
+  <li>
+  <p>but <code>b2</code> still has the old array  address in its data member. </p>
+    </li>
+</ul><hr/><p><strong>Sometime it’s Better to Have 2 Copies</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr5.png" style="float: right; max-width: 40%;"/> What we really wanted, after the copy: </p>
+    <pre><code class="cpp">Book b2 = b1;
+</code></pre><p>is something more like this:</p>
+    <p>But to get that, we will not be able to rely on the automatically generated copy constructor for <code>Book</code>s.</p>
+    <a id="shallowvsdeepcopy"/><h2 id="shallow-vs-deep-copy">2.2 Shallow vs Deep Copy</h2><p>Copy operations are distinguished by how they treat pointers:</p>
+    <ul>
+  <li>
+  <p>In a <span class="firstterm">shallow copy</span>, all pointers are  copied.</p>
+    </li>
+  <li>
+  <p>Leads to shared data on the heap.</p>
+    </li>
+  <li>
+  <p>In a <span class="firstterm">deep copy</span>, objects pointed to  are copied, then the new pointer set to the address of the copied  object. </p>
+    </li>
+  <li>
+  <p>Copied objects keep exclusive access to the things  they point to.</p>
+    </li>
+</ul><hr/><p><strong>This was a Shallow Copy</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="bookdarr2.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>This was a Deep Copy</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="bookdarr5.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Book - linked list</strong></p>
+    <div class="details"><span class="summary"><a href="book3a.h" target="listing">book3a.h</a></span> <input id="but_details_d6e451" onclick="toggleDisplay('_details_d6e451')" type="button" value="+"/><div class="detailPart" id="_details_d6e451"><pre><code id="_details_d6e451_code">#ifndef BOOK_H
+#include "author.h"
+#include "authoriterator.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef AuthorIterator AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+
+#endif
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="bookLL1.png" style="float: right; max-width: 50%;"/> Now let’s consider the problem of copying a book implemented using  linked lists.</p>
+    <p>If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">Book b2 = b1;
+</code></pre><p>because we have provided no copy constructor, the compiler-generated  version is used and each data member is copied.</p>
+    <hr/><p><strong>Shallow Copy of Linked List</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookLL2.png" style="float: right; max-width: 40%;"/> The new result would be something like this. </p>
+    <ul>
+  <li>
+  <p>Again, the pointer  data members (<code>first</code> and <code>last</code>) are copied using  the default copy procedure for pointers, which is to simply copy the  bits of the pointer.</p>
+    </li>
+  <li>
+  <p>That has the result of placing the same node  addresses in both book objects. In effect, there is one collection of  nodes being shared between both books. </p>
+    </li>
+  <li>
+  <p>Once again, that’s a really,  really, bad idea!</p>
+    </li>
+</ul><hr/><p><strong>Corrupted List</strong></p>
+    <p>For example, suppose that we later did </p>
+    <pre><code class="cpp">b1.removeAuthor(b1.begin());
+</code></pre><pre><code>   to remove the first author from book `b1`.
+</code></pre><p><div class="noFloat"> </div>
+    <img src="bookLL3.png" style="float: right; max-width: 40%;"/> Afterwards, we would have something like this. The change to  <code>b1</code> has corrupted <code>b2</code>. </p>
+    <hr/><p><strong>List-Based Copy Constructor</strong></p>
+    <p>If we want to implement a proper deep copy for our books, we start  by adding the constructor declaration: </p>
+    <div class="details"><span class="summary"><a href="bookLLCopyCons.h" target="listing">bookLLCopyCons.h</a></span> <input id="but_details_d6e516" onclick="toggleDisplay('_details_d6e516')" type="button" value="+"/><div class="detailPart" id="_details_d6e516"><pre><code id="_details_d6e516_code">class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  <span class='hli'>Book (const Book&amp; b);</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+     &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+</code></pre></div></div><p>Then we supply a function body for this constructor. </p>
+    <pre><code class="cpp">Book::Book (const Book&amp; b)
+  : title(b.title), isbn(b.isbn), 
+    publisher(b.publisher),
+    numAuthors(0), first(0), last(0)
+{
+  for (AuthorPosition p = b.begin(); p != b.end();
+        ++p)
+    addAuthor(end(), *p);
+}
+</code></pre><hr/><p><strong>Linked-List Deep Copy</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookLL4.png" style="float: right; max-width: 50%;"/> The end result after the copy should be this.</p>
+    <hr/><p><strong>Book - std::list</strong></p>
+    <div class="details"><span class="summary"><a href="book4.h" target="listing">book4.h</a></span> <input id="but_details_d6e534" onclick="toggleDisplay('_details_d6e534')" type="button" value="+"/><div class="detailPart" id="_details_d6e534"><pre><code id="_details_d6e534_code">#ifndef BOOK_H
+
+#include &lt;list&gt;
+
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef std::list&lt;Author&gt;::iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  const_AuthorPosition begin() const;
+  const_AuthorPosition end() const;
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  std::list&lt;Author&gt; authors;
+};
+
+#endif
+</code></pre></div></div><p>Now let’s consider the problem of copying a book implemented using  <code>std::list</code>.</p>
+    <p><div class="noFloat"> </div>
+    <img src="bookstdL1.png" style="float: right; max-width: 40%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">Book b2 = b1;
+</code></pre><p>because we have provided no copy constructor, the compiler-generated version is used and each data member is copied.</p>
+    <hr/><p><strong>Copy of std::list</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookstdL2.png" style="float: right; max-width: 40%;"/> The new result would be something like this. This looks just fine.</p>
+    <p>We don’t need to override the compiler-generated copy constructor in  this case.</p>
+    <a id="trustingthecompilergeneratedcopyconstructor"/><h2 id="trusting-the-compiler-generated-copy-constructor">2.3 Trusting the Compiler-Generated Copy Constructor</h2><p>By now, you may have perceived a pattern.</p>
+    <p>Shallow copy is wrong when… </p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><p>And it follows that:</p>
+    <p>Compiler-generated copy constructors are wrong when…</p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><h1 id="assignment">3 Assignment</h1><p>When we write <code>book1 = book2</code>, that’s shorthand for <code>book1.operator=(book2)</code>.</p>
+    <p>We tend to do a lot of assignment in typical programming, so, once more, the compiler tries to be helpful: </p>
+    <blockquote>
+  <p><strong>If you don’t provide your own assignment  operator for a class, the compiler generates one  automatically.</strong></p>
+    
+</blockquote><ul>
+  <li>
+  <p>The automatically generated assignment operator works by assigning each data member in turn.</p>
+    </li>
+  <li>
+  <p>If none of the members have programmer-supplied assignment  ops, then this is a <span class="emph">shallow copy</span></p>
+    </li>
+</ul><hr/><p><strong>A Compiler-Generated Assignment Op</strong></p>
+    <div class="details"><span class="summary"><a href="addressDecl.h" target="listing">addressDecl.h</a></span> <input id="but_details_d6e618" onclick="toggleDisplay('_details_d6e618')" type="button" value="+"/><div class="detailPart" id="_details_d6e618"><pre><code id="_details_d6e618_code">class Address {
+public:
+  Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);
+
+  std::string getStreet() const;
+  void putStreet (std::string theStreet);
+  
+  std::string getCity() const;
+  void putCity (std::string theCity);
+  
+  std::string getState() const;
+  void putState (std::string theState);
+  
+  std::string getZip() const;
+  void putZip (std::string theZip);
+  
+private:
+  std::string street;
+  std::string city;
+  std::string state;
+  std::string zip;
+};
+</code></pre></div></div><p>For example, we have not provided an assignment operator for  <code>Address</code> class. Therefore the compiler will attempt to  generate one, just as if we had written </p>
+    <div class="details"><span class="summary"><a href="addrAsst.h" target="listing">addrAsst.h</a></span> <input id="but_details_d6e624" onclick="toggleDisplay('_details_d6e624')" type="button" value="+"/><div class="detailPart" id="_details_d6e624"><pre><code id="_details_d6e624_code">class Address {
+public:
+  Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);
+
+<span class='hli'>
+  Address&amp; operator= (const Address&amp;);</span>
+     &#x22ee;
+</code></pre></div></div><hr/><p><strong>A Compiler-Generated Assignment Op (cont.)</strong></p>
+    <p>The automatically generated body for this assignment operator will  be the equivalent of </p>
+    <pre><code class="cpp">Address&amp; Address::operator= (const Address&amp; a)
+{
+  street = a.street;
+  city = a.city;
+  state = a.state;
+  zip = a.zip;
+  return *this;
+}
+</code></pre><p>And that automatically generated assignment is just fine  for <code>Address</code>.</p>
+    <hr/><p><strong>Return values in Asst Ops</strong></p>
+    <div class="details"><span class="summary"><a href="addrAsst.cpp" target="listing">addrAsst.cpp</a></span> <input id="but_details_d6e641" onclick="toggleDisplay('_details_d6e641')" type="button" value="+"/><div class="detailPart" id="_details_d6e641"><pre><code id="_details_d6e641_code">Address&amp; Address::operator= (const Address&amp; a)
+{
+  street = a.street;
+  city = a.city;
+  state = a.state;
+  zip = a.zip;
+  <span class='hli'>return *this;</span>
+}
+</code></pre></div></div><p>The return value returns the value just assigned, allowing  programmers to chain assignments together: </p>
+    <pre><code class="cpp">addr3 = addr2 = addt1;
+</code></pre><p>This can simplify code where a computed value needs to be tested and  then maybe used again if it passes the test, e.g., </p>
+    <pre><code class="cpp">while ((x = foo(y)) &gt; 0) {
+  do_something_useful_with(x);
+}
+</code></pre><a id="assignmentexamples"/><h2 id="assignment-examples">3.1 Assignment Examples</h2><a id="booksimplearrays"/><h3 id="book-simple-arrays">3.1.1 Book - Simple Arrays</h3><div class="details"><span class="summary"><a href="book1.h" target="listing">book1.h</a></span> <input id="but_details_d6e656" onclick="toggleDisplay('_details_d6e656')" type="button" value="+"/><div class="detailPart" id="_details_d6e656"><pre><code id="_details_d6e656_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const;
+  void setTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getISBN() const;
+  void setISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void setPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>Consider the problem of copying a book, and for the moment we will work with our “simple” arrays version.</p>
+    <hr/><p><strong>Book - Simple Arrays (cont.)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookarr1.png" style="float: right; max-width: 50%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">b2 = b1;
+</code></pre><p>because we have provided no assignment operator, the compiler-generated version is used and each data member is copied.</p>
+    <hr/><p><strong>Compiler-Generated Assignment</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookarr2.png" style="float: right; max-width: 50%;"/> The new result would be something like this, which looks just  fine.</p>
+    <p>So in this case, we can rely on the compiler-generated assignment  operator.</p>
+    <a id="bookdynamicarrays"/><h3 id="book-dynamic-arrays">3.1.2 Book - dynamic arrays</h3><p>Now let’s consider the problem of copying a book implemented using  dynamically allocated arrays.</p>
+    <div class="details"><span class="summary"><a href="book2a.h" target="listing">book2a.h</a></span> <input id="but_details_d6e686" onclick="toggleDisplay('_details_d6e686')" type="button" value="+"/><div class="detailPart" id="_details_d6e686"><pre><code id="_details_d6e686_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+
+#endif
+</code></pre></div></div><hr/><p><strong>Assigning with dynamic arrays</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr1.png" style="float: right; max-width: 50%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">b2 = b1;
+</code></pre><p>because we have provided no assignment op, the compiler-generated version is used and each data member is copied.</p>
+    <hr/><p><strong>Compiler-Generated Asst</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdarr2.png" style="float: right; max-width: 50%;"/> The new result would be something like this. </p>
+    <ul>
+  <li>
+  <p>The <span class="varname">authors</span> pointer is copied bit-by-bit</p>
+    </li>
+  <li>
+  <p>two book objects now share the same author array </p>
+    </li>
+</ul><hr/><p><strong>This Seems Familiar…</strong></p>
+    <ul>
+  <li>
+  <p>We saw earlier that having two books sharing the same array was a  bad idea.</p>
+    </li>
+  <li>
+    <p>In this case, we now have the additional disadvantage that we  have lost all contact with one of the allocated arrays on the heap, </p>
+    
+    <ul>
+      <li>a “memory leak” that will never be recovered.</li>
+    </ul>
+  </li>
+  <li>
+  <p>The compiler-generated assignment operator implements a shallow  copy, and that is not what we want. </p>
+    </li>
+</ul><hr/><p><strong>Implementing Deep-Copy Assignment</strong></p>
+    <p>If we want to implement a proper  deep copy for our books, we start by adding the operator declaration:</p>
+    <div class="details"><span class="summary"><a href="bookAsst.h" target="listing">bookAsst.h</a></span> <input id="but_details_d6e752" onclick="toggleDisplay('_details_d6e752')" type="button" value="+"/><div class="detailPart" id="_details_d6e752"><pre><code id="_details_d6e752_code">class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  <span class='hli'>const Book&amp; operator= (const Book&amp; b);</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+     &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+</code></pre></div></div><p>Then we supply a function body for this operator.</p>
+    <div class="details"><span class="summary"><a href="bookAsst.cpp" target="listing">bookAsst.cpp</a></span> <input id="but_details_d6e755" onclick="toggleDisplay('_details_d6e755')" type="button" value="+"/><div class="detailPart" id="_details_d6e755"><pre><code id="_details_d6e755_code">const Book&amp; Book::operator= (const Book&amp; b)
+{
+  title = b.title;
+  isbn = b.isbn;
+  publisher = b.publisher;
+  numAuthors = b.numAuthors;
+  if (b.numAuthors &gt; MAXAUTHORS)
+    {
+      MAXAUTHORS = b.MAXAUTHORS;
+      delete [] authors;
+      authors = new Author[MAXAUTHORS];
+    }
+  for (int i = 0; i &lt; numAuthors; ++i)
+    authors[i] = b.authors[i];
+  return *this;
+}
+</code></pre></div></div><a id="booklinkedlist"/><h3 id="book-linked-list">3.1.3 Book - linked list</h3><p><div class="noFloat"> </div>
+    <img src="bookLL1.png" style="float: right; max-width: 50%;"/> Now let’s consider the problem of copying a book implemented using linked lists.</p>
+    <p>If we start with a single book object, <code>b1</code>, as shown here, and then we execute </p>
+    <pre><code class="cpp">b2 = b1;
+</code></pre><p>because we have provided no assignment op, the compiler-generated version is used and each data member is copied.</p>
+    <hr/><p><strong>Shallow Copy of Linked List</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookLL2.png" style="float: right; max-width: 40%;"/> The new result would be something like this. </p>
+    <ul>
+  <li>
+  <p>Again, the pointer data members (<code>first</code> and <code>last</code>) are assigned using the default assignment procedure for pointers, which is to simply copy the bits of the pointer.</p>
+    </li>
+  <li>
+  <p>That has the result of placing the same node  addresses in both book objects. In effect, there is one collection of  nodes being shared between both books. </p>
+    </li>
+</ul><hr/><p><strong>Shallow Copy of Linked List</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookLL2.png" style="float: right; max-width: 40%;"/></p>
+    <ul>
+  <li>
+  <p>Once again, that’s a really,  really, bad idea!</p>
+    </li>
+  <li>
+  <p>And, once again, the original nodes in <code>b2</code> are now unreachable memory leaks.</p>
+    </li>
+</ul><hr/><p><strong>Assignment via Linked Lists</strong></p>
+    <p>If we want to implement a proper deep copy for our books, we start  by adding the operator declaration: </p>
+    <div class="details"><span class="summary"><a href="bookLLAsst.h" target="listing">bookLLAsst.h</a></span> <input id="but_details_d6e821" onclick="toggleDisplay('_details_d6e821')" type="button" value="+"/><div class="detailPart" id="_details_d6e821"><pre><code id="_details_d6e821_code">class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  <span class='hli'>const Book&amp; operator= (const Book&amp; b);</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+     &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+</code></pre></div></div><p>Then we supply a function body for this operator.</p>
+    <div class="details"><span class="summary"><a href="bookLLAsst.cpp" target="listing">bookLLAsst.cpp</a></span> <input id="but_details_d6e824" onclick="toggleDisplay('_details_d6e824')" type="button" value="+"/><div class="detailPart" id="_details_d6e824"><pre><code id="_details_d6e824_code">const Book&amp; Book::operator= (const Book&amp; b)
+{
+  title = b.title;
+  isbn = b.isbn;
+  publisher = b.publisher;
+  numAuthors = 0;
+  for (AuthorPosition p = begin(); p != end();)
+    {
+      AuthorPosition nxt = p;
+      ++nxt;
+      delete p;
+      p = nxt;
+    }
+  first =  last = 0;
+  for (AuthorPosition p = b.begin(); p != b.end(); ++p)
+    addAuthor(end(), *p);
+  return *this;
+}
+</code></pre></div></div><hr/><p><strong>Assignment Result</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookLL4.png" style="float: right; max-width: 50%;"/> The end result after the assignment should be this:</p>
+    <hr/><p><strong>Self-Assignment</strong></p>
+    <p>If we assign something to itself: </p>
+    <pre><code class="cpp">x = x;
+</code></pre><p>we normally expect that nothing really happens.</p>
+    <p>But when we are writing our own assignment operators, that’s not always the case. Sometimes assignment of an object to itself is a nasty special case that breaks thing badly.</p>
+    <div class="details"><span class="summary"><a href="bookLLAsst.cpp" target="listing">bookLLAsst.cpp</a></span> <input id="but_details_d6e844" onclick="toggleDisplay('_details_d6e844')" type="button" value="+"/><div class="detailPart" id="_details_d6e844"><pre><code id="_details_d6e844_code">const Book&amp; Book::operator= (const Book&amp; b)
+{
+  title = b.title;
+  isbn = b.isbn;
+  publisher = b.publisher;
+  numAuthors = 0;
+  for (AuthorPosition p = begin(); p != end();)
+    {
+      AuthorPosition nxt = p;
+      ++nxt;
+      delete p;
+      p = nxt;
+    }
+  first =  last = 0;
+  for (AuthorPosition p = b.begin(); p != b.end(); ++p)
+    addAuthor(end(), *p);
+  return *this;
+}
+</code></pre></div></div><p>What happens if we do <code>b1 = b1;</code>?</p>
+    <hr/><p><strong>Self-Assignment Can Corrupt</strong></p>
+    <ul>
+  <li>
+  <p>The first loop removes all nodes from the destination list.</p>
+    </li>
+  <li>
+  <p>The  second loop copies all nodes in the source list. </p>
+    </li>
+  <li>
+  <p>But if the source and  destination are the same, then by the time we reach the second loop,  there won’t be any nodes left to copy. </p>
+    </li>
+</ul><p>So, instead of <code>b1 = b1;</code> leaving <code>b1</code> unchanged, it would actually destroy <code>b1</code>.</p>
+    <hr/><p><strong>Checking for Self-Assignment</strong></p>
+    <div class="details"><span class="summary"><a href="bookSelfAsst.cpp" target="listing">bookSelfAsst.cpp</a></span> <input id="but_details_d6e879" onclick="toggleDisplay('_details_d6e879')" type="button" value="+"/><div class="detailPart" id="_details_d6e879"><pre><code id="_details_d6e879_code">const Book&amp; Book::operator= (const Book&amp; b)
+{
+<span class='hli'>  if (this != &amp;b)
+    {</span>
+      title = b.title;
+      isbn = b.isbn;
+      publisher = b.publisher;
+      numAuthors = 0;
+      for (AuthorPosition p = begin(); p != end();)
+        {
+          AuthorPosition nxt = p;
+          ++nxt;
+          delete p;
+          p = nxt;
+        }
+      first =  last = 0;
+      for (AuthorPosition p = b.begin(); p != b.end(); ++p)
+         addAuthor(end(), *p);
+<span class='hli'>    }</span>
+  return *this;
+}
+</code></pre></div></div><p>This is safer.</p>
+    <ul>
+  <li>
+    <p>We check to see if the object we are assigning  <span class="emph">to</span> (<code>this</code>) is at the same address as  the one we are assigning <span class="emph">from</span></p>
+    
+    <ul>
+      <li>
+      <p>the <code>&amp;</code> in the expression <code>&amp;b</code> is the C++  <span class="firstterm">address-of</span> operator).</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>If the two are the same,  we leave them alone. </p>
+    </li>
+  <li>
+  <p>Only if the two addresses are different do we  carry on with the assignment.</p>
+    </li>
+</ul><a id="bookstdlist"/><h3 id="book-std-list">3.1.4 Book - std::list</h3><div class="details"><span class="summary"><a href="book4.h" target="listing">book4.h</a></span> <input id="but_details_d6e922" onclick="toggleDisplay('_details_d6e922')" type="button" value="+"/><div class="detailPart" id="_details_d6e922"><pre><code id="_details_d6e922_code">#ifndef BOOK_H
+
+#include &lt;list&gt;
+
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef std::list&lt;Author&gt;::iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  const_AuthorPosition begin() const;
+  const_AuthorPosition end() const;
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  std::list&lt;Author&gt; authors;
+};
+
+#endif
+</code></pre></div></div><p>Now let’s consider the problem of assigning books implemented using  <code>std::list</code>.</p>
+    <p><div class="noFloat"> </div>
+    <img src="bookstdL1.png" style="float: right; max-width: 50%;"/> If we start with a single book object, <code>b1</code>, as shown  here, and then we execute </p>
+    <pre><code class="cpp">b2 = b1;
+</code></pre><p>because we have provided no asst op, the compiler-generated version is used and each data member is copied.</p>
+    <hr/><p><strong>Assigned std::list</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="bookstdL2.png" style="float: right; max-width: 40%;"/> The new result would be something like this. This looks just fine.</p>
+    <p>We don’t need to override the compiler-generated assignment operator in this case.</p>
+    <a id="trustingthecompilergeneratedassignmentoperator"/><h2 id="trusting-the-compiler-generated-assignment-operator">3.2 Trusting the Compiler-Generated Assignment Operator</h2><p>By now, you may have perceived a pattern.</p>
+    <p>Shallow copy is wrong when… </p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><p>And it follows that:</p>
+    <p>Compiler-generated assignment operators are wrong when…</p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><h1 id="destructors">4 Destructors</h1><p>Destructors are used to clean up objects that are no longer in use.</p>
+    <blockquote>
+  <p><strong>If you don’t provide a destructor for a class,  the compiler generates one for you automatically.</strong></p>
+    
+</blockquote><ul>
+  <li>
+  <p>The automatically generated destructor simply invokes the  destructors for any data member objects.</p>
+    </li>
+  <li>
+  <p>If none of the members have programmer-supplied destructors,  does nothing.</p>
+    </li>
+</ul><hr/><p><strong>A Compiler-Generated Destructor</strong></p>
+    <div class="details"><span class="summary"><a href="addrNoDestructor.h" target="listing">addrNoDestructor.h</a></span> <input id="but_details_d6e997" onclick="toggleDisplay('_details_d6e997')" type="button" value="+"/><div class="detailPart" id="_details_d6e997"><pre><code id="_details_d6e997_code">class Address {
+public:
+  Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);
+
+  std::string getStreet() const;
+  void putStreet (std::string theStreet);
+  
+  std::string getCity() const;
+  void putCity (std::string theCity);
+  
+  std::string getState() const;
+  void putState (std::string theState);
+  
+  std::string getZip() const;
+  void putZip (std::string theZip);
+  
+private:
+<span class='hli'>  std::string street;
+  std::string city;
+  std::string state;
+  std::string zip;</span>
+};
+
+
+class Author
+{
+public:
+  Author (std::string theName, Address theAddress, long id);
+
+  std::string getName() const        {return name;}
+  void putName (std::string theName) {name = theName;}
+
+  const Address&amp; getAddress() const   {return address;}
+  void putAddress (const Address&amp; addr) {address = addr;}
+
+  long getIdentifier() const     {return identifier;}
+
+private:
+<span class='hli'>  std::string name;
+  Address address;
+  const long identifier;</span>
+};
+</code></pre></div></div><p>We have not declared or implemented a destructor for any of our classes. For <code>Address</code> and <code>Author</code>, that’s OK.</p>
+    <ul>
+  <li>Note that the <span class="type">string</span>s probably do contain pointers, but we trust the <code>std::string</code> to handle its own cleanup.</li>
+</ul><a id="destructorexamples"/><h2 id="destructor-examples">4.1 Destructor Examples</h2><a id="booksimplearrays"/><h3 id="book-simple-arrays">4.1.1 Book - simple arrays</h3><div class="details"><span class="summary"><a href="book1.h" target="listing">book1.h</a></span> <input id="but_details_d6e1020" onclick="toggleDisplay('_details_d6e1020')" type="button" value="+"/><div class="detailPart" id="_details_d6e1020"><pre><code id="_details_d6e1020_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const;
+  void setTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getISBN() const;
+  void setISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void setPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>This version of the book has all of its data in a single block of  memory. Assuming that each data member knows how to clean up its  own internal storage, there’s really nothing we would have to do  when this book gets destroyed.</p>
+    <p>We can rely on the compiler-provided  destructor.</p>
+    <a id="bookdynamicarrays"/><h3 id="book-dynamic-arrays">4.1.2 Book - dynamic arrays</h3><div class="details"><span class="summary"><a href="book2.h" target="listing">book2.h</a></span> <input id="but_details_d6e1026" onclick="toggleDisplay('_details_d6e1026')" type="button" value="+"/><div class="detailPart" id="_details_d6e1026"><pre><code id="_details_d6e1026_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  ~Book();
+  const Book&amp; operator= (const Book&amp; b);
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+
+#endif
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="bookdarr1.png" style="float: right; max-width: 40%;"/> In this version of the <code>Book</code> class, a portion of the  data is kept on the heap, in a number of linked list nodes allocated on  the heap.</p>
+    <ul>
+  <li>
+  <p>If this object were destroyed, we would need to be sure that the  storage allocated for the array is recovered.</p>
+    </li>
+  <li>
+  <p>That won’t happen in the  compiler-generated destructor, because the default action on pointers is  to do nothing.</p>
+    </li>
+</ul><hr/><p><strong>Implementing the Dyn. ArrayDestructor</strong></p>
+    <p>We start by adding the <span class="hli">destructor declaration</span>: </p>
+    <div class="details"><span class="summary"><a href="bookDestr.h" target="listing">bookDestr.h</a></span> <input id="but_details_d6e1053" onclick="toggleDisplay('_details_d6e1053')" type="button" value="+"/><div class="detailPart" id="_details_d6e1053"><pre><code id="_details_d6e1053_code">class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  const Book&amp; operator= (const Book&amp; b);
+  <span class='hli'>~Book();</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+     &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+</code></pre></div></div><p>Then we supply a function body for this destructor. </p>
+    <pre><code class="cpp">Book::~Book()
+{
+  delete [] authors;
+}
+</code></pre><p>Not much needs to be done - just delete the pointer to the array of authors.</p>
+    <a id="booklinkedlist"/><h3 id="book-linked-list">4.1.3 Book - linked list</h3><p>In this version of the <code>Book</code> class, a portion of the data is kept in an array allocated on the heap.</p>
+    <div class="details"><span class="summary"><a href="book3.h" target="listing">book3.h</a></span> <input id="but_details_d6e1067" onclick="toggleDisplay('_details_d6e1067')" type="button" value="+"/><div class="detailPart" id="_details_d6e1067"><pre><code id="_details_d6e1067_code">#ifndef BOOK_H
+#include "author.h"
+#include "authoriterator.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef AuthorIterator AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  ~Book();
+  const Book&amp; operator= (const Book&amp; b);
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+
+#endif
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="bookLL1.png" style="float: right; max-width: 50%;"/></p>
+    <ul>
+  <li>
+  <p>If this object were destroyed, we would need to be sure that the  storage allocated for the nodes is recovered.</p>
+    </li>
+  <li>
+  <p>That won’t happen in the  compiler-generated destructor, because the default action on pointers is  to do nothing.</p>
+    </li>
+</ul><hr/><p><strong>Implementing a Linked List Destructor</strong></p>
+    <p>We start by adding the destructor declaration: </p>
+    <div class="details"><span class="summary"><a href="bookLLDestr.h" target="listing">bookLLDestr.h</a></span> <input id="but_details_d6e1088" onclick="toggleDisplay('_details_d6e1088')" type="button" value="+"/><div class="detailPart" id="_details_d6e1088"><pre><code id="_details_d6e1088_code">class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+  Book (const Book&amp; b);
+  const Book&amp; operator= (const Book&amp; b);
+  <span class='hli'>~Book();</span>
+
+  std::string getTitle() const        { return title; }
+  void setTitle(std::string theTitle) {  title = theTitle; }
+     &#x22ee;
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+</code></pre></div></div><p>Then we supply a function body for this destructor.</p>
+    <pre><code class="cpp">Book::~Book()
+{
+  AuthorPosition nxt;
+  for (AuthorPosition current = begin(); current != end(); current = nxt)
+    {
+      nxt = current;
+      ++nxt;
+      delete current.pos;
+    }
+}
+</code></pre><p>This one is more elaborate. We need to walk the entire list, deleting each node as we come to it.</p>
+    <a id="bookstdlist"/><h3 id="book-std-list">4.1.4 Book - std::list</h3><ul>
+  <li>This version of the book has no pointers among its data members.</li>
+</ul><div class="details"><span class="summary"><a href="book4.h" target="listing">book4.h</a></span> <input id="but_details_d6e1101" onclick="toggleDisplay('_details_d6e1101')" type="button" value="+"/><div class="detailPart" id="_details_d6e1101"><pre><code id="_details_d6e1101_code">#ifndef BOOK_H
+
+#include &lt;list&gt;
+
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef std::list&lt;Author&gt;::iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  const_AuthorPosition begin() const;
+  const_AuthorPosition end() const;
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  std::list&lt;Author&gt; authors;
+};
+
+#endif
+</code></pre></div></div><ul>
+  <li>
+  <p>It’s entirely likely that the <code>std::list</code> has pointers inside  it, but we trust its destructor to clean up its own internal data  structures.</p>
+    </li>
+  <li>
+  <p>With that in mind, there’s really nothing we would have to  do when this book gets destroyed. </p>
+    </li>
+</ul><p>We can rely on the compiler-provided destructor.</p>
+    <a id="trustingthecompilergenerateddestructor"/><h2 id="trusting-the-compiler-generated-destructor">4.2 Trusting the Compiler-Generated Destructor</h2><p>By now, you may have perceived a pattern.</p>
+    <p>Compiler-generated destructors are wrong when… </p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><a id="theruleofthebig3"/><h1 id="the-rule-of-the-big-3">5 The Rule of the Big 3</h1><p><strong>The Big 3</strong></p>
+    <p>The “<span class="firstterm">Big 3</span>” are the </p>
+    <ul>
+  <li>
+  <p>copy constructor</p>
+    </li>
+  <li>
+  <p>assignment operator, and</p>
+    </li>
+  <li>
+  <p>destructor</p>
+    </li>
+</ul><p>By now, you may have noticed a pattern with  these.</p>
+    <hr/><p><strong>The Rule of the Big 3</strong></p>
+    <p>The <span class="firstterm">rule of the big 3</span> states that,</p>
+    <blockquote>
+  <span class="emph">if you provide your own version of any one of the big 3, you should provide your own version of all 3.</span>
+</blockquote><p>Why? Because we don’t trust the compiler-generated … </p>
+    <ul>
+  <li>
+  <p>copy constructor if our data members include pointers to data  we don’t share</p>
+    </li>
+  <li>
+  <p>assignment operator if our data members include pointers to  data we don’t share</p>
+    </li>
+  <li>
+  <p>destructor if our data members include pointers to data we don’t share</p>
+    </li>
+</ul><p>So if we don’t trust one, we don’t trust any of them.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Constructors%20and%20the%20Rule%20of%20the%20Big%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

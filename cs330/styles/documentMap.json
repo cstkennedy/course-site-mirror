@@ -1,0 +1,416 @@
+{ "mapping" : 
+  [
+    {
+      "doc" : "Assts",
+      "url" : "Protected/Assts/index.html"
+    },
+    {
+      "doc" : "adts",
+      "url" : "Public/adts/index.html"
+    },
+    {
+      "doc" : "assignment_structure",
+      "url" : "Assts/assignment_structure/index.html"
+    },
+    {
+      "doc" : "asstPlaceholder",
+      "url" : "Assts/asstPlaceholder/index.html"
+    },
+    {
+      "doc" : "asstsTemplate.mmd",
+      "url" : "Directory/grades/asstsTemplate.mmd.html"
+    },
+    {
+      "doc" : "big3",
+      "url" : "Public/big3/index.html"
+    },
+    {
+      "doc" : "cargoCmdLineArgs",
+      "url" : "Public/cargoCmdLineArgs/index.html"
+    },
+    {
+      "doc" : "checklist",
+      "url" : "Public/checklist/index.html"
+    },
+    {
+      "doc" : "classChecklistCrossLanguage",
+      "url" : "Public/classChecklistCrossLanguage/index.html"
+    },
+    {
+      "doc" : "classChecklists",
+      "url" : "Public/classChecklists/index.html"
+    },
+    {
+      "doc" : "classDiagrams",
+      "url" : "Public/classDiagrams/index.html"
+    },
+    {
+      "doc" : "classification",
+      "url" : "Public/classification/index.html"
+    },
+    {
+      "doc" : "codeDocumentation",
+      "url" : "Public/codeDocumentation/index.html"
+    },
+    {
+      "doc" : "communications",
+      "url" : "Public/communications/index.html"
+    },
+    {
+      "doc" : "cppMidtermReview",
+      "url" : "Public/cppMidtermReview/index.html"
+    },
+    {
+      "doc" : "cppReviewQuestionSet1",
+      "url" : "Public/cppReviewQuestionSet1/index.html"
+    },
+    {
+      "doc" : "designDiscussion",
+      "url" : "Public/designDiscussion/index.html"
+    },
+    {
+      "doc" : "designDiscussionIterators",
+      "url" : "Public/designDiscussionIterators/index.html"
+    },
+    {
+      "doc" : "designDiscussionIterators2",
+      "url" : "Public/designDiscussionIterators2/index.html"
+    },
+    {
+      "doc" : "designDiscussionIteratorsJava",
+      "url" : "Retired/designDiscussionIteratorsJava/index.html"
+    },
+    {
+      "doc" : "designDiscussionPart2",
+      "url" : "Public/designDiscussionPart2/index.html"
+    },
+    {
+      "doc" : "designHouse",
+      "url" : "Public/designHouse/index.html"
+    },
+    {
+      "doc" : "designWebsiteAnalysis00",
+      "url" : "Public/designWebsiteAnalysis00/index.html"
+    },
+    {
+      "doc" : "designWebsiteAnalysis01",
+      "url" : "Public/designWebsiteAnalysis01/index.html"
+    },
+    {
+      "doc" : "designWebsiteAnalysis02",
+      "url" : "Public/designWebsiteAnalysis02/index.html"
+    },
+    {
+      "doc" : "designWebsiteAnalysis03",
+      "url" : "Public/designWebsiteAnalysis03/index.html"
+    },
+    {
+      "doc" : "dynamicBinding",
+      "url" : "Public/dynamicBinding/index.html"
+    },
+    {
+      "doc" : "eclipseTricks",
+      "url" : "Public/eclipseTricks/index.html"
+    },
+    {
+      "doc" : "examInformationMidterm",
+      "url" : "Public/examInformationMidterm/index.html"
+    },
+    {
+      "doc" : "faq",
+      "url" : "Public/faq/index.html"
+    },
+    {
+      "doc" : "finalReview",
+      "url" : "Public/finalReview/index.html"
+    },
+    {
+      "doc" : "functors",
+      "url" : "Public/functors/index.html"
+    },
+    {
+      "doc" : "fundamentalsStudyGuide",
+      "url" : "Public/fundamentalsStudyGuide/index.html"
+    },
+    {
+      "doc" : "garbageCollection",
+      "url" : "Public/garbageCollection/index.html"
+    },
+    {
+      "doc" : "grades",
+      "url" : "Directory/grades/index.html"
+    },
+    {
+      "doc" : "gradleCmdLineArgs",
+      "url" : "Public/gradleCmdLineArgs/index.html"
+    },
+    {
+      "doc" : "headToHeadTesting",
+      "url" : "Public/headToHeadTesting/index.html"
+    },
+    {
+      "doc" : "honorsContract",
+      "url" : "Public/honorsContract/index.html"
+    },
+    {
+      "doc" : "idioms",
+      "url" : "Public/idioms/index.html"
+    },
+    {
+      "doc" : "implementingADTS",
+      "url" : "Public/implementingADTS/index.html"
+    },
+    {
+      "doc" : "inherIssues",
+      "url" : "Public/inherIssues/index.html"
+    },
+    {
+      "doc" : "inheritance",
+      "url" : "Public/inheritance/index.html"
+    },
+    {
+      "doc" : "introPost",
+      "url" : "Public/introPost/index.html"
+    },
+    {
+      "doc" : "introToPlantUML",
+      "url" : "Public/introToPlantUML/index.html"
+    },
+    {
+      "doc" : "java-checklist",
+      "url" : "Public/java-checklist/index.html"
+    },
+    {
+      "doc" : "java-impressions",
+      "url" : "Public/java-impressions/index.html"
+    },
+    {
+      "doc" : "java-inher",
+      "url" : "Public/java-inher/index.html"
+    },
+    {
+      "doc" : "java_inventory_iterator",
+      "url" : "Assts/java_inventory_iterator/index.html"
+    },
+    {
+      "doc" : "java_inventory_llist",
+      "url" : "Assts/java_inventory_llist/index.html"
+    },
+    {
+      "doc" : "java_inventory_oop_1",
+      "url" : "Assts/java_inventory_oop_1/index.html"
+    },
+    {
+      "doc" : "java_inventory_oop_2",
+      "url" : "Assts/java_inventory_oop_2/index.html"
+    },
+    {
+      "doc" : "java_inventory_oop_3",
+      "url" : "Assts/java_inventory_oop_3/index.html"
+    },
+    {
+      "doc" : "javaguiexample",
+      "url" : "Public/javaguiexample/index.html"
+    },
+    {
+      "doc" : "languageResources",
+      "url" : "Public/languageResources/index.html"
+    },
+    {
+      "doc" : "library",
+      "url" : "Directory/library/index.html"
+    },
+    {
+      "doc" : "makefilesCmdLineArgs",
+      "url" : "Public/makefilesCmdLineArgs/index.html"
+    },
+    {
+      "doc" : "meetTheInstructor",
+      "url" : "Public/meetTheInstructor/index.html"
+    },
+    {
+      "doc" : "midtermReview",
+      "url" : "Public/midtermReview/index.html"
+    },
+    {
+      "doc" : "narrative.mmd",
+      "url" : "Public/quizDomainClasses/narrative.mmd.html"
+    },
+    {
+      "doc" : "navigation",
+      "url" : "Directory/navigation/index.html"
+    },
+    {
+      "doc" : "observationsMidterm.mmd",
+      "url" : "Postmortems/postmortems/observationsMidterm.mmd.html"
+    },
+    {
+      "doc" : "officeHours",
+      "url" : "Public/officeHours/index.html"
+    },
+    {
+      "doc" : "outline",
+      "url" : "Directory/outline/index.html"
+    },
+    {
+      "doc" : "pointersRawVsSmart",
+      "url" : "Public/pointersRawVsSmart/index.html"
+    },
+    {
+      "doc" : "postmortems",
+      "url" : "Postmortems/postmortems/index.html"
+    },
+    {
+      "doc" : "processModels",
+      "url" : "Public/processModels/index.html"
+    },
+    {
+      "doc" : "pythonCmdLineArgs",
+      "url" : "Public/pythonCmdLineArgs/index.html"
+    },
+    {
+      "doc" : "quizAnalysisSD",
+      "url" : "Public/quizAnalysisSD/index.html"
+    },
+    {
+      "doc" : "quizDomainClasses",
+      "url" : "Public/quizDomainClasses/index.html"
+    },
+    {
+      "doc" : "quizDomainClassesPrev",
+      "url" : "Public/quizDomainClassesPrev/index.html"
+    },
+    {
+      "doc" : "quizDomainModel",
+      "url" : "Public/quizDomainModel/index.html"
+    },
+    {
+      "doc" : "quizDomainModelPrev",
+      "url" : "Public/quizDomainModelPrev/index.html"
+    },
+    {
+      "doc" : "recordingPlaceholder",
+      "url" : "Public/recordingPlaceholder/index.html"
+    },
+    {
+      "doc" : "reviewCPPChecklist",
+      "url" : "Public/reviewCPPChecklist/index.html"
+    },
+    {
+      "doc" : "reviewJavaChecklist",
+      "url" : "Public/reviewJavaChecklist/index.html"
+    },
+    {
+      "doc" : "reviewJavaGuiListeners",
+      "url" : "Public/reviewJavaGuiListeners/index.html"
+    },
+    {
+      "doc" : "reviewOperatorOverloading",
+      "url" : "Public/reviewOperatorOverloading/index.html"
+    },
+    {
+      "doc" : "reviewQuestionSet1",
+      "url" : "Public/reviewQuestionSet1/index.html"
+    },
+    {
+      "doc" : "reviewSD",
+      "url" : "Public/reviewSD/index.html"
+    },
+    {
+      "doc" : "reviewSOLID",
+      "url" : "Public/reviewSOLID/index.html"
+    },
+    {
+      "doc" : "review_inventory_iterator",
+      "url" : "Postmortems/review_inventory_iterator/index.html"
+    },
+    {
+      "doc" : "review_inventory_llist",
+      "url" : "Postmortems/review_inventory_llist/index.html"
+    },
+    {
+      "doc" : "review_inventory_oop_1",
+      "url" : "Postmortems/review_inventory_oop_1/index.html"
+    },
+    {
+      "doc" : "review_inventory_pointer",
+      "url" : "Postmortems/review_inventory_pointer/index.html"
+    },
+    {
+      "doc" : "sequenceDiagrams",
+      "url" : "Public/sequenceDiagrams/index.html"
+    },
+    {
+      "doc" : "ssthreads",
+      "url" : "Public/ssthreads/index.html"
+    },
+    {
+      "doc" : "submitting",
+      "url" : "Public/submitting/index.html"
+    },
+    {
+      "doc" : "submittingNP",
+      "url" : "Public/submittingNP/index.html"
+    },
+    {
+      "doc" : "support",
+      "url" : "Public/support/index.html"
+    },
+    {
+      "doc" : "syllabus",
+      "url" : "Public/syllabus/index.html"
+    },
+    {
+      "doc" : "theBeginning",
+      "url" : "Public/theBeginning/index.html"
+    },
+    {
+      "doc" : "themes",
+      "url" : "Public/themes/index.html"
+    },
+    {
+      "doc" : "threadMotivation",
+      "url" : "Public/threadMotivation/index.html"
+    },
+    {
+      "doc" : "threads",
+      "url" : "Public/threads/index.html"
+    },
+    {
+      "doc" : "unitTestMutatorsAccessors",
+      "url" : "Public/unitTestMutatorsAccessors/index.html"
+    },
+    {
+      "doc" : "useCases",
+      "url" : "Public/useCases/index.html"
+    },
+    {
+      "doc" : "vimConfig",
+      "url" : "Public/vimConfig/index.html"
+    },
+    {
+      "doc" : "websiteAnalysis.mmd",
+      "url" : "Public/designWebsiteAnalysis00/websiteAnalysis.mmd.html"
+    },
+    {
+      "doc" : "whereAreWeNow1",
+      "url" : "Public/whereAreWeNow1/index.html"
+    },
+    {
+      "doc" : "whereAreWeNow2Iterators",
+      "url" : "Public/whereAreWeNow2Iterators/index.html"
+    },
+    {
+      "doc" : "whereAreWeNow3FutureWork",
+      "url" : "Public/whereAreWeNow3FutureWork/index.html"
+    },
+    {
+      "doc" : "whichLanguageIsIt",
+      "url" : "Public/whichLanguageIsIt/index.html"
+    },
+    {
+      "doc" : "workflows",
+      "url" : "Public/workflows/index.html"
+    }
+  ]
+}

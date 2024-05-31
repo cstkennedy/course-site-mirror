@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Inheritance: The is-a relation</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%3A%20The%20is-a%20relation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Inheritance: The is-a relation</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#generalization-specialization">1 Generalization &amp; Specialization</a></div><div class="toc-h2"><a href="#inheritance">1.1 Inheritance</a></div><div class="toc-h2"><a href="#subtyping">1.2 Subtyping</a></div><div class="toc-h1"><a href="#inheritance-subtyping-in-c-">2 Inheritance &amp; Subtyping in C++</a></div><div class="toc-h2"><a href="#inheritance-example-values-in-a-spreadsheet">2.1 Inheritance Example - Values in a Spreadsheet</a></div><div class="toc-h1"><a href="#overriding-functions">3 Overriding Functions</a></div><div class="toc-h1"><a href="#example-inheritance-and-expressions">4 Example: Inheritance and Expressions</a></div></div><a id="generalizationspecialization"/><h1 id="generalization-specialization">1 Generalization &amp; Specialization</h1><ul>
+  <li>
+  <p>Conceptually, class A is a generalization of class B if every B  object is also an A object.</p>
+    </li>
+  <li>
+  <p>“everything we say about an” A object “is also true for” a  B object.</p>
+    </li>
+  <li>
+  <p>At the specification/implementation level, class A is a  generalization of class B if B conforms to the public interface of  A.</p>
+    </li>
+</ul><hr/><p><strong>Specialization Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="transinher.png" style="max-width: 60%;"/></div>
+    </p>
+    <p>For example, a check and a deposit are actually  specializations of the more general concept of a “transaction”.</p>
+    <h2 id="inheritance">1.1 Inheritance</h2><p>A class C <span class="firstterm">inherits</span> from class D if C has all the data members and messages of D.</p>
+    <ul>
+  <li>C may have additional data members and messages not present in D.  </li>
+</ul><p>D is called a <span class="firstterm">base class</span> of C.</p>
+    <hr/><p><strong>Inheritance Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="gradtas.png" style="float: right; max-width:  50%;"/> This example suggests that Teachers and Students will inherit from University Personnel. </p>
+    <ul>
+  <li>
+  <p>So if University Personnel have data members <span class="varname">name</span> and <span class="varname">uin</span> (University ID Number), the same will be true of <code>Teachers</code> and <code>Students</code>.</p>
+    </li>
+  <li>
+  <p>However, <code>Teachers</code> may have data members not common to all <code>UniversityPersonnel</code>, such as a salary.<br/> </p>
+    </li>
+  <li>
+  <p><code>Students</code> may likewise have data members not common to all <code>UniversityPersonnel</code>, such as a grade point average <span class="varname">gpa</span>.</p>
+    </li>
+</ul><hr/><p><strong>Inheritance Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="gradtas.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>The diagram also suggests that Graduate TAs will inherit from both <code>Teachers</code> and <code>Students</code>, so <code>GraduateTA</code>s will have a <span class="varname">name</span>, <span class="varname">uin</span>, <span class="emph">and</span> a <span class="varname">salary</span> and a <span class="varname">gpa</span>.</li>
+</ul><hr/><p><strong>Multiple Inheritance</strong></p>
+    <p>Inheriting from multiple base classes is called <span class="firstterm">multiple inheritance</span>.</p>
+    <p>It’s reasonably common in domain and analysis models, but designers often try to remove it before they get to the stage of coding. That’s because multiple inheritance can lead to complications. </p>
+    <ul>
+  <li>
+  <p>For example, does a <code>GraduateTA</code> get one <span class="varname">name</span> or two?</p>
+    </li>
+  <li>
+  <p>One <span class="varname">uin</span> or two?</p>
+    </li>
+</ul><h2 id="subtyping">1.2 Subtyping</h2><p>A closely related idea:</p>
+    <ul>
+  <li>A type C is a <span class="firstterm">subtype</span> of D if a value of type C may be used in any operation that expects a value of type D.
+    <ul>
+      <li>
+      <p>C is called a subclass or subtype of D.  </p>
+    </li>
+    </ul>
+  </li>
+</ul><p>D is called a superclass or <span class="firstterm">supertype</span> of C.</p>
+    <hr/><p><strong>What’s the Difference?</strong></p>
+    <ul>
+  <li>
+  <p>Inheritance deals with the class’s members.</p>
+    </li>
+  <li>
+  <p>Subtyping deals with non-members</p>
+    </li>
+</ul><hr/><p><strong>Effects of Subtyping and Inheritance</strong></p>
+    <div class="details"><span class="summary"><a href="applyToBal.cpp" target="listing">applyToBal.cpp</a></span> <input id="but_details_d6e194" onclick="toggleDisplay('_details_d6e194')" type="button" value="+"/><div class="detailPart" id="_details_d6e194"><pre><code id="_details_d6e194_code">void applyToCurrentBalance (CheckBook cbook, Transaction trans) {
+   Balance b = cbook.getCurrentBalance();
+   trans.apply (b);
+   cbook.setCurrentBalance(b);
+}
+   &#x22ee;
+CheckBook myCheckBook;
+Check check;
+Transaction transaction;
+Balance bal;
+   &#x22ee;
+bal = myCheckBook.getCurrentBalance();
+transaction.apply (bal);                         &#x2780;
+check.apply (bal);                               &#x2781;
+applyToCurrentBalance(myCheckBook, transaction); &#x2782;
+applyToCurrentBalance(myCheckBook, check);       &#x2783;
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="transinher.png" style="float: right; max-width:  50%;"/> For example, the last four statements in the code above are all legal, but the reasons vary: </p>
+    <ul>
+  <li>
+    <p><span>➀</span> We can make this call because <span class="function">apply</span> is a member  function of <span class="type">Transaction</span> and <span class="varname">transaction</span> is of type  <span class="type">Transaction</span>.</p>
+    
+    <p>Nothing special there.</p>
+    
+  </li>
+  <li>
+  <p><span>➁</span> We can make this call because <span class="function">apply</span> is a member function of <span class="type">Transaction</span>, <span class="type">Check</span> <span class="emph">inherits</span> from <span class="type">Transaction</span>, and <span class="type">Check</span> therefore has that same member function.</p>
+    </li>
+  <li>
+  <p><span>➂</span> We can make this call because <span class="function">applyToCurrentBalance</span> is a non-member function that takes a <span class="type">Transaction</span> as a parameter, and <span class="varname">transaction</span> is indeed of type <span class="type">Transaction</span>.</p>
+    </li>
+  <li>
+  <p><span>➃</span> Finally, we can make this call because <span class="function">applyToCurrentBalance</span> is a non-member function that takes a <span class="type">Transaction</span> as a parameter, <span class="varname">check</span> is of type <span class="type">Check</span> which is a <span class="emph">subtype</span> of <span class="type">Transaction</span>, and we can use a subtype object in any operation where an object of the supertype is expected. Inheritance does not come into play in this case, because the function we are looking at is not a member function.</p>
+    </li>
+</ul><hr/><p><strong>C++ Combines Inheritance &amp; Subtyping</strong></p>
+    <p>In most OOPLs, including C++, inheritance and subtyping are  combined.</p>
+    <ul>
+  <li>
+  <p>A base class is always a superclass.</p>
+    </li>
+  <li>
+  <p>An inheriting class is always a subclass.</p>
+    </li>
+  <li>
+  <p>A superclass is always a base class.</p>
+    </li>
+  <li>
+  <p>An subclass is always an inheriting class.</p>
+    </li>
+</ul><p>That makes the distinction between inheritance and subtyping  moot in C++. </p>
+    <p>The same does not hold, however, of Java, where only the  first two of the four above statements are true.</p>
+    <a id="inheritancesubtypinginc"/><h1 id="inheritance-subtyping-in-c-">2 Inheritance &amp; Subtyping in C++</h1><p>The construct </p>
+    <pre><code class="cpp">class C : public Super {
+</code></pre><p>indicates that</p>
+    <ul>
+  <li>
+  <p>Inheritance</p>
+    </li>
+  <li>
+  <p>C inherits from Super</p>
+    </li>
+  <li>
+  <p>Super is a base class of C</p>
+    </li>
+  <li>
+  <p>Subtyping </p>
+    </li>
+  <li>
+  <p>C is a subtype of Super</p>
+    </li>
+  <li>
+  <p>Super is a supertype of C</p>
+    </li>
+</ul><a id="inheritanceexamplevaluesinaspreadsheet"/><h2 id="inheritance-example-values-in-a-spreadsheet">2.1 Inheritance Example - Values in a Spreadsheet</h2><div class="details"><span class="summary"><a href="cell.h" target="listing">cell.h</a></span> <input id="but_details_d6e354" onclick="toggleDisplay('_details_d6e354')" type="button" value="+"/><div class="detailPart" id="_details_d6e354"><pre><code id="_details_d6e354_code">#ifndef CELL_H
+#define CELL_H
+
+#include "cellname.h"
+#include "observable.h"
+#include "observer.h"
+#include "strvalue.h"
+
+class Expression;
+class Value;
+class SpreadSheet;
+
+
+// A single cell within a Spreadsheet
+class Cell: public Observable, Observer
+{
+public:
+  Cell (SpreadSheet&amp; sheet, CellName name);
+  Cell(const Cell&amp;);
+
+  ~Cell();
+
+  CellName getName() const;
+
+  const Expression* getFormula() const;
+  void putFormula(Expression*);
+
+  const Value* getValue() const;
+  const Value* evaluateFormula();
+
+  bool getValueIsCurrent() const;
+  void putValueIsCurrent(bool);
+
+
+  virtual void notify (Observable* changedCell);
+
+private:
+  SpreadSheet&amp; theSheet;
+  CellName theName;
+  Expression* theFormula;
+  Value* theValue;
+  bool outOfDate;
+  static StringValue defaultValue;
+};
+
+#endif
+</code></pre></div></div><p><div class="noFloat"> </div>
+    <img src="valueinher.png" style="float: right; max-width: 70%;"/> Every cell in the spreadsheet contains </p>
+    <ul>
+  <li>
+  <p>a formula (expression)</p>
+    </li>
+  <li>
+  <p>a value</p>
+    </li>
+</ul><hr/><p><strong>Values</strong></p>
+    <p>The interface for values is</p>
+    <div class="details"><span class="summary"><a href="value.h" target="listing">value.h</a></span> <input id="but_details_d6e375" onclick="toggleDisplay('_details_d6e375')" type="button" value="+"/><div class="detailPart" id="_details_d6e375"><pre><code id="_details_d6e375_code">#ifndef VALUE_H
+#define VALUE_H
+
+#include &lt;string&gt;
+#include &lt;typeinfo&gt;
+
+//
+// Represents a value that might be obtained for some spreadsheet cell
+// when its formula was evaluated.
+// 
+// Values may come in many forms. At the very least, we can expect that
+// our spreadsheet will support numeric and string values, and will
+// probably need an "error" or "invalid" value type as well. Later we may 
+// want to add addiitonal value kinds, such as currency or dates.
+//
+class Value
+{
+public:
+  virtual ~Value() {}
+
+
+  virtual std::string render (unsigned maxWidth) const = 0;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  virtual Value* clone() const = 0;
+  // make a copy of this value
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const = 0;
+  //pre: typeid(*this) == typeid(v)
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+  friend bool operator== (const Value&amp;, const Value&amp;);
+};
+
+inline
+bool operator== (const Value&amp; left, const Value&amp; right)
+{
+  return (typeid(left) == typeid(right))
+    &amp;&amp; left.isEqual(right);
+}
+
+#endif
+</code></pre></div></div><ul>
+  <li>Values come in many different kinds</li>
+</ul><hr/><p><strong>Numeric Values</strong></p>
+    <p>Numeric values hold numbers. </p>
+    <div class="details"><span class="summary"><a href="numvalue.h" target="listing">numvalue.h</a></span> <input id="but_details_d6e386" onclick="toggleDisplay('_details_d6e386')" type="button" value="+"/><div class="detailPart" id="_details_d6e386"><pre><code id="_details_d6e386_code">#ifndef NUMVALUE_H
+#define NUMVALUE_H
+
+#include "value.h"
+
+//
+// Numeric values in the spreadsheet.
+//
+class NumericValue: public Value
+{
+  double d;
+
+public:
+  NumericValue():d(0.0)  {}
+  NumericValue (double x): d(x) {}
+
+  virtual std::string render (unsigned maxWidth) const;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  virtual Value* clone() const;
+
+  double getNumericValue() const {return d;}
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const;
+  //pre: typeid() == v.typeid()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+};
+
+#endif
+</code></pre></div></div><ul>
+  <li>
+  <p>We infer by inheritance that <span class="type">NumericValue</span> has function members render(), clone(), etc.</p>
+    </li>
+  <li>
+  <p>Therefore this code is OK (by inheritance):</p>
+    </li>
+</ul><pre><code class="cpp"> void foo (NumericValue nv) {
+     cout &lt;&lt; nv.render(8) &lt;&lt; endl;
+ }
+ 
+</code></pre><ul>
+  <li>We infer via subtyping that the following code is OK:</li>
+</ul><pre><code class="cpp">void foo (Value v; NumericValue nv) {
+    if (v == nv) {
+       &#x22ee;
+
+</code></pre><hr/><p><strong>String Values</strong></p>
+    <p>String values hold numbers.</p>
+    <div class="details"><span class="summary"><a href="strvalue.h" target="listing">strvalue.h</a></span> <input id="but_details_d6e417" onclick="toggleDisplay('_details_d6e417')" type="button" value="+"/><div class="detailPart" id="_details_d6e417"><pre><code id="_details_d6e417_code">#ifndef STRVALUE_H
+#define STRVALUE_H
+
+#include "value.h"
+
+//
+// String values in the spreadsheet.
+//
+class StringValue: public Value
+{
+  std::string s;
+  static const char* theValueKindName;
+
+public:
+  StringValue()  {}
+  StringValue (std::string x): s(x) {}
+
+
+  virtual std::string render (unsigned maxWidth) const;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  std::string getStringValue() const {return s;}
+
+  virtual Value* clone() const;
+
+
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const;
+  //pre: valueKind() == v.valueKind()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+};
+
+#endif
+</code></pre></div></div><ul>
+  <li>Note how numeric and string values each add data members  that actually store the data they need and that other types of  values would find irrelevant.</li>
+</ul><hr/><p><strong>Error Values</strong></p>
+    <p>Error values store no data at all, but are used as placeholders in a  cell whose calculations have failed for some reason.</p>
+    <ul>
+  <li>(E.g., in any spreadsheet program you have available, try dividing by zero in a cell).</li>
+</ul><div class="details"><span class="summary"><a href="errvalue.h" target="listing">errvalue.h</a></span> <input id="but_details_d6e431" onclick="toggleDisplay('_details_d6e431')" type="button" value="+"/><div class="detailPart" id="_details_d6e431"><pre><code id="_details_d6e431_code">#ifndef ERRVALUE_H
+#define ERRVALUE_H
+
+#include "value.h"
+
+//
+// Erroneous/invalid values in the spreadsheet.
+//
+class ErrorValue: public Value
+{
+  static const char* theValueKindName;
+
+public:
+  ErrorValue()  {}
+
+  virtual std::string render (unsigned maxWidth) const;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  virtual Value* clone() const;
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const;
+  //pre: valueKind() == v.valueKind()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+};
+
+#endif
+</code></pre></div></div><a id="overridingfunctions"/><h1 id="overriding-functions">3 Overriding Functions</h1><p>When a subclass inherits a function member, it may</p>
+    <ul>
+  <li>
+  <p>inherit the function’s body from the superclass, or</p>
+    </li>
+  <li>
+  <p>override the function by providing its own body</p>
+    </li>
+</ul><hr/><p><strong>Overriding: Declaring Your Intentions</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<div class="details"><span class="summary"><a href="overriding.h" target="listing">overriding.h</a></span> <input id="but_details_d6e453" onclick="toggleDisplay('_details_d6e453')" type="button" value="+"/><div class="detailPart" id="_details_d6e453"><pre><code id="_details_d6e453_code">class A {
+public:
+  void foo();
+  void bar();
+  void baz();
+};
+
+class B: public A {
+public:
+  void foo();       &#x2780;
+  void bar(int k);  &#x2781;
+  void bar() const; &#x2782;
+};                  &#x2783;
+</code></pre></div></div>
+
+</div><div class="rightColumn">
+<ul>
+  <li>
+  <p><span>➀</span> <span class="type">B</span> declares that it will override  <span class="function">A::foo()</span>. <span class="type">B</span> inherits the declaration of  <span class="function">foo()</span> but will provide its own body.</p>
+    </li>
+  <li>
+    <p><span>➁</span> This does not override <span class="function">A::bar()</span>. </p>
+    
+    <ul>
+      <li>Changing parameters <span class="firstterm">overloads</span> a function, but (access to) the original function is unaffected.  </li>
+    </ul>
+  </li>
+  <li>
+    <p><span>➂</span> This does not override <span class="function">A::bar()</span>, either. It also overloads it with different parameter types.</p>
+    
+    <ul>
+      <li>The implicit parameter <span class="varname">this</span> is a <span class="type">const B<code>*</code></span> instead of an <span class="type">A<code>*</code></span>.</li>
+    </ul>
+  </li>
+  <li>
+  <p><span>➃</span> Because <span class="type">B</span> did not override <span class="function">A::bar()</span> or <span class="function">A::baz()</span>, it inherits those declarations <span class="emph">and</span> their bodies from <span class="type">A</span>.</p>
+    </li>
+</ul>
+</div></div><hr/><p><strong>Access to Functions</strong></p>
+    <ul>
+  <li>Even when we do override, the original function can be called explicitly:</li>
+</ul><pre><code class="cpp">B b;
+b.foo();     // calls B::foo()
+b.A::foo();  // calls the original A::foo()
+
+</code></pre><ul>
+  <li>This is often useful when the overriding function is supposed to do the same thing as the original <em>plus</em> something extra.</li>
+</ul><pre><code class="cpp">void B::foo()
+{
+  A::foo();
+  doSomethingExtra();
+}
+
+</code></pre><hr/><p><strong>Example of Overriding</strong></p>
+    <p>As an example of overriding, consider these four classes, which form a small inheritance hierarchy. </p>
+    <div class="details"><span class="summary"><a href="animalOv.cpp" target="listing">animalOv.cpp</a></span> <input id="but_details_d6e571" onclick="toggleDisplay('_details_d6e571')" type="button" value="+"/><div class="detailPart" id="_details_d6e571"><pre><code id="_details_d6e571_code">class Animal {
+public:
+  String eats() {return "food";}
+  String name() {return "Animal";}
+};
+
+class Herbivore: public Animal {
+public:
+   String eats() {return "plants";}
+   String name() {return "Herbivore";}
+};
+
+class Ruminants: public Herbivore {
+public:
+   String name() {return "Ruminant";}
+};
+
+class Carnivore: public Animal {
+public:
+   String name() {return "Carnivore";}
+};
+
+void show (String s1, String s2) {
+    cout &lt;&lt; s1 &lt;&lt; " " &lt;&lt; s2 &lt;&lt; endl;
+}
+</code></pre></div></div><p>Note that several of the inheriting classes override one or both functions in their base class.</p>
+    <p><strong>Question:</strong> Now, suppose we run the following code. What will be printed by  each of the <span class="function">show</span> calls?</p>
+    <pre><code class="cpp"> Animal a;
+ Carnivore c;
+ Herbivore h;
+ Ruminant r;
+ show(a.name(), a.eats());        // AHRC fpgm
+ show(c.name(), c.eats());        // AHRC fpgm
+ show(h.name(), h.eats());        // AHRC fpgm
+ show(r.name(), r.eats());        // AHRC fpgm
+
+</code></pre><div class="details"><span class="summary">Answer:</span> <input id="but_details_d6e583" onclick="toggleDisplay('_details_d6e583')" type="button" value="+"/><div class="detailsBody" id="_details_d6e583" style="display: none;">
+<pre><code class="cpp"> Animal a;
+ Carnivore c;
+ Herbivore h;
+ Ruminant r;
+ show(a.name(), a.eats());        // Animal food
+ show(c.name(), c.eats());        // Carnivore food
+ show(h.name(), h.eats());        // Herbivore plants
+ show(r.name(), r.eats());        // Ruminant plants
+
+</code></pre>
+</div></div><hr/><p><strong>Inheritance and Encapsulation</strong></p>
+    <p>An inheriting class does <span class="emph">not</span> get access to private data members of its base class:</p>
+    <pre><code class="cpp">class Counter {
+   int count;
+public:
+   Counter() {count = 0;}
+   void increment() {++count;}
+   int getC() const {return count;}
+};
+
+class HoursCounter: public Counter {
+public:
+   void increment() {
+     counter = (counter + 1) % 24; // Error!
+   }
+};
+
+</code></pre><hr/><p><strong>Protected Members</strong></p>
+    <p>Data members marked as <code>protected</code> are accessible to inheriting classes but private to all other classes.</p>
+    <pre><code class="cpp">class Counter {
+protected:
+   int count;
+public:
+   Counter() {count = 0;}
+   void increment() {++count;}
+   int getC() const {return count;}
+};
+
+class HoursCounter: public Counter {
+public:
+   void increment() {
+     counter = (counter + 1) % 24; // OK
+   }
+};
+
+</code></pre><a id="exampleinheritanceandexpressions"/><h1 id="example-inheritance-and-expressions">4 Example: Inheritance and Expressions</h1><hr/><p><strong>Expression Trees</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="exprtree.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>
+    <p>An Expression is represented as a tree</p>
+    
+    <ul>
+      <li>This tree represents <code>2*a1 + 3</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>An Expression comes in several parts</p>
+    
+    <ul>
+      <li>Internal nodes represent an single operator being applied to  some number of operands
+        <ul>
+          <li>Each operand is a (sub)Expression</li>
+        </ul>
+      </li>
+      <li>Leafs represent constants and variables (cell names)</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Expression Inheritance Hierarchy</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="exprinher.png" style="max-width: 80%;"/></div>
+    </p>
+    <p>We would expect the lower-level classes like <span class="type">PlusNode</span> and <span class="type">TimesNode</span> to override the <span class="function">evaluate</span> function to do addition, multiplication, etc., or whatever it is that distinctively identifies that particular “kind” of expression from all the other possibilities.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%3A%20The%20is-a%20relation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

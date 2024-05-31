@@ -1,0 +1,1311 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Java - First Impressions for a C++ Programmer</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Java%20-%20First%20Impressions%20for%20a%20C%2B%2B%20Programmer"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Java - First Impressions for a C++ Programmer</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#program-structure">1 Program Structure</a></div><div class="toc-h1"><a href="#program-structure-file-structure">2 Program Structure == File Structure</a></div><div class="toc-h1"><a href="#swimming-in-pointers">3 Swimming in Pointers</a></div><div class="toc-h1"><a href="#exceptions">4 Exceptions</a></div><div class="toc-h1"><a href="#corresponding-data-structures">5 Corresponding Data Structures</a></div></div><hr/><p><strong>Moving from C++ to Java</strong></p>
+    <ul>
+  <li>
+    <p>First, the good news …</p>
+    
+    <ul>
+      <li>You already know most of the language
+        <ul>
+          <li>Syntax is largely the same as C++</li>
+          <li>Semantics are similar</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Then, the bad news … </p>
+    
+    <ul>
+      <li>
+      <p>The “standard libraries” of Java and C++ are very, very different</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>I’m not going to lecture on the basics</strong></p>
+    <ul>
+  <li>
+  <p>You already know most of them</p>
+    </li>
+  <li>
+    <p>Readings from the course Outline page take you to <a href="https://secweb.cs.odu.edu/~zeil/cs382/website/Directory/page/topics.html">CS382</a> material</p>
+    
+    <ul>
+      <li>do the readings</li>
+      <li>and the labs</li>
+    </ul>
+  </li>
+  <li>
+  <p>In this lesson, I’ll highlight the differences between Java and C++ that you will need to get started</p>
+    </li>
+  <li>
+  <p>Next lesson, I’ll begin focusing on OO issues in Java</p>
+    </li>
+</ul><a id="programstructure"/><h1 id="program-structure">1 Program Structure</h1><hr/><p><strong>Hello Java</strong></p>
+    <p>The traditional starting point:</p>
+    <pre><code class="java">public class HelloWorld {
+
+  public static void main (String[] argv)
+  {
+    System.out.println ("Hello, World!");
+  }
+}
+
+</code></pre><ul>
+  <li>
+    <p>Why is <span class="function">main()</span> inside a class?</p>
+    
+    <ul>
+      <li>Because Java has no standalone functions.</li>
+      <li><span class="emph">All</span> functions must be inside a class.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Any class with a “public static void” main function taking an array of <span class="type">String</span>s cane be executed.</p>
+    </li>
+</ul><hr/><p><strong>Class Syntax</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">class MailingList {
+private:
+   struct Node {
+      Contact data;
+      Node* next;
+   };
+   Node* first;
+public:
+   MailingList() 
+   {first = 0;}
+     &#x22ee;
+};
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">public class MailingList {
+   private class Node {
+      Contact data;
+      Node next;
+   }
+   private Node first;
+public MailingList() 
+  {first = null;}
+     &#x22ee;
+}
+
+</code></pre>
+</div></div><ul>
+  <li>
+  <p><code>public</code> and <code>private</code> are labels  for each declaration, not names of “regions”</p>
+    </li>
+  <li>
+  <p>No trailing semi-colon</p>
+    </li>
+</ul><hr/><p><strong>Packages</strong></p>
+    <p>A Java <span class="firstterm">package</span> is like a C++ <span class="firstterm">namespace</span>:</p>
+    <ul>
+  <li>A container of classes and other, smaller packages/namespaces</li>
+</ul><div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">namespace myUtilities {
+  class Randomizer {
+    &#x22ee;
+  };
+};
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="cpp">package myUtilities;
+class Randomizer {
+   &#x22ee;
+}
+
+</code></pre>
+</div></div><ul>
+  <li>Becomes part of the <span class="firstterm">fully qualified name</span> of a class</li>
+</ul><table>
+  <thead>
+    <tr>
+      <th>C++ </th>
+      <th>Java </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>myUtilities::Randomizer r;</code> </td>
+      <td><code>myUtilities.Randomizer r;</code> </td>
+    </tr>
+  </tbody>
+</table><hr/><p><strong>We Can Have Short-Cuts</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">using myUtilities::Randomizer
+   &#x22ee;
+Randomizer r;
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">import myUtilities.Randomizer;
+   &#x22ee;
+Randomizer r;
+
+</code></pre>
+</div></div><hr/><p><strong>We Can Have Shorter Short-Cuts</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">using namespace myUtilities;
+   &#x22ee;
+Randomizer r;
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">import myUtilities.*;
+   &#x22ee;
+Randomizer r;
+
+</code></pre>
+</div></div><hr/><p><strong>Cultural Difference</strong></p>
+    <ul>
+  <li>
+    <p>C++ programmers rarely invent their own namespaces</p>
+    
+    <ul>
+      <li>And use <code>using</code> to circumvent <code>std::</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Java programmers frequently invent packages</p>
+    
+    <ul>
+      <li>Often multiple packages in a single project</li>
+      <li>Leaving things in the untitled default package is considered the sign of a beginner</li>
+    </ul>
+  </li>
+</ul><a id="programstructurefilestructure"/><h1 id="program-structure-file-structure">2 Program Structure == File Structure</h1><hr/><p><strong>Class == File</strong></p>
+    <ul>
+  <li>
+  <p>In C++, I can put a class <span class="type">MailingList</span> in <span class="file">student.h</span> and <span class="file">automobile.cpp</span> if I want</p>
+    </li>
+  <li>
+  <p>Not so in Java:</p>
+    </li>
+</ul><p>A class named “Foo” must be placed in a file named <span class="file">Foo.java</span>  * And upper/lower case do count!</p>
+    <hr/><p><strong>Classes are not Split into Two Files</strong></p>
+    <ul>
+  <li>
+    <p>C++ distinguishes between class</p>
+    
+    <ul>
+      <li>declarations: usually placed in a header (.h file), and</li>
+      <li>definitions: usually placed in a compilation unit (.cpp file)</li>
+    </ul>
+    <p>e.g.,</p>
+    
+    <pre><code>&lt;cwm tag='longlisting' file='mailinglist.h'/&gt;Loading code from mailinglist.h&lt;cwm tag='/longlisting'/&gt;
+
+and
+</code></pre><div class="details"><span class="summary"><a href="mailinglist.cpp" target="listing">mailinglist.cpp</a></span> <input id="but_details_d6e340" onclick="toggleDisplay('_details_d6e340')" type="button" value="+"/><div class="detailPart" id="_details_d6e340"><pre><code id="_details_d6e340_code">#include &lt;cassert&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+#include "mailinglist.h"
+
+
+using namespace std;
+using namespace rel_ops;
+
+
+
+MailingList::MailingList()
+  : first(NULL), last(NULL), theSize(0)
+{}
+
+MailingList::MailingList(const MailingList&amp; ml)
+  : first(NULL), last(NULL), theSize(0)
+{
+  for (ML_Node* current = ml.first; current != NULL;
+       current = current-&gt;next)
+    addContact(current-&gt;contact);
+}
+
+
+MailingList::~MailingList()
+{
+  clear();
+}
+
+const MailingList&amp; MailingList::operator= (const MailingList&amp; ml)
+{
+  if (this != &amp;ml)
+    {
+      clear();
+      for (ML_Node* current = ml.first; current != NULL;
+	   current = current-&gt;next)
+	addContact(current-&gt;contact);
+    }
+  return *this;
+}
+
+
+// Add a new contact to the list
+void MailingList::addContact (const Contact&amp; contact)
+{
+  if (first == NULL) 
+    { // add to empty list
+      first = last = new ML_Node(contact, NULL);
+      theSize = 1;
+    }
+  else if (contact &gt; last-&gt;contact)
+    { // add to end of non-empty list
+      last-&gt;next = new ML_Node(contact, NULL);
+      last = last-&gt;next;
+      ++theSize;
+    }
+  else if (contact &lt; first-&gt;contact)
+    { // add to front of non-empty list
+      first = new ML_Node(contact, first);
+      ++theSize;
+    }
+  else
+    { // search for place to insert
+      ML_Node* previous = first;
+      ML_Node* current = first-&gt;next;
+      assert (current != NULL);
+      while (contact &lt; current-&gt;contact)
+	{
+	  previous = current;
+	  current = current-&gt;next;
+	  assert (current != NULL);
+	}
+      previous-&gt;next = new ML_Node(contact, current);
+      ++theSize;
+    }
+}
+
+
+// Remove one matching contact
+void MailingList::removeContact (const Contact&amp; contact)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL &amp;&amp; contact &gt; current-&gt;contact)
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL &amp;&amp; contact == current-&gt;contact)
+    remove (previous, current);
+}
+
+
+void MailingList::removeContact (const Name&amp; name)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+	 &amp;&amp; name == current-&gt;contact.getName())
+    remove (previous, current);
+}
+
+
+
+// Find and retrieve contacts
+bool MailingList::contains (const Name&amp; name) const 
+{
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  return (current != NULL 
+	  &amp;&amp; name == current-&gt;contact.getName());
+}
+
+
+Contact MailingList::getContact (const Name&amp; name) const
+{
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+	  &amp;&amp; name == current-&gt;contact.getName())
+    return current-&gt;contact;
+  else
+    return Contact();
+}
+
+
+
+
+
+// combine two mailing lists
+void MailingList::merge (const MailingList&amp; anotherList)
+{
+  // For a quick merge, we will loop around, checking the 
+  // first item in each list, and always copying the smaller
+  // of the two items into result
+  MailingList result;
+  ML_Node* thisList = first;
+  const ML_Node* otherList = anotherList.first;
+  while (thisList != NULL and otherList != NULL)
+    {
+      if (thisList-&gt;contact &lt; otherList-&gt;contact)
+	{
+	  result.addContact(thisList-&gt;contact);
+	  thisList = thisList-&gt;next;
+	}
+      else
+	{
+	  result.addContact(otherList-&gt;contact);
+	  otherList = otherList-&gt;next;
+	}
+    }
+  // Now, one of the two lists has been entirely copied. 
+  // The other might still have stuff to copy. So we just copy
+  // any remaining items from the two lists. Note that one of these
+  // two loops will execute zero times.
+  while (thisList != NULL)
+    {
+      result.addContact(thisList-&gt;contact);
+      thisList = thisList-&gt;next;
+    }
+  while (otherList != NULL)
+    {
+      result.addContact(otherList-&gt;contact);
+      otherList = otherList-&gt;next;
+    }
+  // Now result contains the merged list. Transfer that into this list.
+  clear();
+  first = result.first;
+  last = result.last;
+  theSize = result.theSize;
+  result.first = result.last = NULL;
+  result.theSize = 0;
+}
+
+// How many contacts in list?
+int MailingList::size() const
+{
+  return theSize;
+}
+
+
+bool MailingList::operator== (const MailingList&amp; right) const
+{
+  if (theSize != right.theSize) // (easy test first!)
+    return false;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+	{
+	  if (thisList-&gt;contact != otherList-&gt;contact)
+	    return false;
+	  thisList = thisList-&gt;next;
+	  otherList = otherList-&gt;next;
+	}
+      return true;
+    }
+}
+
+
+bool MailingList::operator&lt; (const MailingList&amp; right) const
+{
+  if (theSize &lt; right.theSize)
+    return true;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+	{
+	  if (thisList-&gt;contact &lt; otherList-&gt;contact)
+	    return true;
+	  else if (thisList-&gt;contact &gt; otherList-&gt;contact)
+	    return false;
+	  thisList = thisList-&gt;next;
+	  otherList = otherList-&gt;next;
+	}
+      return false;
+    }
+}
+
+
+// helper functions
+void MailingList::clear()
+{
+  ML_Node* current = first;
+  while (current != NULL)
+    {
+      ML_Node* next = current-&gt;next;
+      delete current;
+      current = next;
+    }
+  first = last = NULL;
+  theSize = 0;
+}
+
+
+void MailingList::remove (MailingList::ML_Node* previous,
+			  MailingList::ML_Node* current)
+{
+  if (previous == NULL)
+    { // remove front of list
+      first = current-&gt;next;
+      if (last == current)
+	last = NULL;
+      delete current;
+    }
+  else if (current == last)
+    { // remove end of list
+      last = previous;
+      last-&gt;next = NULL;
+      delete current;
+    }
+  else
+    { // remove interior node
+      previous-&gt;next = current-&gt;next;
+      delete current;
+    }
+  --theSize;
+}
+
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const MailingList&amp; list)
+{
+  MailingList::ML_Node* current = list.first;
+  while (current != NULL)
+    {
+      out &lt;&lt; current-&gt;contact &lt;&lt; "\n";
+      current = current-&gt;next;
+    }
+  out &lt;&lt; flush;
+  return out;
+}
+
+
+book1.setTitle(''bogus title'');
+assert (book1.getTitle() == ''bogus title'');
+
+book2 = book1;
+assert (book1 == book2);
+book1.setTitle(''bogus title 2'');
+assert (! (book1  == book2));
+
+
+
+catalog.add(book1);
+assert (catalog.firstBook() == book1);&gt;
+
+
+
+string s1, s2;
+cin &gt;&gt; s1 &gt;&gt; s2;
+if (s1 &lt; s2)       ''abc'' &lt; ''def''
+                       ''abc'' &lt; ''abcd''
+
+    x y
+
+Exactly one of the following is true for any x and y
+    x == y
+    x &lt; y
+    y &lt; x
+
+ namespace std{
+
+   namespace relops {
+template &lt;class T&gt;
+bool operator!= (T left, T right)
+{
+  return !(left == right);
+}
+
+
+template &lt;class T&gt;
+bool operator&gt; (T left, T right)
+{
+  return (right &lt; left);
+}
+
+
+
+     using namespace std::relops;
+</code></pre></div></div>
+
+  </li>
+  <li>
+    <p>Java puts the entire class into one file</p>
+    
+    <div class="details"><span class="summary"><a href="MailingList.java" target="listing">MailingList.java</a></span> <input id="but_details_d6e348" onclick="toggleDisplay('_details_d6e348')" type="button" value="+"/><div class="detailPart" id="_details_d6e348"><pre><code id="_details_d6e348_code">package mailinglist;
+
+/**
+ * A collection of names and addresses
+ */
+public class MailingList implements Cloneable {
+
+	/**
+	 * Create an empty mailing list
+	 *
+	 */
+	public MailingList() {
+		first = null;
+		last = null;
+		theSize = 0;
+	}
+
+	/**
+	 *  Add a new contact to the list
+	 *  @param contact new contact to add
+	 */
+	public void addContact(Contact contact) {
+		if (first == null) {
+			// add to empty list
+			first = last = new ML_Node(contact, null);
+			theSize = 1;
+		} else if (contact.compareTo(last.contact) &gt; 0) {
+			// add to end of non-empty list
+			last.next = new ML_Node(contact, null);
+			last = last.next;
+			++theSize;
+		} else if (contact.compareTo(first.contact) &lt; 0) {
+			// add to front of non-empty list
+			first = new ML_Node(contact, first);
+			++theSize;
+		} else {
+			// search for place to insert
+			ML_Node previous = first;
+			ML_Node current = first.next;
+			assert (current != null);
+			while (contact.compareTo(current.contact) &lt; 0) {
+				previous = current;
+				current = current.next;
+				assert (current != null);
+			}
+			previous.next = new ML_Node(contact, current);
+			++theSize;
+		}
+	}
+
+	/**
+	 *  Remove one matching contact 
+	 *  @param c remove a contact equal to c
+	 */
+	public void removeContact(Contact c) {
+		ML_Node previous = null;
+		ML_Node current = first;
+		while (current != null &amp;&amp; c.compareTo(current.contact) &gt; 0) {
+			previous = current;
+			current = current.next;
+		}
+		if (current != null &amp;&amp; c.equals(current.contact))
+			remove(previous, current);
+	}
+
+	/**
+	 * Remove a contact with the indicated name
+	 * @param name name of contact to remove
+	 */
+	public void removeContact(String name) {
+		ML_Node previous = null;
+		ML_Node current = first;
+		while (current != null &amp;&amp; name.compareTo(current.contact.getName()) &gt; 0) {
+			previous = current;
+			current = current.next;
+		}
+		if (current != null &amp;&amp; name == current.contact.getName())
+			remove(previous, current);
+
+	}
+
+	/**
+	 * Search for contacts
+	 * @param name name to search for
+	 * @return true if a contact with an equal name exists
+	 */
+	public boolean contains(String name) {
+		ML_Node current = first;
+		while (current != null &amp;&amp; name.compareTo(current.contact.getName()) &gt; 0) {
+			current = current.next;
+		}
+		return (current != null &amp;&amp; name == current.contact.getName());
+	}
+
+	/**
+	 * Search for contacts
+	 * @param name name to search for
+	 * @return contact with that name if found, null if not found
+	 */
+	public Contact getContact(String name) {
+		ML_Node current = first;
+		while (current != null &amp;&amp; name.compareTo(current.contact.getName()) &gt; 0) {
+			current = current.next;
+		}
+		if (current != null &amp;&amp; name == current.contact.getName())
+			return current.contact;
+		else
+			return null;
+	}
+
+	/**
+	 * combine two mailing lists
+	 *
+	 */
+	public void merge(MailingList anotherList) {
+		// For a quick merge, we will loop around, checking the 
+		// first item in each list, and always copying the smaller
+		// of the two items into result
+		MailingList result = new MailingList();
+		ML_Node thisList = first;
+		ML_Node otherList = anotherList.first;
+		while (thisList != null &amp;&amp; otherList != null) {
+			if (thisList.contact.compareTo(otherList.contact) &lt; 0) {
+				result.addContact(thisList.contact);
+				thisList = thisList.next;
+			} else {
+				result.addContact(otherList.contact);
+				otherList = otherList.next;
+			}
+		}
+		// Now, one of the two lists has been entirely copied. 
+		// The other might still have stuff to copy. So we just copy
+		// any remaining items from the two lists. Note that one of these
+		// two loops will execute zero times.
+		while (thisList != null) {
+			result.addContact(thisList.contact);
+			thisList = thisList.next;
+		}
+		while (otherList != null) {
+			result.addContact(otherList.contact);
+			otherList = otherList.next;
+		}
+		// Now result contains the merged list. Transfer that into this list.
+		first = result.first;
+		last = result.last;
+		theSize = result.theSize;
+	}
+
+	/**
+	 * How many contacts in list?
+	 */
+	public int size() {
+		return theSize;
+	}
+
+	/**
+	 * Return true if mailing lists contain equal contacts
+	 */
+	public boolean equals(Object anotherList) {
+		MailingList right = (MailingList) anotherList;
+		if (theSize != right.theSize) // (easy test first!)
+			return false;
+		else {
+			ML_Node thisList = first;
+			ML_Node otherList = right.first;
+			while (thisList != null) {
+				if (!thisList.contact.equals(otherList.contact))
+					return false;
+				thisList = thisList.next;
+				otherList = otherList.next;
+			}
+			return true;
+		}
+	}
+
+	public int hashCode() {
+		int hash = 0;
+		ML_Node current = first;
+		while (current != null) {
+			hash = 3 * hash + current.hashCode();
+			current = current.next;
+		}
+		return hash;
+	}
+
+	public String toString() {
+		StringBuffer buf = new StringBuffer("{");
+		ML_Node current = first;
+		while (current != null) {
+			buf.append(current.toString());
+			current = current.next;
+			if (current != null)
+				buf.append("\n");
+		}
+		buf.append("}");
+		return buf.toString();
+	}
+
+	/**
+	 * Deep copy of contacts
+	 */
+	public Object clone() {
+		MailingList result = new MailingList();
+		ML_Node current = first;
+		while (current != null) {
+			result.addContact((Contact) current.contact.clone());
+			current = current.next;
+		}
+		return result;
+	}
+
+	private class ML_Node {
+		public Contact contact;
+
+		public ML_Node next;
+
+		public ML_Node(Contact c, ML_Node nxt) {
+			contact = c;
+			next = nxt;
+		}
+	}
+
+	private int theSize;
+
+	private ML_Node first;
+
+	private ML_Node last;
+
+	// helper functions
+	private void remove(ML_Node previous, ML_Node current) {
+		if (previous == null) {
+			// remove front of list
+			first = current.next;
+			if (last == current)
+				last = null;
+		} else if (current == last) {
+			// remove end of list
+			last = previous;
+			last.next = null;
+		} else {
+			// remove interior node
+			previous.next = current.next;
+		}
+		--theSize;
+	}
+
+}
+</code></pre></div></div>
+
+  </li>
+  <li>
+    <p>Function bodies are written immediately after their declaration</p>
+    
+    <ul>
+      <li>To C++ programmers, these look like <span class="firstterm">inline</span> functions</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Package == Directory</strong></p>
+    <ul>
+  <li>
+  <p>In C++, we can put our files into any directory we want, as long as we give the appropriate paths in our compilation commands</p>
+    </li>
+  <li>
+  <p>In Java, all items that belong in package <code>packageName</code> must be stored in a directory filename{packageName/}</p>
+    </li>
+</ul><hr/><p><strong>Packaging and Compiling 1</strong></p>
+    <p>Suppose we are building a Java project in <span class="file">~/jproject</span>.</p>
+    <p>If we have a class</p>
+    <pre><code class="java">public class HelloWorld {
+
+  public static void main (String[] argv)
+  {
+    System.out.println ("Hello, World!");
+  }
+}
+
+</code></pre><ul>
+  <li>
+  <p>It would be stored in <span class="file">~/jproject/HelloWorld,java</span>.</p>
+    </li>
+  <li>
+    <p>The commands to compile and run this would be</p>
+    
+    <pre><code class="sh">cd ~/jproject
+javac HelloWorld.java
+java HelloWorld
+</code></pre>
+  </li>
+</ul><hr/><p><strong>Packaging and Compiling 2</strong></p>
+    <p>Suppose we are building a Java project in <span class="file">~/jproject</span>.</p>
+    <p>If we have a class</p>
+    <pre><code class="java">package Foo;
+
+public class HelloWorld {
+
+  public static void main (String[] argv)
+  {
+    System.out.println ("Hello, World!");
+  }
+}
+
+</code></pre><ul>
+  <li>
+  <p>It would be stored in <span class="file">~/jproject/Foo/HelloWorld.java</span>.</p>
+    </li>
+  <li>
+    <p>The commands to compile and run this would be</p>
+    
+    <pre><code class="sh">cd ~/jproject
+javac Foo/HelloWorld.java
+java Foo.HelloWorld
+</code></pre>
+    <ul>
+      <li><strong>Important</strong>: Notice that we compile from the “project” base  directory, not from the directory that contains the actual  <code>.java</code> files.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Packaging and Compiling 3</strong></p>
+    <p>Suppose we are building a Java project in <span class="file">~/jproject</span>.</p>
+    <p>If we have a class</p>
+    <pre><code class="java">package Foo.Bar;
+
+public class HelloWorld {
+
+  public static void main (String[] argv)
+  {
+    System.out.println ("Hello, World!");
+  }
+}
+
+</code></pre><ul>
+  <li>
+  <p>It would be stored in <span class="file">~/jproject/Foo/Bar/HelloWorld,java</span>.</p>
+    </li>
+  <li>
+    <p>The commands to compile and run this would be</p>
+    
+    <pre><code class="sh">cd ~/jproject
+javac Foo/Bar/HelloWorld.java
+java Foo.Bar.HelloWorld
+</code></pre>
+  </li>
+</ul><hr/><p><strong>Is Java Just Trying to Be Annoying?</strong></p>
+    <p>Actually, no.</p>
+    <ul>
+  <li>
+  <p>To compile a C++ program, we have to give explicit paths to <span class="emph">each</span> compilation unit in our compilation commands and we need to <code>#include</code> each header, giving the correct path to it.</p>
+    </li>
+  <li>
+    <p>The Java compiler finds the source code of our other classes that we use by looking at</p>
+    
+    <ul>
+      <li>the fully qualified name (e.g., <code>MyUtilities.Randomizer</code>, or</li>
+      <li>our <code>import</code> statements</li>
+    </ul>
+  </li>
+  <li>
+  <p>It just follows the package/class names to find the directory and file in which the rest of our code is located.</p>
+    </li>
+  <li>
+  <p>At run time, the loader acts similarly to find our compiled code.</p>
+    </li>
+</ul><a id="swimminginpointers"/><h1 id="swimming-in-pointers">3 Swimming in Pointers</h1><hr/><p><strong>Primitives are Familiar</strong></p>
+    <ul>
+  <li>
+    <p><span class="type">int</span>, <span class="type">long</span>, <span class="type">float</span>, <span class="type">double</span></p>
+    
+    <ul>
+      <li><span class="type">boolean</span>, not “bool”</li>
+      <li><span class="type">char</span> is 16 bits, not 8, to permit the use of Unicode</li>
+    </ul>
+  </li>
+  <li>
+  <p>Variables of these types behave as you would expect</p>
+    </li>
+</ul><pre><code class="java">int x = 2;
+int y = x;
+++x;
+System.out.println ("x=" + x + " y=" + y);
+</code></pre><p>prints “x=3 y=2”</p>
+    <hr/><p><strong>Everything Else is a Pointer</strong></p>
+    <pre><code class="java">void foo(java.awt.Point p) {
+  p.x = 1;
+  java.awt.Point w = p;
+  w.x = 2;
+  System.out.println ("p.x=" + p.x + " w.x=" + w.x);
+}
+
+</code></pre><p>prints “p.x=2 w.x=2”</p>
+    <ul>
+  <li>Why did <code>p.x</code> change value?
+    <ul>
+      <li>Because <span class="varname">p</span> and <span class="varname">w</span> are references (pointers), so</li>
+    </ul>
+  </li>
+</ul><pre><code class="java">  java.awt.Point w = p;
+
+</code></pre><p>causes <span class="varname">w</span> to point to the same value that <span class="varname">p</span> does.</p>
+    <hr/><p><strong>Lots of Allocation</strong></p>
+    <p>Because all new class variables are really pointers, all new class values have to be created on the heap:</p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">Point p (1,2);
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">Point p = new Point(1,2);
+</code></pre>
+</div></div><hr/><p><strong>Arrays of Pointers</strong></p>
+    <p>C++ programmers need to be particularly careful dealing with arrays:</p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">int a[10];
+Point* p = new Point[10];
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">int[] b = new int[10];
+Point q = new Point[10];
+for (int i = 0; i &lt; q.length; ++i)
+   q[i] = new Point();
+
+</code></pre>
+</div></div><p>Without the loop, <span class="varname">q</span> would actually be an array of null pointers.</p>
+    <hr/><p><strong>Because there are so many pointers</strong></p>
+    <ul>
+  <li>
+    <p>Sharing in Java is much more common than copying</p>
+    
+    <ul>
+      <li>If you do need a distinct copy, use the <span class="function">clone()</span> function
+        <ul>
+          <li>We’ll see later that this is a “standard” function on all  Java objects</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+  <p>It’s a good thing that Java features automatic garbage collection!</p>
+    </li>
+</ul><hr/><p><strong>Beware of ==</strong></p>
+    <ul>
+  <li>
+    <p>The == operator works like you would expect on primitives</p>
+    
+    <pre><code class="java">int x = 23;
+int y = 23;
+if (x == y)
+   System.out.println ("Of course!");
+
+</code></pre>
+  </li>
+  <li>
+    <p>But for class objects, == is comparing addresses:</p>
+    
+    <pre><code class="java">Point p = new Point(1,2);
+Point q = new Point(1,2);
+if (p == q)
+   System.out.println ("Not gonna happen");
+else
+   System.out.println ("Surprise!");
+
+</code></pre>
+  </li>
+</ul><p/>
+    <hr/><p><strong>equals</strong></p>
+    <p>To compare objects to see if they have the same <span class="emph">contents</span>, use the <span class="function">equals</span> function:</p>
+    <pre><code class="java">Point p = new Point(1,2);
+Point q = new Point(1,2);
+if (p.equals(q))
+   System.out.println ("That's better.");
+else
+   System.out.println ("Pay no attention...");
+
+</code></pre><h1 id="exceptions">4 Exceptions</h1><p>An <span class="firstterm">exception</span> is a run-time error  signal.</p>
+    <ul>
+  <li>
+  <p>It may be signalled (<span class="firstterm">thrown</span>) by the  underlying runtime system …</p>
+    </li>
+  <li>
+  <p>or by programmer-suppled code</p>
+    </li>
+  <li>
+  <p>Programs can <span class="firstterm">catch</span> exceptions and  <span class="firstterm">handle</span> them … </p>
+    </li>
+  <li>
+  <p>or let them go and allow the program to abort</p>
+    </li>
+</ul><hr/><p><strong>Playing Catch</strong></p>
+    <p>Try compiling and (if successful), running each of the following:</p>
+    <div class="details"><span class="summary"><a href="OpenFile1.java" target="listing">OpenFile1.java</a></span> <input id="but_details_d6e770" onclick="toggleDisplay('_details_d6e770')" type="button" value="+"/><div class="detailPart" id="_details_d6e770"><pre><code id="_details_d6e770_code">import java.io.*;
+
+/**
+   Demo of a program that may throw exceptions.
+   @param argv The name of a file to open for input
+*/
+public class OpenFile1 {
+
+  /**
+     Attempt to open a file
+  */
+  static void openFile (String fileName) {
+	FileReader reader = new FileReader(fileName);
+  }
+  
+  /**
+     Attempt to open the file whose name is given in
+     the first command line parmaeter
+  */
+  public static void main (String[] argv) {
+	String fileName = argv[1];
+	openFile (fileName);
+  }
+}
+</code></pre></div></div><div class="details"><span class="summary"><a href="OpenFile2.java" target="listing">OpenFile2.java</a></span> <input id="but_details_d6e772" onclick="toggleDisplay('_details_d6e772')" type="button" value="+"/><div class="detailPart" id="_details_d6e772"><pre><code id="_details_d6e772_code">import java.io.*;
+
+/**
+   Demo of a program that may throw exceptions.
+   @param argv The name of a file to open for input
+*/
+public class OpenFile2 {
+  
+  /**
+     Attempt to open a file
+  */
+  static void openFile (String fileName)
+	throws java.io.FileNotFoundException
+  {
+	FileReader reader = new FileReader(fileName);
+  }
+  
+  /**
+     Attempt to open the file whose name is given in
+     the first command line parmaeter
+  */
+  public static void main (String[] argv) {
+	String fileName = argv[0];
+	openFile (fileName);
+  }
+}
+</code></pre></div></div><div class="details"><span class="summary"><a href="OpenFile3.java" target="listing">OpenFile3.java</a></span> <input id="but_details_d6e774" onclick="toggleDisplay('_details_d6e774')" type="button" value="+"/><div class="detailPart" id="_details_d6e774"><pre><code id="_details_d6e774_code">import java.io.*;
+
+/**
+   Demo of a program that may throw exceptions.
+   @param argv The name of a file to open for input
+*/
+public class OpenFile3 {
+  
+  /**
+     Attempt to open a file
+  */
+  static void openFile (String fileName)
+	throws java.io.FileNotFoundException
+  {
+	FileReader reader = new FileReader(fileName);
+  }
+  
+  /**
+     Attempt to open the file whose name is given in
+     the first command line parmaeter
+  */
+  public static void main (String[] argv) {
+      try {
+	  openFile (argv[0]);
+      }
+      catch (java.io.FileNotFoundException ex)
+	  {
+	      System.err.println ("Something is wrong with the file: " + ex);
+	  }
+      System.out.println ("All done");
+  }
+}
+</code></pre></div></div><p>using both the names of existing and non-existing files, or no name at all.</p>
+    <hr/><p><strong>Unchecked Exceptions</strong></p>
+    <p>Exceptions come in two main kinds: checked and unchecked</p>
+    <ul>
+  <li>
+    <p><span class="firstterm">unchecked</span> exceptions could arise almost anywhere</p>
+    
+    <ul>
+      <li>e.g., <code>NullPointerException</code>, <code>ArrayIndexOutOfBoundsException</code></li>
+    </ul>
+  </li>
+  <li>
+  <p>functions need not declare that they might throw these</p>
+    </li>
+</ul><hr/><p><strong>Checked Exceptions</strong></p>
+    <p><span class="firstterm">checked</span> exceptions are more specialized</p>
+    <ul>
+  <li>
+  <p>include all programmer-defined exceptions</p>
+    </li>
+  <li>
+  <p>functions <span class="emph">must declare</span> if they can throw these</p>
+    </li>
+</ul><hr/><p><strong>Another Cultural Difference</strong></p>
+    <ul>
+  <li>
+    <p>C++ actually has exceptions as well.</p>
+    
+    <ul>
+      <li>
+      <p>Same <code>throw</code> and <code>try</code> – <code>catch</code> syntax</p>
+    </li>
+      <li>
+      <p>Can’t declare what exceptions a function is known to throw</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>But they are used much more widely in Java</p>
+    </li>
+</ul><a id="correspondingdatastructures"/><h1 id="corresponding-data-structures">5 Corresponding Data Structures</h1><hr/><p><strong>The Java API</strong></p>
+    <p>The Java API is huge, but <a href="http://docs.oracle.com/javase/7/docs/api/">well documented</a> </p>
+    <ul>
+  <li>
+  <p>Focus initially on packages <code>java.lang</code>, <code>java.io</code>, and <code>java.util</code></p>
+    </li>
+  <li>
+  <p>BTW, You can use the <span class="command">javadoc</span> to generate the same kind of documentation for your own code. <a href="http://www.cs.odu.edu/~zeil/cs795SD/extrjavadoc/doc/">Example</a></p>
+    </li>
+</ul><hr/><p><strong>Strings</strong></p>
+    <p>C++ <span class="type">std::string</span> : Java <span class="type">java.lang.String</span></p>
+    <ul>
+  <li>Strings in Java are <span class="firstterm">immutable</span>
+    <ul>
+      <li>You cannot change the contents of a string value</li>
+      <li>But you can compute a slightly different value and make a string  variable point to the different value</li>
+    </ul>
+  </li>
+</ul><div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">string s = ...
+s[s.size()/2] = 'b';
+s = s + s;
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">String s = ...
+s = s.substring(0,s.length()/2)
+  + 'b' 
+  +  s.substring(s.length()/2+1);
+s = s + s;
+
+</code></pre>
+</div></div><hr/><p><strong>If You Need to Change a Java String…</strong></p>
+    <p>…use a <span class="type">StringBuilder</span></p>
+    <pre><code class="java">StringBuilder sb = new StringBuilder();
+String line = input.readline();
+while (line != null) {
+  sb.append(line);
+  sb.append("\n");
+  line = input.readline();
+}
+String allTheText = sb.toString();
+
+</code></pre><hr/><p><strong>vector : ArrayList</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">vector&lt;string&gt; v;
+v.push_back("foo");
+cout &lt;&lt; v[0] &lt;&lt; endl
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">ArrayList&lt;String&gt; v = new ArrayList&lt;String&gt;();
+v.add("foo");
+System.out.println (v.get(0)); 
+
+</code></pre>
+</div></div><hr/><p><strong>list : LinkedList</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">list&lt;string&gt; L;
+L.push_back("foo");
+cout &lt;&lt; L.front() &lt;&lt; endl
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">LinkedList&lt;String&gt; L = new LinkedList&lt;String&gt;();
+L.add("foo");
+System.out.println (L.getFirst()); 
+
+</code></pre>
+</div></div><hr/><p><strong>set : HashSet</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">set&lt;string&gt; s;
+s.insert("foo");
+cout &lt;&lt; s.count("foo") &lt;&lt; endl
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">HashSet&lt;String&gt; S = new HashSet&lt;String&gt;();
+S.add("foo");
+System.out.println ("" + S.contains("foo")); 
+
+</code></pre>
+</div></div><hr/><p><strong>map : HashMap</strong></p>
+    <div class="splitColumns"><div class="leftColumn">
+<p><strong>C++</strong></p>
+    
+<pre><code class="cpp">map&lt;string,int&gt; zip;
+zip["ODU"] = 23529;
+cout &lt;&lt; zip["ODU"] &lt;&lt; endl
+
+</code></pre>
+</div><div class="rightColumn">
+<p><strong>Java</strong></p>
+    
+<pre><code class="java">HashMap&lt;String,Integer&gt; zip
+     = new HashMap&lt;String,Integer&gt;();
+zip.put("ODU", 23529);
+System.out.println (zip.get("ODU")); 
+
+</code></pre>
+</div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Java%20-%20First%20Impressions%20for%20a%20C%2B%2B%20Programmer"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

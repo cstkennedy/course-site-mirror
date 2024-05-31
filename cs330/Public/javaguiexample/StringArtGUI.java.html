@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>StringArtGUI.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20StringArtGUI.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">StringArtGUI.java</h1></div><pre><code>import java.awt.EventQueue;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class StringArtGUI {
+
+    private JFrame mainWindow;
+    private JPanel canvas;
+    private JTextField textField;
+    private JTextField stepSizeIn;
+
+    private StringArtModel art;
+    private JButton colorButton1;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+       EventQueue.invokeLater(new Runnable() {
+         public void run() {
+          try {
+              StringArtGUI window = new StringArtGUI();
+              window.mainWindow.setVisible(true);
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+         }
+       });
+    }
+
+    /**
+     * Create the application.
+     */
+    public StringArtGUI() {
+       art = new StringArtModel();
+       initialize();
+    }
+
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+       mainWindow = new JFrame();
+       mainWindow.setBounds(100, 100, 450, 300);
+       mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+       canvas = new JPanel() {
+         public void paint (Graphics g) {
+          super.paint(g);
+          art.drawLines(g, getSize());
+         }
+       };
+       canvas.setBackground(Color.WHITE);
+       mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
+
+       JPanel controlPanel = new JPanel();
+       mainWindow.getContentPane().add(controlPanel, BorderLayout.SOUTH);
+
+       colorButton1 = new JButton("Color 1");
+       colorButton1.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+          Color chosen = JColorChooser.showDialog(mainWindow, "Choose a color", 
+                 art.getColor(0));
+          if (chosen != null) {
+              art.setColor(0, chosen);
+              art.setColor (colorButton1, chosen);
+              canvas.repaint();
+          }
+         }
+       });
+       art.setColor(colorButton1, art.getColor(0));
+       controlPanel.add(colorButton1);
+
+       JButton colorButton2 = new JButton("Color 2");
+       colorButton2.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+          Color chosen = JColorChooser.showDialog(mainWindow, "Choose a color", 
+                 art.getColor(1));
+          JButton button = (JButton)e.getSource();
+          if (chosen != null) {
+              art.setColor(1, chosen);
+              art.setColor (button, chosen);
+              canvas.repaint();
+          }
+         }
+       });
+       art.setColor(colorButton2, art.getColor(1));
+       controlPanel.add(colorButton2);
+
+       stepSizeIn = new JTextField();
+       stepSizeIn.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+          try {
+                   Integer newSize = new Integer(stepSizeIn.getText());
+                   art.setStepSize(newSize.intValue());
+                   canvas.repaint();
+                 } catch (Exception ex) {};
+               }
+       });
+       stepSizeIn.setText("" + art.getStepSize());
+       controlPanel.add(stepSizeIn);
+       stepSizeIn.setColumns(3);
+
+    }
+
+}
+</code></pre><p><a href="StringArtGUI.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20StringArtGUI.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

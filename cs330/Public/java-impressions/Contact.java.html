@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Contact.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Contact.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Contact.java</h1></div><pre><code>package mailinglist;
+/**
+ * A contact is a name and address.
+ * 
+ * For the purpose of this example, I have simplified matters 
+ * a bit by making both of these components simple strings. 
+ * In practice, we would expect Address, at least, to be a
+ * more structured type.
+ * 
+ * @author zeil
+ *
+ */
+public class Contact 
+  implements Cloneable, Comparable&lt;Contact&gt; {
+
+    private String theName;
+    private String theAddress;
+
+    /**
+     * Create a contact with empty name and address.
+     *
+     */
+    public Contact ()
+    {
+       theName = "";
+       theAddress = "";
+    }
+
+    /**
+     * Create a contact
+     * @param nm  name 
+     * @param addr address
+     */
+    public Contact (String nm, String addr)
+    {
+       theName = nm;
+       theAddress = addr;
+    }
+
+
+    /**
+     * Get the name of the contact
+     * @return the name
+     */
+    public String getName()
+    {
+       return theName;
+    }
+
+    /**
+     * Change the name of the contact
+     * @param nm new name
+     */
+    public void setName (String nm) 
+    {
+       theName= nm;
+    }
+
+    /**
+     * Get the address of the contact
+     * @return the address
+     */
+    public String getAddress()
+    {
+       return theAddress;
+    }
+
+    /**
+     * Change the address of the contact 
+     * @param addr new address
+     */
+    public void setAddress (String addr) 
+    {
+       theAddress = addr;
+    }
+
+    /**
+     * True if the names and addresses are equal 
+     */
+    public boolean equals (Object right)
+    {
+       Contact r = (Contact)right;
+       return theName.equals(r.theName)
+           &amp;&amp; theAddress.equals(r.theAddress);
+    }
+
+    public int hashCode ()
+    {
+       return theName.hashCode() + 3 * theAddress.hashCode();
+    }
+
+    public String toString()
+    {
+       return theName + ": " + theAddress;
+    }
+
+    public Object clone()
+    {
+       return new Contact(theName, theAddress);
+    }
+
+    /**
+     * Compare this contact to another.
+     * Return value &gt; 0 if this contact precedes the other,
+     * == 0 if the two are equal, and &lt; 0 if this contact
+     * follows the other.  
+     */
+    public int compareTo (Contact c)
+    {
+       int nmcomp = theName.compareTo(c.theName);
+       if (nmcomp != 0)
+         return nmcomp;
+       else
+         return theAddress.compareTo(c.theAddress);
+    }
+}
+</code></pre><p><a href="Contact.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Contact.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

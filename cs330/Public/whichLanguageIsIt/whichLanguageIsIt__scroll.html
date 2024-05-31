@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Which Language is It?</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Which%20Language%20is%20It%3F"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Which Language is It?</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#intuition">1 Intuition</a></div><div class="toc-h1"><a href="#example-1">2 Example 1</a></div><div class="toc-h2"><a href="#the-c-view">2.1 The C++ View</a></div><div class="toc-h2"><a href="#the-java-view">2.2 The Java View</a></div><div class="toc-h2"><a href="#a-little-python">2.3 A Little Python</a></div><div class="toc-h1"><a href="#example-2">3 Example 2</a></div><div class="toc-h2"><a href="#the-c-view">3.1 The C++ View</a></div><div class="toc-h2"><a href="#the-java-view">3.2 The Java View</a></div><div class="toc-h2"><a href="#a-little-python">3.3 A Little Python</a></div></div><p>Sometimes you will come across an unfamiliar code snippet. Sometimes the snippet is a familiar language (e.g., C++, Java, or Python). Sometimes it is a less familiar language (e.g., Rust).</p>
+    <h1 id="intuition">1 Intuition</h1><p>Intuition is a powerful tool, but it will <em>often</em> mislead you. Let us start this discussion by ignoring all intuition (i.e.,gut feelings). This primarily includes ignoring:</p>
+    <ul>
+  <li>Variable naming - specifically underscore (the_book_title) vs camel case (theBookTitle).</li>
+  <li>Placement of brackets (i.e., same line vs next line).</li>
+  <li>Pre-increment vs post-increment <code>++i</code> vs <code>i++</code>.</li>
+  <li>Presence or absence of <code>public</code>, <code>private</code>, or <code>protected</code>.</li>
+  <li>Use of a variable to store container size vs using <code>.size()</code>, <code>.length</code> or <code>.length()</code>.</li>
+  <li>Use of <code>String</code> vs <code>string</code> - type aliases (e.g., <code>using String =
+std::string</code>) and template parameters can obfuscate code.</li>
+</ul><a id="example1"/><h1 id="example-1">2 Example 1</h1><blockquote class="example" id="example1"><div class="exampleTitle">Example 1: A Point Match Function</div>
+<pre><code class="cpp">// Function header/signature omitted
+{
+    for (int i = 0; i &lt; numLocations; i++) {
+        if (locations[i] == p) {
+            return i;
+        }
+
+        if (locations[i].x == p.x
+         &amp;&amp; locations[i].y == p.y
+         &amp;&amp; locations[i].z == p.z) {
+            return i;
+        }
+    }
+    return -1;
+}
+</code></pre>
+</blockquote><p>First, we need to figure out what this function <em>does</em> and is <em>indended to do</em>. This is a nuanced distinction (on the verge of <em>a distinction without a difference</em>). However, we know from experience (with our own mistakes) that what we <em>want the code to do</em> and <em>what the code actually does</em> are sometimes different.</p>
+    <a id="thecview"/><h2 id="the-c-view">2.1 The C++ View</h2><p><strong>Let us first examine this as C++ code:</strong></p>
+    <ol>
+  <li>
+  <p>The first condition <code>locations[i] == p</code> checks for equivalence by calling  <code>Point::operator==</code>.</p>
+    </li>
+  <li>
+  <p>The second condition <code>locations[i].x == p.x &amp;&amp; locations[i].y == p.y &amp;&amp;
+ locations[i].z == p.z</code> explicitly checks each attribute.</p>
+    </li>
+</ol><p>This is (syntactically) valid C++ code–albeit redundant. If this were written in proper (i.e., idiomatic) C++, it would be:</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Idiomatic C++ Point Math Function</div>
+<pre><code class="cpp">// Function header/signature omitted
+{
+    for (int i = 0; i &lt; numLocations; i++) {
+        if (locations[i] == p) {
+            return i;
+        }
+    }
+    return -1;
+}
+</code></pre>
+</blockquote><p>If we wanted to take it a step further… we could use <code>std::find</code>.</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: C++ Point Match Function - with std::find</div>
+<pre><code class="cpp">// Function header/signature omitted
+{
+    auto it = std::find(begin(locations), end(locations), p);
+
+    if (it == end(locations)) {
+        return -1;
+    }
+
+    return (it - begin(locations));
+}
+</code></pre>
+</blockquote><p>I do not think we need to be that obnoxious…</p>
+    <a id="thejavaview"/><h2 id="the-java-view">2.2 The Java View</h2><p><strong>Let us now examine this as Java code:</strong></p>
+    <ol>
+  <li>
+  <p>The first condition checks if the memory addresses match–every <em>object</em> variable in java is a reference–analogous to a C++ pointer.</p>
+    </li>
+  <li>
+  <p>The second condition–as in C++–explicitly checks each attribute.</p>
+    </li>
+</ol><p>This is valid Java code. <strong>This is code most likely extracted from a Java program.</strong> It is clear that the person who wrote this code violated the Java class checklist (i.e., did not provide an <code>equals</code> method).</p>
+    <p>Assuming the <code>equals</code> issue were addressed, we would end up with:</p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Idiomatic Java Point Math Function</div>
+<pre><code class="Java">// Function header/signature omitted
+{
+    for (int i = 0; i &lt; numLocations; i++) {
+        if (locations[i] == p){
+            return i;
+        }
+        else if (locations[i].equals(p)) {
+            return i;
+        }
+    }
+    return -1;
+}
+</code></pre>
+</blockquote><a id="alittlepython"/><h2 id="a-little-python">2.3 A Little Python</h2><p>With a few quick changes, we can turn this into Python code…</p>
+    <blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Python - A Quick Conversion</div>
+<pre><code class="Python">    """
+    Function header/signature omitted
+    """
+
+    for i in range(0, len(locations)):
+        if hash(locations[i]) == hash(p):
+            return i
+
+        elif locations[i] == p:
+            return i
+
+    return -1
+</code></pre>
+</blockquote><p>We can make it more idiomatic… using <code>enumerate</code>!</p>
+    <blockquote class="example" id="example6"><div class="exampleTitle">Example 6: Python - A Quick Conversion</div>
+<pre><code class="Python">    """
+    Function header/signature omitted
+    """
+
+    for idx, a_point in enumerate(locations):
+        if hash(a_point) == hash(p):
+            return idx
+
+        elif a_point == p:
+            return idx
+
+    return -1
+</code></pre>
+</blockquote><a id="example2"/><h1 id="example-2">3 Example 2</h1><blockquote class="example" id="example7"><div class="exampleTitle">Example 7: Array Append &amp; Resize</div>
+<pre><code class="cpp">Encyclopedia newEdition = catalog[oldEditionIndex];
+newEdition.edition = 3;
+
+catalog[catalogSize] = newEdition;
+catalogSize++;
+</code></pre>
+</blockquote><a id="thecview"/><h2 id="the-c-view">3.1 The C++ View</h2><p>Let us first examine this as C++ code:</p>
+    <ol>
+  <li>
+  <p>I define a new Encyclopedia, <code>newEdition</code>. This results a <em>deep copy</em>  through application of the assignment operator.</p>
+    </li>
+  <li>
+  <p>I take the new book and change the edition number to 3.</p>
+    </li>
+  <li>
+  <p>I add <code>newEdition</code> to the end of the <code>catalog</code> array.</p>
+    </li>
+</ol><p>This is an instance of <em>resizing an array</em>.</p>
+    <a id="thejavaview"/><h2 id="the-java-view">3.2 The Java View</h2><p>Let us next examine this as Java code:</p>
+    <ol>
+  <li>
+  <p>I define a new book <em>reference</em>, <code>newEdition</code></p>
+    </li>
+  <li>
+  <p>I take the new book <em>reference</em> and change the edition number to 3.</p>
+    </li>
+  <li>
+  <p>I add this new book <em>reference</em> to the end ot the <code>catalog</code> array.</p>
+    </li>
+</ol><p>This code results in two references in the array–that both reference the same book. <strong>This code is extracted from a C++ program.</strong></p>
+    <p>If I wanted this code snippet to be useful in Java, I would add a call <code>clone</code>:</p>
+    <blockquote class="example" id="example8"><div class="exampleTitle">Example 8: Adding the Java clone Method</div>
+<pre><code class="Java">Encyclopedia newEdition = catalog[oldEditionIndex].clone();
+newEdition.edition = 5;
+
+catalog[catalogSize] = newEdition;
+catalogSize++;
+</code></pre>
+</blockquote><a id="alittlepython"/><h2 id="a-little-python">3.3 A Little Python</h2><p>With a few quick changes, we can turn this into Python code…</p>
+    <blockquote class="example" id="example9"><div class="exampleTitle">Example 9: Python - A Quick Conversion</div>
+<pre><code class="Python">new_edition = copy.deepcopy(catalog[oldEditionIndex])
+new_edition.edition = 5
+
+catalog[catalog_size] = new_edition
+catalog_size +=1
+</code></pre>
+</blockquote><p>Let us use a Python list instead of a faked array.</p>
+    <blockquote class="example" id="example10"><div class="exampleTitle">Example 10: Python - A More Complete Conversion</div>
+<pre><code class="Python">new_edition = copy.deepcopy(catalog[oldEditionIndex])
+new_edition.edition = 5
+
+catalog.append(new_edition)
+</code></pre>
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Which%20Language%20is%20It%3F"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

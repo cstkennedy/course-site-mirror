@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Dynamic Binding: Class-Appropriate behavior</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Dynamic%20Binding%3A%20Class-Appropriate%20behavior"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Dynamic Binding: Class-Appropriate behavior</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#dynamic-binding">1 Dynamic Binding</a></div><div class="toc-h2"><a href="#what-is-dynamic-binding-">1.1 What is dynamic binding?</a></div><div class="toc-h2"><a href="#dynamic-binding-in-c-">1.2 Dynamic Binding in C++</a></div><div class="toc-h1"><a href="#an-example-of-dynamic-binding">2 An Example of Dynamic Binding</a></div><div class="toc-h1"><a href="#why-is-dynamic-binding-important-">3 Why is Dynamic Binding Important?</a></div><div class="toc-h2"><a href="#the-key-pattern-to-all-oop">3.1 The Key Pattern to All OOP</a></div><div class="toc-h2"><a href="#examples-of-the-key-pattern">3.2 Examples of the key pattern</a></div><div class="toc-h1"><a href="#examples">4 Examples</a></div><div class="toc-h2"><a href="#example-spreadsheet-rendering-values">4.1 Example: Spreadsheet – Rendering Values</a></div><div class="toc-h2"><a href="#example-evaluating-a-cell">4.2 Example: Evaluating a Cell</a></div></div><a id="dynamicbinding"/><h1 id="dynamic-binding">1 Dynamic Binding</h1><p>Dynamic binding is a key factor in allowing different classes to respond to the same message with different methods.</p>
+    <ul>
+  <li>Arguably, no language without dynamic binding is an OOPL</li>
+</ul><a id="whatisdynamicbinding"/><h2 id="what-is-dynamic-binding-">1.1 What is dynamic binding?</h2><p><span class="firstterm">Binding</span> is a term used in programming languages to denote the association of information with a symbol. It’s a very general term with many applications. </p>
+    <ul>
+  <li>
+  <p><code>a = 2;</code>  is a binding of a value to a variable.</p>
+    </li>
+  <li>
+  <p><code>String s;</code>  is a binding of a type (<span class="type">String</span>) to the variable  name (<span class="varname">s</span>).</p>
+    </li>
+</ul><hr/><p><strong>Binding Function Calls to Bodies</strong></p>
+    <p>In OOP, we are particularly interested in the<br/> binding of a function body (method) to a function call.</p>
+    <p>Given the following: </p>
+    <pre><code class="cpp">  a = foo(b);
+
+</code></pre><p><span class="emph">When</span> is the decision made as to what  code will be executed for this call to <span class="function">foo</span>? </p>
+    <hr/><p><strong>Compile-Time Binding</strong></p>
+    <pre><code class="cpp">  a = foo(b);
+</code></pre><p>In traditionally compiled languages (FORTRAN, PASCAL, C, etc), the decision is made at compile-time. </p>
+    <ul>
+  <li>
+  <p>Decision is immutable</p>
+    </li>
+  <li>
+  <p>If this statement is inside a loop, the same code will be invoked  for <span class="function">foo</span> each time.</p>
+    </li>
+  <li>
+  <p>Compile-time binding is cheap – there’s very little  execution-time overhead.</p>
+    </li>
+</ul><hr/><p><strong>Run-Time Binding</strong></p>
+    <pre><code class="cpp">  a = foo(b);
+
+</code></pre><p>In traditionally interpreted languages (LISP, BASIC, etc), the decision is made at run-time. </p>
+    <ul>
+  <li>
+  <p>Decision is often mutable</p>
+    </li>
+  <li>
+  <p>If this statement is inside a loop, different  code may be invoked for foo each time.</p>
+    </li>
+  <li>
+  <p>Run-time binding can be expensive (high  execution-time overhead) because it suggests that some  sort of decision or lookup is done at each call.</p>
+    </li>
+</ul><hr/><p><strong>Dynamic Binding = the Happy Medium?</strong></p>
+    <p>OOPLs typically feature dynamic binding, an “intermediate”  choice in which </p>
+    <ul>
+  <li>
+  <p>the choice of method is made from a relatively small list  of options</p>
+    </li>
+  <li>
+  <p>that list is determined at compile time</p>
+    </li>
+  <li>
+  <p>the final choice made at run-time</p>
+    </li>
+  <li>
+  <p>the options that make up that list are organized according  to the inheritance hierarchy</p>
+    </li>
+</ul><hr/><p><strong>Dynamic Binding and Programming Languages</strong></p>
+    <ul>
+  <li>
+  <p>In Java, <span class="emph">all</span> function calls are resolved by  dynamic binding.</p>
+    </li>
+  <li>
+  <p>In C++, we can choose between compile-time and dynamic binding.</p>
+    </li>
+</ul><a id="dynamicbindinginc"/><h2 id="dynamic-binding-in-c-">1.2 Dynamic Binding in C++</h2><p><strong>Virtual functions</strong></p>
+    <ul>
+  <li>
+  <p>A non-inherited function member is subject to dynamic binding  if its declaration is preceded by the word  <code>virtual</code>.</p>
+    </li>
+  <li>
+  <p>An inherited function member is subject to dynamic binding if  that member in the base class is subject to dynamic binding.</p>
+    </li>
+  <li>
+  <p>Using the word <code>virtual</code> in subclasses is  optional (but recommended).</p>
+    </li>
+</ul><hr/><p><strong>Dynamic Binding in C++: virtual functions</strong></p>
+    <ul>
+  <li>
+    <p>Declaring a function as virtual gives programmers permission to call it via dynamic binding.</p>
+    
+    <ul>
+      <li>
+      <p>But not <span class="emph">all</span> calls will be resolved that way.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Let <span class="function">foo</span> be a virtual function member.</p>
+    
+    <ul>
+      <li>
+      <p><code>x.foo()</code>, where <span class="varname">x</span> is an object,  is bound at compile time</p>
+    </li>
+      <li>
+      <p><code>x.foo()</code>, where <span class="varname">x</span> is a  reference, is bound at run-time (dynamic).</p>
+    </li>
+      <li>
+      <p><code>x-&gt;{</code>foo()}, where <span class="varname">x</span> is a  pointer, is bound at run-time (dynamic).</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="anexampleofdynamicbinding"/><h1 id="an-example-of-dynamic-binding">2 An Example of Dynamic Binding</h1><p><strong>An Animal Inheritance Hierarchy</strong></p>
+    <p>For this example, we will introduce a simple hierarchy. </p>
+    <pre><code class="cpp">class Animal {
+public:
+  virtual String eats() {return "???";}
+  String name() {return "Animal";}
+};          
+</code></pre><p>We begin  with the base class, <span class="type">Animal</span>, which has two functions. </p>
+    <ul>
+  <li>One  of those functions has been marked <code>virtual</code>, and so is  eligible for dynamic binding.</li>
+</ul><hr/><p><strong>Plant Eaters</strong></p>
+    <p>Now we introduce a subclass of <span class="type">Animal</span> that overrides both those functions. </p>
+    <pre><code class="cpp">class Herbivore: public Animal {
+public:
+   virtual String eats() {return "plants";}
+   String name() {return "Herbivore";}
+};
+</code></pre><ul>
+  <li>The “<code>virtual</code>” on function  <span class="function">eats</span> is optional.
+    <ul>
+      <li>That function is already virtual because  it was declared that way in the base class.
+        <p>But listing the <code>virtual</code> in the subclass is a nice reminder  to the reader.</p>
+    
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Cud-Chewers</strong></p>
+    <p>Now we introduce a subclass of <span class="emph">that</span> class.</p>
+    <pre><code class="cpp">class Ruminants: public Herbivore {
+public:
+   virtual String eats() {return "grass";}
+   String name() {return "Ruminant";}
+};          
+</code></pre><hr/><p><strong>Meat Eaters</strong></p>
+    <p>And another subclass of the original base class.</p>
+    <pre><code class="cpp">class Carnivore: public Animal {
+public:
+   virtual String eats() {return "meat";}
+   String name() {return "Carnivore";}
+};          
+</code></pre><hr/><p><strong>Output Function</strong></p>
+    <p>It will also be useful in this example to have a simple utility  function to print a pair of strings.</p>
+    <pre><code class="cpp">void show (String s1, String s2) {
+          cout &lt;&lt; s1 &lt;&lt; " " &lt;&lt; s2 &lt;&lt; endl;
+}          
+</code></pre><hr/><p><strong>Let’s Make Some Calls</strong></p>
+    <pre><code class="cpp"> Animal a, *paa, *pah, *par;
+ Herbivore h, *phh;
+ Ruminant r;
+ paa = &amp;a; phh = &amp;h; pah = &amp;h; par = &amp;r;
+ 
+ show(a.name(), a.eats());      // AHRC ?pgm
+ show(paa-&gt;name(), paa-&gt;eats()); // AHRC ?pgm
+ show(h.name(), h.eats);        // AHRC ?pgm
+ show(phh-&gt;name(), phh-&gt;eats()); // AHRC ?pgm
+ show(pah-&gt;name(), pah-&gt;eats()); // AHRC ?pgm
+ show(par-&gt;name(), par-&gt;eats()); //AHRC ?pgm
+
+</code></pre><ul>
+  <li>Note that some pointers are initialized to point to objects of a  subtype of the pointer’s own declared type.</li>
+</ul><p>Note the variety of variables we are using. </p>
+    <ul>
+  <li>
+  <p>We have three actual objects, <span class="varname">a</span>,  <span class="varname">h</span>, and <span class="varname">r</span>, which are of  type <span class="type">Animal</span>, <span class="type">Herbivore</span>, and <span class="type">Ruminant</span>,  respectively.</p>
+    </li>
+  <li>
+    <p>We also have a number of pointers, all of which have names  beginning with “<span class="varname">p</span>”. </p>
+    
+    <ul>
+      <li>
+        <p>The second letter of  each pointer variable name indicates its data type.</p>
+    
+        <p>Thus, <span class="varname">pa</span>, <span class="varname">pah</span>, and <span class="varname">par</span> are all of type <span class="type">Animal<code>*</code></span>. <span class="varname">ph</span> has type <span class="type">Herbivore<code>*</code></span>.</p>
+    
+      </li>
+      <li>
+      <p>These pointer variables are all assigned the address of one of our  three actual objects. (The unary prefix operator <code>&amp;</code> in  C++ is the “address-of” operator.)</p>
+    </li>
+      <li>
+        <p>The third letter in each pointer variable’s name indicates what  type of object it actually points to. Thus <span class="varname">paa</span> is of  type <span class="type">Animal<code>*</code></span> and actually points to an <span class="type">Animal</span>  object, <span class="varname">a</span>.</p>
+    
+        <p><span class="varname">pah</span>, on the other hand, is of type <span class="type">Animal<code>*</code></span>  but actually points to an <span class="type">Herbivore</span> object,  <span class="varname">h</span>. (This is possible because of subtyping - we can  substitute a subtype object into a context where the  supertype object is expected.)</p>
+    
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>What’s the output?</strong></p>
+    <pre><code class="cpp"> Animal a, *paa, *pah, *par;
+ Herbivore h, *phh;
+ Ruminant r;
+ paa = &amp;a; phh = &amp;h; pah = &amp;h; par = &amp;r;
+ 
+ show(a.name(), a.eats());      // AHRC ?pgm
+ show(paa-&gt;name(), paa-&gt;eats()); // AHRC ?pgm
+ show(h.name(), h.eats);        // AHRC ?pgm
+ show(phh-&gt;name(), phh-&gt;eats()); // AHRC ?pgm
+ show(pah-&gt;name(), pah-&gt;eats()); // AHRC ?pgm
+ show(par-&gt;name(), par-&gt;eats()); //AHRC ?pgm
+
+</code></pre><p><strong>Question:</strong> What will be the output  of the various <span class="function">show</span> calls?</p>
+    <div class="details"><span class="summary">**Answer:**</span> <input id="but_details_d6e436" onclick="toggleDisplay('_details_d6e436')" type="button" value="+"/><div class="detailsBody" id="_details_d6e436" style="display: none;">
+<pre><code class="cpp"> Animal a, *paa, *pah, *par;
+ Herbivore h, *phh;
+ Ruminant r;
+ paa = &amp;a; phh = &amp;h; pah = &amp;h; par = &amp;r;
+ 
+ show(a.name(), a.eats());&lt;:
+
+:&gt;      // Animal ??? &#x2780;
+ show(paa-&gt;name(), paa-&gt;eats());&lt;:
+
+:&gt; // Animal ??? &#x2781;
+ show(h.name(), h.eats);&lt;:
+
+:&gt;        // Herbivore plants &#x2782;
+ show(phh-&gt;name(), phh-&gt;eats());&lt;:
+
+:&gt; // Herbivore plants &#x2783;
+ show(pah-&gt;name(), pah-&gt;eats());&lt;:
+
+:&gt; // Animal plants &#x2784;
+ show(par-&gt;name(), par-&gt;eats());&lt;:
+
+:&gt; //Animal grass &#x2785;
+
+</code></pre>
+</div></div><a id="whyisdynamicbindingimportant"/><h1 id="why-is-dynamic-binding-important-">3 Why is Dynamic Binding Important?</h1><p>Dynamic binding lets us write application code for the superclass that  can be applied to the subclasses, taking advantage of the subclasses’  different methods.</p>
+    <a id="thekeypatterntoalloop"/><h2 id="the-key-pattern-to-all-oop">3.1 The Key Pattern to All OOP</h2><p><strong>Collections of Pointers/References to a Base Class</strong></p>
+    <p>Suppose we have an inheritance hierarchy:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="keyPattern.png" style="max-width: 90%;"/></div>
+    </p>
+    <p>and that we have a collection of pointers or references to the <span class="type">BaseClass</span>.</p>
+    <hr/><p><strong>The Key Pattern to All OOP</strong></p>
+    <p>Then this code:</p>
+    <pre><code class="cpp">BaseClass* x;
+for (each x in collection) {
+   x-&gt;virtualFunction(...);
+}
+
+</code></pre><p>uses dynamic binding to apply subclass-appropriate behavior to  each element of a collection. </p>
+    <ul>
+  <li>
+  <p>Each time around the loop, we extract a  pointer from the collection.</p>
+    </li>
+  <li>
+  <p>But when we call <span class="function">virtualFunction</span> through that  pointer, the runtime system uses the data type of the thing pointed to  determine which function body to invoke. </p>
+    </li>
+</ul><p><br/>Study this pattern. Once you understand this, you have grasped the  essence of OOP!</p>
+    <a id="examplesofthekeypattern"/><h2 id="examples-of-the-key-pattern">3.2 Examples of the key pattern</h2><p>There are lots of variations on this pattern. We can use almost  any data structure for the collection.</p>
+    <hr/><p><strong>Example: arrays of Animals</strong></p>
+    <pre><code class="cpp"> Animal** animals = new Animal*[numberOfAnimals];
+    &#x22ee;
+ for (int i = 0; i &lt; numberOfAnimals; ++i)
+    cout &lt;&lt; animals[i]-&gt;name() &lt;&lt; " "
+        &lt;&lt; animals[i]-&gt;eats() &lt;&lt; endl;
+
+</code></pre><hr/><p><strong>Example: Linked Lists of Animals (C++)</strong></p>
+    <pre><code class="cpp"> struct ListNode {
+    Animal* data;
+    ListNode* next;
+ };
+ ListNode* head; // start of list
+    &#x22ee;
+ for (ListNode* current = head; current != 0; current = current-&gt;next)
+    cout &lt;&lt; current-&gt;data-&gt;name() &lt;&lt; " "
+         &lt;&lt; current-&gt;data-&gt;eats() &lt;&lt; endl;
+
+</code></pre><hr/><p><strong>Example: vector of Animals</strong></p>
+    <pre><code class="cpp"> vector&lt;Animal*&gt; animals;
+    &#x22ee;
+ for (int i = 0; i &lt; animals.size(); ++i)
+    cout &lt;&lt; animals[i]-&gt;name() &lt;&lt; " "
+         &lt;&lt; animals[i]-&gt;eats() &lt;&lt; endl;
+
+</code></pre><hr/><p><strong>Example: Trees of Animals</strong></p>
+    <pre><code class="cpp"> struct TreeNode {
+    Animal* data;
+    TreeNode* leftChild;
+    TreeNode* rightChild;
+ };
+ TreeNode* root;
+ 
+ void printTree (const TreeNode* t)
+ {
+   if (t != 0) {
+     printTree(t-&gt;leftChild);
+     cout &lt;&lt; t-&gt;data-&gt;name() &lt;&lt; " "
+          &lt;&lt; t-&gt;data-&gt;eats() &lt;&lt; endl;
+     printTree(t-&gt;rightChild);
+   }
+ }
+    &#x22ee;
+ printTree(root);
+
+</code></pre><h1 id="examples">4 Examples</h1><a id="examplespreadsheetrenderingvalues"/><h2 id="example-spreadsheet-rendering-values">4.1 Example: Spreadsheet – Rendering Values</h2><p>Continuing our earlier example:</p>
+    <ul>
+  <li>
+  <p>Every <span class="type">Cell</span> holds a Value.</p>
+    </li>
+  <li>
+    <p>Every <span class="type">Value</span> can be rendered into a string of a given max width. (See the render function in</p>
+    
+    <div class="details"><span class="summary"><a href="value.h" target="listing">value.h</a></span> <input id="but_details_d6e538" onclick="toggleDisplay('_details_d6e538')" type="button" value="+"/><div class="detailPart" id="_details_d6e538"><pre><code id="_details_d6e538_code">#ifndef VALUE_H
+#define VALUE_H
+
+#include &lt;string&gt;
+#include &lt;typeinfo&gt;
+
+//
+// Represents a value that might be obtained for some spreadsheet cell
+// when its formula was evaluated.
+// 
+// Values may come in many forms. At the very least, we can expect that
+// our spreadsheet will support numeric and string values, and will
+// probably need an "error" or "invalid" value type as well. Later we may 
+// want to add addiitonal value kinds, such as currency or dates.
+//
+class Value
+{
+public:
+  virtual ~Value() {}
+
+
+  virtual std::string render (unsigned maxWidth) const = 0;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  virtual Value* clone() const = 0;
+  // make a copy of this value
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const = 0;
+  //pre: typeid(*this) == typeid(v)
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+  friend bool operator== (const Value&amp;, const Value&amp;);
+};
+
+inline
+bool operator== (const Value&amp; left, const Value&amp; right)
+{
+  return (typeid(left) == typeid(right))
+    &amp;&amp; left.isEqual(right);
+}
+
+#endif
+</code></pre></div></div>
+
+  </li>
+  <li>
+  <p>Pairs of <span class="type">Value</span>s can be compared for  equality</p>
+    </li>
+  <li>
+  <p>Numeric, String, and Error values are some of the possible  <span class="type">Value</span>s</p>
+    </li>
+</ul><hr/><p><strong>Displaying a Cell</strong></p>
+    <p>Here is the code to draw a spreadsheet on the screen. </p>
+    <pre><code class="cpp"> void NCursesSpreadSheetView::redraw() const
+ {
+   drawColumnLabels();
+   drawRowLabels();
+ 
+   CellRange shown = showing();
+   for (CellName cn = shown.first();
+        shown.more(cn); cn = shown.next(cn))
+     drawCell(cn);
+ }
+
+</code></pre><p>We have a loop that goes through the collection of cell  names, invoking <span class="function">drawCell</span> on each one.</p>
+    <ul>
+  <li>This is not a virtual call. But if we look <span class="emph">inside</span>  <span class="function">drawCell</span>…</li>
+</ul><hr/><p><strong>drawCell</strong></p>
+    <pre><code class="cpp"> void NCursesSpreadSheetView::drawCell
+     (CellName name) const
+ {
+   string cellValue;
+   Cell* c = sheet.getCell(name);
+   const Value* v = c-&gt;getValue();
+   if (v != 0)
+    {
+     cellValue = v-&gt;render(theColWidth);
+    }
+   centerStringInWidth (cellValue,
+                         theColWidth);
+   // . . . show cellValue on screen . . .
+ }
+
+</code></pre><hr/><p><strong>render()</strong></p>
+    <p>Now <span class="function">render</span> in <code>value.h</code> is  virtual, and various bodies implementing it can be found in  classes like </p>
+    <div class="details"><span class="summary"><a href="numrender.cpp" target="listing">numrender.cpp</a></span> <input id="but_details_d6e598" onclick="toggleDisplay('_details_d6e598')" type="button" value="+"/><div class="detailPart" id="_details_d6e598"><pre><code id="_details_d6e598_code">std::string NumericValue::render (unsigned maxWidth) const
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+{
+  char buffer[256];
+  for (char precision = '6'; precision &gt; '0'; --precision)
+    {
+      if (maxWidth &gt; 0)
+	{
+	  sprintf (buffer, "%.1u", maxWidth);
+	}
+      else
+	buffer[0] = 0;
+      string format = string("%") + buffer + "." + precision + "g";
+      int width = sprintf (buffer, format.c_str(), d);
+      if (maxWidth == 0 || width &lt;= maxWidth)
+	{
+	  string result = buffer;
+	  result.erase(0, result.find_first_not_of(" "));
+	  return result;
+	}
+    }
+  return string(maxWidth, '*');
+}
+</code></pre></div></div><pre><code>     &lt;span class="type"&gt;NumericValue&lt;/span&gt;
+</code></pre><p>and</p>
+    <div class="details"><span class="summary"><a href="strrender.cpp" target="listing">strrender.cpp</a></span> <input id="but_details_d6e603" onclick="toggleDisplay('_details_d6e603')" type="button" value="+"/><div class="detailPart" id="_details_d6e603"><pre><code id="_details_d6e603_code">std::string StringValue::render (unsigned maxWidth) const
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+{
+  if (maxWidth == 0 || maxWidth &gt; s.length())
+    return s;
+  else
+    return s.substr(0, maxWidth);
+}
+</code></pre></div></div><p>, <span class="type">StringValue</span></p>
+    <p>and</p>
+    <div class="details"><span class="summary"><a href="errrender.cpp" target="listing">errrender.cpp</a></span> <input id="but_details_d6e610" onclick="toggleDisplay('_details_d6e610')" type="button" value="+"/><div class="detailPart" id="_details_d6e610"><pre><code id="_details_d6e610_code">std::string ErrorValue::render (unsigned maxWidth) const
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+{
+  string s = theValueKindName;
+  if (maxWidth == 0 || maxWidth &gt; s.length())
+    return s;
+  else
+    return s.substr(0, maxWidth);
+}
+</code></pre></div></div><p>, <span class="type">ErrorValue</span></p>
+    <ul>
+  <li>
+  <p>So that <span class="function">render</span> call will be resolved by dynamic binding, sending us  to the proper function body depending on just what kind of value is  actually stored in the cell.</p>
+    </li>
+  <li>
+  <p>Combine that with the loop in the <span class="function">redraw</span> function,  and we have a loop going through a collection of pointers (the value  pointers inside the cells inside the spreadsheet) and using each  pointer to invoke a virtual function.</p>
+    </li>
+</ul><a id="exampleevaluatingacell"/><h2 id="example-evaluating-a-cell">4.2 Example: Evaluating a Cell</h2><div class="details"><span class="summary"><a href="celleval.cpp" target="listing">celleval.cpp</a></span> <input id="but_details_d6e637" onclick="toggleDisplay('_details_d6e637')" type="button" value="+"/><div class="detailPart" id="_details_d6e637"><pre><code id="_details_d6e637_code">const Value* Cell::evaluateFormula()
+{
+  Value* newValue = (theFormula == 0)
+    ? new StringValue()
+    : <span class='hli'>theFormula-&gt;evaluate(theSheet)</span>;
+
+  if (theValue != 0 &amp;&amp; <span class='hlii'>*newValue == *theValue</span>)
+    delete newValue;
+  else
+    {
+      <span class='hliii'>delete theValue;
+      theValue = newValue;
+      notifyObservers();</span>
+    }
+  return theValue;
+}
+</code></pre></div></div><ul>
+  <li>After <span class="hli">evaluating a formula</span> in a spreadsheet cell  we check to see if the value obtained  <span class="hlii">is equal to</span> <span class="varname">theValue</span> already stored in that cell.
+    <ul>
+      <li>
+      <p>If the values are equal, we simply discard the newly computed value. We don’t need it.</p>
+    </li>
+      <li>
+      <p>But if they are not equal, we need to <span class="hliii">save the new value</span>  in place of the old one and trigger the re-evaluation of any  cells that mention this one in <em>their</em> formulas.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>operator==</strong></p>
+    <p>Look at the implementation of <span class="function">operator==</span> in <code>value.h</code>.</p>
+    <ul>
+  <li>It calls <span class="function">isEqual</span>, which is a virtual function in <span class="type">Value</span>.
+    <ul>
+      <li>This gives us an opportunity to select subclass-specific behavior for how to compare two values for equality, which you can see in</li>
+    </ul>
+  </li>
+</ul><div class="details"><span class="summary"><a href="numeq.cpp" target="listing">numeq.cpp</a></span> <input id="but_details_d6e696" onclick="toggleDisplay('_details_d6e696')" type="button" value="+"/><div class="detailPart" id="_details_d6e696"><pre><code id="_details_d6e696_code">bool NumericValue::isEqual (const Value&amp; v) const
+  //pre: valueKind() == v.valueKind()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+{
+  const NumericValue&amp; vv = dynamic_cast&lt;const NumericValue&amp;&gt;(v);
+  return d == vv.d;
+}
+</code></pre></div></div><p>,</p>
+    <div class="details"><span class="summary"><a href="streq.cpp" target="listing">streq.cpp</a></span> <input id="but_details_d6e699" onclick="toggleDisplay('_details_d6e699')" type="button" value="+"/><div class="detailPart" id="_details_d6e699"><pre><code id="_details_d6e699_code">bool StringValue::isEqual (const Value&amp; v) const
+  //pre: valueKind() == v.valueKind()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+{
+  const StringValue&amp; vv = dynamic_cast&lt;const StringValue&amp;&gt;(v);
+  return s == vv.s;
+}
+</code></pre></div></div><p>, and</p>
+    <div class="details"><span class="summary"><a href="erreq.cpp" target="listing">erreq.cpp</a></span> <input id="but_details_d6e703" onclick="toggleDisplay('_details_d6e703')" type="button" value="+"/><div class="detailPart" id="_details_d6e703"><pre><code id="_details_d6e703_code">bool ErrorValue::isEqual (const Value&amp; v) const
+  //pre: valueKind() == v.valueKind()
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+{
+  return false;
+}
+</code></pre></div></div><ul>
+  <li>Can you see how the key pattern is manifested  here?
+    <ul>
+      <li>What is the container and what are the contained values?<br/> </li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Dynamic%20Binding%3A%20Class-Appropriate%20behavior"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

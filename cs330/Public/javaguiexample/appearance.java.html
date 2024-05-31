@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>appearance.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20appearance.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">appearance.java</h1></div><pre><code>  public void createAndShowGUI() {
+      window = new JFrame();
+      // set up the components
+      window.getContentPane().setLayout (new BorderLayout());
+
+      canvas = new JPanel () {
+          //...
+          }
+      };
+    <span class='hli'>canvas.setBackground(Color.white);</span>
+    window.getContentPane().add (canvas, BorderLayout.CENTER);
+<span class='hli'>canvas.setPreferredSize(new Dimension(400, 400));</span>  &#x2780;
+
+    JPanel controls = new JPanel();
+
+    colorChooser1 = new JButton("Color 1");
+    controls.add (colorChooser1);
+    <span class='hli'>setColor(colorChooser1, colors[0]);</span>
+    colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+
+    colorChooser2 = new JButton("Color 2");
+    controls.add (colorChooser2);
+    <span class='hli'>setColor(colorChooser2, colors[1]);</span>
+    colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+
+    stepSizeIn = new JTextField (""+stepSize, 5);
+    controls.add (stepSizeIn);
+    stepSizeIn.addActionListener (new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e) {
+          try {
+            Integer newSize = new Integer(stepSizeIn.getText());
+            stepSize = newSize.intValue();
+            canvas.repaint();
+          } catch (Exception ex) {};
+        }
+      });
+
+    window.getContentPane().add (controls, BorderLayout.SOUTH);
+
+    window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+
+    window.pack();
+    window.setVisible(true);
+  }
+
+  /**
+   * Sets the background color of a button to the indicated color.
+   * Changes the foreground to wither black or white, depending on
+   * which will give more contrast agasint the new background.
+   * 
+   * @param button
+   * @param color
+   */
+  private void setColor(JButton button, Color color) {   &#x2781;
+    <span class='hli'>button.setBackground(color);</span>
+    int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+    if (brightness &gt; 3*255/2) {
+        // This is a fairly bright color. Use black lettering
+        <span class='hli'>button.setForeground (Color.black);</span>
+    } else {
+        // This is a fairly dark color. Use white lettering
+        <span class='hli'>button.setForeground (Color.white);</span>
+    }
+}
+</code></pre><p><a href="appearance.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20appearance.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Types of Iterators</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Types%20of%20Iterators"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Types of Iterators</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-class-checklist-table">1 The Class Checklist Table</a></div><div class="toc-h1"><a href="#types-of-iterators">2 Types of Iterators</a></div><div class="toc-h1"><a href="#what-about-the-actual-iterators-">3 What About the Actual Iterators?</a></div><div class="toc-h1"><a href="#how-do-iterators-compare-">4 How Do Iterators Compare?</a></div></div><a id="theclasschecklisttable"/><h1 id="the-class-checklist-table">1 The Class Checklist Table</h1><p>Let us revisit Cross-Language Class Checklist Table…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+      <td align="left"><code>new()</code> or Default trait </td>
+    </tr>
+    <tr>
+      <td align="left">Copy Constructor </td>
+      <td align="left">Clone and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+      <td align="left">Clone trait </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+      <td align="left">Drop trait </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (<code>@property</code>) </td>
+      <td align="left">Accessors (Getters) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setter (<code>@attribute.setter</code>) </td>
+      <td align="left">Mutators (setters) </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+      <td align="left"><code>__eq__</code> </td>
+      <td align="left">std::cmp::PartialEq trait </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+      <td align="left"><code>__hash__</code> </td>
+      <td align="left">std::cmp::PartialOrd trait </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+      <td align="left"><code>__str__</code> </td>
+      <td align="left">std::fmt::Display trait </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>__repr__</code> </td>
+      <td align="left">std::fmt::Debug trait </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin</code> and <code>end</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+      <td align="left"><code>iter</code> and <code>iter_mut</code> </td>
+    </tr>
+  </tbody>
+</table><p>Let us remove the non-iterator focused rows…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><code>begin</code> and <code>end</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+      <td align="left"><code>iter()</code> and <code>iter_mut()</code> </td>
+    </tr>
+  </tbody>
+</table><p>Now that we only have one row… we can <em>reorganize the table…</em></p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Language </th>
+      <th align="left">Iterator Acquisition </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">C++ </td>
+      <td align="left"><code>begin</code> and <code>end</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Java </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Python </td>
+      <td align="left"><code>__iter__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Rust </td>
+      <td align="left"><code>iter</code> or <code>iter_mut</code> or <code>into_iter</code> </td>
+    </tr>
+  </tbody>
+</table><a id="typesofiterators"/><h1 id="types-of-iterators">2 Types of Iterators</h1><p>There are three (3) types of iterators…</p>
+    <ol>
+  <li>
+  <p><em>Read Only</em> - This type of iterator allows the stored data to be  accessed/retrieved but <strong>not</strong> changed.</p>
+    </li>
+  <li>
+  <p><em>Read and Write (Mutating)</em> - This type of iterator allows stored data to  be both accessed and changed.</p>
+    </li>
+  <li>
+  <p><em>Consuming</em> - This type of iterator removes each piece of data from the  original collection.</p>
+    </li>
+</ol><p>Let us add a new <em>Type</em> column to our iterator table.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Iterator Type </th>
+      <th align="left">Language </th>
+      <th align="left">Iterator Acquisition </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>begin</code> and <code>end</code> or <br/> <code>cbegin</code> and <code>cend</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">Java </td>
+      <td align="left">– </td>
+    </tr>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">Python </td>
+      <td align="left">– </td>
+    </tr>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>iter</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>begin</code> and <code>end</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Java </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Python </td>
+      <td align="left"><code>__iter__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>iter_mut</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Consuming </td>
+      <td align="left">C++ </td>
+      <td align="left">– </td>
+    </tr>
+    <tr>
+      <td align="left">Consuming </td>
+      <td align="left">Java </td>
+      <td align="left">– </td>
+    </tr>
+    <tr>
+      <td align="left">Consuming </td>
+      <td align="left">Python </td>
+      <td align="left">– </td>
+    </tr>
+    <tr>
+      <td align="left">Consuming </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>into_iter</code> </td>
+    </tr>
+  </tbody>
+</table><div class="noFloat"> </div><div class="sidebar pct50">
+<p><strong>Note that we are focusing on iterators over collections.</strong></p>
+    
+<p>Topics such as Python Generators, Java Streams, and C++ Ranges are not part of this discussion.</p>
+    
+</div><p>Take note of how not every language provides every type of iterator.</p>
+    <p>Before we continue… let us remove the <em>“blank”</em> entries.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Iterator Type </th>
+      <th align="left">Language </th>
+      <th align="left">Iterator Acquisition </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>begin</code> and <code>end</code> or <br/> <code>cbegin</code> and <code>cend</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read Only </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>iter</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>begin</code> and <code>end</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Java </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Python </td>
+      <td align="left"><code>__iter__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Read and Write </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>iter_mut</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Consuming </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>into_iter</code> </td>
+    </tr>
+  </tbody>
+</table><p>We can now (a little more clearly) see that…</p>
+    <ul>
+  <li>C++ and Rust both provide <em>Read Only</em> and <em>Read and Write</em> iterators</li>
+  <li>C++ iterators require both a <code>begin</code> and an <code>end</code> function instead of a single function.</li>
+  <li>Java, Python, and Rust are similar in <strong>how</strong> an iterator is obtained.</li>
+</ul><a id="whatabouttheactualiterators"/><h1 id="what-about-the-actual-iterators-">3 What About the Actual Iterators?</h1><p>So far we have looked at the functions that are necessary to obtain iterators. What about the interfaces of the iterators themselves?</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Operation </th>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Increment </td>
+      <td align="left"><code>operator++</code> and <code>operator++(int v)</code> </td>
+      <td align="left"><code>next</code> </td>
+      <td align="left"><code>__next__</code> </td>
+      <td align="left"><code>next</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Dereference </td>
+      <td align="left"><code>operator*</code> </td>
+      <td align="left"><code>next</code> </td>
+      <td align="left"><code>__next__</code> </td>
+      <td align="left"><code>next</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Stop Condition (Boundary Check) </td>
+      <td align="left"><code>operator!=</code> and/or <code>operator==</code> </td>
+      <td align="left"><code>hasNext</code> </td>
+      <td align="left"><code>__next__</code> </td>
+      <td align="left"><code>next</code> </td>
+    </tr>
+  </tbody>
+</table><p>At the end of the day…</p>
+    <ul>
+  <li>C++ iterators are the most tedious to implement.</li>
+  <li>Java iterators are the most straightforward to implement.</li>
+  <li>Python and Rust iterators have their <code>__next__</code> and <code>next</code> functions pull triple duty.</li>
+  <li>Python and Rust iterators use a form of exceptions in their boundary checks.</li>
+</ul><a id="howdoiteratorscompare"/><h1 id="how-do-iterators-compare-">4 How Do Iterators Compare?</h1><p>Taking into account both how iterators are obtained and the iterator interface in each language…</p>
+    <ul>
+  <li>C++ iterators are most similar to Rust iterators.</li>
+  <li>Java iterators are most similar to Python iterators.</li>
+  <li>C++ iterators require the most <em>boilerplate code</em>.</li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Types%20of%20Iterators"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

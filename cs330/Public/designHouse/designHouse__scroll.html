@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Design Discussion - Room Renovation </title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Design%20Discussion%20-%20Room%20Renovation%20"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Design Discussion - Room Renovation </h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#problem-scenario">2 Problem Scenario</a></div><div class="toc-h1"><a href="#selecting-identifying-classes">3 Selecting &amp; Identifying Classes</a></div><div class="toc-h1"><a href="#identifying-operations-member-functions">4 Identifying Operations &amp; Member Functions</a></div><div class="toc-h1"><a href="#collecting-candidate-classes">5 Collecting Candidate Classes</a></div><div class="toc-h2"><a href="#pruning-the-list">5.1 Pruning the List</a></div><div class="toc-h2"><a href="#finalizing-the-list">5.2 Finalizing the List</a></div><div class="toc-h2"><a href="#the-final-list">5.3 The Final List</a></div><div class="toc-h2"><a href="#the-final-list-again">5.4 The Final List… Again</a></div><div class="toc-h1"><a href="#implementation-driven-design">6 Implementation Driven Design</a></div><div class="toc-h2"><a href="#beginnings-of-a-room-class-in-c-">6.1 Beginnings of a Room Class (in C++)</a></div><div class="toc-h2"><a href="#refining-the-room-adt-c-">6.2 Refining the Room ADT (C++)</a></div><div class="toc-h2"><a href="#beginnings-of-a-room-class-python-">6.3 Beginnings of a Room Class (Python)</a></div><div class="toc-h2"><a href="#the-punch-line">6.4 The Punch Line…</a></div><div class="toc-h1"><a href="#uml-class-diagrams">7 UML Class Diagrams</a></div></div><h1 id="overview">1 Overview</h1><p>Let us revisit the Room Renovation scenario. More specificly, let us formalize the problem from the <a href="https://github.com/cstkennedy/cs330-examples">Review 2 and Review 3 Example Sets</a>. While most of our design discussions will focus on a formal <strong>design a domain model before code is written</strong> approach… this discussion will include <strong>code design considerations</strong>.</p>
+    <a id="problemscenario"/><h1 id="problem-scenario">2 Problem Scenario</h1><blockquote>
+  <p>You have been contacted by a colleague who has started to remodel his home. He would like to project the total cost of this remodel. His plan is to focus on part of the remodel at a time (starting with flooring). He will later move onto other aspects of each room (e.g., walls, trim, and appliances).</p>
+    
+  <p>He would like to record the dimensions of each room, determine the total area of the room, and the total cost of flooring for the room. He will take his measurements in fake measurement units (i.e., feet). He has indicated that he would like the ability to use any measurement unit (e.g., meters).</p>
+    
+  <p>He would also like to record the cost of flooring for each room. It is his intention to use tile in his kitchen and bathrooms and either laminate wood or hardwood flooring in all other rooms. He has indicated that he is primarily concerned with the cost of the flooring, but would like to record the type of flooring “if possible”.</p>
+    
+  <p>After entering all this information, he would like to view a summary which includes the name of each room, unit cost of flooring (and ideally flooring type), room dimensions, total room flooring cost. After printing a summary for each room, he would like to be presented with a grand total (i.e., the overall renovation cost).</p>
+    
+</blockquote><a id="selectingidentifyingclasses"/><h1 id="selecting-identifying-classes">3 Selecting &amp; Identifying Classes</h1><p>Let us identify the things we have. Let us start with noun phrases.</p>
+    <blockquote>
+  <p>You have been contacted by a <strong>colleague</strong> who has started to remodel his <strong>home</strong>. He would like to project the <strong>total cost</strong> of this <strong>remodel</strong>. His plan is to focus on <strong>part of the remodel</strong> at a time (starting with <strong>flooring</strong>). He will later move onto <strong>other aspects</strong> of each room (e.g., <strong>walls</strong>, <strong>trim</strong>, and <strong>appliances</strong>).</p>
+    
+  <p>He would like to record the <strong>dimensions</strong> of each <strong>room</strong>, determine the <strong>total area</strong> of the <strong>room</strong>, and the <strong>total cost of flooring</strong> for the room. He will take his measurements in fake <strong>measurement units</strong> (i.e., <strong>feet</strong>). He has indicated that he would like the ability to use any <strong>measurement unit</strong> (e.g., <strong>meters</strong>).</p>
+    
+  <p>He would also like to record the <strong>cost of flooring for each room</strong>. It is his intention to use <strong>tile</strong> in his <strong>kitchen</strong> and <strong>bathrooms</strong> and either <strong>laminate wood</strong> or <strong>hardwood</strong> <strong>flooring</strong> in all other <strong>rooms</strong>. He has indicated that he is primarily concerned with the <strong>cost of the flooring</strong>, but would like to record the <strong>type of flooring</strong> “if possible”.</p>
+    
+  <p>After entering all this information, he would like to view a <strong>summary</strong> which includes the <strong>name</strong> of each room, <strong>unit cost of flooring</strong> (and ideally <strong>flooring type</strong>), <strong>room dimensions</strong>, <strong>total room flooring cost</strong>. After printing a summary for each room, he would like to be presented with a <strong>grand total</strong> (i.e., the <strong>overall renovation cost</strong>).</p>
+    
+</blockquote><a id="identifyingoperationsmemberfunctions"/><h1 id="identifying-operations-member-functions">4 Identifying Operations &amp; Member Functions</h1><p>We will follow an informal CS 200-level approach to selecting member functions–i.e., we will add functions based on programmatic requirements. We will discuss the formal approach in a future lecture.</p>
+    <a id="collectingcandidateclasses"/><h1 id="collecting-candidate-classes">5 Collecting Candidate Classes</h1><p>Let us collect a list of all noun phrases (potential classes).</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>How can we prune this list? Are there any synonyms?</p>
+    
+</div><ul>
+  <li>Colleague</li>
+  <li>Home</li>
+  <li>Total Remodel Cost</li>
+  <li>Part of the Remodel</li>
+  <li>Flooring</li>
+  <li>Other Aspects
+    <ul>
+      <li>Wall</li>
+      <li>Trim</li>
+      <li>Appliance</li>
+    </ul>
+  </li>
+  <li>Room Dimensions</li>
+  <li>Total Room Area</li>
+  <li>Total Cost of Flooring</li>
+  <li>Measurement Units
+    <ul>
+      <li>Feet</li>
+      <li>Meters</li>
+    </ul>
+  </li>
+  <li>Cost of Flooring</li>
+  <li>Type of Flooring</li>
+  <li>Unit Cost of Flooring</li>
+  <li>Summary</li>
+  <li>Room Name</li>
+  <li>Grand Total (Overall Renovation Cost)</li>
+</ul><a id="pruningthelist"/><h2 id="pruning-the-list">5.1 Pruning the List</h2><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Take note of the merging of synonyms and elimination of <em>things</em> not relevant to our model. <em>Things is the technical term.</em></p>
+    
+<p>Note that are class names are singular and capitalized. This is standard convention– unless you are following an existing API (e.g., the STL <code>vector&lt;T&gt;::iterator</code>). </p>
+    
+</div><ul>
+  <li><del>Colleague</del></li>
+  <li><del>Home</del> Let us use the more apt term <strong>House</strong></li>
+  <li><del>Total Remodel Cost</del> <strong>Duplicate</strong></li>
+  <li><del>Part of the Remodel</del> Let us use the more apt term <strong>Aspect</strong>
+    <ul>
+      <li>Flooring</li>
+    </ul>
+  </li>
+  <li><del>Other Aspects</del> Aspect
+    <ul>
+      <li>Wall</li>
+      <li>Trim</li>
+      <li>Appliance</li>
+    </ul>
+  </li>
+  <li>Room Dimensions</li>
+  <li>Total Room Area</li>
+  <li>Total Cost of Flooring</li>
+  <li>Measurement Units
+    <ul>
+      <li>Feet</li>
+      <li>Meters</li>
+    </ul>
+  </li>
+  <li>Cost of Flooring</li>
+  <li>Type of Flooring</li>
+  <li>Unit Cost of Flooring</li>
+  <li><del>Summary</del></li>
+  <li>Room Name</li>
+  <li><del>Grand Total</del> (~~Overall~~ Renovation Cost)</li>
+</ul><a id="finalizingthelist"/><h2 id="finalizing-the-list">5.2 Finalizing the List</h2><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Take note of the hierarchy and crossed-off entries. Why have we eliminated feet and meters?</p>
+    
+<p>Do we need to capture a generalized Room Aspect?</p>
+    
+<p>Does a <strong>Dimension</strong> represent a <em>thing</em> or a <em>type of thing</em>? <em>Yes, these are the technical terms)</em>. A similar argument applies to <strong>Flooring</strong> and <strong>Aspect</strong></p>
+    
+</div><ul>
+  <li><strong>House</strong></li>
+  <li><del>Other Aspects</del> <strong>Aspect</strong>
+    <ul>
+      <li>Flooring</li>
+      <li><del>Wall</del></li>
+      <li><del>Trim</del></li>
+      <li><del>Appliance</del></li>
+    </ul>
+  </li>
+  <li>Room
+    <ul>
+      <li>Name</li>
+      <li>Dimensions (length, width, &amp; height)</li>
+      <li>Area</li>
+      <li>Flooring</li>
+      <li>Type (Name)</li>
+      <li>Cost</li>
+      <li>Unit Cost</li>
+    </ul>
+  </li>
+  <li>Linear Measurement Units
+    <ul>
+      <li><del>Feet</del></li>
+      <li><del>Meters</del></li>
+    </ul>
+  </li>
+  <li><del>Summary</del></li>
+  <li>Renovation Cost</li>
+</ul><a id="thefinallist"/><h2 id="the-final-list">5.3 The Final List</h2><div class="noFloat"> </div><div class="sidebar pct50">
+<p>I am still not comfortable with this list. A few of these items will be <em>implemented</em> as behaviors (i.e., member functions).</p>
+    
+</div><ul>
+  <li><strong>House</strong></li>
+  <li>Room
+    <ul>
+      <li>Name</li>
+      <li>Dimensions (length, width, &amp; height)</li>
+      <li>Area</li>
+      <li>Flooring
+        <ul>
+          <li>Type (Name)</li>
+          <li>Unit Cost</li>
+        </ul>
+      </li>
+      <li>Flooring Cost</li>
+    </ul>
+  </li>
+  <li>Linear Measurement Units</li>
+  <li>Renovation Cost
+    <ul>
+      <li>Total Flooring Cost</li>
+      <li>Average Flooring Cost</li>
+    </ul>
+  </li>
+</ul><a id="thefinallistagain"/><h2 id="the-final-list-again">5.4 The Final List… Again</h2><ul>
+  <li>Linear Measurement Units</li>
+  <li><strong>House</strong>
+    <ul>
+      <li>Renovation Cost</li>
+      <li>Total Flooring Cost</li>
+      <li>Average Flooring Cost</li>
+    </ul>
+  </li>
+  <li><strong>Room</strong>
+    <ul>
+      <li>Name</li>
+      <li>Dimensions (length, width, &amp; height)</li>
+      <li>Area</li>
+      <li>(Aspect) <strong>Flooring</strong>
+        <ul>
+          <li>Type (Name)</li>
+          <li>Unit Cost</li>
+        </ul>
+      </li>
+      <li>Flooring Cost</li>
+    </ul>
+  </li>
+</ul><a id="implementationdrivendesign"/><h1 id="implementation-driven-design">6 Implementation Driven Design</h1><p>One of the reasons our <strong>Proper Design Discussions</strong> will focus on a domain model (i.e., understanding the problem) is the fact that you cannot design and write code if the underlying problem is not understood. <em>(Everyone has been too eager to write code before… then realized they took the wrong approach, scrapped some code, and started over.)</em></p>
+    <p>This section will go through how the <code>Room</code> class would be designed… if language specific considerations are made.</p>
+    <a id="beginningsofaroomclassinc"/><h2 id="beginnings-of-a-room-class-in-c-">6.1 Beginnings of a Room Class (in C++)</h2><p>This brings us to <a href="https://github.com/cstkennedy/cs330-examples">Review Example Sets 2 and 3</a>.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>You will find that I jump between <code>public:</code> and <code>private:</code> in my examples. Such jumps serve to emphasize the level of access for specific blocks of code.</p>
+    
+</div><pre><code class="cpp"><br/>typedef double Dimension;
+typedef double Cost;
+
+struct Flooring {
+    std::string type;
+    Cost unitCost;
+};
+
+class Room {
+    public:
+        const std::string UNITS;
+
+    private:
+        std::string name;
+
+        Dimension length;
+        Dimension width;
+
+        Flooring floor;
+
+    public:
+        ...
+
+};
+</code></pre><p>After some reorganization… we end up with…</p>
+    <pre><code class="cpp"><br/>typedef double Dimension;
+typedef double Cost;
+
+class Room {
+    public:
+        const std::string UNITS;
+
+        struct Flooring {
+            std::string type;
+            Cost unitCost;
+        };
+
+    private:
+        std::string name;
+
+        Dimension length;
+        Dimension width;
+
+        Flooring floor;
+
+    public:
+        ...
+
+};
+</code></pre><p>This brings us back to the start of <a href="https://github.com/cstkennedy/cs330-examples">Review 2</a>. Revisit our discussions (both the example code and recordings).</p>
+    <a id="refiningtheroomadtc"/><h2 id="refining-the-room-adt-c-">6.2 Refining the Room ADT (C++)</h2><p><strong>Possible Changes</strong> - Let us consider the following:</p>
+    <ol>
+  <li>Does it make sense for <code>Cost</code> to exist with the global scope?
+    <pre><code class="cpp">/**
+ * Monetary cost. Note that in a non-academic setting,
+ * this would likely be represented by a more robust
+ * Money ADT--or API.
+ */
+typedef double Cost;
+</code></pre>
+  </li>
+  <li>Does it make sense for <code>Flooring</code> to exist within the <code>Room</code> scope?
+    <pre><code class="cpp">class Room {
+    public:
+        ...
+
+        struct Flooring {
+            std::string type;
+            Cost        unitCost;
+        };
+
+        ...
+};
+</code></pre>
+  </li>
+  <li>
+    <p>Can we restructure our Dimension code into an  inner class? Should we?</p>
+    
+    <pre><code class="cpp">typedef double Dimension;
+
+class Room {
+    ...
+
+    private:
+        Dimension  length;
+        Dimension   width;
+
+        Flooring flooring; 
+
+    public:
+        ...
+
+        void setLength(Dimension v);
+
+        Dimension getLength() const;
+
+        void setWidth(Dimension v);
+
+        Dimension getWidth() const;
+
+        double area() const;
+
+        ...
+};
+</code></pre>
+  </li>
+  <li>
+    <p>Can we <em>spruce up</em> the constructors with initializer lists?</p>
+    
+    <pre><code class="cpp">Room::Room()
+{
+    this-&gt;length = 1; // length = 1;
+    this-&gt;width  = 1;
+
+    this-&gt;flooring.unitCost = 1;
+}
+
+Room::Room(Dimension l, Dimension w, Cost c)
+{
+    length    = l; 
+    width     = w;
+
+    flooring.unitCost = c;
+}
+</code></pre>
+  </li>
+</ol><a id="beginningsofaroomclasspython"/><h2 id="beginnings-of-a-room-class-python-">6.3 Beginnings of a Room Class (Python)</h2><p>A C++ or Java programmer would probably start with something the lines of…</p>
+    <pre><code class="python">Dimension = float
+Cost = float
+
+@dataclass
+class Flooring:
+    type: str
+    unit_cost: Cost
+
+class Room:
+    UNITS: str = "ft";
+   
+    def __init__(self): 
+        name: str = ""
+
+        length: Dimension = 1
+        width: Dimension = 1
+
+        floor: Flooring = Flooring()
+
+    def area(self) -&gt; float:
+      pass
+</code></pre><p>The type aliases (i.e., <code>Dimension</code> and <code>Cost</code>) exist due to considerations we might need to make for rounding (e.g., rounding money to two decimal places). <code>Flooring</code> has two fields… which make it a perfect candidate for a dataclass. However, I would like to set some default values.</p>
+    <pre><code class="python">@dataclass
+class Flooring:
+    type: str = None
+    unit_cost: Cost = 0
+</code></pre><p>Now the call to <code>Flooring()</code> is valid. The next step is the <code>UNITS</code> constant. It is really a module level constant (since it applies to <code>Dimension</code>). It should be promoted to a module-level constant.</p>
+    <pre><code class="python">Dimension = float
+Cost = float
+
+UNITS: str = "ft";
+
+@dataclass
+class Flooring:
+    type: str = None
+    unit_cost: Cost = 0
+</code></pre><p><code>Room</code> should also become a dataclass…</p>
+    <pre><code class="python">@dataclass
+class Room:
+    name: str = ""
+
+    length: Dimension = 1
+    width: Dimension = 1
+
+    floor: Flooring = field(default_factory=Flooring)
+
+    def area(self) -&gt; float:
+        pass
+</code></pre><p><em>Note that when calling a function to set a default value for an entry (data member) in a dataclass… that function must be provided as a <code>default_factory</code>).</em> However… what all of that means will be part of our future Python discussions.</p>
+    <a id="thepunchline"/><h2 id="the-punch-line">6.4 The Punch Line…</h2><p>The implementation considerations, regardless of language, do not actually help us towards our goal. We need to understand what a <code>Room</code> is… what <code>Flooring</code> is…</p>
+    <p>Discussion of implementation details (e.g., public vs private) is premature.</p>
+    <a id="umlclassdiagrams"/><h1 id="uml-class-diagrams">7 UML Class Diagrams</h1><p>A set of UML class diagrams is the real starting point. A complete discussion of UML Class Diagrams will be part of a future lecture. Let us start with a quick-and-dirty initial diagram.</p>
+    <p><img alt="Initial UML Class Diagram" src="initial_classes.svg"/></p>
+    <p>Take note of how the structure of each class is captured. None of the language specific methods (e.g., <code>toString</code> for Java and <code>__str__</code> for Python) are present. Our focus is on modeling what exists in the problem domain (i.e., the real world). Implementation decisions (e.g., using iterators and the Builder Pattern) come later.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Design%20Discussion%20-%20Room%20Renovation%20"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>book3.cpp</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20book3.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">book3.cpp</h1></div><pre><code>#include "authoriterator.h"
+#include "book3.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  first = last = new AuthorNode (a, 0, 0);
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = 0;
+  first = last = 0;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      addAuthor(end(), au[i]);
+    }
+}
+
+
+Book::AuthorPosition Book::begin() const
+{
+  return AuthorPosition(first);
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return AuthorPosition(0);
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  if (first == 0)
+     first = last = new AuthorNode (author, 0, 0);
+  else if (at.pos == 0)
+    {
+      last-&gt;next = new AuthorNode (author, last, 0);
+      last = last-&gt;next;
+    }
+  else
+    {
+      AuthorNode* newNode = new AuthorNode(author, at.pos-&gt;prev, at.pos);
+      at.pos-&gt;prev = newNode;
+      if (at.pos == first)
+    first = newNode;
+      else
+    newNode-&gt;prev-&gt;next = newNode;
+    }
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  if (at.pos == first)
+    {
+      if (first == last)
+        first = last = 0;
+      else
+    {
+      first = first-&gt;next;;
+      first-&gt;prev = 0;
+    }
+    }
+  else if (at.pos == last)
+    {
+      last = last-&gt;prev;
+      last-&gt;next = 0;
+    }
+  else 
+    {
+      AuthorNode* prv = at.pos-&gt;prev;
+      AuthorNode* nxt = at.pos-&gt;next;
+      prv-&gt;next = nxt;
+      nxt-&gt;prev = prv;
+    }
+  delete at.pos;
+  --numAuthors;
+}
+
+
+Book::Book (const Book&amp; b)
+  : title(b.title), isbn(b.isbn), publisher(b.publisher),
+    numAuthors(0), first(0), last(0)
+{
+  for (AuthorPosition p = b.begin(); p != b.end(); ++p)
+    addAuthor(end(), *p);
+}
+
+Book::~Book()
+{
+  AuthorPosition nxt;
+  for (AuthorPosition current = begin(); current != end(); current = nxt)
+    {
+      nxt = current;
+      ++nxt;
+      delete current.pos;
+    }
+}
+
+const Book&amp; Book::operator= (const Book&amp; b)
+{
+  if (this != &amp;b)
+    {
+      title = b.title;
+      isbn = b.isbn;
+      publisher = b.publisher;
+      numAuthors = 0;
+      first =  last = 0;
+      for (AuthorPosition p = b.begin(); p != b.end(); ++p)
+    addAuthor(end(), *p);
+    }
+  return *this;
+}
+</code></pre><p><a href="book3.cpp">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20book3.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

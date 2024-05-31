@@ -1,0 +1,29 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+hide empty members
+set separator none
+
+class House {
+
+}
+
+interface java.util.Iterable <<interface>> {
+    +iterator(): Iterator
+}
+
+class House.Iterator {
+
+}
+
+interface java.util.Iterator <<interface>> {
+    +next(): T
+    +hasNext(): boolean
+}
+
+House ..|> java.util.Iterable
+House -> House.Iterator: provides
+House.Iterator ..|> java.util.Iterator
+
+@enduml

@@ -1,0 +1,59 @@
+@startuml
+hide empty members
+
+class Player {
+    name
+    symbol
+
+    nextMove(theBoard : Board)
+    choose()
+}
+
+class Board {
+    getCell(position)
+    setCell(position, symbol)
+    isFull()
+}
+
+class Strategy {
+
+}
+
+class Referee {
+    validate(selectedMove, theBoard : Board)
+    checkForWin(theBoard: Board)
+    checkForLoss(theBoard: Board)
+    checkForStalemate(theBoard: Board)
+    flipCoin()
+
+    recognizeHorizontalWin(...)
+    recognizeVerticalWin(...)
+    recognizeDiagonalWin(...)
+}
+
+class Game {
+    player1: Player
+    player2: Player
+
+    getWinner() : Player
+    getLoser() : Player
+    playMatch()
+    playOneRound()
+    isOver()
+    endedWithWin()
+    endedWithLoss()
+    endedWithStalemate()
+
+    setPlayer1(p: Player)?
+    setPlayer2(p: Player)?
+}
+
+class Scoreboard {
+    awardPoint(p: Player)
+    recordMatch(p1: Player, p2: Player 2)
+}
+
+Player <|---- HumanPlayer
+Player <|---- ComputerPlayer
+
+@enduml

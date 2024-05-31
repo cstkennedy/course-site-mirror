@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Gradle & Command Line Arguments in Java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Gradle%20%26%20Command%20Line%20Arguments%20in%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Gradle &amp; Command Line Arguments in Java</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#using-gradle">1 Using Gradle</a></div><div class="toc-h2"><a href="#gradle-on-linux">1.1 Gradle on Linux</a></div><div class="toc-h2"><a href="#gradle-on-windows">1.2 Gradle on Windows</a></div><div class="toc-h2"><a href="#compiling-and-running-a-java-program">1.3 Compiling and Running a Java Program</a></div><div class="toc-h2"><a href="#compiling-and-running-tests">1.4 Compiling and Running Tests</a></div><div class="toc-h1"><a href="#command-line-arguments">2 Command Line Arguments</a></div><div class="toc-h2"><a href="#playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</a></div><div class="toc-h2"><a href="#using-command-line-arguments">2.2 Using Command Line Arguments</a></div></div><p>All example Java code (e.g., from <a href="https://github.com/cstkennedy/cs330-examples">recorded lectures</a>) makes use of Gradle (with a few exceptions). You will use Gradle in every Java assignment. Gradle is used to simplify compilation, testing, and program execution.</p>
+    <p>Writing a <code>build.gradle</code> file is an exercise best left to CS 350 (Introduction to Software Engineering) or an equivalent course. You are only required to <strong>use</strong> Gradle in this course.</p>
+    <a id="usinggradle"/><h1 id="using-gradle">1 Using Gradle</h1><p>All assignments and example code that utilize Gradle are accompanied by a Gradle wrapper script.</p>
+    <a id="gradleonlinux"/><h2 id="gradle-on-linux">1.1 Gradle on Linux</h2><p>If you are on a Linux machine you… will want to confirm that</p>
+    <pre><code class="console">gradlew
+</code></pre><p>is executable with</p>
+    <pre><code class="console">ls -lah gradlew
+</code></pre><p>You should see something similar to:</p>
+    <pre><code class="console">-rwxr-xr-x 1 tkennedy proxy 5.2K Nov 01 09:39 ./gradlew
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>This is a good time to review (and practice) a couple Linux commands from CS 252 (i.e., <code>ls</code> and <code>chmod</code>).</p>
+    
+</div><p>Take note of the <code>x</code> characters in <code>-rwxr-xr-x</code>. These mean that the script is executable. If you run:</p>
+    <pre><code class="console">./gradlew
+</code></pre><p>and see</p>
+    <pre><code class="console">./gradlew: Permission denied.
+</code></pre><p>you will need to apply what you learned in CS 252. Use <code>chmod</code> to set the permissions. Run</p>
+    <pre><code class="console">chmod u+x gradlew
+</code></pre><a id="gradleonwindows"/><h2 id="gradle-on-windows">1.2 Gradle on Windows</h2><p>If you are on <em>Windows</em> you will need to use <code>gradlew.bat</code> from either <em>Command Prompt</em> or <em>Powershell</em>.</p>
+    <a id="compilingandrunningajavaprogram"/><h2 id="compiling-and-running-a-java-program">1.3 Compiling and Running a Java Program</h2><p>In most cases… you can run any provided Java code with…</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/{JAR_FILE_NAME}.jar 
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew run
+</code></pre><p>The latter command executes the <code>run</code> target in the Gradle buildfile (which runs the necessary commands for you). This allows us to use fewer keystrokes (which are expensive).</p>
+    <a id="compilingandrunningtests"/><h2 id="compiling-and-running-tests">1.4 Compiling and Running Tests</h2><p>You can compile and run any included test code with…</p>
+    <pre><code class="console">./gradlew test
+</code></pre><p>You may need to run…</p>
+    <pre><code class="console">./gradlew clean test
+</code></pre><p>to force a full recompile after making small updates.</p>
+    <a id="commandlinearguments"/><h1 id="command-line-arguments">2 Command Line Arguments</h1><p>Most (almost all) examples will make use of command line arguments. Take a look at…</p>
+    <pre><code class="java">public class Demo
+{
+    public static void main(String... args)
+    {
+        for (int i = 0; i &lt; args.length; ++i) {
+            System.out.printf("%3d: %s%n", i, args[i]);
+        }
+    }
+}
+</code></pre><p><code>Demo.java</code> is a simple program. All it does is echo any entered command line arguments.</p>
+    <p><em>Note that I am using <code>String...</code> instead of <code>String[]</code>.</em> For now… we will treat them as equivalent. The nuances will be covered in future discussions. </p>
+    <p>Unlike most other languages (e.g., C++, Python, and Rust)… the first argument (i.e., <code>argv[0]</code>) is not the program name. Java is an outlier in this regard.</p>
+    <a id="playingwithcommandlinearguments"/><h2 id="playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</h2><p>Save a copy of everything in the <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-00-Foundational-Concepts/Command-Line-Args-Java">Review-00-Foundational-Concepts/Command-Line-Args-Java</a> directory</p>
+    <p>…then open a Linux terminal (e.g., SSH into a CS Linux server or open a local Linux terminal). Run <code>./gradlew</code> to compile <code>Demo.java</code>.</p>
+    <ol>
+  <li>
+    <p>Run</p>
+    
+    <pre><code class="console">./gradlew run
+</code></pre>
+    <p>You should see… <em>nothing</em></p>
+    
+  </li>
+  <li>
+    <p>Run </p>
+    
+    <pre><code class="console">./gradlew run --args='1 2 77 The letter Q "Hello, and..."'
+</code></pre>
+    <p>You should see…</p>
+    
+    <pre><code>  0: 1
+  1: 2
+  2: 77
+  3: The
+  4: letter
+  5: Q
+  6: Hello, and...
+</code></pre>
+  </li>
+</ol><p>Do not forget… The double quotes are required for any argument that contains spaces.</p>
+    <a id="usingcommandlinearguments"/><h2 id="using-command-line-arguments">2.2 Using Command Line Arguments</h2><p>Most programs will not simply echo command line arguments. Many programs will use command line arguments to specify input files. Consider the following excerpt…</p>
+    <pre><code class="java">    final int argc = args.length
+
+    if (argc &lt; 1) {
+        System.err.println("No input file provided.");
+
+        System.exit(1);
+    }
+</code></pre><p>In this excerpt, only one argument is required… an input file name.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Gradle%20%26%20Command%20Line%20Arguments%20in%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

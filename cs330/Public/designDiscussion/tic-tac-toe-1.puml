@@ -1,0 +1,9 @@
+@startuml
+
+Player : symbol
+Player : makeMove()
+
+Board : getCell(position)
+Board : setCell(position, symbol)
+
+@enduml

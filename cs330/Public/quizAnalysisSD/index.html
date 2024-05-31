@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="crc.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Example: Further Elaboration on Automated Assessments</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Further%20Elaboration%20on%20Automated%20Assessments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Example: Further Elaboration on Automated Assessments</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#recapping">1 Recapping</a></div><div class="toc-h1"><a href="#analysis-of-the-create-assessment-use-case">2 Analysis of the “Create Assessment” Use Case</a></div><div class="toc-h2"><a href="#step-1">2.1 Step 1</a></div><div class="toc-h2"><a href="#step-2">2.2 Step 2</a></div><div class="toc-h2"><a href="#step-3">2.3 Step 3</a></div><div class="toc-h2"><a href="#step-4">2.4 Step 4</a></div><div class="toc-h2"><a href="#create-assessment-alternative-paths">2.5 Create Assessment alternative paths</a></div><div class="toc-h1"><a href="#recap-how-to-use-a-use-case">3 Recap: How to Use a Use Case</a></div></div><h1 id="recapping">1 Recapping</h1><p>Here’s where we last left our assessment model: </p>
+    <div class="crcdeck" markdown="1"><table><tr><td colspan="2" style="font-weight: bold">Assessment</td></tr>
+<tr><td>  Has questions </td><td>   </td></tr>
+</table></div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">GradeBook</td></tr>
+<tr><td>  record a score for a Student on an Assessment </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">GradedQuestionResponse?</td></tr>
+<tr><td>  Has score, feedback </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">GradedResponse?</td></tr>
+<tr><td>  has GradedQuestionResponses? </td><td>   </td></tr>
+<tr><td>  compute total score </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Instructor</td></tr>
+<tr><td>  administer assessment to group of Students   </td><td> Student  </td></tr>
+<tr><td>     </td><td> Response  </td></tr>
+<tr><td>    </td><td>  Grade Book  </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crcdeck" markdown="1"><table><tr><td colspan="2" style="font-weight: bold">Question</td></tr>
+<tr><td>  <span style="text-decoration: line-through;"> grade(Rubric) </span>   </td><td>  <span style="text-decoration: line-through;"> Rubric </span>  </td></tr>
+</table></div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">QuestionResponse?</td></tr>
+<tr><td>  <span style="text-decoration: line-through;"> grade(Rubric): score </span>   </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Response</td></tr>
+<tr><td>  has QuestionResponses? </td><td> <span style="text-decoration: line-through;"> Rubric </span>  </td></tr>
+<tr><td>  <span style="text-decoration: line-through;"> grade a seq of Questions via a seq of Rubrics </span> </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Rubric</td></tr>
+<tr><td>  grade(QuestionResponse): score  </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Student</td></tr>
+<tr><td>  take an Assessment: Response   </td><td> Assessment </td></tr>
+<tr><td>  receive a GradedResponse </td><td>   </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <hr/><p><strong>Class Diagrams - Assessment Generalization</strong></p>
+    <p>Assessments come in many kinds </p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentGen.png" style="max-width: 80%;"/></div>
+    </p>
+    <hr/><p><strong>Question Generalization</strong></p>
+    <p>So do questions</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="questionGen.png" style="max-width: 80%;"/></div>
+    </p>
+    <hr/><p><strong>Key Documents in the Assessment World</strong></p>
+    <p>There is a parallel structure to the main documents in this world, based upon the questions that make up the assessment..</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="gradingDocuments2.png" style="max-width: 95%;"/></div>
+    </p>
+    <hr/><p><strong>Use Cases</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC4.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>We will concentrate, in this example, on the “Create Assessment” case:</p>
+    <a id="analysisofthecreateassessmentusecase"/><h1 id="analysis-of-the-create-assessment-use-case">2 Analysis of the “Create Assessment” Use Case</h1><hr/><p><strong>Validating the “Create Assessment” Use Case</strong></p>
+    <p>Take the first use case (<span class="varname">Create Assessment</span>).</p>
+    <p>Step through it to be sure our model can support it. As we do, we will</p>
+    <ul>
+  <li>
+  <p>Record any interface changes in a UML class diagram</p>
+    </li>
+  <li>
+  <p>Validate our progress by constructing a sequence  diagram</p>
+    </li>
+</ul><hr/><p><strong>The Create Assessment Case</strong></p>
+    <p>Here is the use case:</p>
+    <blockquote>
+  <p><strong>Create Assessment</strong></p>
+    
+  <p>1: Author creates items of varying kinds, adding each to  his/her item bank.</p>
+    
+  <p>2: Author creates an empty assessment, adding a title and  indicating the grading policy (graded immediately or in batch,  grades recorded in grade book or not), policy on re-attempts  permitted, dates &amp; time of availability, and security policy  (suspend &amp; resume permitted, open/closed book, etc.).</p>
+    
+  <p>3: Author selects questions from item bank and adds them to  the assessment, assigning point value as he/she does so.</p>
+    
+  <p>4: Author concludes creation of the assessment, making it  available to the appropriate proctors.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Edit assessment</span></p>
+    
+  <p>2: Author edits an existing assessment, possibly altering  one or more of the assessment properties.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Save assessment</span></p>
+    
+  <p>4: Author concludes this work session, saving the  assessment for later editing without releasing it to the  proctors.</p>
+    
+</blockquote><hr/><p><strong>Thinking about Authoring</strong></p>
+    <p>Previously we had</p>
+    <div class="crcdeck" markdown="1"><table><tr><td colspan="2" style="font-weight: bold">Assessment</td></tr>
+<tr><td>  Has questions </td><td>      </td></tr>
+</table></div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Instructor</td></tr>
+<tr><td>  administer assessment to group of Students   </td><td> Student  </td></tr>
+<tr><td>     </td><td> Response  </td></tr>
+<tr><td>    </td><td> Grade Book  </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crcdeck" markdown="1"><table><tr><td colspan="2" style="font-weight: bold">Question</td></tr>
+<tr><td>  <span style="text-decoration: line-through;"> grade(Rubric) </span>   </td><td>  <span style="text-decoration: line-through;"> Rubric </span>  </td></tr>
+</table></div>
+    <p>and might have described the authoring process like this:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="authoring1.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Updating Names</strong></p>
+    <ul>
+  <li>
+    <p>Now we know that “Instructor” is better replaced by more specific roles, in this case, the role of “Author”.</p>
+    
+    <ul>
+      <li>
+      <p>Seems unlikely that authors will administer the  assessments</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Similarly, we have learned that “Questions” are more generically  referred to as “Items”.</p>
+    </li>
+</ul><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="authoring2.png" style="max-width: 50%;"/></div>
+    </p>
+    <a id="step1"/><h2 id="step-1">2.1 Step 1</h2><blockquote>
+  <ol>
+    <li>Author creates items of varying kinds, adding each to his/her  item bank.</li>
+  </ol>
+</blockquote><p><div class="noFloat"> </div>
+    <img src="createAssessment0.png" style="float: right; max-width: 50%;"/> So, we can see immediately 3 objects that are  going to be required. We’ll list those three objects within a title  frame named for the use case.</p>
+    <ul>
+  <li>I will generally use the anonymous form until I discover  that I need an actual name for an object (to refer to it as a  parameter or return value in some call).</li>
+</ul><p>Note: The sequence diagrams in these notes were prepared with the free <span class="command">sdedit</span> program (see the Library page for more info). The input for this diagram was</p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+item:Item[a]
+bank: Itembank[a]
+
+</code></pre><p>I will continue to show these inputs in the notes so that you can see how to build similar diagrams of your own.</p>
+    <hr/><p><strong>Step 1 (cont.)</strong></p>
+    <blockquote>
+  <ol>
+    <li>Author creates items of varying kinds, adding each to his/her  item bank.</li>
+  </ol>
+</blockquote><p><div class="noFloat"> </div>
+    <img src="createAssessment1.png" style="float: right; max-width: 50%;"/> Now there are two operations going on here. </p>
+    <ol>
+  <li>the creation of a new item.</li>
+  <li>adding of that item to the item bank.</li>
+</ol><p>The item bank is a new class, one that was not in our CRC  cards.</p>
+    <ul>
+  <li>We could add a card for it, but we’re far enough along that we  should probably start being a bit more formal.</li>
+</ul><pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item[a]
+bank:Itembank[a]
+#
+author:item.new
+author:bank.add(item)
+
+</code></pre><hr/><p><strong>The Item Bank</strong></p>
+    <ul>
+  <li>Start with the idea that each author has a personal item  bank.  <br/><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="authoring3.png" style="max-width: 50%;"/></div>
+    </li>
+</ul><hr/><p><strong>Item Banks are Containers</strong></p>
+    <ul>
+  <li>And that the item banks are repositories of items.  </li>
+</ul><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="itemInher2.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Back to the Create Assessment Use Case</strong></p>
+    <p>Finally, we note that this is a sequence that is repeated multiple  times.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment2.png" style="max-width: 60%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item[a]
+bank: Itembank[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+
+</code></pre><hr/><p><strong>What’s in the new items?</strong></p>
+    <p>Now, nothing is said about what kind of information goes into each  of these items. </p>
+    <ul>
+  <li>
+  <p>It’s possible that all the necessary info is supplied as a  parameter to the 3 constructor calls.</p>
+    </li>
+  <li>
+  <p>It’s possible that there are several steps after  construction to fill in the info.</p>
+    </li>
+</ul><p>We just don’t have that info right now and should make a note to  try to find out later. (solicit more use cases)</p>
+    <a id="step2"/><h2 id="step-2">2.2 Step 2</h2><blockquote>
+  <p>2: Author creates an empty assessment, adding a title and  indicating the grading policy (graded immediately or in batch, grades  recorded in grade book or not), policy on re-attempts permitted, dates  &amp; time of availability, and security policy (suspend &amp; resume  permitted, open/closed book, etc.).</p>
+    
+</blockquote><p>So we learn a lot about the attributes of an assessment.</p>
+    <hr/><p><strong>Assessment Attributes</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessInher1.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Creating an Assessment Object</strong></p>
+    <p>And we add the creation of a new assessment to our sequence  diagram:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment3.png" style="max-width: 50%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item[a]
+bank: Itembank[a]
+/assess:Assessment[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess.new(title,policies,avail)
+
+</code></pre><a id="step3"/><h2 id="step-3">2.3 Step 3</h2><blockquote>
+  <p>3: Author selects questions from item bank and adds them to the  assessment, assigning point value as he/she does so.</p>
+    
+</blockquote><p>Two operations get added to the sequence diagram:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment4.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Comments</strong></p>
+    <ul>
+  <li>
+  <p>I use the return arrow from the <code>getItem()</code> call as  a way of labelling the value being returned so that I can use that  same name in the following <code>add()</code> call to indicate that  the item being added is the one just retrieved.</p>
+    </li>
+  <li>
+  <p>And I used a different name than “item” because I wanted  to indicate that the selected items were not necessarily only  ones that had been created earlier in the scenario.</p>
+    </li>
+</ul><hr/><p><strong>Validating the new Operations</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment4.png" style="max-width: 70%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p>We already have the <code>getItem()</code> operation in the  <span class="type">ItemBank</span> class.</p>
+    </li>
+  <li>
+  <p>But the <span class="function">add</span> function needs to be added to  our <span class="type">Assessment</span> class.</p>
+    </li>
+</ul><pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item[a]
+bank: Itembank[a]
+/assess:Assessment[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess.new(title,policies,avail)
+author:selected=bank.getItem(...)
+author:assess.add(selected,pointValue)
+
+</code></pre><hr/><p><strong>Updating the Assessment Class</strong></p>
+    <ul>
+  <li>We add the <span class="function">add</span> function to  our <span class="type">Assessment</span> class.   <div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessInher2.png" style="max-width: 50%;"/></div>
+    </li>
+</ul><hr/><p><strong>Repeating The Addition of Items</strong></p>
+    <p>Finally, we note that these operations are also repeated.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment5.png" style="max-width: 50%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item[a]
+bank: Itembank[a]
+/assess:Assessment[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess.new(title,policies,avail)
+[c:loop *more questions desired]
+author:selected=bank.getItem(...)
+author:assess.add(selected,pointValue)
+[/c]
+
+</code></pre><a id="step4"/><h2 id="step-4">2.4 Step 4</h2><blockquote>
+  <p>4: Author concludes creation of the assessment, making it  available to the appropriate proctors.</p>
+    
+</blockquote><p>What is meant by concluding the creation of the assessment?</p>
+    <ul>
+  <li>Well, at the very least, it would entail saving the author’s  work.
+    <ul>
+      <li>
+        <p>But where is it saved to? A file? A special container of  assessments?</p>
+    
+        <ul>
+          <li>
+          <p>An architectural design issue</p>
+    </li>
+          <li>
+          <p>In the real world, this is probably something very prosaic  and individual: a desk drawer, a file cabinet, the proctor’s  mailbox, the author’s briefcase…</p>
+    </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>AssessmentBanks</strong></p>
+    <ul>
+  <li>In early elaboration, we can punt on this by postulating  a store of assessments, and later noting that this might be  ordinary files or might be something more elaborate.</li>
+</ul><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment6.png" style="max-width: 50%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item
+bank: Itembank[a]
+/assess: Assessment[a]
+abank:AssessmentBank[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess.new(title,policies,avail)
+[c:loop *more questions desired]
+author:selected=bank.getItem(...)
+author:assess.add(selected,pointValue)
+[/c]
+author:assess.makeAvailableTo(proctorList)
+author:abank.save(assess)
+
+</code></pre><hr/><p><strong>Storing Assessments</strong></p>
+    <p>And we update our model accordingly:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessInher3.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Authors have Banks</strong></p>
+    <p>And each author would have a collection of their  assessments.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="authoring4.png" style="max-width: 50%;"/></div>
+    </p>
+    <a id="createassessmentalternativepaths"/><h2 id="create-assessment-alternative-paths">2.5 Create Assessment alternative paths</h2><hr/><p><strong>Alternative Paths</strong></p>
+    <p>Our Use Case include alternate paths, e.g., </p>
+    <blockquote>
+  <p><strong>Alternative:</strong> <span class="emph">Save assessment</span></p>
+    
+  <p>4: Author concludes this work session, saving the assessment  for later editing without releasing it to the proctors.</p>
+    
+</blockquote><hr/><p><strong>In Same Diagram</strong></p>
+    <p>Alternative paths can be handled within the same diagram, e.g.,</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="createAssessment7.png" style="max-width: 50%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment]
+author:Author[a]
+/item:Item
+bank: Itembank[a]
+/assess: Assessment
+abank:AssessmentBank[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess.new(title,policies,avail)
+[c:loop *more questions desired]
+author:selected=bank.getItem(...)
+author:assess.add(selected,pointValue)
+[/c]
+[c:opt finished?]
+author:assess.makeAvailableTo(proctorList)
+[/c]
+author:abank.save(assess)
+
+</code></pre><hr/><p><strong>In Separate Diagram</strong></p>
+    <p>Or in a separate diagram, if that makes things clearer, e.g.:</p>
+    <blockquote>
+  <p><strong>Alternative:</strong> <span class="emph">Edit assessment</span></p>
+    
+  <p>2: Author edits an existing assessment, possibly altering one  or more of the assessment properties.</p>
+    
+</blockquote><p>This would be hard to incorporate into the main path diagram because, by definition, the lifetime of the assessment is very different in the two scenarios.</p>
+    <hr/><p><strong>Edit Assessment</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="editAssessment.png" style="max-width: 50%;"/></div>
+    </p>
+    <pre><code class="cpp">#![CreateAssessment (Edit asessment)]
+author:Author[a]
+/item:Item
+bank: Itembank[a]
+assess: Assessment
+abank:AssessmentBank[a]
+#
+[c:loop *more new questions conceived]
+author:item.new
+author:bank.add(item)
+[/c]
+author:assess=abank.fetch(...)
+author:assess.[optional] setTitle()
+author:assess.[optional] set policies()
+author:assess.[optional] setAvailability()
+[c:loop *more questions desired]
+author:selected=bank.getItem(...)
+author:assess.add(selected,pointValue)
+[/c]
+[c:opt finished?]
+author:assess.makeAvailableTo(proctorList)
+[/c]
+author:abank.save(assess)
+
+</code></pre><a id="recaphowtouseausecase"/><h1 id="recap-how-to-use-a-use-case">3 Recap: How to Use a Use Case</h1><ul>
+  <li>
+  <p>As an aid to analysis: read through the case, looking for  objects and interactions not listed in the current model.</p>
+    </li>
+  <li>
+  <p>As an aid to validation: Model the use case as a series of passed messages, recording the interactions in a <span class="firstterm">sequence diagram</span>. Update the model as necessary so that a cause-and-effect chain can be demonstrated from the start of the use case to its end.</p>
+    </li>
+  <li>
+  <p>As a statement of requirements</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Further%20Elaboration%20on%20Automated%20Assessments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

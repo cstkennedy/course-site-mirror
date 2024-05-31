@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Web Analysis - Program Flow</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Program%20Flow"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Web Analysis - Program Flow</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#program-flow">1 Program Flow</a></div><div class="toc-h2"><a href="#data-analysis-and-extraction">1.1 Data Analysis and Extraction</a></div><div class="toc-h2"><a href="#further-analysis">1.2 Further Analysis</a></div><div class="toc-h2"><a href="#report-generation">1.3 Report Generation</a></div><div class="toc-h2"><a href="#generating-the-reports-implementation">1.4 Generating the Reports - Implementation</a></div></div><style>
+img {
+  max-width: 100%;
+}
+</style><a id="programflow"/><h1 id="program-flow">1 Program Flow</h1><p>In total… there are three distinct phases into which WebAnalysis program logic can be divided:</p>
+    <ol>
+  <li>Data Analysis and Extraction</li>
+  <li>Data Normalization (e.g., path and URL normalization)</li>
+  <li>Report Generation</li>
+</ol><a id="dataanalysisandextraction"/><h2 id="data-analysis-and-extraction">1.1 Data Analysis and Extraction</h2><p>Let us examine the actual analysis. <em>Note that we will focus on the broad strokes.</em> Details such as <code>Exception</code>s, page count checks, path validation/checks, and URL validation will not be included.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e22" onclick="toggleDisplay('_details_d6e22')" type="button" value="+"/><div class="detailsBody" id="_details_d6e22" style="display: none;">
+<pre><code>@startuml sequence_01.svg
+autoactivate on
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam sequenceParticipant underline
+
+title Data Analysis and Extraction: High-Level View
+
+participant ":WebAnalysis" as driver
+activate driver
+
+create ":WebsiteBuilder" as wb
+
+driver -&gt; wb: new()
+return
+
+driver -&gt; wb: withPath(path)
+return
+
+driver -&gt; wb: withURLs(urls)
+return
+
+driver -&gt; wb: build()
+    wb -&gt; wb: walkDirectory()
+    return files
+    wb -&gt; wb: removeNonHTMLFiles(files)
+    return prunedFiles
+
+    create "site: Website" as site
+    wb -&gt; site: new(path, URLs)
+    return
+
+    loop for htmlFile in prunedFiles
+        create ":BufferedReader" as buffer
+        wb -&gt; buffer: new(htmlFile)
+        return
+        create ":HTMLDocumentBuilder" as hb
+        wb -&gt; hb: new()
+        return
+        wb -&gt; hb: withContentFrom(buffer)
+        return
+        wb -&gt; hb: extractContent()
+            hb -&gt; hb: extractAnchors()
+            return
+            hb -&gt; hb: extractImages()
+            return
+            hb -&gt; hb: extractScripts()
+            return
+            hb -&gt; hb: extractStyleSheets()
+            return
+        return
+        wb -&gt; hb: build()
+            create "doc:HTMLDocument" as doc
+            hb -&gt; doc: new() [creation details not listed]
+            return
+        return doc 
+
+        wb -&gt; buffer !!: delete
+        wb -&gt; hb !!: delete
+
+        wb -&gt; site:addPage(doc)
+        return
+    end
+
+return site
+
+driver -&gt; wb !!: delete
+
+@enduml
+</code></pre>
+</div></div><p><img src="sequence_01.svg"/></p>
+    <p><strong>Note that we did not cover the creation details of <code>HTMLDocument</code> objects within the <code>HTMLDocumentBuilder.build</code> method.</strong> I will leave this part up to you. Take note of how</p>
+    <ol>
+  <li>all <code>HTMLDocumentBuilder</code> objects are destroyed</li>
+  <li><code>WebsiteBuilder</code> is destroyed</li>
+  <li>all <code>BufferedReader</code> objects are destroyed</li>
+</ol><p>We have populated the <code>site</code> (<code>Website</code> object) with all the <code>HTMLDocument</code> objects. The analysis objects are no longer needed.</p>
+    <a id="creationdeletion"/><h3 id="creation-deletion">1.1.1 Creation &amp; Deletion</h3><p>Take note of the <code>new</code> and <code>delete</code> function “calls.”</p>
+    <ol>
+  <li>
+  <p><code>new</code> represents a call to a constructor (i.e., creating a new object)</p>
+    </li>
+  <li>
+    <p><code>delete</code> represents an object being “deallocated” (i.e., leaving scope and  being discarded)</p>
+    
+    <p><em>Even though Java is a Garbage Collected language wherein memory  management is not handled explicitly by a programmer… designing around  (and making use of) object lifetimes is <strong>still</strong> important.</em> <strong>(Even if  some teachers are cavalier in their approach.)</strong></p>
+    
+  </li>
+</ol><a id="furtheranalysis"/><h2 id="further-analysis">1.2 Further Analysis</h2><p>I will leave the intermediary steps (i.e., all steps until report generation) up to you and your team.</p>
+    <a id="reportgeneration"/><h2 id="report-generation">1.3 Report Generation</h2><p>Since the <em>Builder</em> objects have been destroyed… we no longer need to consider them.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e102" onclick="toggleDisplay('_details_d6e102')" type="button" value="+"/><div class="detailsBody" id="_details_d6e102" style="display: none;">
+<pre><code>@startuml sequence_03.svg
+autoactivate on
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam sequenceParticipant underline
+
+title Report Generation: High-Level View
+
+participant "site:Website" as site
+participant ":WebAnalysis" as driver
+activate driver
+
+
+create ":ReportManager" as manager
+
+driver -&gt; manager: new()
+return
+driver -&gt; manager: setSourceData(site)
+return
+
+driver -&gt; manager: determineBaseFileName()
+return
+
+driver -&gt; manager: writeAll()
+    create ":TextReportWriter" as textWriter
+    manager -&gt; textWriter: new()
+    return
+    manager -&gt; textWriter: setSourceData(site)
+    return
+    manager -&gt; textWriter: setBaseName(...)
+    return
+    manager -&gt; textWriter: write()
+    return
+    manager -&gt; textWriter !!: delete
+
+    create ":JSONReportWriter" as jsonWriter
+    manager -&gt; jsonWriter: new()
+    return
+    manager -&gt; jsonWriter: setSourceData(site)
+    return
+    manager -&gt; jsonWriter: setBaseName(...)
+    return
+    manager -&gt; jsonWriter: write()
+    return
+    manager -&gt; jsonWriter !!: delete
+
+    create ":ExcelReportWriter" as excelWriter
+    manager -&gt; excelWriter: new()
+    return
+    manager -&gt; excelWriter: setSourceData(site)
+    return
+    manager -&gt; excelWriter: setBaseName(...)
+    return
+    manager -&gt; excelWriter: write()
+    return
+    manager -&gt; excelWriter !!: delete
+return
+
+driver -&gt; manager: writeReportNames(...)
+return
+
+@enduml
+</code></pre>
+</div></div><p><img src="sequence_03.svg"/></p>
+    <a id="generatingthereportsimplementation"/><h2 id="generating-the-reports-implementation">1.4 Generating the Reports - Implementation</h2><p>Working with text files can be accomplished with the Java <code>BufferedWriter</code> and <code>FileWriter</code> classes. The other reports require external libraries. In total (including HTML parsing) the following libraries should be utilized…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="center">Organization </th>
+      <th align="center">Artifact ID </th>
+      <th>Version </th>
+      <th>Gradle Dependency </th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><strong>org.jsoup</strong> </td>
+      <td align="center">jsoup </td>
+      <td>1.16.1 </td>
+      <td>org.jsoup:jsoup:1.16.1 </td>
+      <td><a href="https://jsoup.org/">HTML Parsing</a> </td>
+    </tr>
+    <tr>
+      <td align="center">org.apache.poi </td>
+      <td align="center">poi </td>
+      <td>5.2.3+ </td>
+      <td>org.apache.poi:poi:5.2.3+ </td>
+      <td><a href="https://poi.apache.org/">Read/write Microsoft document formats</a> </td>
+    </tr>
+    <tr>
+      <td align="center">org.apache.poi </td>
+      <td align="center">poi-ooxml </td>
+      <td>5.2.3+ </td>
+      <td>org.apache.poi:poi-ooxml:5.2.3+ </td>
+      <td><a href="https://poi.apache.org/spreadsheet/index.html">Read &amp; write Excel spreadsheets</a> </td>
+    </tr>
+    <tr>
+      <td align="center">com.cedarsoftware </td>
+      <td align="center">json-io </td>
+      <td>4.14.0 </td>
+      <td>com.cedarsoftware:json-io:4.14.0 </td>
+      <td><a href="https://github.com/jdereg/json-io">JSON Export/Import</a> </td>
+    </tr>
+  </tbody>
+</table><p>The table outlines the libraries that students used in CS 350 during the Summer 2023 semester.</p>
+    <p><em>Note that Gradle is similar to <code>make</code> in that it handles compiling code. It also handles configuration management, generating documentation, running analysis tools…</em></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Program%20Flow"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

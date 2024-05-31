@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>An Overview of the Main Course Themes</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20An%20Overview%20of%20the%20Main%20Course%20Themes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="themes__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">An Overview of the Main Course Themes</h1><h2 class="author">Steven J Zeil</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#oo-in-programming-and-design">1 OO in Programming and Design</a></div><div class="toc-h1"><a href="#observations-on-pre-oo-programming-languages">2 Observations on Pre-OO Programming Languages</a></div><div class="toc-h2"><a href="#the-roots-of-oop">2.1 The Roots of OOP</a></div><div class="toc-h2"><a href="#tension-in-pre-oo-programming-languages">2.2 Tension in Pre-OO Programming Languages</a></div><div class="toc-h1"><a href="#pre-oo-design-techniques">3 Pre-OO Design Techniques</a></div><div class="toc-h2"><a href="#stepwise-refinement-top-down-design">3.1 Stepwise Refinement &amp; Top-Down Design</a></div><div class="toc-h2"><a href="#stepwise-refinement-example-ii">3.2 Stepwise Refinement Example II</a></div><div class="toc-h1"><a href="#where-are-all-the-adts-">4 Where are All the ADTs?</a></div><div class="toc-h1"><a href="#the-object-oriented-philosophy">5 The Object-Oriented Philosophy</a></div><div class="toc-h2"><a href="#program-simulation">5.1 Program = Simulation</a></div><div class="toc-h2"><a href="#simulation-modeling">5.2 Simulation == Modeling</a></div><div class="toc-h1"><a href="#putting-the-programming-in-oop">6 Putting the “Programming” in OOP</a></div><div class="toc-h2"><a href="#what-is-an-object-">6.1 What is an Object?</a></div><div class="toc-h2"><a href="#messages-methods">6.2 Messages &amp; Methods</a></div><div class="toc-h2"><a href="#what-is-a-class-">6.3 What is a Class?</a></div></div><a id="ooinprogramminganddesign"/><h1 id="oo-in-programming-and-design">1 OO in Programming and Design</h1><p>This course is concerned with object-oriented programming (OOP), design (OOD), and analysis (OOA). Clearly, with so much of this OO stuff flying around, it would be nice if we had an idea of what an object is, and just what is meant by “object-oriented”.</p>
+    <a id="observationsonpreooprogramminglanguages"/><h1 id="observations-on-pre-oo-programming-languages">2 Observations on Pre-OO Programming Languages</h1><a id="therootsofoop"/><h2 id="the-roots-of-oop">2.1 The Roots of OOP</h2><ul>
+  <li>
+  <p>OO programming and design have their roots in  simulation.</p>
+    </li>
+  <li>
+  <p>Simula (1967) programming language introduced objects  &amp; classes to describe the physical world being  simulated.</p>
+    </li>
+</ul><p>OO programming and design have their roots in simulation. In the late 1960s, the population of programmers was dominated by people who had switched fields, typically from the mathematics or physical sciences, rather than people who had originally trained in computer science. Indeed, academic programs in computer science were far less common than they are today, and tended to treat CS as more of a tool to be applied to application areas rather than as a field of study in its own right. Commonly, a CS degree program would offer two tracks - business programming and scientific programming.</p>
+    <p>One of the more active and exciting application areas at the time was simulation. Programmers in this area began to recognize common patterns arising over and over in their code. A number of code libraries were designed and distributed that attempted to capture and simplify these common simulation tasks. Eventually, special-purpose simulation programming languages were developed.</p>
+    <blockquote>
+  <p>There was ample precedence for this kind of specialization. The dominant languages of the time were generally perceived as tailored to specific applications: FORTRAN and APL for science applications, COBOL for business, LISP for A.I., SNOBOL for text/string processing, etc. Any of these languages <span class="emph">could</span> have been used for other kinds of applications, but it was certainly easier to work with a language that matched well with the application area.</p>
+    
+</blockquote><p><a href="http://en.wikipedia.org/wiki/Simula">Simula</a> (1967) is now the best known of those special purpose simulation languages. In what seemed “natural” to someone writing simulations, Simula allowed a programmer to organize a simulation program in terms of a world of objects that interacted with one another via programmed behaviors. What could seem more natural to someone writing a simulation of some part of the real world?</p>
+    <a id="tensioninpreooprogramminglanguages"/><h2 id="tension-in-pre-oo-programming-languages">2.2 Tension in Pre-OO Programming Languages</h2><p>The history of programming languages and of design can be viewed as a continual contest against increasing complexity of software systems:</p>
+    <table>
+  <thead>
+    <tr>
+      <th>Problem: too many … </th>
+      <th>Response </th>
+      <th>Useful? </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>… statements </td>
+      <td>nesting ( { … } ) </td>
+      <td>OK </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>gather statements into functions </td>
+      <td>OK </td>
+    </tr>
+    <tr>
+      <td>… functions </td>
+      <td>nesting </td>
+      <td>inadequate </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>gather functions into subsystems / “modules” </td>
+      <td>Too loosely defined </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>gather functions into encapsulated ADTs </td>
+      <td>Good </td>
+    </tr>
+    <tr>
+      <td>… ADTs </td>
+      <td>Gather into namespaces/packages </td>
+      <td>Not much help </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Organize loosely into inheritance hierarchies </td>
+      <td>The OO approach </td>
+    </tr>
+  </tbody>
+</table><p>Meanwhile, back in the “main stream” of programming language development, one of the main historic trends has always been trying to keep programs well organized even as programs get larger and larger.</p>
+    <p>The earliest and simplest way to cope with size was to allow individual statements to be grouped together into functions/procedures/subroutines (all effectively meaning the same thing). In fact this idea pre-dates high-level programming languages, being implicit in the machine code instruction sets of almost all CPUs ever built. It may even pre-date any actual programming. Some <a href="http://en.wikipedia.org/wiki/Ada_Lovelace">attribute this idea</a> to Ada Lovelace’s programs for Babbage’s never-constructed analytical engine.</p>
+    <p>Functions allow us to cope when the number of individual statements in a program grows so large as to be unwieldy. So what do we do when the number of functions grows too large to be manageable? Programmers and designers tried to cope by grouping functions into “modules” or “subsystems”. These groupings were little more than a matter of documentation and physical arrangement of the functions within the source code files. On a team project, a single person who did not want to “play nice” could easily wreak havoc.</p>
+    <p>A more solid organizing principle arose in the notion of an Abstract Data Type (ADT). We’ll review this concept in more detail in a later lesson, but an ADT groups together a data type name and a collection of functions for manipulating data of that type.</p>
+    <p>ADTs were something of a revolution in programming, as they often led to remarkably clean, reusable modules. Of course, like all modules, the ADT originally was implemented simply by documenting it as such: “the functions in this file provide the ADT Stack…” An uncooperative team member could often compromise this organization (usually giving plausible but short-sighted excuses such as “I could get the program done faster if I bypassed that” or “It runs a millisecond faster if I access that bit of data directly instead of using those functions”).</p>
+    <p>The value of ADTs became widely accepted, and programming language designers responded by adding support for them into new programming languages. Languages such as Modula 2 (1970) and Ada (1983) added language mechanisms (called a “module” and a “package”, respectively) for grouping types and functions together. Both enforced “information hiding” by encapsulating portions of an ADT implementation that other programmers would then be unable to access without incurring compilation errors.</p>
+    <p>Many writers incorrectly regard ADTs, encapsulation, and information hiding as innovations of OOP, but in fact these ideas had been around for some time earlier, and were in widespread use before object-oriented programming languages (OOPL) made their entrance.</p>
+    <p>Indeed, we will eventually see that the vast majority of code written by even the very best programmers working in an OOPL is not particularly OO, but <span class="emph">will</span> exploit encapsulated ADTs very heavily.</p>
+    <a id="preoodesigntechniques"/><h1 id="pre-oo-design-techniques">3 Pre-OO Design Techniques</h1><p><strong>Observations</strong></p>
+    <ul>
+  <li>If you Google for ADTs (Abstract Data Types)…
+    <ul>
+      <li>Most of the examples you will get are general-purpose  data structures (stacks, vectors, lists, etc)</li>
+      <li>It’s easy to get the impression that an ADT is something  that someone else provides for you as a convenient little  package of code.</li>
+      <li>Misses the big point</li>
+    </ul>
+  </li>
+  <li>ADTs are an <span class="emph">organizing principle</span> for your  own programs.</li>
+  <li>But how do you design a program in a way that winds up with  good ADTs?</li>
+</ul><p>OK, let’s agree that a good ADT is a wonderful thing. Just where do good ADTs come from? Or, to put it another way, when you are designing a program, how do you figure out which ADTs you should use?</p>
+    <p>If you search the web for the term “abstract data type”, you will find lots of examples of things you might pull out of a library of data structures: stacks, queues, lists, etc. It’s easy to get the impression that an ADT is something that someone else provides for you as a convenient little package of code.</p>
+    <p>But that misses the point that “abstract data type” is an <span class="emph">organizing principle</span> for your own programs. ADTs for general purpose data structures are all very nice, but how do you come up with the special-purpose ADTs that organize your program in a way that is specific to the problem it solves?</p>
+    <p>Pre-OO design techniques were oriented towards functions performed by the program. For example, if you were working on automating the management of book handling in a typical library, you might start by dividing the system into major subsystems such as <span class="varname">RecordStorage</span>, <span class="varname">CheckInOut</span>, <span class="varname">AccountMgmt</span>, and <span class="varname">InventoryMgmt</span>. Under each subsystem, you would group functions to be performed, such as <span class="varname">CheckOutBook</span>, <span class="varname">CheckInBook</span>, and <span class="varname">RenewBook</span> under the <span class="varname">CheckInOut</span> subsystem, or <span class="varname">addBook</span>, <span class="varname">removeBook</span>, and <span class="varname">transferToBranch</span> under <span class="varname">InventoryMgmt</span>.</p>
+    <a id="stepwiserefinementtopdowndesign"/><h2 id="stepwise-refinement-top-down-design">3.1 Stepwise Refinement &amp; Top-Down Design</h2><ul>
+  <li>
+    <p>The most fundamental design technique</p>
+    
+    <ul>
+      <li>Uses pseudocode</li>
+    </ul>
+  </li>
+  <li>
+  <p>Start with a single statement describing the desired behavior</p>
+    </li>
+  <li>Repeatedly
+    <ul>
+      <li>Select a pseudocode statement that is too vague to be coded</li>
+      <li>Replace that single statement with two or more, slightly more detailed, statements that accomplish the same thing.</li>
+    </ul>
+  </li>
+</ul><a id="stepwiserefinementexamplei"/><h3 id="stepwise-refinement-example-i">3.1.1 Stepwise Refinement Example I</h3><p>Automating book handling in a library:</p>
+    <ul>
+  <li>
+  <p>Might start by dividing the system into major subsystems  such as <code>RecordStorage</code>, <code>CheckInOut</code>,  <code>AccountMgmt</code>, and <code>InventoryMgmt</code>.</p>
+    </li>
+  <li>
+    <p>Under each subsystem, you would group functions to be  performed, such as</p>
+    
+    <ul>
+      <li><code>CheckOutBook</code>, <code>CheckInBook</code>, and <code>RenewBook</code> under the  <code>CheckInOut</code> subsystem, or</li>
+      <li><code>addBook</code>, <code>removeBook</code>, and <code>transferToBranch</code> under <code>InventoryMgmt</code>.</li>
+    </ul>
+  </li>
+</ul><p>If pre-OO designers were asked to design one of these functions, say, <span class="varname">addBook</span>, they would probably do so by “stepwise refinement”, a.k.a. “top-down design”.</p>
+    <a id="stepwiserefinementexampleii"/><h2 id="stepwise-refinement-example-ii">3.2 Stepwise Refinement Example II</h2><p>Suppose we wanted to design the function to add a new book to the library’s collection.</p>
+    <ul>
+  <li>
+  <p>Designers would try to write out the simplest set of abstract steps  that match their idea of what it means to “add a book”.</p>
+    </li>
+  <li>
+  <p>For the purposes of this example, they might reason that this function must both update the electronic card catalog so that the book can be found, and must also record that the book is present in the inventory of a particular branch.</p>
+    </li>
+</ul><pre><code class="cpp">function addBook (book, branchName)
+{
+  bookInfo = getBookInfo(book);
+  record branchName as location in bookInfo;
+  addToCardCatalog (bookInfo);
+  addToInventory (bookInfo, branchName);
+}
+</code></pre><a id="stepwiserefinementexampleiii"/><h3 id="stepwise-refinement-example-iii">3.2.1 Stepwise Refinement Example III</h3><p>Next the designers would pick <span class="hli">one</span> of those rather vaguely understood lines of code in that function body and <span class="hlii">expand</span> it, either in place or as a separate function. For example:</p>
+    <pre><code class="cpp">function addBook (book, branchName)
+{
+  bookInfo = getBookInfo(book);
+  record branchName as location in bookInfo;<span class='hli'>
+  // addToCardCatalog (bookInfo)
+</span>  <span class='hlii'>add to AuthorIndex (bookInfo);
+  add to SubjectIndex (bookInfo);
+  add to TitleIndex (bookInfo);</span>
+  cardCatalog.addToAuthorIndex
+  addToInventory (bookInfo, branchName);
+}
+</code></pre><blockquote>
+  <p>The crucial idea here is that <span class="hlii">these new lines</span>, taken together, <strong>add up</strong> to a method of achieving <span class="hli">this line</span>, the one we chose to expand.</p>
+    
+  <p>We are not simply adding code. We are <strong>refining</strong> or <strong>expanding</strong> an abstract step into a series of somewhat more detailed ones.</p>
+    
+</blockquote><p>Then, again, we would pick a vaguely understood line and  expand it.</p>
+    <a id="stepwiserefinementexampleiv"/><h3 id="stepwise-refinement-example-iv">3.2.2 Stepwise Refinement Example IV</h3><p>Moving on, we would again pick a vaguely understood line and expand it.</p>
+    <pre><code class="cpp">function addBook (book, branchName)
+{
+  bookInfo = getBookInfo(book);
+  record branchName as location in bookInfo;
+  // addToCardCatalog (bookInfo)
+<span class='hli'>  //   add to AuthorIndex (bookInfo);
+</span>  <span class='hlii'>authorList = bookInfo.getAuthors();
+  for each author au in authorList {
+    catalog.authorIndex.addByAuthor (au, bookInfo);
+  }</span>
+  add to SubjectIndex (bookInfo);
+  add to TitleIndex (bookInfo);
+  cardCatalog.addToAuthorIndex
+  addToInventory (bookInfo, branchName);
+}
+</code></pre><ul>
+  <li>The process of “<span class="hli">pick</span> something vague and <span class="hlii">expand</span> it” continues  until the desired level of detail has been reached.</li>
+</ul><a id="wherearealltheadts"/><h1 id="where-are-all-the-adts-">4 Where are All the ADTs?</h1><ul>
+  <li>
+  <p>In this example, we have mentioned nearly a dozen functions. None of them have been associated with an ADT.</p>
+    </li>
+  <li>
+  <p>An experienced designer might spot some ADT candidates: Book, BranchLibrary, CardCatalog, etc.</p>
+    </li>
+  <li>
+  <p>But there’s nothing in the <span class="emph">process</span> that encourages or supports this.</p>
+    </li>
+</ul><p>Now, stepwise refinement is a valuable technique. It’s still probably the technique of choice for low-level design (the design of an algorithm for a single function). But it’s not nearly so useful as a technique for high-level design (the separation fo a large problem into separate modules). Consider that, at this point in our example, we have mentioned about a dozen different function names. <span class="emph">None</span> of them have been associated with an ADT. What are the odds that any of them would wind up inside an ADT? Pretty slim, usually.</p>
+    <p>An experienced designer might take note that the above process gives some hints as to some potential ADTs (<span class="varname">Book</span>, <span class="varname">branchLibrary</span>, <span class="varname">CardCatalog</span>, etc.). But this insight is pretty much separate from the design process itself. A designer has to be somewhat schizoid, actively participating in the design while simultaneously standing aside as a detached observer, watching for hints of possible ADTs.</p>
+    <a id="theobjectorientedphilosophy"/><h1 id="the-object-oriented-philosophy">5 The Object-Oriented Philosophy</h1><a id="programsimulation"/><h2 id="program-simulation">5.1 Program = Simulation</h2><p><strong>The Object-Oriented Philosophy</strong></p>
+    <ul>
+  <li>
+  <p>Every program is really a simulation.</p>
+    </li>
+  <li>
+  <p>The quality of a program’s design is proportional to the  faithfulness with which the structures and interactions in the  program mirror those in the real world.</p>
+    </li>
+</ul><hr/><p><strong>Design from the World</strong></p>
+    <ul>
+  <li>
+    <p>Walk into a library and what do you see?</p>
+    
+    <ul>
+      <li>
+      <p>Books, Librarians, Patrons (customers), Shelves, …</p>
+    </li>
+      <li>
+      <p>In an older library you might actually see a card catalog!</p>
+    </li>
+      <li>
+      <p>Of course, on the way in the door you saw the building/Branch Library.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>These things form a set of candidate ADTs.</p>
+    
+    <ul>
+      <li>
+      <p>Next we would explore the various properties and relationships  that these things exhibit in real life:</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Real-World Relationships</strong></p>
+    <ul>
+  <li>
+  <p>Books have titles, authors, ISBN, …</p>
+    </li>
+  <li>
+  <p>Librarians and Patrons have names. Patrons have  library cards with unique identifiers. Most  librarians are also patrons.</p>
+    </li>
+  <li>
+  <p>Patrons return books. Librarians check in the  returned books.</p>
+    </li>
+  <li>
+  <p>Librarians check books out for patrons. (At some  libraries, patrons can also do their own check-out.)  Librarians handle the processing of newly acquired  books.</p>
+    </li>
+  <li>
+  <p>Although books can be returned to any branch,  each book belongs to a specific branch and will, if  necessary, be delivered there by library staff.</p>
+    </li>
+</ul><hr/><p><strong>Organizing the World</strong></p>
+    <p>OO designers would start by organizing these things  into ADTs, e.g.:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="libraryClasses.png" style="max-width: 95%;"/></div>
+    </p>
+    <hr/><p><strong>Simulate the World’s Actions</strong></p>
+    <p>Only then would OO designers consider the specific steps required to add a book to inventory:</p>
+    <blockquote>
+  <p>“update the electronic card catalog so that the book can be found, and record that the book is present in the inventory of a  particular branch”</p>
+    
+</blockquote><hr/><p><strong>Simulate the World’s Actions</strong></p>
+    <pre><code class="cpp">function Librarian::acquisition (Book book)
+{
+  BranchLibrary branch = this.assignment;
+  Catalog catalog = mainLibrary.catalog;
+  catalog.add (book, branch);
+  branch.addToInventiory (book);
+}
+
+function Catalog::add (Book book)
+{
+  authorIndex.add (book);
+  titleIndex.add (book);
+  subjectIndex.add (book);
+}
+
+</code></pre><hr/><p><strong>OO Approach - Observations</strong></p>
+    <p>Technically, does the same thing as the earlier design,but</p>
+    <ul>
+  <li>
+  <p>Division into ADTs is a natural consequence of  the “observational” approach</p>
+    </li>
+  <li>
+  <p>More concern with terminology (“acquisition”  rather than “addBook”, “patron” rather than  “customer”, “stacks” rather “shelves”</p>
+    </li>
+  <li>
+  <p>Avoids programmer-isms such as BookInfo</p>
+    </li>
+  <li>
+  <p>Separation of concerns is better (e.g., catalog  functions are not built into the librarian  code)</p>
+    </li>
+</ul><a id="simulationmodeling"/><h2 id="simulation-modeling">5.2 Simulation == Modeling</h2><hr/><p><strong>OO Analysis &amp; Design</strong></p>
+    <ul>
+  <li>
+  <p>Analysis is the process of determining <em>what</em> a system should do</p>
+    </li>
+  <li>
+  <p>Design is the process of figuring out <em>how</em> to do that</p>
+    </li>
+</ul><hr/><p><strong>Models</strong></p>
+    <p>We can rephrase that as</p>
+    <ul>
+  <li>
+    <p>Analysis is the construction of a model of the world in  which the program will run.</p>
+    
+    <ul>
+      <li>
+      <p>including how the program will interact with that world</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Design is the construction of a model of a program to work  within that world.</p>
+    </li>
+</ul><hr/><p><strong>Steps in Modeling</strong></p>
+    <ul>
+  <li>
+  <p>Classification: discovering appropriate classes of  objects</p>
+    </li>
+  <li>
+  <p>Refined by documenting</p>
+    </li>
+  <li>
+  <p>interactions between objects</p>
+    </li>
+  <li>
+  <p>relations between classes</p>
+    </li>
+  <li>
+  <p>Both steps often driven by scenarios</p>
+    </li>
+</ul><a id="puttingtheprogramminginoop"/><h1 id="putting-the-programming-in-oop">6 Putting the “Programming” in OOP</h1><hr/><p><strong>OOP in Programming Language History</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th>Language Concepts </th>
+      <th>Examples </th>
+      <th>Design Concepts </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Statements </td>
+      <td> </td>
+      <td>Stepwise Refinement </td>
+    </tr>
+    <tr>
+      <td>Functions </td>
+      <td>FORTRAN (1957), COBOL, ALGOL, Basic (1963), C (1969), Pascal (1972) </td>
+      <td>Top-Down Design</td>
+    </tr>
+    <tr>
+      <td>Encapsulated modules, classes </td>
+      <td>Modula, Modula 2 (1970), Ada (1983) </td>
+      <td>Information hiding, ADTs</td>
+    </tr>
+    <tr>
+      <td>Inheritance, subtyping, dynamic binding (OOP) </td>
+      <td>Smalltalk (1980), C++ (1985), Java (1995) </td>
+      <td>Object-Oriented A&amp;D </td>
+    </tr>
+  </tbody>
+</table><a id="whatisanobject"/><h2 id="what-is-an-object-">6.1 What is an Object?</h2><p>Maybe you thought I was never going to get around to this?</p>
+    <hr/><p><strong>Objects</strong></p>
+    <p>An <span class="firstterm">object</span> is characterized by</p>
+    <ul>
+  <li>
+  <p>identity</p>
+    </li>
+  <li>
+  <p>state</p>
+    </li>
+  <li>
+  <p>behavior</p>
+    </li>
+</ul><hr/><p><strong>Identity</strong></p>
+    <p><span class="firstterm">Identity</span> is the property of an object that  distinguishes it from all others. We commonly denote identity by</p>
+    <ul>
+  <li>
+    <p>names, such as Steve, George,</p>
+    
+    <ul>
+      <li>
+      <p>in programming, x, y</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>references that distinguish without names: this, that,</p>
+    
+    <ul>
+      <li>in programming, *p
+</li>
+    </ul>
+  </li>
+</ul><p/>
+    <hr/><p><strong>State</strong></p>
+    <p>The <span class="firstterm">state</span> of an object consists of the  properties of the object, and the current values of those properties.</p>
+    <p>For example, given this list of properties:</p>
+    <pre><code class="cpp"> struct Book {
+    string title;
+    Author author;
+    ISBN isbn;
+    int edition;
+    int year;
+    Publisher publisher;
+ };
+
+</code></pre><p>we might describe the state of a particular book as</p>
+    <pre><code class="cpp"> Book cs330Text = {
+    "Object Oriented Design &amp; Patterns", horstmann,
+    "0-471-74487-5", 2, 2006,
+    wileyBooks};
+</code></pre><hr/><p><strong>Behavior</strong></p>
+    <p><span class="firstterm">Behavior</span> is how an object acts and reacts  to operations on it, in terms of</p>
+    <ul>
+  <li>
+  <p>visible state changes and</p>
+    </li>
+  <li>
+  <p>operations on other visible objects.</p>
+    </li>
+</ul><a id="messagesmethods"/><h2 id="messages-methods">6.2 Messages &amp; Methods</h2><p>In OOP, behavior is often described in terms of messages and  methods.</p>
+    <p>A <span class="firstterm">message</span> to an object is a request for  service.</p>
+    <p>A <span class="firstterm">method</span> is the internal means by which the  object responds to that request.</p>
+    <hr/><p><strong>Differing Behavior</strong></p>
+    <p>Different objects may respond to the same message via different  methods.</p>
+    <p>Example: suppose I send a message “send flowers to my grandmother” to …</p>
+    <ul>
+  <li>
+  <p>a florist</p>
+    </li>
+  <li>
+  <p>my sister</p>
+    </li>
+  <li>a Department secretary</li>
+  <li>a tree</li>
+</ul><a id="whatisaclass"/><h2 id="what-is-a-class-">6.3 What is a Class?</h2><p>A <span class="firstterm">class</span> is a named collection of potential objects.</p>
+    <p>In the languages we will study,</p>
+    <ul>
+  <li>
+  <p>all objects are instances of a class, and</p>
+    </li>
+  <li>
+  <p>the  method employed by an object in response to a message is determined by  its class.</p>
+    </li>
+  <li>
+  <p>All objects of a given class use the same method in response  to similar messages.</p>
+    </li>
+</ul><hr/><p><strong>Are Objects and Classes New</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th>OOPL </th>
+      <th>Traditional PL </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>object </td>
+      <td>variable, constant</td>
+    </tr>
+    <tr>
+      <td>identity </td>
+      <td>label, name, address</td>
+    </tr>
+    <tr>
+      <td>state </td>
+      <td>value</td>
+    </tr>
+    <tr>
+      <td>class </td>
+      <td>type (almost)</td>
+    </tr>
+    <tr>
+      <td>message </td>
+      <td>function decl</td>
+    </tr>
+    <tr>
+      <td>method </td>
+      <td>function body</td>
+    </tr>
+    <tr>
+      <td>passing a message </td>
+      <td>function call</td>
+    </tr>
+  </tbody>
+</table><hr/><p><strong>Classes versus Types</strong></p>
+    <p>Although “class” and “type” mean nearly the same thing, they do  carry a slightly different idiomatic meaning.</p>
+    <ul>
+  <li>
+  <p>In conventional PLs, each  value (object) is an instance of exactly one type.</p>
+    </li>
+  <li>
+  <p>In OOPLs, each object  (value) may be an instance of several related classes.  </p>
+    </li>
+</ul><hr/><p><strong>Instances of Multiple Types</strong></p>
+    <ul>
+  <li>Classes  can be related via “inheritance”.
+    <ul>
+      <li>
+      <p>Inheritance captures an  “is-a” or “is a specialized form of” relationship.  </p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Inheritance Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="inher.png" style="max-width: 75%;"/></div>
+    </p>
+    <hr/><p><strong>What makes a PL an OOPL</strong></p>
+    <ul>
+  <li>It must provide support for variant behavior
+    <ul>
+      <li>
+      <p>Usually accomplished via <span class="firstterm">dynamic binding</span></p>
+    </li>
+    </ul>
+  </li>
+  <li>It must provide a way to associate common messages with different classes.
+    <ul>
+      <li>Usually accomplished via
+        <ul>
+          <li>inheritance, and</li>
+          <li>subtyping</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><p>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20An%20Overview%20of%20the%20Main%20Course%20Themes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="themes__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

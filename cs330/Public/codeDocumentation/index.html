@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Code Documentation & Comments</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Code%20Documentation%20%26%20Comments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Code Documentation &amp; Comments</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#beginning-of-the-semester">1 Beginning of the Semester</a></div><div class="toc-h1"><a href="#a-few-starting-examples">2 A Few Starting Examples</a></div><div class="toc-h2"><a href="#c-">2.1 C++</a></div><div class="toc-h2"><a href="#java">2.2 Java</a></div><div class="toc-h2"><a href="#python">2.3 Python</a></div><div class="toc-h2"><a href="#rust">2.4 Rust</a></div><div class="toc-h1"><a href="#writing-good-documentation">3 Writing Good Documentation</a></div><div class="toc-h2"><a href="#auditing-the-c-cookbook">3.1 Auditing the C++ Cookbook</a></div><div class="toc-h2"><a href="#auditing-the-java-cookbook">3.2 Auditing the Java Cookbook</a></div><div class="toc-h2"><a href="#documentation-for-a-new-function">3.3 Documentation for a New Function</a></div></div><p>Most of your code in CS 150 and CS 250 probably had quite a few comments. Inline comments are not the focus of this discussion. The focus of this discussion is documentation of classes, functions, and methods.</p>
+    <a id="beginningofthesemester"/><h1 id="beginning-of-the-semester">1 Beginning of the Semester</h1><p><strong>If you are reading these notes at the beginning of the semester… skim. We will revisit this discussion later this semester.</strong></p>
+    <a id="afewstartingexamples"/><h1 id="a-few-starting-examples">2 A Few Starting Examples</h1><p>I work in few different languages. Throughout my</p>
+    <ul>
+  <li>C++ code you will find <a href="http://www.doxygen.nl/">Doxygen style comments</a>.</li>
+  <li>Java code you will find <a href="https://www.oracle.com/technetwork/java/javase/documentation/index-137868.html">Javadoc style comments</a>.</li>
+  <li>Python code you will find Pydoc style comments.</li>
+  <li>Rust code you will find <a href="https://doc.rust-lang.org/rust-by-example/meta/doc.html">Rustdoc style comments</a>.</li>
+</ul><p>You have definitely been told to “comment your code” in the past, but in a less formal fashion. </p>
+    <p>Let us start with a few selected documentation examples from my <a href="https://www.cs.odu.edu/~tkennedy/cs330/latest">CS 330</a> and <a href="https://www.cs.odu.edu/~tkennedy/cs417/latest">CS 417</a> notes.</p>
+    <a id="c"/><h2 id="c-">2.1 C++</h2><p>Doxygen can be used for <em>C++</em>. Consider the following Doxygen Example:</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: C++ Doxygen Documentation</div>
+<pre><code class="cpp">/**
+ * Retrieve the value stored in three selected Cells
+ *
+ * @param cell1Id numeric id representing the 1st desired cell
+ * @param cell2Id numeric id representing the 2nd desired cell
+ * @param cell3Id numeric id representing the 3rd desired cell
+ *
+ * @return value stored in the Cell
+ *
+ * @pre (cell1Id &gt; 0 &amp;&amp; cell1Id &lt; 10) &amp;&amp;
+ *      (cell2Id &gt; 0 &amp;&amp; cell2Id &lt; 10) &amp;&amp;
+ *      (cell3Id &gt; 0 &amp;&amp; cell3Id &lt; 10)
+ */
+CellTriple get3Cells(int cell1Id, int cell2Id, int cell3Id) const;
+</code></pre>
+</blockquote><h2 id="java">2.2 Java</h2><p>Javadoc can be used for Java. Consider the following Javadoc Example:</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Javadoc Documentation</div>
+<pre><code class="java">/**
+ * Multi-thread Coin Flip.
+ *
+ * @param numTrials # flips to simulate
+ * @param numThreads number of threads to use
+ *
+ * @return Completed FlipTasks
+ *
+ * @throws InterruptedException if a thread is stopped prematurely
+ */
+public static FlipTask[] multiThread(long numTrials, int numThreads)
+    throws InterruptedException
+</code></pre>
+</blockquote><h2 id="python">2.3 Python</h2><p>Pydoc or Sphinx can be used for Python. Consider the following Pydoc Example:</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Python 3 Pydoc Documentation</div>
+<pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    :param original_temps: an input file
+    :param step_size:      time-step in seconds
+    :param units: True if the input file includes units and False if the file
+                  includes only raw readings (no units)
+
+    :yields: A tuple containing the next time step and a List containing _n_
+             core temps as floating point values (where _n_ is the number of
+             CPU cores)
+    """
+</code></pre>
+</blockquote><p>I prefer the Sphinx/Google style for Python.</p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Python 3 Sphinx/Google Style Documentation</div>
+<pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    Args:
+        original_temps: an input file
+        step_size: time-step in seconds
+        units: True if the input file includes units and False if the file
+            includes only raw readings (no units)
+
+    Yields:
+        A tuple containing the next time step and a List containing _n_
+        core temps as floating point values (where _n_ is the number of
+        CPU cores)
+    """
+</code></pre>
+</blockquote><h2 id="rust">2.4 Rust</h2><blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Rust Documentation</div>
+<pre><code class="rust">///
+/// Take a room and change the flooring
+///
+/// # Arguments
+///
+///   * `original` - House to change
+///
+/// # Returns
+///
+/// House with the updated flooring
+///
+fn upgrade_flooring(original: &amp;House) -&gt; House {
+    //...
+}
+</code></pre>
+</blockquote><p>Rust and Python have similar documentation styles (give or take some <code>markdown</code> formatting). Since we only cover small snippets of Rust in this course (for context), we will forgo a complete <a href="https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html">Rustdoc</a> discussion.</p>
+    <a id="writinggooddocumentation"/><h1 id="writing-good-documentation">3 Writing Good Documentation</h1><p>All code should be properly <em>and fully</em> documented using a language appropriate comment style. All functions (including parameters and return types) must be documented.</p>
+    <a id="auditingtheccookbook"/><h2 id="auditing-the-c-cookbook">3.1 Auditing the C++ Cookbook</h2><p>If you took CS 350 (Introduction to Software Engineering) recently… you may recall my Cookbook Example from the <a href="https://www.cs.odu.edu/~tkennedy/cs350/latest/index.html?doc=unitTestMutatorsAccessors&amp;anchor=" target="cs350">Mutator-Accessor Unit Testing Notes</a>. In CS 330 (Object Oriented Programming and Design)… we will use the C++ Cookbook and Java Cookbook as running examples.</p>
+    <p>Let us start with a quick audit of a C++ Cookbook Example.</p>
+    <div class="details"><span class="summary">C++ Cookbook</span> <input id="but_details_d6e109" onclick="toggleDisplay('_details_d6e109')" type="button" value="+"/><div class="detailsBody" id="_details_d6e109" style="display: none;">
+<pre><code class="cpp">using std::rel_ops;
+
+class Cookbook {
+    private:
+        static const int MAX_RECIPES;
+
+        Recipe* recipes;
+
+    public:
+        using iterator       = Recipe*;
+        using const_iterator = const Recipe*;
+
+        /**
+         * Create a Cookbook that can contain at most MAX_RECIPES
+         * recipes.
+         */
+        Cookbook();
+
+        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes.
+         */
+        Cookbook(int r);
+
+        /**
+         * Copy Constructor.
+         *
+         * @param src Cookbook to copy
+         */
+        Cookbook(const Cookbook&amp; src);
+
+        /**
+         * Destructor.
+         */
+        ~Cookbook();
+
+        /**
+         * Add a Recipe.
+         *
+         * @param to_add new Recipe
+         */
+        void addRecipe(const Recipe&amp; to_add);
+
+        /**
+         * Remove a Recipe.
+         *
+         * @param to_remove recipe to remove from the cookbook
+         *
+         * @pre `to_remove` is present in the cookbook. If `to_remove` is not
+         *  part of this cookbook, this method becomes a no-op (it completes
+         *  silently after performing no removal).
+         */
+        void removeRecipe(const Recipe&amp; to_remove);
+
+        /**
+         * Assignment Operator
+         */
+        Cookbook&amp; operator=(Cookbook rhs);
+
+        /**
+         * Compare two cookbooks based on the recipes they contain, ignoring the
+         * the order of the recipes.
+         *
+         * @param rhs Cookbook against which to compare
+         *
+         * @return true if both this and rhs are Cookbooks with the same recipes
+         */
+        bool operator==(const Cookbook&amp; rhs) const;
+
+        /**
+         * Less than (comes-before) Operator
+         *
+         * Compare two cookbooks based on the recipes they contain, ignoring the
+         * the order of the recipes.
+         *
+         *  - If lhs has fewer recipes than rhs, lhs &lt; rhs.
+         *  - If lhs and rhs have the same number of recipes, sort each set of
+         *    recipes then compare each pair of recipes, basing lhs &lt; rhs on the
+         *    first set of non-equal recipes.
+         *
+         * @param rhs Cookbook against which to compare
+         *
+         * @return true if both `this` should be listed before `rhs`
+         */
+        bool operator&lt;(const Cookbook&amp; rhs) const;
+
+        /**
+         * First Recipe.
+         */
+        iterator begin();
+
+        /**
+         * End of Recipe Collection
+         */
+        iterator end();
+
+        /**
+         * First Recipe.
+         */
+        const_iterator begin() const;
+
+        /**
+         * End of Recipe Collection.
+         */
+        const_iterator end() const;
+
+        /**
+         * Display the Cookbook with each recipe separator by `\n---\n`.
+         *
+         * @param outs output destination (e.g., cout or a file)
+         */
+        void display(std::ostream&amp; outs) const;
+
+        /**
+         * Swap two Cookbooks.
+         *
+         * @param lhs first cookbook
+         * @param rhs second cookbook
+         */
+        friend
+        void swap(Cookbook&amp; lhs, Cookbook&amp; rhs);
+};
+
+</code></pre>
+</div></div><p>The second constructor looks incomplete.</p>
+    <pre><code class="cpp">        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes.
+         */
+        Cookbook(int r);
+</code></pre><p>Notice the <code>int r</code>? It is not documented. What does <code>r</code> represent? Let us start by adding <code>@param r</code> to the documentation</p>
+    <pre><code class="cpp">        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes.
+         *
+         * @param r max number of recipes that can be stored.
+         */
+        Cookbook(int r);
+</code></pre><p>That is a little more clear. The description should probably be cleaned up a little.</p>
+    <pre><code class="cpp">        /**
+         * Create a Cookbook with a set recipe limit.
+         *
+         * @param r max number of recipes that can be stored.
+         */
+        Cookbook(int r);
+</code></pre><p><strong>What did we do?</strong></p>
+    <ol>
+  <li>We documented the input into the constructor (i.e., the parameter <code>r</code>)  with an <code>@param</code> tag.</li>
+  <li>We revised the description for brevity and clarity.</li>
+</ol><p>Any time a function has a parameter it <em>should</em> be documented. Should, not must. There are a few exceptions.</p>
+    <a id="auditingthejavacookbook"/><h2 id="auditing-the-java-cookbook">3.2 Auditing the Java Cookbook</h2><p>Let us perform a quick audit of a Java Cookbook Example.</p>
+    <div class="details"><span class="summary">Java Cookbook</span> <input id="but_details_d6e155" onclick="toggleDisplay('_details_d6e155')" type="button" value="+"/><div class="detailsBody" id="_details_d6e155" style="display: none;">
+<pre><code class="java">/**
+ * A collection of Recipes.
+ */
+public class Cookbook
+    implements Cloneable, Iterable&lt;Recipe&gt;
+{
+    /**
+     * Create a Cookbook that can contain at most MAX_RECIPES
+     * recipes
+     */
+    public Cookbook()
+    {
+        //...
+    }
+
+    /**
+     * Create a Cookbook that can contain at most _r_
+     * recipes
+     */
+    public Cookbook(int r)
+    {
+        //...
+    }
+
+    /**
+     * Add a Recipe
+     *
+     * @param toAdd new Recipe
+     */
+    public void addRecipe(Recipe toAdd)
+    {
+        //...
+    }
+
+    /**
+     * Remove a Recipe
+     *
+     * @param toRemove index of Recipe to remove
+     */
+    public void removeRecipe(int toRemove)
+    {
+        //...
+    }
+
+    /**
+     * Compare two recipes based on the recipes they contain, ignoring the
+     * the order of the recipes.
+     *
+     * @param rhs object against which to compare
+     *
+     * @return true if both this and rhs are Cookbooks with the same recipes
+     */
+    @Override
+    public boolean equals(Object rhs)
+    {
+        //...
+    }
+
+    /**
+     * Compute the hashcode by adding all recipe hashcodes together.
+     *
+     * @return integer hashcode
+     */
+    @Override
+    public int hashCode()
+    {
+        //...
+    }
+
+    /**
+     * Create a deep copy.
+     */
+    @Override
+    public Cookbook clone()
+    {
+        //...
+    }
+
+    /**
+     * This depends on implementation decisions (e.g., selected data structure).
+     */
+    @Override
+    public Iterator&lt;Recipe&gt; iterator()
+    {
+        //...
+    }
+
+    /**
+     * List each Recipe, seperating them with a blank line followed by "---"
+     * and a second blank line.
+     */
+    @Override
+    public String toString()
+    {
+        //...
+    }
+}
+</code></pre>
+</div></div><p>Similar to the C++ Cookbook… the second constructor looks incomplete.</p>
+    <pre><code class="cpp">        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes.
+         */
+        public Cookbook(int r);
+</code></pre><p>The <code>int r</code> is not documented. What does <code>r</code> represent? Let us by add <code>@param r</code> to the documentation and clean up the description.</p>
+    <pre><code class="java">        /**
+         * Create a Cookbook with a set recipe limit.
+         *
+         * @param r max number of recipes that can be stored.
+         */
+        public Cookbook(int r);
+</code></pre><p><strong>What did we do?</strong></p>
+    <ol>
+  <li>We documented the input into the constructor (i.e., the parameter <code>r</code>)  with an <code>@param</code> tag.</li>
+  <li>We revised the description for brevity and clarity.</li>
+</ol><p>This feels like <em>Déjà vu</em>. We just updated the Java Constructor using the same process from the C++ version!</p>
+    <p><em>There are a few more tweaks to be made to the Java Cookbook documentation. However, I will leave those tweaks as a practice exercise.</em></p>
+    <a id="documentationforanewfunction"/><h2 id="documentation-for-a-new-function">3.3 Documentation for a New Function</h2><p>Suppose we have just finished writing a quick program to simulate a trick coin (i.e., a coin where heads and tails are not equally probable).</p>
+    <pre><code class="cpp">bool one_flip(double p);
+
+int main(int argc, char** argv)
+{
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+
+    const int num_flips = 8;
+
+    for (int i = 0; i &lt; num_flips; i++) {
+        if (one_flip(0.7)) {
+            cout &lt;&lt; "Heads" &lt;&lt; "\n";
+        }
+        else {
+            cout &lt;&lt; "Tails" &lt;&lt; "\n";
+        }
+    }
+
+    return 0;
+}
+
+</code></pre><p>The <code>one_flip</code> function needs a description.</p>
+    <pre><code class="cpp">/**
+ * Simulate a single coin flip.
+ */
+</code></pre><p>What does <code>p</code> represent? Does it represent the probability of heads or tails?</p>
+    <pre><code class="cpp">/**
+ * Simulate a single coin flip.
+ *
+ * @param p probability of heads
+ */
+</code></pre><p>Now what about the return? We know that <code>bool</code> means a <code>true</code> or <code>false</code>. Which one do I get for heads? Let us add an <code>@return</code>.</p>
+    <pre><code class="cpp">/**
+ * Simulate a single coin flip.
+ *
+ * @param p probability of heads
+ *
+ * @return true if the result is heads and false if the result is tails
+ */
+bool one_flip(double p);
+</code></pre><p>There is no more ambiguity or guesswork. Both <code>p</code> and the possible return values are documented.</p>
+    <a id="whataboutjava"/><h3 id="what-about-java-">3.3.1 What about Java?</h3><p>Java and C++ are similar. If we change <code>bool</code> to <code>boolean</code>, and rename <code>one_flip</code> to <code>oneFlip</code>… we have a Java function.</p>
+    <pre><code class="java">    /**
+     * Simulate a single coin flip.
+     *
+     * @param p probability of heads
+     *
+     * @return true if the result is heads and false if the result is tails
+     */
+    boolean oneFlip(double p)
+    {
+        //...
+    }
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p><em>Technically this function needs to be part of a class. However, this is a documentation discussion, not a Java discussion.</em></p>
+    
+</div><p>Notice how the documentation is identical? The basic Javadoc comment syntax overlaps Doxygen comment syntax.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Code%20Documentation%20%26%20Comments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

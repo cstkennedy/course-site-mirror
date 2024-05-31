@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Multi-Threading Case Study: Spreadsheet</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Multi-Threading%20Case%20Study%3A%20Spreadsheet"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Multi-Threading Case Study: Spreadsheet</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Dec 5, 2020</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#review-evaluating-cells">1 Review: Evaluating Cells</a></div><div class="toc-h2"><a href="#evaluationrequired">1.1 evaluationRequired</a></div><div class="toc-h2"><a href="#how-do-cells-get-into-the-queue-">1.2 How Do Cells Get into the Queue?</a></div><div class="toc-h2"><a href="#how-do-indirectly-affected-cells-get-into-the-queue-">1.3 How Do Indirectly Affected Cells Get into the Queue?</a></div><div class="toc-h1"><a href="#use-case-cell-updates">2 Use-Case: cell updates</a></div><div class="toc-h2"><a href="#putting-2-a1-in-b2">2.1 Putting 2*a1 in b2</a></div><div class="toc-h2"><a href="#recomputing-cell-values">2.2 Recomputing Cell Values</a></div><div class="toc-h1"><a href="#circular-dependencies">3 Circular Dependencies</a></div><div class="toc-h2"><a href="#poor-response">3.1 Poor Response</a></div><div class="toc-h2"><a href="#possible-fixes">3.2 Possible Fixes</a></div><div class="toc-h1"><a href="#multi-threaded-design">4 Multi-Threaded Design</a></div><div class="toc-h2"><a href="#identifying-shared-resources">4.1 Identifying Shared Resources</a></div><div class="toc-h2"><a href="#checking-for-liveness-problems">4.2 Checking for Liveness Problems</a></div><div class="toc-h1"><a href="#when-in-doubt-simplify">5 When in Doubt, Simplify</a></div><div class="toc-h2"><a href="#hiding-the-cells">5.1 Hiding the Cells</a></div><div class="toc-h2"><a href="#again-a-circle">5.2 Again, a Circle</a></div><div class="toc-h2"><a href="#all-locked-up-and-nowhere-to-go">5.3 All Locked Up and Nowhere To Go</a></div></div><a id="reviewevaluatingcells"/><h1 id="review-evaluating-cells">1 Review: Evaluating Cells</h1><ul>
+  <li>
+  <p>Each Cell has an expression and a (current) value.</p>
+    </li>
+  <li>
+    <p>Certain spreadsheet operations may affect the value of one or more cells</p>
+    
+    <ul>
+      <li>
+        <p>anything that changes a cell formula</p>
+    
+        <ul>
+          <li>
+          <p>entering formula via GUI</p>
+    </li>
+          <li>
+          <p>loading a spreadsheet from a file</p>
+    </li>
+          <li>
+          <p>pasting cells</p>
+    </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><h2 id="evaluationrequired">1.1 evaluationRequired</h2><p>How does the spreadsheet know what cells to re-evaluate after one or  more changes have been made?</p>
+    <p>It keeps a queue of cells requiring (re)-evaluation.</p>
+    <div class="details"><span class="summary"><a href="evalRequired.java" target="listing">evalRequired.java</a></span> <input id="but_details_d6e42" onclick="toggleDisplay('_details_d6e42')" type="button" value="+"/><div class="detailPart" id="_details_d6e42"><pre><code id="_details_d6e42_code">public class SpreadSheet
+{
+      &#x22ee;
+    private CellName theLowerRightCorner;
+    <span class='hli'>private Sequence evaluationRequired;</span>
+    private Hashtable cells;
+    private int evaluationCounter;
+
+    static private final int EvaluationLimit = 100000;
+    // Max number of of cell evaluations that can be undertaken as a result
+    // of a change to any one cell. (Used to break off evaluation when
+      &#x22ee;
+</code></pre></div></div><ul>
+  <li>
+  <p>After any spreadsheet action that changes cell values, those actions add the affected cells to the queue.</p>
+    </li>
+  <li>
+  <p>Then eventually the spreadsheet evaluates everything in the queue.</p>
+    </li>
+</ul><p>For example, this is the code that manages the “formula” text entry box where new expressions can be typed for insertion into a cell</p>
+    <pre><code class="java">public class MainWindow extends java.awt.Frame {
+       &#x22ee;
+    formula = new Formula();
+    formula.addActionListener(new ActionListener() {
+        public void actionPerformed (ActionEvent e) {
+          if (!ssview.getSelectingRectangleMode()) {
+            CellName cn = ssview.getSelectedCells().upperLeftCorner();
+            Cell c = sheet.getCell(cn);
+            if (!formula.getText().equals("")) {
+              Expression expr = Expression.get(formula.getText());
+              if (expr != null) {
+                c.putFormula(expr);  &#x2780;
+              }
+              else {
+            statusLine.setText("Syntax error in formula");
+              }
+            }
+            else {
+              c.putFormula(null);
+            }
+            sheet.evaluateAll();   &#x2781;
+          }
+        }});
+
+</code></pre><ul>
+  <li>
+  <p><span>➀</span> Here a newly parsed Expression is added to a cell. We’ll look at the implications of that shortly.</p>
+    </li>
+  <li>
+  <p><span>➁</span> Here we instruct the spreadsheet to evaluated all affected cells. Of course, the only one that it knows is affected at the moment is the cell <span class="varname">c</span>, into which we have just inserted the new expression.</p>
+    </li>
+</ul><a id="howdocellsgetintothequeue"/><h2 id="how-do-cells-get-into-the-queue-">1.2 How Do Cells Get into the Queue?</h2><p>The spreadsheet provides functions for indicating that a <span class="type">Cell</span> needs to be re-evaluated:</p>
+    <pre><code class="java">public class SpreadSheet
+{
+      &#x22ee;
+
+    // Cells use the following two functions to inform 
+    // the spreadsheet of changes in their status
+
+    void cellRequiresEvaluation (Cell c)
+    {
+        if (c.getValueIsCurrent())
+            {
+                c.putValueIsCurrent (false);
+                evaluationRequired.addToBack (c);
+            }
+    }
+
+    void cellHasNewFormula (Cell c)
+    {
+        evaluationCounter = 0;
+        cellRequiresEvaluation(c);
+    }
+
+</code></pre><p>The various actions that change a cell must then call those functions. For example, a little earlier we saw that when a new expression is entered through a GUI, the cell’s <span class="function">putFormula</span> function is called:</p>
+    <div class="details"><span class="summary"><a href="putFormula.java" target="listing">putFormula.java</a></span> <input id="but_details_d6e91" onclick="toggleDisplay('_details_d6e91')" type="button" value="+"/><div class="detailPart" id="_details_d6e91"><pre><code id="_details_d6e91_code">public
+class Cell extends Observable implements Observer
+{
+  
+    &#x22ee;
+  public void putFormula(Expression e)
+  {
+    if (theFormula != null)
+    {
+      Sequence oldReferences = theFormula.collectReferences();
+      for (SearchEnumeration p = oldReferences.front();
+           p.hasMoreElements(); ) {
+        CellName cn = (CellName)p.nextElement();
+        Cell c = theSheet.getCell(cn);
+        c.deleteObserver (this);
+      }
+    }
+
+    theFormula = e;
+    if (e != null) 
+      {
+        Sequence newReferences = e.collectReferences();
+        for (SearchEnumeration p = newReferences.front();
+             p.hasMoreElements(); ) {
+          CellName cn = (CellName)p.nextElement();
+          Cell c = theSheet.getCell(cn);
+          c.addObserver (this);
+        }
+      }
+    theSheet.cellHasNewFormula (this);  &#x2780;
+  }
+    &#x22ee;
+</code></pre></div></div><ul>
+  <li><span>➀</span> Near the end of this function, you can see the cell telling the spreadsheet that it (the cell) will need to be re-evaluated.  </li>
+</ul><a id="howdoindirectlyaffectedcellsgetintothequeue"/><h2 id="how-do-indirectly-affected-cells-get-into-the-queue-">1.3 How Do Indirectly Affected Cells Get into the Queue?</h2><p>Now, that’s all fine for cells that we have changed directly, but we know that if one cell is changed, it may affect others that depend upon it. For example, if we enter a new formula into cell <span class="code">B2</span> and cell <span class="code">C3</span> contains the expression <span class="code">a1+b2</span>, then cell <span class="code">C3</span> may eventually have to be re-evaluated as well. And them, if there are any cells that mention <span class="code">C3</span> in <em>their</em> formulas, those cells will need be re-evaluated, and so on.</p>
+    <p>This propagation of changes is managed via a pattern we have discussed earlier, the observer-observable pattern.</p>
+    <ul>
+  <li>
+    <p>Cells observe other cells</p>
+    
+    <ul>
+      <li>e.g., if <code>c3</code> contains “<code>a1+ 2 *b2</code>”, it observes cells <code>a1</code> and <code>b2</code>.</li>
+    </ul>
+  </li>
+  <li>
+    <p>A cell that changes values notifies its observers</p>
+    
+    <ul>
+      <li>
+      <p>We’ve seen this notification when we discussed how cells  evaluate themselves.</p>
+    </li>
+    </ul>
+  </li>
+</ul><pre><code class="java">  public Value evaluateFormula()
+  {
+    Value newValue = (theFormula == null)
+      ? new StringValue()
+	: theFormula.evaluate(theSheet);
+
+    if (theValue == null || !newValue.equals(theValue)) {
+      theValue = newValue;
+      setChanged();
+      <span class='hli'>notifyObservers();</span>
+    }
+    return theValue;
+  }
+
+</code></pre><ul>
+  <li>
+  <p>and they add themselves to the queue</p>
+    </li>
+  <li>
+  <p>A cell is notified of a change in something it was observing  by a call to <span class="function">update</span>:</p>
+    </li>
+</ul><pre><code class="java">  public void update (Observable changedCell, Object ignore)
+  {
+    theSheet.cellRequiresEvaluation (this);
+  }  
+
+</code></pre><p>Any cell so notified simply tells the spreadsheet ot add it to the queue.</p>
+    <a id="usecasecellupdates"/><h1 id="use-case-cell-updates">2 Use-Case: cell updates</h1><p>Assume a spreadsheet already contains the following:</p>
+    <ul>
+  <li>
+  <p>Cell a1 contains 10</p>
+    </li>
+  <li>
+  <p>Cell b2 contains a1+1</p>
+    </li>
+  <li>
+  <p>Cell c3 contains a1+b2</p>
+    </li>
+</ul><p>The cursor is on cell <code>b2</code>, and we enter <code>2*a1</code> in the formula box and hit enter.</p>
+    <a id="putting2a1inb2"/><h2 id="putting-2-a1-in-b2">2.1 Putting 2*a1 in b2</h2><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssreassign.png" style="max-width: 80%;"/></div>
+    </p>
+    <a id="recomputingcellvalues"/><h2 id="recomputing-cell-values">2.2 Recomputing Cell Values</h2><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssreeval.png" style="max-width: 80%;"/></div>
+    </p>
+    <a id="circulardependencies"/><h1 id="circular-dependencies">3 Circular Dependencies</h1><p><span class="emph">Try This</span>: <a href="./spreadsheetJ.jar">Here</a> is the compiled version of the spreadsheet that we have been discussing. </p>
+    <p>Run it and do the following:</p>
+    <ul>
+  <li>Put 1 in A1. (Click on cell A1 to select it, then click in the  formula box at the top of the spreadsheet, type “1” and hit Enter.)</li>
+  <li>Put <code>if(a1 &gt; 1000,-999,1)</code> in B2</li>
+  <li>Put <code>a1+b2</code> in C3</li>
+  <li>Return to A1, and repalce the original formula by c3.</li>
+  <li>Then click on B1 as if you wanted to enter something there.</li>
+</ul><a id="poorresponse"/><h2 id="poor-response">3.1 Poor Response</h2><p>The program gets caught in a loop for a noticeable time. </p>
+    <ul>
+  <li>
+  <p>In fact, it only halts because of an explicitly coded guard against infinite evaluation loops</p>
+    </li>
+  <li>
+  <p>But until it does, the program ignores all mouse clicks, key presses, etc.</p>
+    </li>
+</ul><p/>
+    <a id="possiblefixes"/><h2 id="possible-fixes">3.2 Possible Fixes</h2><p>In the final formula entry above we created a circular dependency in which cell <span class="code">C3</span> depended (indirectly) on the value of cell <span class="code">A1</span> but <span class="code">A1</span> depended on the value of cell <span class="code">C3</span>. This created an infinite loop as each cell kept notifying the other changes, causing the other to request re-evaluation.</p>
+    <p>One way to avoid this would be to check for circular dependencies before entering a new formula. An algorithm for doing this is called <span class="firstterm">topological sorting</span> and you might learn it in our data structures course.</p>
+    <p>One problem with this approach is that it sometimes disallows operations that would have been OK. In particular, copy and pasting of large regions of the spreadsheet could cause temporary circular dependencies. Many spreadsheets will break off the paste operation in the middle upon detecting this, even if the circularity would have been resolved once the entire region had finished pasting. operation was carried out. </p>
+    <p>So we’ll look at another possibility, making the cell evaluation and GUI event handling separate threads.</p>
+    <a id="multithreadeddesign"/><h1 id="multi-threaded-design">4 Multi-Threaded Design</h1><ul>
+  <li>Add to SpreadSheet an internal Evaluator class that runs as a thread
+    <ul>
+      <li>
+      <p>Whenever cells need to be evaluated, it pulls them from the  evaluationRequired queue and tells them to re-evaluate  themselves.</p>
+    </li>
+    </ul>
+  </li>
+</ul><div class="details"><span class="summary"><a href="evalthread.java" target="listing">evalthread.java</a></span> <input id="but_details_d6e295" onclick="toggleDisplay('_details_d6e295')" type="button" value="+"/><div class="detailPart" id="_details_d6e295"><pre><code id="_details_d6e295_code">class SpreadSheet
+{
+
+
+    class Evaluator extends Thread
+    {
+        public Evaluator() {}
+
+        public void run() {
+            while (true) {
+                partialEvaluate();
+            }
+        }
+    }
+
+    public SpreadSheet()
+    {
+        theLowerRightCorner = new CellName("z", 26);
+        evaluationCounter = 0;
+        evaluationRequired = new Sequence();
+        cells = new Hashtable();
+        evaluator = new Evaluator();
+        evaluator.start();
+    }
+</code></pre></div></div><p><span class="function">partialEvaluate</span> takes one cell off the front of the queue and re-evaluates it.</p>
+    <a id="identifyingsharedresources"/><h2 id="identifying-shared-resources">4.1 Identifying Shared Resources</h2><ul>
+  <li>
+  <p>To make this design safe, we need to consider what synchronization might be  required.</p>
+    </li>
+  <li>
+  <p>Where could we get into trouble if the two threads accessed shared resources?</p>
+    </li>
+</ul><p>Consider the <span class="varname">evaluationRequired</span> queue.</p>
+    <ul>
+  <li>
+  <p>GUI thread adds cells to queue</p>
+    </li>
+  <li>
+  <p>evaluation thread removes cells from queue</p>
+    </li>
+</ul><p>That’s an obvious shared resource. We’ve already seen how queues can be corrupted by simultaneous updates, so we will want to protect that. </p>
+    <p>Let’s also think about the cell formulas.</p>
+    <ul>
+  <li>
+    <p>Changes in formula</p>
+    
+    <ul>
+      <li>
+      <p>eval thread traverses formulas (trees) to evaluate</p>
+    </li>
+      <li>
+      <p>GUI puts new formulas into cell</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Changes in the observer lists</p>
+    
+    <ul>
+      <li>
+      <p>eval thread traverses observer list to schedule additional nodes  for evaluation</p>
+    </li>
+      <li>
+      <p>GUI<code>-&gt;putFormula()</code> rewrites the observer list</p>
+    </li>
+    </ul>
+  </li>
+</ul><p>Again, that looks like a shared rewource that need protecting.</p>
+    <p>Finally, let’s think about the cell values.</p>
+    <ul>
+  <li>
+  <p>GUI looks at values to display on screen</p>
+    </li>
+  <li>
+  <p>eval thread continuously rewrites those values</p>
+    </li>
+</ul><p>This might be a problem as well. It’s not a simultaneous update, because the GUI only looks at these values, but we could wind up displaying garbage temporarily.</p>
+    <a id="synchronizationreqts"/><h3 id="synchronization-reqts">4.1.1 Synchronization Reqts</h3><p>It appears, then, that we need</p>
+    <ul>
+  <li>
+    <p>synchronization on each Cell</p>
+    
+    <ul>
+      <li>
+      <p>getFormula(), putFormula(), getValue(), putValue(), evaluate()</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>synchronization on evaluationRequired queue</p>
+    
+    <ul>
+      <li>
+      <p>add, remove</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="checkingforlivenessproblems"/><h2 id="checking-for-liveness-problems">4.2 Checking for Liveness Problems</h2><p>If we go with that level of synchronization, however, we may encounter liveness problems: </p>
+    <ul>
+  <li>
+    <p>Synchronizing on individual cells could lead to a situation where</p>
+    
+    <ul>
+      <li>
+      <p>eval thread holds lock on cell <code>c1</code>and requests lock on cell <code>c2</code></p>
+    </li>
+      <li>
+      <p>GUI thread holds lock on cell <code>c2</code>and requests lock on cell <code>c1</code> </p>
+    </li>
+      <li>
+      <p>Deadlock!</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>At least, I think that’s possible. Frankly, it’s too  complicated for me to really prove it one way or the other.</p>
+    </li>
+</ul><a id="whenindoubtsimplify"/><h1 id="when-in-doubt-simplify">5 When in Doubt, Simplify</h1><p>We resolve these problems by making life simpler.</p>
+    <ul>
+  <li>
+    <p>Synchronize on the whole spreadsheet instead of individual cells</p>
+    
+    <ul>
+      <li>
+      <p>Because there’s only one object involved, chances of deadlock  are nil</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Need to restructure spreadsheet slightly so that other code does  not get cells directly</p>
+    
+    <pre><code>* e.g., instead of
+</code></pre>
+  </li>
+</ul><div class="details"><span class="summary"><a href="putFormula.java" target="listing">putFormula.java</a></span> <input id="but_details_d6e474" onclick="toggleDisplay('_details_d6e474')" type="button" value="+"/><div class="detailPart" id="_details_d6e474"><pre><code id="_details_d6e474_code">public
+class Cell extends Observable implements Observer
+{
+  
+    &#x22ee;
+  public void putFormula(Expression e)
+  {
+    if (theFormula != null)
+    {
+      Sequence oldReferences = theFormula.collectReferences();
+      for (SearchEnumeration p = oldReferences.front();
+           p.hasMoreElements(); ) {
+        CellName cn = (CellName)p.nextElement();
+        Cell c = theSheet.getCell(cn);
+        c.deleteObserver (this);
+      }
+    }
+
+    theFormula = e;
+    if (e != null) 
+      {
+        Sequence newReferences = e.collectReferences();
+        for (SearchEnumeration p = newReferences.front();
+             p.hasMoreElements(); ) {
+          CellName cn = (CellName)p.nextElement();
+          Cell c = theSheet.getCell(cn);
+          c.addObserver (this);
+        }
+      }
+    theSheet.cellHasNewFormula (this);  &#x2780;
+  }
+    &#x22ee;
+</code></pre></div></div><p>we do</p>
+    <div class="details"><span class="summary"><a href="putFormula2.java" target="listing">putFormula2.java</a></span> <input id="but_details_d6e477" onclick="toggleDisplay('_details_d6e477')" type="button" value="+"/><div class="detailPart" id="_details_d6e477"><pre><code id="_details_d6e477_code">public
+class Cell extends Observable implements Observer
+{
+  
+    &#x22ee;
+  public void putFormula(Expression e)
+  {
+    if (theFormula != null)
+    {
+      Sequence oldReferences = theFormula.collectReferences();
+      for (SearchEnumeration p = oldReferences.front();
+	   p.hasMoreElements(); ) {
+	CellName cn = (CellName)p.nextElement();
+	theSheet.deleteCellObserver (cn,this);
+      }
+    }
+
+    theFormula = e;
+    if (e != null) 
+      {
+	Sequence newReferences = e.collectReferences();
+	for (SearchEnumeration p = newReferences.front();
+	     p.hasMoreElements(); ) {
+	  CellName cn = (CellName)p.nextElement();
+	  theSheet.addCellObserver(cn, this);
+	}
+      }
+    theSheet.cellHasNewFormula (this);
+  }
+    &#x22ee;
+</code></pre></div></div><a id="hidingthecells"/><h2 id="hiding-the-cells">5.1 Hiding the Cells</h2><p>In essence, we can hide the cells so that they cannot be accessed in an unsynchronized fashion by requiring all access to cells to be managed via the spreadsheet. </p>
+    <ul>
+  <li>
+  <p>Make the spreadhsheet’s getCell() function private.</p>
+    </li>
+  <li>
+  <p>Provide cell functionality through the spreadsheet, so  that synchronized functions lock the spreadsheet, not the cells</p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="cellops.java" target="listing">cellops.java</a></span> <input id="but_details_d6e492" onclick="toggleDisplay('_details_d6e492')" type="button" value="+"/><div class="detailPart" id="_details_d6e492"><pre><code id="_details_d6e492_code">    // Remove c from the observer list of the cell at position cname
+    public synchronized void deleteCellObserver (CellName cname, Observer c)
+    {
+        Cell observer = getCell(cname);
+        observer.deleteObserver(c);
+    }
+
+
+    // Add c as an observer of the cell at position cname
+    public synchronized void addCellObserver (CellName cname, Observer c)
+    {
+        Cell observer = getCell(cname);
+        observer.addObserver(c);
+    }
+
+
+    // Get the formula associated with the cell at position cname
+    public synchronized Expression getFormula(CellName cname) 
+    {
+        return getCell(cname).getFormula();
+    }
+
+
+    // Put a formula into the cell at position cname
+</code></pre></div></div><ul>
+  <li>Synchronize cell evaluation</li>
+</ul><div class="details"><span class="summary"><a href="eval2.java" target="listing">eval2.java</a></span> <input id="but_details_d6e499" onclick="toggleDisplay('_details_d6e499')" type="button" value="+"/><div class="detailPart" id="_details_d6e499"><pre><code id="_details_d6e499_code">    // Re-evaluate all cells in the spreadsheet
+    public int evaluateAll()
+    {
+        return 1;
+    } 
+
+    // Evaluate one or more cells in the spreadsheet
+    synchronized void partialEvaluate()
+    {
+        if (moreToEvaluate()) {
+            Cell c = (Cell)evaluationRequired.front().at();
+            evaluationRequired.removeFront();
+            c.putValueIsCurrent (true);
+            
+            ++evaluationCounter;
+            c.evaluateFormula();
+        } else {
+            <span class='hli'>try {
+                wait();
+            } catch (InterruptedException ex) {}</span>
+        }
+    }
+
+    // Return true if at least one cell is believed to require evaluation
+    public boolean moreToEvaluate()
+    {
+        return (evaluationRequired.size() &gt; 0
+                &amp;&amp; evaluationCounter &lt; EvaluationLimit);
+    }
+
+
+</code></pre></div></div><a id="againacircle"/><h2 id="again-a-circle">5.2 Again, a Circle</h2><p><a href="./spreadsheetT.jar">Here</a> is the threaded version of the spreadsheet. Try running it with the same sequence of insertions that caused the earlier version to lock up.</p>
+    <a id="alllockedupandnowheretogo"/><h2 id="all-locked-up-and-nowhere-to-go">5.3 All Locked Up and Nowhere To Go</h2><p>What happens to the Evaluator thread if no cells need to be evaluated?</p>
+    <p>We don’t want to waste CPU cycles on a busy loop.</p>
+    <a id="wait"/><h3 id="wait-">5.3.1 wait()</h3><p>The Java <code>wait()</code> function (from class <code>Object</code>)</p>
+    <ul>
+  <li>
+  <p>releases the lock being held</p>
+    </li>
+  <li>
+  <p>puts the thread to sleep</p>
+    </li>
+  <li>
+  <p>places the thread in a queue of threads <span class="firstterm">blocked </span>waiting  for access to that object</p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="eval2.java" target="listing">eval2.java</a></span> <input id="but_details_d6e537" onclick="toggleDisplay('_details_d6e537')" type="button" value="+"/><div class="detailPart" id="_details_d6e537"><pre><code id="_details_d6e537_code">    // Re-evaluate all cells in the spreadsheet
+    public int evaluateAll()
+    {
+        return 1;
+    } 
+
+    // Evaluate one or more cells in the spreadsheet
+    synchronized void partialEvaluate()
+    {
+        if (moreToEvaluate()) {
+            Cell c = (Cell)evaluationRequired.front().at();
+            evaluationRequired.removeFront();
+            c.putValueIsCurrent (true);
+            
+            ++evaluationCounter;
+            c.evaluateFormula();
+        } else {
+            <span class='hli'>try {
+                wait();
+            } catch (InterruptedException ex) {}</span>
+        }
+    }
+
+    // Return true if at least one cell is believed to require evaluation
+    public boolean moreToEvaluate()
+    {
+        return (evaluationRequired.size() &gt; 0
+                &amp;&amp; evaluationCounter &lt; EvaluationLimit);
+    }
+
+
+</code></pre></div></div><a id="notifyall"/><h3 id="notifyall-">5.3.2 notifyAll()</h3><p>The <code>notifyAll()</code> function</p>
+    <ul>
+  <li>
+  <p>wakes up all threads that are blocked waiting for the object on  which the lock is being held</p>
+    </li>
+  <li>
+  <p>so when the lock is next released, those threads are  eligible to run</p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="cellRequiresEvaluation2.java" target="listing">cellRequiresEvaluation2.java</a></span> <input id="but_details_d6e556" onclick="toggleDisplay('_details_d6e556')" type="button" value="+"/><div class="detailPart" id="_details_d6e556"><pre><code id="_details_d6e556_code">
+    // Cells use the following two functions to inform 
+    // the spreadsheet of changes in their status
+
+    synchronized void cellRequiresEvaluation (Cell c)
+    {
+        if (c.getValueIsCurrent())
+            {
+                c.putValueIsCurrent (false);
+                evaluationRequired.addToBack (c);
+                <span class='hli'>notifyAll();</span>
+            }
+    }
+
+    void cellHasNewFormula (Cell c)
+    {
+        evaluationCounter = 0;
+        cellRequiresEvaluation(c);
+    }
+
+
+</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Multi-Threading%20Case%20Study%3A%20Spreadsheet"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

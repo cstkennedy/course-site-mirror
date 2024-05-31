@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Study Guide - Language Fundamentals</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Study%20Guide%20-%20Language%20Fundamentals"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Study Guide - Language Fundamentals</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#study-guides">2 Study Guides</a></div><div class="toc-h2"><a href="#c-guide">2.1 C++ Guide</a></div><div class="toc-h2"><a href="#java-guide">2.2 Java Guide</a></div><div class="toc-h2"><a href="#python-guide">2.3 Python Guide</a></div></div><h1 id="overview">1 Overview</h1><p>Every semester… students ask for some guidance on how to review the topics covered in previous courses. <em>This document exists because this type of question is both <strong>common</strong> and <strong>important</strong></em>.</p>
+    <a id="studyguides"/><h1 id="study-guides">2 Study Guides</h1><p>Near the end of the Fall 2023 Semester… a student asked me for some in guidance with preparing for CS 330 for the next semester (i.e., the Spring 2024 Semester). The C++ review guide in this section is the result of that discussion (and a few iterations).</p>
+    <p>I have included Java, Python, and Rust guides… since the same topics are a good start in any language.</p>
+    <a id="cguide"/><h2 id="c-guide">2.1 C++ Guide</h2><ul>
+  <li><code>main</code> function
+    <ul>
+      <li>Write something along the lines of “Hello World!”</li>
+      <li>Declare, initialize, and output (to standard out, <code>cout</code>, with <code>&lt;&lt;</code>) the  following variable types:</li>
+      <li><code>int</code></li>
+      <li><code>double</code></li>
+      <li><code>char</code></li>
+      <li><code>bool</code> (boolean)</li>
+      <li><code>std::string</code></li>
+    </ul>
+  </li>
+  <li>Keyboard Input with <code>cin</code>
+    <ul>
+      <li>Prompt for user input (<code>cout</code>)</li>
+      <li>Read the data into a variable with the stream extraction operator (<code>&gt;&gt;</code>)</li>
+      <li>Print that data</li>
+    </ul>
+  </li>
+  <li>Functions
+    <ul>
+      <li>Call built-in functions and store the result</li>
+      <li>Write a non-value returning (<code>void</code>/<code>None</code>) function</li>
+      <li>Call (invoke) a custom function</li>
+      <li>Write a value returning function (e.g., <code>int</code>, <code>double</code>, <code>char</code>, or  <code>string</code>)</li>
+    </ul>
+  </li>
+  <li>Basic Conditional Blocks
+    <ul>
+      <li>Write an if to check a condition</li>
+      <li>Write an if-else to check a condition</li>
+      <li>Write an if-else-if-else</li>
+    </ul>
+  </li>
+  <li>Basic Loops
+    <ul>
+      <li>Write a for loop to repeat something <code>n</code> times</li>
+      <li>Write a while loop that runs until some condition is met (e.g., until a  user types “quit”)</li>
+    </ul>
+  </li>
+  <li>Separate modules (compilation units)
+    <ul>
+      <li>Move a custom function to a separate <code>h</code>/<code>cpp</code> file and invoke it from <code>main</code></li>
+    </ul>
+  </li>
+  <li>File Input
+    <ul>
+      <li>Work with <code>ifstream</code></li>
+    </ul>
+  </li>
+  <li>File Output
+    <ul>
+      <li>Work with <code>ofstream</code></li>
+    </ul>
+  </li>
+  <li>Basic Structs
+    <ul>
+      <li>Write a Default Constructor</li>
+      <li>Write a Non-Default Constructor</li>
+      <li>Review the notion of <code>public</code> (both mechanically and conceptually)</li>
+    </ul>
+  </li>
+  <li>Basic Classes
+    <ul>
+      <li>Review <code>private</code> vs <code>public</code> <del>vs <code>protected</code></del></li>
+      <li><code>protected</code> is covered in CS 330</li>
+      <li>Review member functions</li>
+    </ul>
+  </li>
+  <li>Arrays
+    <ul>
+      <li>Declare an array</li>
+      <li>Traverse an array</li>
+      <li>Output an array</li>
+    </ul>
+  </li>
+  <li>Intermediate Classes
+    <ul>
+      <li>Review operator overloading (e.g., <code>==</code>, <code>&lt;</code>, <code>&lt;&lt;</code>)</li>
+      <li>Review aggregation and composition</li>
+    </ul>
+  </li>
+</ul><a id="javaguide"/><h2 id="java-guide">2.2 Java Guide</h2><ul>
+  <li><code>main</code> function
+    <ul>
+      <li>Write something along the lines of “Hello World!”</li>
+      <li>Declare, initialize, and output (to standard out, with  <code>System.out.println</code>, and <code>System.out.printf</code>) the following variable  types:</li>
+      <li><code>int</code></li>
+      <li><code>double</code></li>
+      <li><code>char</code></li>
+      <li><code>boolean</code></li>
+      <li><code>String</code></li>
+    </ul>
+  </li>
+  <li>Keyboard Input with <code>BufferedReader</code> (and/or <code>Scanner</code>)
+    <ul>
+      <li>Prompt for user input (<code>System.out.print</code>)</li>
+      <li>Read the data into a variable with the <code>BufferedReader</code> or <code>Scanner</code>  (with appropriate conversion)</li>
+      <li>Print that data</li>
+    </ul>
+  </li>
+  <li>Functions
+    <ul>
+      <li>Call built-in functions and store the result</li>
+      <li>Write a non-value returning (<code>void</code>/<code>None</code>) function</li>
+      <li>Call (invoke) a custom function</li>
+      <li>Write a value returning function (e.g., <code>int</code>, <code>double</code>, <code>char</code>, or  <code>String</code>)</li>
+    </ul>
+  </li>
+  <li>Basic Conditional Blocks
+    <ul>
+      <li>Write an if to check a condition</li>
+      <li>Write an if-else to check a condition</li>
+      <li>Write an if-else-if-else</li>
+    </ul>
+  </li>
+  <li>Basic Loops
+    <ul>
+      <li>Write a for loop to repeat something <code>n</code> times</li>
+      <li>Write a while loop that runs until some condition is met (e.g., until a  user types “quit”)</li>
+    </ul>
+  </li>
+  <li>Separate modules (compilation units)
+    <ul>
+      <li>Move a custom function to a separate <code>java</code> file and invoke it from <code>main</code></li>
+    </ul>
+  </li>
+  <li>File Input
+    <ul>
+      <li>Work with a <code>FileReader</code> wrapped in a <code>BufferedReader</code></li>
+    </ul>
+  </li>
+  <li>File Output
+    <ul>
+      <li>Work with a <code>FileWriter</code> wrapped in a <code>BufferedWriter</code></li>
+    </ul>
+  </li>
+  <li>Basic Classes
+    <ul>
+      <li>Write a Default Constructor</li>
+      <li>Write a Non-Default Constructor</li>
+      <li>Review the notion of <code>public</code> (both mechanically and conceptually)</li>
+      <li>Review <code>private</code> vs <code>public</code> <del>vs <code>protected</code></del></li>
+      <li><code>protected</code> is covered in CS 330</li>
+      <li>Review member functions</li>
+    </ul>
+  </li>
+  <li>Arrays
+    <ul>
+      <li>Declare an array</li>
+      <li>Traverse an array</li>
+      <li>Output an array</li>
+    </ul>
+  </li>
+  <li>Intermediate Classes
+    <ul>
+      <li>Review (pseudo) operator overloading (e.g., <code>equals</code>, <code>hashCode</code>, <code>toString</code>)</li>
+      <li>Review aggregation and composition</li>
+    </ul>
+  </li>
+</ul><a id="pythonguide"/><h2 id="python-guide">2.3 Python Guide</h2><ul>
+  <li><code>main</code> function
+    <ul>
+      <li>Write something along the lines of “Hello World!”</li>
+      <li>Declare, initialize, and output (to standard out, with <code>print</code> and  f-strings) the following variable types:</li>
+      <li><code>int</code></li>
+      <li><code>float</code></li>
+      <li><code>bool</code> (boolean)</li>
+      <li><code>str</code></li>
+    </ul>
+  </li>
+  <li>Keyboard Input with <code>input</code>
+    <ul>
+      <li>Prompt for user input with <code>input</code></li>
+      <li>Store the data into a variable after converting it to a <code>float</code> or <code>int</code></li>
+      <li>Print that data</li>
+    </ul>
+  </li>
+  <li>Functions
+    <ul>
+      <li>Call built-in functions and store the result</li>
+      <li>Write a non-value returning (<code>void</code>/<code>None</code>) function</li>
+      <li>Call (invoke) a custom function</li>
+      <li>Write a value returning function (e.g., <code>int</code>, <code>float</code>, or <code>str</code>)</li>
+    </ul>
+  </li>
+  <li>Basic Conditional Blocks
+    <ul>
+      <li>Write an if to check a condition</li>
+      <li>Write an if-else to check a condition</li>
+      <li>Write an if-<code>elif</code>-else</li>
+    </ul>
+  </li>
+  <li>Basic Loops
+    <ul>
+      <li>Write a for loop to repeat something <code>n</code> times</li>
+      <li>Write a while loop that runs until some condition is met (e.g., until a  user types “quit”)</li>
+    </ul>
+  </li>
+  <li>Separate modules (compilation units)
+    <ul>
+      <li>Move a custom function to a separate <code>py</code> file and invoke it from <code>main</code></li>
+    </ul>
+  </li>
+  <li>File Input
+    <ul>
+      <li>Work with <code>open(..., "r")</code></li>
+      <li>Use <code>open(..., "r")</code> with a Context Manager</li>
+    </ul>
+  </li>
+  <li>File Output
+    <ul>
+      <li>Work with <code>open(..., "w")</code></li>
+      <li>Use <code>open(..., "w")</code> with a Context Manager</li>
+    </ul>
+  </li>
+  <li>Basic Classes
+    <ul>
+      <li>Write a Constructor</li>
+      <li>Review the notion of <code>public</code> (both mechanically and conceptually)</li>
+      <li>Review name mangling (its actually purpose) and how Python does not have  a true <code>public</code> vs <code>private</code> mechanic</li>
+      <li>Review member functions</li>
+    </ul>
+  </li>
+  <li><del>Arrays</del> <code>list</code> and (Possibly) <code>np.array</code>
+    <ul>
+      <li>Declare a <code>list</code></li>
+      <li>Traverse a <code>list</code></li>
+      <li>Output a <code>list</code></li>
+    </ul>
+  </li>
+  <li>Intermediate Classes
+    <ul>
+      <li>Review operator overloading (e.g., <code>__eq__</code>, <code>__lt__</code>, <code>__str__</code>,  <code>__repr__</code>)</li>
+      <li>Review aggregation and composition</li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Study%20Guide%20-%20Language%20Fundamentals"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

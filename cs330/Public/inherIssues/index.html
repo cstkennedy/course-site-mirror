@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Making Inheritance Work: C++ Issues</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Making%20Inheritance%20Work%3A%20C%2B%2B%20Issues"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Making Inheritance Work: C++ Issues</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Dec 29, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#base-class-function-members">1 Base Class Function Members</a></div><div class="toc-h1"><a href="#assignment-and-subtyping">2 Assignment and Subtyping</a></div><div class="toc-h2"><a href="#implementing-data-member-inheritance">2.1 Implementing Data Member Inheritance</a></div><div class="toc-h1"><a href="#virtual-destructors">3 Virtual Destructors</a></div><div class="toc-h1"><a href="#virtual-assignment">4 Virtual Assignment</a></div><div class="toc-h1"><a href="#virtual-constructors">5 Virtual constructors</a></div><div class="toc-h2"><a href="#cloning">5.1 Cloning</a></div><div class="toc-h1"><a href="#downcasting">6 Downcasting</a></div><div class="toc-h2"><a href="#rtti">6.1 RTTI</a></div><div class="toc-h1"><a href="#single-dispatching-vtables">7 Single Dispatching &amp; VTables</a></div><div class="toc-h2"><a href="#single-dispatching">7.1 Single Dispatching</a></div></div><p><strong>Recording</strong></p>
+    <p>These slides accompany a recorded video: <a href="https://www.youtube.com/watch?v=zzfjZoPYuQ4">Play Video</a></p>
+    <hr/><a id="baseclassfunctionmembers"/><h1 id="base-class-function-members">1 Base Class Function Members</h1><p>Even if you override a function, the inherited bodies are still available to you.</p>
+    <pre><code class="cpp"> class Person {
+ public:
+   string name;
+   long id;
+   void print(ostream&amp; out) {
+      out &lt;&lt; name &lt;&lt; " " &lt;&lt; id &lt;&lt; endl;}
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+   void print(ostream&amp; out) {<span class='hli'>Person::print(out);</span>
+                       out &lt;&lt; school &lt;&lt; endl;}
+ }
+</code></pre><hr/><p><strong>Base Class Constructors</strong></p>
+    <p>This technique is often used in constructors so that subclasses will only need to initialize their own new data members:</p>
+    <pre><code class="cpp"> class Person {
+ public:
+   string name;
+   long id;
+   Person (string n, long i)
+      : name(n), id(i)
+   {}
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+   Student (string name, long id, School s)
+      : <span class='hli'>Person(name, id)</span>, school(s)
+   {}
+ }
+</code></pre><a id="assignmentandsubtyping"/><h1 id="assignment-and-subtyping">2 Assignment and Subtyping</h1><a id="implementingdatamemberinheritance"/><h2 id="implementing-data-member-inheritance">2.1 Implementing Data Member Inheritance</h2><p>Inheritance of data members is achieved by treating all new members as extensions of the base class:</p>
+    <pre><code class="cpp"> class Person {
+ public:
+   string name;
+   long id;
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+ }
+
+</code></pre><hr/><p><strong>Extending Data Members</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="assign0.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>
+  <p>When a compiler processes data member declarations, it assigns a byte offset to each one.</p>
+    </li>
+  <li>
+  <p>Inherited members occur at the same byte offset as in the base  class  </p>
+    </li>
+  <li>
+    <p>so code like <code>p-&gt;name</code> can translate the  same whether <code>p</code> points to a Person or a Student.</p>
+    
+    <ul>
+      <li><code>p-&gt;name</code> is translated as “add 0 to the address in <span class="varname">p</span>”</li>
+      <li><code>p-&gt;id</code> is translated as “add 4 to the address in <span class="varname">p</span>”</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Assignment &amp; Extension</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="assign0.png" style="float: right; max-width:  50%;"/>  In most OO languages, we can do</p>
+    <pre><code class="cpp">superObj = subObj;
+</code></pre><p>but not</p>
+    <pre><code class="cpp">subObj = superObj;
+</code></pre><ul>
+  <li>
+    <p>Assigning to a superclass object discards the extra data</p>
+    
+    <ul>
+      <li>Presumably, <code>(Smith, 456782)</code> is still a valid <span class="type">Person</span></li>
+      <li>Even if it loses the information about Smith being a student</li>
+    </ul>
+  </li>
+  <li>
+  <p>Assigning to a subclass object requires the system to invent data.</p>
+    </li>
+  <li>
+  <p>If we assign Jones to a student object, what value should the system copy into the <code>school</code>?</p>
+    </li>
+</ul><a id="virtualdestructors"/><h1 id="virtual-destructors">3 Virtual Destructors</h1><p>As we’ve seen, subclasses can add new data members.</p>
+    <p>What happens if we add a pointer:</p>
+    <div class="details"><span class="summary"><a href="gradStudent.cpp" target="listing">gradStudent.cpp</a></span> <input id="but_details_d6e125" onclick="toggleDisplay('_details_d6e125')" type="button" value="+"/><div class="detailPart" id="_details_d6e125"><pre><code id="_details_d6e125_code">class Person {
+ public:
+   string name;
+   long id;
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+ }
+
+
+class GraduateStudent: public Student {
+private:
+  <span class='hli'>Transcript* undergradRecords;</span>
+public:
+   ...
+   GraduateStudent (const GraduateStudent&amp; g);
+   GraduateStudent&amp; operator= (const GradudateStudent&amp;);
+   ~GraduateStudent();
+};
+
+GraduateStudent::GraduateStudent (const GraduateStudent&amp; g)
+   : name(g.name), id(g.id), school(g.school),
+     undergradRecords(new Transcript(*(g.undergradRecords))
+{}
+
+GraduateStudent&amp; operator= (const GradudateStudent&amp; g)
+{
+  if (this != &amp;g)
+    {
+     Student::operator=(g);
+     delete undergradRecords;
+     undergradRecords = new Transcript(*(g.undergradRecords));
+    }
+   return *this;
+}
+   
+<span class='hlii'>GraduateStudent::~GraduateStudent() 
+{
+  delete undergradRecords;
+}</span>
+</code></pre></div></div><p>and we don’t want to share?</p>
+    <hr/><p><strong>Deleting Pointers and Inheritance</strong></p>
+    <p>Consider the following two delete statements:</p>
+    <pre><code class="cpp">Person* g1 = new GraduuateStudent(...);
+GraduateStudent* g2 = new GraduateStudent(...);
+   &#x22ee;
+delete g1;  // compiler-generated ~Person() is called
+<span class='hlii'>delete g2;</span>  // ~GraduateStudent() is called
+</code></pre><ul>
+  <li>
+  <p>Both calls are resolved by compile-time binding</p>
+    </li>
+  <li>
+  <p>Therefore the first delete leaks memory –  undergraduateRecords is not cleaned up</p>
+    </li>
+  <li>
+  <p>The fix would seem to be to force dynamic binding on the destructors</p>
+    </li>
+</ul><hr/><p><strong>Making the Destructor Virtual</strong></p>
+    <p>The trick is that this has to be done at the top of the  inheritance hierarchy</p>
+    <div class="details"><span class="summary"><a href="virtualDestruct.cpp" target="listing">virtualDestruct.cpp</a></span> <input id="but_details_d6e154" onclick="toggleDisplay('_details_d6e154')" type="button" value="+"/><div class="detailPart" id="_details_d6e154"><pre><code id="_details_d6e154_code">class Person {
+ public:
+   <span class='hli'>virtual ~Person() {}</span>
+   string name;
+   long id;
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+ }
+
+
+class GraduateStudent: public Student {
+private:
+   Transcript* undergradRecords;
+public:
+    &#x22ee;
+   GraduateStudent (const GraduateStudent&amp; g);
+   GraduateStudent&amp; operator= (const GradudateStudent&amp;);
+   ~GraduateStudent();
+};
+</code></pre></div></div><p>even though,</p>
+    <ul>
+  <li>
+  <p>at the time we wrote that class, there may have been no  obvious need for a destructor</p>
+    </li>
+  <li>
+    <p>this seems to violate the Rule of the Big 3</p>
+    
+    <ul>
+      <li>We’ll look at the other two of the big 3 in just a moment</li>
+    </ul>
+  </li>
+</ul><a id="virtualassignment"/><h1 id="virtual-assignment">4 Virtual Assignment</h1><p>If subclasses can introduce new data members, should assignment be virtual so that we can guarantee proper copying of those extended data members?</p>
+    <hr/><p><strong>Virtual Assignment Example</strong></p>
+    <pre><code class="cpp">void foo(Person&amp; p1, const Person&amp; p2)
+{
+   p1 = p2;
+}
+
+GraduateStudent g1, g2;
+  &#x22ee;
+foo(g1, g2);
+</code></pre><ul>
+  <li>If <span class="varname">p1</span> and <span class="varname">p2</span> “really” have  <span class="varname">underGraduateRecord</span> fields, shouldn’t we make sure  those get copied properly during assignment?
+    <ul>
+      <li>Seems reasonable in this case.</li>
+      <li>But it means that assignment and copying will behave very differently, which is likely to catch programmers by surprise.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>What’s the Problem with Virtual Assignment?</strong></p>
+    <p>If you try it, the inherited members aren’t what you might expect:</p>
+    <div class="details"><span class="summary"><a href="inherAsst.cpp" target="listing">inherAsst.cpp</a></span> <input id="but_details_d6e208" onclick="toggleDisplay('_details_d6e208')" type="button" value="+"/><div class="detailPart" id="_details_d6e208"><pre><code id="_details_d6e208_code">class Person {
+ public:
+   virtual ~Person() {}
+   virtual Person&amp; operator= (const Person&amp; p);
+   string name;
+   long id;
+ };
+ 
+ class Student: public Person {
+ public:
+   string school;
+   virtual Person&amp; operator= (const Person&amp; p); // inherited from Person
+   // Student&amp; operator= (const Student&amp; s); // generated by compiler
+ }
+
+
+class GraduateStudent: public Student {
+private:
+   Transcript* undergradRecords;
+public:
+   ...
+   GraduateStudent (const GraduateStudent&amp; g);
+   virtual Person&amp; operator= (const Person&amp; p); // inherited from Person
+   // Student&amp; operator= (const Student&amp; s); // inherited from Student
+   GraduateStudent&amp; operator= (const GradudateStudent&amp;);
+   ~GraduateStudent();
+};
+</code></pre></div></div><p>You actually wind up with multiple overloaded assignment operators in the subclasses.</p>
+    <hr/><p><strong>What’s the Problem with Virtual Assignment? (cont.)</strong></p>
+    <ul>
+  <li>
+  <p>To make this work, you will need to implement both the virtual  and the normal operators</p>
+    </li>
+  <li>
+  <p>Implementing the virtual one is tricky because you might not  get a GraduateStudent on the right:</p>
+    </li>
+</ul><pre><code class="cpp">void foo(Student&amp; s1, const Student&amp; s2)
+{
+   s1 = s2; 
+}
+
+Student s;
+GraduateStudent g;
+   ...
+foo(g, s); // problem: s has no undergraduateRecords field
+</code></pre><hr/><p><strong>Recommendation</strong></p>
+    <ul>
+  <li>
+  <p>There’s no clear consensus in the C++ community about making  assignment virtual.</p>
+    </li>
+  <li>
+    <p>I recommend against it just because it’s potentially confusing.</p>
+    
+    <ul>
+      <li>
+      <p>Try to avoid using assignment in situations where the “true”  data type on the left is uncertain.</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="virtualconstructors"/><h1 id="virtual-constructors">5 Virtual constructors</h1><ul>
+  <li>
+  <p>Constructors can never be made virtual</p>
+    </li>
+  <li>
+  <p>This can lead to problems when we need to create a copy.</p>
+    </li>
+</ul><hr/><p><strong>Example: evaluating a cell reference</strong></p>
+    <div class="details"><span class="summary"><a href="cellrefnode.h" target="listing">cellrefnode.h</a></span> <input id="but_details_d6e264" onclick="toggleDisplay('_details_d6e264')" type="button" value="+"/><div class="detailPart" id="_details_d6e264"><pre><code id="_details_d6e264_code"> class CellReferenceNode: public Expression
+ { // represents a reference to a cell
+ private:
+   CellName value;
+ 
+ public:
+   CellReferenceNode () {}
+     &lt;:\smvdots:&gt;
+ 
+ // Evaluate this expression
+   virtual Value* evaluate(const SpreadSheet&amp;) const;
+     &lt;:\smvdots:&gt;
+</code></pre></div></div><pre><code class="cpp"> // Evaluate this expression
+ 
+ Value* CellReferenceNode::evaluate(const SpreadSheet&amp; s) const
+ {
+   Cell* cell = s.getCell(value);
+   Value* v = (Value*)cell-&gt;getValue();
+   if (v == 0)
+     return new ErrorValue();
+   else
+     return v;
+ }
+
+</code></pre><ul>
+  <li>
+  <p>We would be better off returning a copy of the spreadsheet  cell’s value rather than the actual one.</p>
+    </li>
+  <li>
+  <p>Each Cell owns (does not share) its Value</p>
+    </li>
+  <li>
+  <p>Cell may therefore delete that Value </p>
+    </li>
+  <li>
+  <p>don’t want to risk some other code doing  so</p>
+    </li>
+  <li>
+  <p>But how do we make a copy?</p>
+    </li>
+</ul><hr/><p><strong>Not like this!</strong></p>
+    <pre><code class="cpp"> Value* theCopy = new Value(*v);
+
+</code></pre><ul>
+  <li>
+  <p>How big is a Value?</p>
+    </li>
+  <li>
+  <p>Would lose all data members in <span class="varname">v</span> required for its  particular subtype of <span class="type">Value</span></p>
+    </li>
+</ul><hr/><p><strong>Better, but Not the “OO Way”</strong></p>
+    <pre><code class="cpp"> Value* newCopy;
+ if (typeid(*v) == typeid(NumericValue)) {
+   newCopy = new NumericValue (v-&gt;getNumericValue());
+ } else if (typeid(*v) == typeid(StringValue)) {
+   newCopy = new StringValue (v-&gt;render(0));
+ } else if (typeid(*v) == typeid(ErrorValue)) {
+   newCopy = new ErrorValue();
+   &#x22ee;
+
+</code></pre><p>(We’ll see how <span class="function">typeid</span> works shortly.)</p>
+    <h2 id="cloning">5.1 Cloning</h2><p>Solution is to use a simulated “virtual constructor”, generally  referred to as a <code>clone()</code> or <code>copy()</code> function.</p>
+    <pre><code class="cpp"> Value* CellReferenceNode::evaluate(const SpreadSheet&amp; s) const
+ {
+   Cell* cell = s.getCell(value);
+   Value* v = (Value*)cell-&gt;getValue();
+   if (v == 0)
+     return new ErrorValue();
+   else
+     return <span class='hli'>v-&gt;clone()</span>;
+ } 
+</code></pre><hr/><p><strong>clone()</strong></p>
+    <p><code>clone()</code> must be supported by all values:</p>
+    <pre><code class="cpp"> class Value {
+ public:
+      &#x22ee;
+   virtual Value* clone() const;
+      &#x22ee;
+ };
+
+</code></pre><hr/><p><strong>Implementing clone()</strong></p>
+    <p>Each subclass of Value implements <code>clone()</code> as a copy construction passed to <code>new</code>.</p>
+    <pre><code class="cpp"> Value* NumericValue::clone() const
+ {
+   return new NumericValue(*this);
+ }
+ 
+ 
+ Value* StringValue::clone() const
+ {
+   return new StringValue(*this);
+ }
+
+</code></pre><h1 id="downcasting">6 Downcasting</h1><p>Suppose that I want to be able to test any two Values to see if they are equal</p>
+    <ul>
+  <li>We’ll define “equal” here as meaning that they are the same kind  of value and would appear the same when rendered.</li>
+</ul><hr/><p><strong>Example: Value::operator==</strong></p>
+    <p>We want to explicitly require all subclasses of Value to provide  this test:</p>
+    <pre><code class="cpp"> class Value {
+      &#x22ee;
+    virtual bool operator== (const Value&amp;) const;
+ };
+
+</code></pre><p>The operator == compares two shapes. Its signature  is: <code>(const Value*, const Value&amp;) =&gt; bool</code></p>
+    <hr/><p><strong>Inheriting ==</strong></p>
+    <pre><code class="cpp"> class NumericValue: public Value {
+    &#x22ee;
+ class StringValue: public Value {
+     &#x22ee;
+
+</code></pre><p>Both classes inherit the == operator. The signatures are </p>
+    <pre><code> (const NumericValue*, const Value&amp;) =&gt;  bool
+ (const StringValue*, const Value&amp;) =&gt; bool
+
+</code></pre><hr/><p><strong>Using the Inherited ==</strong></p>
+    <pre><code class="cpp"> NumericValue n1, n2;
+ StringValue s1, s2;
+ bool b = (n1 == n2)
+       &amp;&amp; (s1 == s2)
+       &amp;&amp; (n1 == s1);
+
+</code></pre><p>The last clause suggests a problem.</p>
+    <ul>
+  <li>
+  <p>How do we compare values of different subtypes?</p>
+    </li>
+  <li>
+  <p>Should we even allow it?</p>
+    </li>
+</ul><hr/><p><strong>Implementing an asymmetric operator</strong></p>
+    <p>We might implement <code>==</code> for <code>NumericValue</code> as:</p>
+    <pre><code class="cpp"> bool NumericValue::operator==
+    (const Value&amp; v)
+ {
+   return d == v.d;
+ };
+
+</code></pre><ul>
+  <li>
+  <p>But in a call like <code>(n1 == s1)</code>, <code>v.d</code> does not make sense.</p>
+    </li>
+  <li>
+  <p>In fact, this will get a compile error</p>
+    </li>
+</ul><hr/><p><strong>Implementing an asymmetric operator (cont.)</strong></p>
+    <p>The problem is that we can easily define</p>
+    <pre><code class="cpp"> bool NumericValue::operator== (const NumericValue&amp; v)
+
+</code></pre><p>but</p>
+    <pre><code class="cpp"> bool NumericValue::operator== (const Value&amp; v)
+
+</code></pre><p>seems impossible, as we cannot anticipate all the values that will ever be defined.</p>
+    <h2 id="rtti">6.1 RTTI</h2><hr/><p><strong>Working around the == asymmetry</strong></p>
+    <p>The C++ standard defines a mechanism for <span class="firstterm">RTTI</span> (Run Time Type Information).</p>
+    <pre><code class="cpp"> bool NumericValue::operator== (const Value&amp; v)
+ {
+   if (typeid(v) == typeid(NumericValue)) {
+        const NumericValue &amp;nv =
+                    (const NumericValue&amp;)v;
+       return d == nv.d;
+   } else
+     return false;
+ };
+
+</code></pre><ul>
+  <li>
+  <p>Note that <code>typeid()</code> can be applied both to objects and to types.</p>
+    </li>
+  <li>
+  <p>But it can only be used with types/objects that have at least  one virtual function.</p>
+    </li>
+</ul><hr/><p><strong>RTTI: typeid and downcasting</strong></p>
+    <p>RTTI also allows you to test to see if <code>v</code> is from a subclass of <code>NumericValue</code></p>
+    <pre><code class="cpp">if (typeid(NumericValue).before(typeid(v))
+</code></pre><p>or to perform safe <span class="firstterm">downcasting</span>:</p>
+    <pre><code class="cpp">  NumericValue* np = dynamic_cast&lt;NumericValue*&gt;(&amp;v);
+  if (np != nullptr)
+     {// v really was a NumericValue or
+      //   subclass of NumericValue
+          &#x22ee;
+     }
+
+</code></pre><ul>
+  <li>The term “downcasting” refers to the fact that we are moving “down” in hour inheritance hierarchy (assuming we draw the base class at the tops).
+    <ul>
+      <li>Upcasting is always safe (and usually is done implicitly)</li>
+      <li>Downcasting can be dangerous if we don’t check to see if the object really is what we think it will be.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Downcasting Should Not Be a Crutch</strong></p>
+    <p>Downcasting is often a tempting way to patch a poor initial choice of virtual “protocol” functions. </p>
+    <ul>
+  <li>
+  <p>95% of the time, it’s a bad idea</p>
+    </li>
+  <li>
+  <p>often leads to subtle, hard to trace bugs</p>
+    </li>
+</ul><p>Oddly, though, downcasting is far more widely accepted in Java than in C++.</p>
+    <a id="singledispatchingvtables"/><h1 id="single-dispatching-vtables">7 Single Dispatching &amp; VTables</h1><hr/><p><strong>Equality Again</strong></p>
+    <p>Earlier, we looked at the problem of comparing two spreadsheet  <code>Value</code>s: </p>
+    <pre><code class="cpp">class Value {
+    &#x22ee;
+  virtual bool isEqual (const Value&amp;) const;
+};
+
+</code></pre><pre><code class="cpp">class NumericValue: public Value {
+    &#x22ee;
+  virtual bool isEqual (const Value&amp;) const;
+};
+
+</code></pre><p>We saw that problems are caused by <code>NumericValue::isEqual</code> getting a parameter of type <code>Value&amp;</code> rather than <code>NumericValue&amp;</code>.</p>
+    <hr/><p><strong>Why is this so hard?</strong></p>
+    <p>Why can’t we select the best fit from among: </p>
+    <pre><code class="cpp">class NumericValue: public Value {
+    &#x22ee;
+  virtual bool isEqual (const NumericValue&amp;) const;
+  virtual bool isEqual (const StringValue&amp;) const;
+  virtual bool isEqual (const ErrorValue&amp;) const;
+};
+
+</code></pre><p>The answer stems from how dynamic binding is implemented.</p>
+    <a id="singledispatching"/><h2 id="single-dispatching">7.1 Single Dispatching</h2><p>Almost all OO languages offer a <span class="firstterm">single dispatch</span> model of message passing: </p>
+    <ul>
+  <li>
+  <p>the dynamic binding is resolved according to the type of the  single object to which the message was sent  (“dispatched”).</p>
+    </li>
+  <li>
+  <p>In C++, this is the object on the left in a call:  <code>obj.foo( ... )</code></p>
+    </li>
+  <li>
+  <p>There are times when this is inappropriate. </p>
+    </li>
+  <li>
+  <p>But it leads to a fast, simple implementation</p>
+    </li>
+</ul><hr/><p><strong>VTables</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="vtables.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>
+  <p>Each object with 1 or more virtual functions has a hidden  data member.</p>
+    </li>
+  <li>
+  <p>a pointer to a <span class="firstterm">VTable</span> for it’s  class</p>
+    </li>
+  <li>
+  <p>this member is always at a predictable location (e.g.,  start or end of the object)</p>
+    </li>
+</ul><hr/><p><strong>Compiling Virtual Function Declarations</strong></p>
+    <ul>
+  <li>
+  <p>Each virtual function in a class is assigned a unique,  consecutive index number.</p>
+    </li>
+  <li>
+  <p><code>(*VTable)[i]</code> is the address of the  class’s method for the i’th virtual function.</p>
+    </li>
+</ul><hr/><p><strong>Example of VTable Use</strong></p>
+    <pre><code class="cpp">class A {
+public:
+  A();
+  virtual void foo();
+  virtual void bar();
+};
+
+class B: public A {
+public:
+  B();
+  virtual void foo();
+  virtual void baz();
+};
+  
+</code></pre><p><code>foo()</code>, <code>bar()</code>, and <code>baz()</code> are assigned indices 0, 1, and 2, respectively.</p>
+    <p>Consider the code:</p>
+    <pre><code class="cpp">A* a = ???;  // might point to an A or a B object
+a-&gt;foo();
+
+</code></pre><hr/><p><strong>Example: VTable Structure</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="vtables.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>The call <code>a-&gt;foo()</code> is translated as</li>
+</ul><pre><code class="cpp">*(a-&gt;VTABLE[0])();
+</code></pre><ul>
+  <li>The call <code>a-&gt;bar()</code> is translated as</li>
+</ul><pre><code class="cpp">*(a-&gt;VTABLE[1])();
+</code></pre><p> Notice that this works regardless of whether  <span class="varname">a</span> points to an <span class="type">A</span> object or a  <span class="type">B</span> object.</p>
+    <ul>
+  <li>“works” in this case means “does dynamic binding”</li>
+</ul><hr/><p><strong>Implementing RTTI</strong></p>
+    <ul>
+  <li>
+  <p>The address of the VTable is a unique identifier for each  class known to the compiler</p>
+    </li>
+  <li>
+    <p>This makes the vtable an ideal for implementing RTTI</p>
+    
+    <ul>
+      <li>
+      <p>and explains why RTTI is only available for classes with  at least one virtual function</p>
+    </li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Making%20Inheritance%20Work%3A%20C%2B%2B%20Issues"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

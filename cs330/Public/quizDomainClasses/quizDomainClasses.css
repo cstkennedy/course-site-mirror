@@ -1,0 +1,88 @@
+
+table.crc {background: PaleGoldenRod; 
+           border-collapse: collapse;
+           border: 3px solid black;
+           margin: 0.5ex;}
+td.crcResponsibility {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 20ex}
+td.crcCollaborator  {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 12ex}
+td.crcResp {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 20ex}
+td.crcCollab  {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 12ex}
+
+
+table.crcdeck {background: PaleGoldenRod; 
+           border-collapse: collapse;
+           border-top: 3px solid black;
+           border-left: 3px solid black;
+           border-right: 20px ridge grey;
+           border-bottom: 20px ridge grey;
+           margin: 0.5ex;}
+td.crcdeckResp {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 20ex}
+td.crcdeckCollab  {border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 12ex}
+
+
+
+
+table.smallcrcdeck {
+           border-collapse: collapse;
+           display: inline;
+           margin: 0.5ex;
+           }
+th.smallcrcdeck {background: PaleGoldenRod; border-collapse: collapse;
+           border-left: 1px solid black;
+           border-top: 1px solid black;
+           border-bottom: 1px solid black;
+                    border-right: 10px ridge gray;
+           font-size: smaller; font-weight: bold;}
+td.smallcrcdeckResp {background: PaleGoldenRod; 
+                 border-collapse: collapse;
+                 border-left: 1px solid black;
+                 border-top: 1px solid black;
+                 border-right: 1px solid black;
+                    border-bottom: 10px groove gray;
+                 width: 8ex;
+                 height: 5ex;
+                 }
+td.smallcrcdeckCollab  {background: PaleGoldenRod; 
+                    border-collapse: collapse;
+                      border-top: 1px solid black;
+                      border-left: 1px solid black;
+                      width: 4ex;
+                    border-right: 10px ridge gray;
+                    border-bottom: 10px groove gray;
+}
+
+
+table.smallcrc {
+           border-collapse: collapse;
+           display: inline;
+           padding: 0.5ex;}
+th.smallcrc {background: PaleGoldenRod; border-collapse: collapse;
+           border: 1px solid black;
+           font-size: smaller; font-weight: bold;}
+td.smallcrcResp {background: PaleGoldenRod; 
+                 border-collapse: collapse;
+                 border: 1px solid black;
+                 width: 8ex;
+                 height: 5ex;
+                 }
+td.smallcrcCollab  {background: PaleGoldenRod; 
+                    border-collapse: collapse;
+                      border: 1px solid black;
+                      width: 4ex}
+
+
+.ul {
+    text-decoration: underline;
+}

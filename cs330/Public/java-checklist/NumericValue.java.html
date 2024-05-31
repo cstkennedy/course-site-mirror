@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>NumericValue.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20NumericValue.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">NumericValue.java</h1></div><pre><code>package SpreadSheetJ.Model;
+
+
+/**
+ * Numeric values in the spreadsheet.
+ */
+public class NumericValue extends Value
+{
+    private double d;
+    private static final String theValueKindName = "Numeric";
+
+    public NumericValue()
+    {
+        this.d = 0.0;
+    }
+
+    public NumericValue(double x)
+    {
+        this.d = x;
+    }
+
+    /**
+     * The string used to identify numeric value kinds.
+     */
+    public static String valueKindName()
+    {
+        return theValueKindName;
+    }
+
+    /**
+     * Indicates what kind of value this is. For any two values, v1 and v2,
+     * v1.valueKind() == v2.valueKind() if and only if they are of the
+     * same kind (e.g., two numeric values). The actual character string
+     * pointed to by valueKind() may be anything, but should be set to
+     * something descriptive as an aid in identification and debugging.
+     */
+    public String valueKind()
+    {
+      return theValueKindName;
+    }
+
+    /**
+     * Produce a string denoting this value such that the
+     * string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+     * If maxWidth==0, then the output string may be arbitrarily long.
+     * This function is intended to supply the text for display in the
+     * cells of a spreadsheet.
+     */
+    public String render(int maxWidth)
+    {
+        String rendering = "" + d;
+
+        if (rendering.indexOf('.') &gt;= 0
+         &amp;&amp; rendering.indexOf('E') &lt; 0
+         &amp;&amp; rendering.indexOf('e') &lt; 0) {
+            while (rendering.charAt(rendering.length()-1) == '0') {
+                rendering = rendering.substring(0, rendering.length()-1);
+            }
+
+            if (rendering.charAt(rendering.length()-1) == '.') {
+                rendering = rendering.substring(0, rendering.length()-1);
+            }
+        }
+
+        if (maxWidth &gt; 0 &amp;&amp; rendering.length() &gt; maxWidth) {
+            String discarded = rendering.substring(maxWidth);
+            rendering = rendering.substring(0, maxWidth);
+            if (discarded.indexOf('.') &gt;= 0) {
+                // We have a problem - can't fit the decimal point into
+                // the allowed width
+                rendering = "****************************";
+                rendering = rendering.substring(0, maxWidth);
+            }
+        }
+        return rendering;
+    }
+
+    public Object clone()
+    {
+        return new NumericValue(this.d);
+    }
+
+    public double getNumericValue()
+    {
+        return this.d;
+    }
+
+    /**
+     * pre: valueKind() == v.valueKind()
+     *
+     * @return true iff this value is equal to v, using a comparison
+     * appropriate to the kind of value.
+     */
+    boolean isEqual(Value v);
+    {
+        NumericValue nv = (NumericValue)v;
+        return this.d == nv.d;
+    }
+}
+</code></pre><p><a href="NumericValue.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20NumericValue.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

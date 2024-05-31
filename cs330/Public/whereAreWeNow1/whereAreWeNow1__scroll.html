@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Where Are We Now? - Quarter Semester</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Where%20Are%20We%20Now%3F%20-%20Quarter%20Semester"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Where Are We Now? - Quarter Semester</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#s-o-l-i-d">1 S.O.L.I.D</a></div><div class="toc-h1"><a href="#tools-of-the-trade">2 Tools of the Trade</a></div></div><a id="solid"/><h1 id="s-o-l-i-d">1 S.O.L.I.D</h1><p>During the first week of class under <a class="doc" href="../../Public/theBeginning/index.html" target="CS330_Public">The Beginning</a> in the orientation module we briefly discussed <em>S.O.L.I.D</em>.</p>
+    <blockquote>
+  <p>My colleagues and I disagree on when this should be introduced. I believe <em>S.O.L.I.D</em> should be discussed now… at the very beginning of the semester. To do so, we will have to split the word:</p>
+    
+  <p>S.O.L.I.D = (S.O.) + (L.I.D.)</p>
+    
+</blockquote><p>I will forgo my <em>hilarious wordplay</em>.. this time.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: The Beginning... S.O.</div>
+<p>Why are we starting with <em>S.O.</em>? First… we have all the tools we need to understand it:</p>
+    
+<ul>
+  <li>S - Single Responsibility Principle</li>
+  <li>O - Open/Closed Principle</li>
+</ul>
+<p>Second… these emerge naturally out of how we write code. We want to write reusable functions and classes. We want to be able to extend those classes without modifying the underlying code. Think about:</p>
+    
+<div class="noFloat"> </div><div class="sidebar pct50">
+<p>Select the sub-list for the language with which you are most comfortable/familiar.</p>
+    
+</div>
+<ul>
+  <li><strong>C++</strong>
+    <ul>
+      <li><code>std::vector</code></li>
+      <li><code>std::list</code></li>
+      <li><code>std::unordered_map</code></li>
+      <li><code>std::iterator</code></li>
+    </ul>
+  </li>
+  <li><strong>Java</strong>
+    <ul>
+      <li><code>ArrayList</code></li>
+      <li><code>LinkedList</code></li>
+      <li><code>Vector</code></li>
+      <li><code>Iterator</code></li>
+    </ul>
+  </li>
+  <li><strong>Python</strong>
+    <ul>
+      <li><code>list</code></li>
+      <li><code>Iterator</code></li>
+      <li><code>Generator</code></li>
+    </ul>
+  </li>
+  <li><strong>Rust</strong>
+    <ul>
+      <li><code>std::vec::Vec</code></li>
+      <li><code>Iterator</code></li>
+    </ul>
+  </li>
+</ul>
+</blockquote><p>That leaves three (3) letters for us to discuss:</p>
+    <ul>
+  <li>L - Liskov Substitution</li>
+  <li>I - Interface Segregation</li>
+  <li>D - Dependency Inversion</li>
+</ul><p>Combining everything, we are left with</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Did you notice the line through the ‘L’ ? We need to discuss inheritance, virtual functions, and subtyping first. That is still one Design Module away…</p>
+    
+</div><ul>
+  <li>
+    <p><strong>S - Single Responsibility Principle</strong></p>
+    
+    <p>Every class, module, or interface has one responsibility (i.e., purpose).</p>
+    
+  </li>
+  <li>
+    <p><strong>O - Open/Closed Principle</strong></p>
+    
+    <p>It should be possible to extend a class, module, or function without modifying the original code.</p>
+    
+  </li>
+  <li>
+  <p><del>L - Liskov Substitution</del></p>
+    </li>
+  <li><strong>I - Interface Segregation</strong>
+    <p>Fight the urge to throw in the kitchen sink. Focus on creating problem specific interfaces, not monolithic kitchen-sink-interfaces. <em>This requires us to codify how to decompose a large problem (high-level design).</em></p>
+    
+  </li>
+  <li>
+    <p><strong>D - Dependency Inversion</strong></p>
+    
+    <p>Modules should not directly handle low-level calls and operations. Consider</p>
+    
+    <ul>
+      <li>the C <code>FILE*</code> vs the C++ <code>ofstream</code> and <code>ifstream</code></li>
+      <li>the Java <code>BufferedReader</code> vs <code>FileReader</code></li>
+      <li>the Java <code>Scanner</code></li>
+    </ul>
+  </li>
+</ul><p>Think back to the Review 03 Examples.</p>
+    <a id="toolsofthetrade"/><h1 id="tools-of-the-trade">2 Tools of the Trade</h1><p>At the start of the semester… I introduced the names of various tools. In my <a href="https://github.com/cstkennedy/cs330-examples">examples (Reviews 01 to 03)</a> I demonstrated a few of these tools. You were required (and in some cases all-but-required) to use a few of these tools on your own.</p>
+    <p>Let us take stock of our discussions and exercises thus far.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Category </th>
+      <th align="left">Tool </th>
+      <th align="center">Assignments </th>
+      <th align="center">Lecture </th>
+      <th align="center">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">General </td>
+      <td align="left">Linux </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">General </td>
+      <td align="left">SSH </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Editor </td>
+      <td align="left">Vim </td>
+      <td align="center">Hopefully </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Version Control </td>
+      <td align="left">Git </td>
+      <td align="center">Hopefully </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Methodology </td>
+      <td align="left">Unit Testing / TDD </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Diagram (UML Class Diagrams) </td>
+      <td align="left">PlantUML </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Diagram (UML Sequence Diagrams) </td>
+      <td align="left">SDEdit </td>
+      <td align="center"><em>Note Yet</em> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+  </tbody>
+</table><p>…and language specific tools…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Category </th>
+      <th align="left">Language </th>
+      <th align="left">Tool </th>
+      <th align="center">Assignments </th>
+      <th align="center">Lecture </th>
+      <th align="center">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Compiler </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>g++</code> </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>rustc</code> </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler/Interpreter </td>
+      <td align="left">Java </td>
+      <td align="left"><code>javac</code> and <code>java</code> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler/Interpreter </td>
+      <td align="left">Python </td>
+      <td align="left"><code>python3.11</code> </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">C++ </td>
+      <td align="left">Makefiles </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">Java </td>
+      <td align="left">Gradle </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">Rust </td>
+      <td align="left">Cargo </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Java </td>
+      <td align="left">Gradle </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Python </td>
+      <td align="left">Tox </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Rust </td>
+      <td align="left">Cargo </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">C++ </td>
+      <td align="left">Doxygen </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Java </td>
+      <td align="left">Javadoc </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Python </td>
+      <td align="left">Pydoc </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Rust </td>
+      <td align="left">Rustdoc </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">C++ </td>
+      <td align="left">CPPLint </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Java </td>
+      <td align="left">Checkstyle </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Python </td>
+      <td align="left">Pycodestyle / Pylint </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Python </td>
+      <td align="left">Ruff </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style (Type Hints) </td>
+      <td align="left">Python </td>
+      <td align="left">mypy </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+  </tbody>
+</table></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Where%20Are%20We%20Now%3F%20-%20Quarter%20Semester"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

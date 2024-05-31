@@ -1,0 +1,26 @@
+@startuml
+hide empty members
+
+class Dimension {
+
+}
+
+class Cost {
+
+}
+
+class Flooring {
+    type: str = None
+    unit_cost: Cost = 0
+}
+
+class Room {
+    name: str = ""
+    length: Dimension = 1
+    width: Dimension = 1
+    floor: Flooring
+
+    area()
+}
+
+@enduml

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Software Development Processes</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Software%20Development%20Processes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Software Development Processes</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Apr 23, 2016</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-waterfall-model">1 The Waterfall Model</a></div><div class="toc-h2"><a href="#requirements-analysis">1.1 Requirements analysis</a></div><div class="toc-h2"><a href="#design">1.2 Design</a></div><div class="toc-h2"><a href="#implementation-and-unit-testing">1.3 Implementation and unit testing</a></div><div class="toc-h2"><a href="#verification-and-validation">1.4 Verification and Validation</a></div><div class="toc-h2"><a href="#operation-and-maintenance">1.5 Operation and maintenance</a></div><div class="toc-h1"><a href="#iterative-incremental-development">2 Iterative/Incremental Development</a></div><div class="toc-h1"><a href="#general-oo-analysis-design">3 General OO Analysis &amp; Design</a></div><div class="toc-h2"><a href="#domain-models">3.1 Domain Models</a></div><div class="toc-h2"><a href="#analysis-models">3.2 Analysis Models</a></div><div class="toc-h2"><a href="#design-models">3.3 Design Models</a></div><div class="toc-h1"><a href="#the-unified-process-model">4 The Unified Process Model</a></div><div class="toc-h2"><a href="#inception">4.1 Inception</a></div><div class="toc-h2"><a href="#elaboration">4.2 Elaboration</a></div><div class="toc-h2"><a href="#construction">4.3 Construction</a></div><div class="toc-h2"><a href="#transition">4.4 Transition</a></div><div class="toc-h1"><a href="#the-unified-process-and-the-workflows">5 The Unified Process and the Workflows</a></div></div><hr/><p><strong>Software Process Models</strong></p>
+    <p>A <span class="firstterm">software development process</span> is a structured  series of activities that comprise the way in which an organization develops  software projects.</p>
+    <a id="thewaterfallmodel"/><h1 id="the-waterfall-model">1 The Waterfall Model</h1><hr/><p><strong>The Waterfall Model</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="waterfall0.png" style="float: right; max-width: 50%;"/> Perhaps the best-known and most widely used process model is the  <span class="firstterm">waterfall model</span>.</p>
+    <ul>
+  <li>
+  <p>Some of the names of the phases in this process model are the same as the names of some of our workflows.</p>
+    </li>
+  <li>
+  <p>You need to rely on context to know whether “Design” is referring to a workflow or to a phase of the development process.  </p>
+    </li>
+</ul><a id="requirementsanalysis"/><h2 id="requirements-analysis">1.1 Requirements analysis</h2><p>This phase establishes what the customer requires from a software  system. The primary product of this phase is a requirements  document.</p>
+    <p><strong>What is a requirement?</strong></p>
+    <p>May range from a high-level abstract statement of a service or of  a system constraint to a detailed mathematical functional  specification</p>
+    <ul>
+  <li>
+  <p>This is inevitable as requirements may serve a dual function</p>
+    </li>
+  <li>
+  <p>May be the basis for a bid for a contract - therefore  must be open to interpretation</p>
+    </li>
+  <li>
+  <p>May be the basis for the contract itself - therefore  must be defined in detail</p>
+    </li>
+  <li>
+  <p>Both these statements may be called requirements</p>
+    </li>
+</ul><hr/><hr/><blockquote>
+  <p><strong>Sample Reqts Specification</strong></p>
+    
+  <p>1.1 The user should be provided with facilities to define the  type of external files</p>
+    
+  <p>1.2 Each external file type may have an associated tool which  may be applied to the file.</p>
+    
+  <p>1.3 Each external file type may be represented as a  specification from the user’s display.</p>
+    
+  <p>1.4 Facilities should be provided for the icon representing an  external file type to be defined by the user.</p>
+    
+  <p>1.5 When the user selects an icon representing an external file,  the effect of that selection is to apply the tool associated with the  type of the external file to the file represented by the selected  icon.</p>
+    
+</blockquote><hr/><p><strong>The requirements document</strong></p>
+    <ul>
+  <li>
+  <p>The requirements document is the official statement of what is  required of the system developers</p>
+    </li>
+  <li>
+  <p>Specify external system behaviour</p>
+    </li>
+  <li>
+  <p>Specify implementation constraints</p>
+    </li>
+  <li>
+  <p>Serve as reference tool for maintenance</p>
+    </li>
+  <li>
+  <p>It is not a design document. As far as possible, it should  indicate WHAT the system should do rather than HOW it should do  it</p>
+    </li>
+</ul><h2 id="design">1.2 Design</h2><p>This phase seeks to derive a solution which satisfies the software  requirements. The primary product of this phase is design  documentation.</p>
+    <hr/><p><strong>Phases of design</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="designproc.png" style="max-width: 50%;"/></div>
+     Design can be broken down into three main phases</p>
+    <ul>
+  <li>
+    <p><span class="firstterm">architectural design</span>, the collection  of decisions that need to be common to all components.</p>
+    
+    <p>Examples of architectural design decisions would be</p>
+    
+    <ul>
+      <li>
+      <p>Will the system run on a single machine or be  distributed over multiple CPUs?</p>
+    </li>
+      <li>
+      <p>Will outputs be stored in a file or in a  database?</p>
+    </li>
+      <li>
+      <p>How will run-time errors be handled?</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p><span class="firstterm">high-level</span> design, dividing the  system into components, and</p>
+    </li>
+  <li>
+  <p><span class="firstterm">low-level</span> design (choosing the data  structures and algorithms for a single component).</p>
+    </li>
+</ul><a id="implementationandunittesting"/><h2 id="implementation-and-unit-testing">1.3 Implementation and unit testing</h2><p>Writing the code – probably the most familiar activity. </p>
+    <p>The primary product of this phase is code – both application and  test code.</p>
+    <a id="verificationandvalidation"/><h2 id="verification-and-validation">1.4 Verification and Validation</h2><p>Verification &amp; Validation: assuring that a software system  meets the users’ needs. The primary product of this phase is a test  report. </p>
+    <p>The principle objectives are:</p>
+    <ul>
+  <li>
+  <p>The discovery of defects in a system</p>
+    </li>
+  <li>
+  <p>The assessment of whether or not the system is usable in an  operational situation.</p>
+    </li>
+</ul><hr/><p><strong>V &amp; V</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="waterfall0.png" style="float: right; max-width: 50%;"/> Although the waterfall model shows this as a  separate phase near the end, we know that some forms of V&amp;V occur  much earlier. </p>
+    <ul>
+  <li>
+  <p>Requirements are validated in consultation with the  customers.</p>
+    </li>
+  <li>
+  <p>Unit testing occurs during Implementation, etc. </p>
+    </li>
+</ul><p>So this phase  of the waterfall model really describes system and acceptance  testing.</p>
+    <a id="operationandmaintenance"/><h2 id="operation-and-maintenance">1.5 Operation and maintenance</h2><p>As requirements evolve and bug reports come in from the field,  someone must</p>
+    <ul>
+  <li>
+  <p>prioritize changes</p>
+    </li>
+  <li>
+  <p>make the changes</p>
+    </li>
+  <li>
+  <p>validate the changes </p>
+    </li>
+  <li>
+  <p>new test cases</p>
+    </li>
+  <li>
+  <p>validate that change does not break previously working code</p>
+    </li>
+  <li>
+  <p>regression testing</p>
+    </li>
+</ul><a id="iterativeincrementaldevelopment"/><h1 id="iterative-incremental-development">2 Iterative/Incremental Development</h1><hr/><p><strong>Iterative Development</strong></p>
+    <p>Advantages:</p>
+    <ul>
+  <li>conducive to exploration of alternatives
+    <ul>
+      <li>
+      <p>e.g., throw-away prototyping</p>
+    </li>
+      <li>
+      <p>can lead to insight into poorly understood requirements (e.g., GUIs)  </p>
+    </li>
+    </ul>
+  </li>
+</ul><p>Disadvantages:</p>
+    <ul>
+  <li>
+  <p>poor process visibility (e.g., are we on schedule?),</p>
+    </li>
+  <li>
+  <p>continual small drifts from the key architecture leading to poorly structured systems.</p>
+    </li>
+</ul><a id="generalooanalysisdesign"/><h1 id="general-oo-analysis-design">3 General OO Analysis &amp; Design</h1><hr/><p><strong>General OO Analysis &amp; Design</strong></p>
+    <p>OOAD is largely viewed as a model-building activity. The  primary models that we find are</p>
+    <ul>
+  <li>
+  <p>domain model</p>
+    </li>
+  <li>
+  <p>analysis model</p>
+    </li>
+  <li>
+  <p>design model</p>
+    </li>
+</ul><p>and OOAD emphasizes a smooth evolution from one to the  other.</p>
+    <a id="domainmodels"/><h2 id="domain-models">3.1 Domain Models</h2><p><div class="noFloat"> </div>
+    <img src="domainModel.png" style="float: right; max-width: 50%;"/> A <span class="firstterm">domain model</span> is a model of the application domain as it currently exists, <span class="emph">before</span> we began our new development project. The point of the domain model is to be sure the development team understands the world that the system will work in.</p>
+    <ul>
+  <li>
+  <p>The domain model describes the world in terms of objects interacting with one another via messages.</p>
+    </li>
+  <li>
+  <p>Not every project needs a domain model (e.g., If the team has done  several projects already in this application domain)</p>
+    </li>
+</ul><a id="analysismodels"/><h2 id="analysis-models">3.2 Analysis Models</h2><p>An <span class="firstterm">analysis model</span> is a model of how the  world will interact with the software system that we envision. As such,  it is our statement of just <span class="emph">what</span> the system will do  when it is working.</p>
+    <p><div class="noFloat"> </div>
+    <img src="analysisModel1.png" style="float: right; max-width: 50%;"/> There is a real temptation to simply assume that the automated  system will simply squat in the middle of the world, interacting with  all the real world objects, sort of like this:</p>
+    <p>Or if you prefer,…</p>
+    <hr/><p><strong>It’s Magic!</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="analysisModel2.png" style="float: right; max-width: 50%;"/> Poof! We have an analysis model!</p>
+    <p>Not wrong, per se, but it’s certainly not helpful.</p>
+    <p>Such an approach is fundamentally at odds with the OO philosophy</p>
+    <ul>
+  <li>
+  <p>We should look to the real world to suggest how to decompose our system.</p>
+    </li>
+  <li>
+    <p>In this case, we have not decomposed it at all – just wrapped it up into a single black box.</p>
+    
+    <ul>
+      <li>All the hard decisions still need to be made.  </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Evolving the Analysis Model</strong></p>
+    <p>What we really hope for is an <span class="emph">evolution</span> from our domain model to our analysis model. The OO philosophy tells us that the classes and interactions of our domain model … </p>
+    <p><div class="noFloat"> </div>
+    <img src="domainModel.png" style="float: left; max-width:  50%;"/>  … should carry over into our analysis. </p>
+    <hr/><p><strong>The Boundary</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="analysisBorders.png" style="float: right; max-width: 50%;"/>  … establish a boundary that tells us which of these classes and behaviors will</p>
+    <ul>
+  <li>
+  <p>be automated</p>
+    </li>
+  <li>
+  <p>remain external</p>
+    </li>
+  <li>
+  <p>be a mixture of the two</p>
+    </li>
+</ul><p>The system, then, remains a collection of interacting objects  rather than an unstructured black box.</p>
+    <a id="designmodels"/><h2 id="design-models">3.3 Design Models</h2><p><span class="firstterm">Design</span> is concerned with  <span class="emph">how</span> we can get the system to do the things the  analysis model says it should do. </p>
+    <p>Designs are expressed via a <span class="firstterm">design model</span>, </p>
+    <hr/><p><strong>Design Model: Agents</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="analysisBorders.png" style="float: right; max-width: 50%;"/> A common step in OOD is to separate the classes  that, in the analysis model, are partially implemented and partially  external, into an purely external class representing the original,  real-world objects, and an <span class="firstterm">agent</span> class that  implements the automatable functions that will now be performed by the  new system.</p>
+    <hr/><p><strong>Design Model: Agents (2)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="designBorders.png" style="float: right; max-width: 50%;"/> Here we have created an agent for AccountHolders</p>
+    <hr/><p><strong>Design Model: Interfaces</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="designBorders.png" style="float: left; max-width: 50%;"/> Then we can look closely at the lines  (interactions) that cross the border from the outside world into the  automated system. </p>
+    <p>What do we call an interaction between an external  entity and an internal automated entity? </p>
+    <hr/><p><strong>Design Model: Interfaces</strong></p>
+    <p>That’s the definition of an “<span class="firstterm">interface</span>”, and so</p>
+    <ul>
+  <li>each of those  crossing points is a portion of the user interface (or an interface with  other automated systems).</li>
+</ul><hr/><p><strong>MVC</strong></p>
+    <p>A common organizing principle for such interfaces is to distinguish between </p>
+    <ul>
+  <li>
+  <p><span class="firstterm">viewers</span> that portray the contents of automated classes and</p>
+    </li>
+  <li>
+  <p><span class="firstterm">controllers</span> that accept external signals (e.g., mouse clicks, keyboard data) and  interpret those signals as instructions to automated classes and to  viewers. </p>
+    </li>
+  <li>
+  <p>Such viewers and controllers should be implemented as separate  classes from the <span class="firstterm">model</span> classes that were derived  from the analysis model. </p>
+    </li>
+</ul><hr/><p><strong>MVC Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="guiDesignBorders.png" style="float: right; max-width: 50%;"/> We then wind up with classes specifically devoted to managing the interface between the internal and external worlds.</p>
+    <ul>
+  <li>This is the Model-View-Controller pattern:</li>
+</ul><hr/><p><strong>Model-View-Controller</strong></p>
+    <p>The MVC pattern establishes specific requirements so that GUI changes have minmal impact on the rest of the system.</p>
+    <ul>
+  <li>
+  <p>The model classes must not depend on (make use of the interface of) the view and controlelr classes.</p>
+    </li>
+  <li>
+  <p>The view classes must not depend on the controller classes</p>
+    </li>
+</ul><a id="theunifiedprocessmodel"/><h1 id="the-unified-process-model">4 The Unified Process Model</h1><p>For larger projects, we may want something a bit more formal than the general OOA&amp;D process.</p>
+    <p>The <span class="firstterm">Unified Process</span> was developed by Jacobsen, Booch, and Rumbaugh, who were already some of the biggest names in OOA&amp;D before they decided to collaborate on a unified version of their previously distinctive approaches.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="process1.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Unified Model Phases</strong></p>
+    <ul>
+  <li>
+  <p>Inception: initial concept</p>
+    </li>
+  <li>
+  <p>Elaboration: exploring requirements</p>
+    </li>
+  <li>
+  <p>Construction: building the software</p>
+    </li>
+  <li>
+  <p>Transition: final packaging</p>
+    </li>
+</ul><h2 id="inception">4.1 Inception</h2><ul>
+  <li>
+  <p>Pitching the project concept</p>
+    </li>
+  <li>
+  <p>Usually informal, low details. </p>
+    </li>
+  <li>
+  <p>“Perhaps we should build a … ”</p>
+    </li>
+</ul><h2 id="elaboration">4.2 Elaboration</h2><ul>
+  <li>
+  <p>Adding detail to our understanding of what the system should  do.</p>
+    </li>
+  <li>
+    <p>Produces </p>
+    
+    <ul>
+      <li>
+      <p>Domain model</p>
+    </li>
+      <li>
+      <p>Analysis model</p>
+    </li>
+      <li>
+      <p>Requirements document</p>
+    </li>
+      <li>
+      <p>Release plan</p>
+    </li>
+    </ul>
+  </li>
+</ul><p>Among these products, only the release plan is new.</p>
+    <a id="elaborationreleases"/><h3 id="elaboration-releases">4.2.1 Elaboration: Releases</h3><p>In point of fact, each of the process phases may be divided into  increments:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="process2.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>Such increments are most common in the elaboration and  construction phases.</p>
+    <p>Each increment produces a <span class="firstterm">release</span> - some  kind of product whose existence and/or acceptance by management shows  that we are ready to move on.</p>
+    <p>A <span class="firstterm">release</span> represents the implementation of  some part of the required functionality.</p>
+    <a id="elaborationreleaseplans"/><h3 id="elaboration-release-plans">4.2.2 Elaboration: Release Plans</h3><p>The <span class="firstterm">release plan</span> records decisions  about </p>
+    <ul>
+  <li>
+  <p>How many releases there will be</p>
+    </li>
+  <li>
+  <p>What functionality will be added with each  release</p>
+    </li>
+  <li>
+  <p>When the releases will be made</p>
+    </li>
+  <li>
+  <p>Which releases are internal (i.e., only the development  team sees them) and which are external</p>
+    </li>
+</ul><h2 id="construction">4.3 Construction</h2><p>Perhaps the most familiar of the phases. This merges the waterfall  activities of Design and Implementation.</p>
+    <ul>
+  <li>
+  <p>Each construction increment adds new functionality</p>
+    </li>
+  <li>
+  <p>Documentation is constructed in addition to source code</p>
+    </li>
+  <li>
+  <p>Each increment must be separately tested</p>
+    </li>
+  <li>
+  <p>Each increment must be integrated and tested</p>
+    </li>
+</ul><h2 id="transition">4.4 Transition</h2><p>Activities that can’t be done incrementally during construction,  e.g.,</p>
+    <ul>
+  <li>
+  <p>performance tuning</p>
+    </li>
+  <li>
+  <p>user training</p>
+    </li>
+</ul><a id="theunifiedprocessandtheworkflows"/><h1 id="the-unified-process-and-the-workflows">5 The Unified Process and the Workflows</h1><p>It should be noted again that the software development process model  provides overall strategic guidance. The day-to-day “tactical” activity is  still described by our four workflows.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="spiralsUnified.png" style="max-width: 50%;"/></div>
+    </p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Software%20Development%20Processes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

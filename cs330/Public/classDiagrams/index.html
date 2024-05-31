@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>UML Class Relationship Diagrams</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20UML%20Class%20Relationship%20Diagrams"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">UML Class Relationship Diagrams</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: May 16, 2024</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#uml-notation">1 UML Notation</a></div><div class="toc-h2"><a href="#uml-diagrams">1.1 UML Diagrams</a></div><div class="toc-h2"><a href="#diagramming-in-context">1.2 Diagramming in Context</a></div><div class="toc-h1"><a href="#class-diagrams">2 Class Diagrams</a></div><div class="toc-h2"><a href="#perspectives">2.1 Perspectives</a></div><div class="toc-h1"><a href="#a-class-in-isolation">3 A Class… in Isolation</a></div><div class="toc-h2"><a href="#even-an-empty-section-has-meaning">3.1 Even an Empty Section has Meaning</a></div><div class="toc-h2"><a href="#attributes">3.2 Attributes</a></div><div class="toc-h2"><a href="#operations">3.3 Operations</a></div><div class="toc-h1"><a href="#generalization-relationships">4 Generalization Relationships</a></div><div class="toc-h2"><a href="#diagramming-generalization">4.1 Diagramming Generalization</a></div><div class="toc-h2"><a href="#multiple-specializations">4.2 Multiple Specializations</a></div><div class="toc-h1"><a href="#associations">5 Associations</a></div><div class="toc-h2"><a href="#diagramming-associations">5.1 Diagramming Associations</a></div><div class="toc-h2"><a href="#decorations">5.2 Decorations</a></div><div class="toc-h2"><a href="#naming-your-relationships">5.3 Naming Your Relationships</a></div><div class="toc-h2"><a href="#relationship-names">5.4 Relationship Names</a></div><div class="toc-h2"><a href="#roles">5.5 Roles</a></div><div class="toc-h2"><a href="#roles-and-attributes">5.6 Roles and Attributes</a></div><div class="toc-h2"><a href="#roles-versus-attributes">5.7 Roles versus Attributes</a></div><div class="toc-h2"><a href="#unnamed-associations-are-useless">5.8 Unnamed Associations are Useless</a></div><div class="toc-h2"><a href="#multiplicity">5.9 Multiplicity</a></div><div class="toc-h2"><a href="#navigability">5.10 Navigability</a></div><div class="toc-h1"><a href="#specialized-associations">6 Specialized Associations</a></div><div class="toc-h2"><a href="#aggregation">6.1 Aggregation</a></div><div class="toc-h2"><a href="#composition">6.2 Composition</a></div><div class="toc-h2"><a href="#qualification">6.3 Qualification</a></div><div class="toc-h2"><a href="#dependency">6.4 Dependency</a></div><div class="toc-h1"><a href="#other-class-diagram-elements">7 Other Class Diagram Elements</a></div><div class="toc-h2"><a href="#parameterized-classes">7.1 Parameterized Classes</a></div><div class="toc-h2"><a href="#constraints">7.2 Constraints</a></div><div class="toc-h2"><a href="#stereotypes">7.3 Stereotypes</a></div><div class="toc-h2"><a href="#satisfies-realizes">7.4 Satisfies / Realizes</a></div><div class="toc-h1"><a href="#drawing-uml-class-diagrams">8 Drawing UML Class Diagrams</a></div><div class="toc-h2"><a href="#exporting-the-final-product">8.1 Exporting the Final Product</a></div></div><a id="umlnotation"/><h1 id="uml-notation">1 UML Notation</h1><p>Next we turn to more formal documentation that you can expect to show outside your team and probably to retain for the lifetime of the project.</p>
+    <p>We will employ UML notation for this.</p>
+    <p>UML notation has quickly become an industry standard -with applications outside of “traditional” software engineering (e.g., Databases)</p>
+    <a id="umldiagrams"/><h2 id="uml-diagrams">1.1 UML Diagrams</h2><p>UML provides a number of different diagrams</p>
+    <ul>
+  <li>
+  <p>
+  <span class="emph">use case diagrams</span></p>
+    </li>
+  <li>
+  <span class="emph">class diagrams</span></li>
+  <li>
+    <p>interaction diagrams</p>
+    
+    <ul>
+      <li>
+      <span class="emph">sequence diagrams</span></li>
+      <li>
+      <span class="emph">collaboration diagrams</span></li>
+    </ul>
+  </li>
+  <li>
+  <p>package diagrams</p>
+    </li>
+  <li>
+  <p>state diagrams</p>
+    </li>
+  <li>
+  <p>activity diagrams</p>
+    </li>
+  <li>
+  <p>deployment diagrams</p>
+    </li>
+</ul><p>We’ll look eventually at the ones shown in <span class="emph">italics</span>, starting with class diagrams.</p>
+    <a id="diagrammingincontext"/><h2 id="diagramming-in-context">1.2 Diagramming in Context</h2><p>The diagrams are part of an overall documentation strategy</p>
+    <p>We don’t draw diagrams to stand by themselves. </p>
+    <ul>
+  <li>
+  <p>Instead, like the diagrams that appear in, say, your textbook, each one is intended as part of a larger document, much of which will be explanatory text.</p>
+    </li>
+  <li>
+    <p>Furthermore, we draw diagrams for the same reasons we write sentences and paragraphs, to <span class="emph">communicate</span> some specific idea.</p>
+    
+    <ul>
+      <li>
+      <p>If a diagram is too complicated to be understood, it’s no more use  than a sentence that is too complicated to be understood.</p>
+    </li>
+      <li>
+      <p>If a diagram is too vague to convey any definite meaning, it has no  more value than an equally vague sentence.</p>
+    </li>
+    </ul>
+  </li>
+</ul><p>The success or failure of a diagram lies entirely in its ability to communicate what the author intended.</p>
+    <p>The diagrams are actually the representation of a formal “language” and are expected to make statements that are meaningful according to the rules of that language.</p>
+    <a id="classdiagrams"/><h1 id="class-diagrams">2 Class Diagrams</h1><p>A class diagram describes the <span class="emph">types</span> of objects in the system and selected static <span class="emph">relationships</span> among them.</p>
+    <p>The relationships can be…</p>
+    <ul>
+  <li>
+  <p>generalization (e.g., a Librarian is a specialized kind of Library Staff)</p>
+    </li>
+  <li>
+  <p>association (e.g., a Patron may have up to 20 Publications checked out at one time)</p>
+    </li>
+</ul><h2 id="perspectives">2.1 Perspectives</h2><p>A diagram can be interpreted from various perspectives:</p>
+    <ul>
+  <li>
+  <p><span class="firstterm">Conceptual</span>: represents the concepts in the domain</p>
+    </li>
+  <li>
+  <p>at most loosely related to the software classes that will implement them</p>
+    </li>
+  <li>
+  <p><span class="firstterm">Specification</span>: focus is on the interfaces of ADTs in the  software</p>
+    </li>
+  <li>
+  <p><span class="firstterm">Implementation</span>: describes how classes will implement their  interfaces</p>
+    </li>
+</ul><p>The perspective affects the amount of detail to be supplied and the kinds of relationships worth presenting. The choice of perspective depends on how far along you are in the development process.</p>
+    <ul>
+  <li>
+  <p>During the formulation of a domain model, for example, you would seldom move past the conceptual perspective.</p>
+    </li>
+  <li>
+  <p>Analysis models will typically feature a mix of conceptual and specification perspectives.</p>
+    </li>
+  <li>
+  <p>Design model development will typically start with heavy emphasis on the specification perspective, and evolve into the implementation perspective.</p>
+    </li>
+</ul><p>The choice of perspective also depends on the context of the document in which it appears. We don’t create diagrams just for the sake of creating diagrams. We create them to communicate with someone. Diagrams are a part of an overall documentation process.</p>
+    <p>If you think about the diagrams that appear, for example, in one of your textbooks, you don’t see page after page of diagrams without supporting text. Instead, the diagrams are presented along with explanatory text, as a way of clarifying and emphasizing points being made in the overall narrative flow of the document. Good diagrams can reduce the amount of wordy and often technically stilted text that would otherwise be required.</p>
+    <p>The same is true when documenting a model.</p>
+    <ul>
+  <li>
+  <p>If you are trying to explain a concept in your model, an accompanying diagram should be at the conceptual level.</p>
+    </li>
+  <li>
+  <p>If you are trying to explain the details of how objects interact, the specification perspective may be more appropriate. </p>
+    </li>
+  <li>
+  <p>If you are trying to explain an unexpected feature of how you have implemented or plan to implement a feature, you are probably going to portray things from an implementation perspective.</p>
+    </li>
+</ul><p>Even late in the development of the design model, you may find it necessary to switch back and forth from one perspective to another in order to be an effective communicator.</p>
+    <a id="aclassinisolation"/><h1 id="a-class-in-isolation">3 A Class… in Isolation</h1><p>A class can be diagrammed as…</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="umlClass.png" style="max-width: 60%;"/></div>
+    </p>
+    <p>You would use the simpler form in a conceptual perspective, or if the attributes and operations of the class were not relevant to the point of your diagram in specification or implementation perspectives.</p>
+    <a id="evenanemptysectionhasmeaning"/><h2 id="even-an-empty-section-has-meaning">3.1 Even an Empty Section has Meaning</h2><p>Note that these are <span class="emph">not</span> equivalent:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="umlClass2.png" style="max-width: 60%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p>The left diagram says that we aren’t discussing the attributes and operations.</p>
+    </li>
+  <li>
+  <p>The right diagram says that this class has no relevant attributes and operations.</p>
+    </li>
+</ul><h2 id="attributes">3.2 Attributes</h2><p>Attributes are given as…</p>
+    <pre><code>visibility name: type = defaultValue
+</code></pre><p>Only the name is required. The others may be added when relevant:</p>
+    <ul>
+  <li>
+  <p>visibility: + (public), # (protected), or - (private)</p>
+    </li>
+  <li>
+  <p>Only for implementation perspective.</p>
+    </li>
+</ul><p>When you are only talking about concepts or interface specifications, the idea of a “private” anything is irrelevant.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="attributes.png" style="max-width: 80%;"/></div>
+    </p>
+    <p>Attributes are usually single values.</p>
+    <ul>
+  <li>Ones that take multiple values (lists, etc.) are generally represented  using associations.</li>
+</ul><h2 id="operations">3.3 Operations</h2><p>Operations are given as…</p>
+    <pre><code>visibility name (parameterlist) : return-type
+</code></pre><p>Again, the amount of detail depends on the perspective (and on how much has actually been decided)</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="attributes.png" style="max-width: 80%;"/></div>
+    </p>
+    <a id="generalizationrelationships"/><h1 id="generalization-relationships">4 Generalization Relationships</h1><p>A class (the “<span class="firstterm">subtype</span>”) is considered to be a <span class="firstterm">specialized</span> form of another class (the “supertype”) or, alternatively, the supertype is a <span class="firstterm">generalization</span> of the subtype if</p>
+    <ul>
+  <li>
+  <p>conceptual: all instances of the subtype are also instances of the supertype</p>
+    </li>
+  <li>
+  <p>specification: the interface of the subtype contains all elements of the interface of the supertype</p>
+    </li>
+  <li>
+  <p>The subtype’s interface is said to <span class="firstterm">conform</span> to the interface of the supertype</p>
+    </li>
+  <li>
+  <p>implementation: the subtype inherits all attributes and operations of the supertype</p>
+    </li>
+</ul><a id="diagramminggeneralization"/><h2 id="diagramming-generalization">4.1 Diagramming Generalization</h2><p>The UML symbol for this relationship is an arrow with an unfilled, triangular head.</p>
+    <p><div class="noFloat"> </div>
+    <img src="valueGeneral.png" style="float: right; max-width:  50%;"/></p>
+    <p>Read this arrow as “is a specialization of”, “is a kind of”, or “is a”. (The latter can be a bit ambiguous however, as we might also say that Webster’s Dictionary “is a” Book, but that’s not a generalization relationship.</p>
+    <p>We infer from the relationship that books and magazines have titles and dates of publication and that we can get their content. However, not all publications have ISBNs.</p>
+    <a id="multiplespecializations"/><h2 id="multiple-specializations">4.2 Multiple Specializations</h2><p><div class="noFloat"> </div>
+    <img src="valueGeneral2.png" style="float: right; max-width:  50%;"/></p>
+    <p>Some classes may participate in multiple generalization relationships. The arrows are grouped together to indicate related, mutually exclusive, divisions:</p>
+    <h1 id="associations">5 Associations</h1><ul>
+  <li>
+    <p>An <span class="firstterm">association</span> is any kind of relationship between instances of classes.</p>
+    
+    <ul>
+      <li>
+      <p>Generalization is not an association because it is a relation between the  classes themselves, not between their instances (objects).</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>In a conceptual perspective, associations represent general relationships. In a specification perspective, associations often denote responsibilities.</p>
+    </li>
+</ul><a id="diagrammingassociations"/><h2 id="diagramming-associations">5.1 Diagramming Associations</h2><p><div class="noFloat"> </div>
+    <img src="ssAssoc1.png" style="float: right; max-width: 50%;"/></p>
+    <p>Associations are shown as lines connecting classes.</p>
+    <ul>
+  <li>
+  <p><strong>Plain associations like these are not particularly useful.</strong></p>
+    </li>
+  <li>
+    <p>This one tells us, for example, that some spreadsheets have <span class="emph">some kind</span> of relationship with <span class="emph">some</span> cells. </p>
+    
+    <ul>
+      <li>
+      <p>Only in very rare circumstances would that be a useful insight into the  author’s understanding of the spreadsheet world.</p>
+    </li>
+    </ul>
+  </li>
+</ul><h2 id="decorations">5.2 Decorations</h2><p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width: 50%;"/></p>
+    <p>We make the associations meaningful by attaching various decorations.</p>
+    <a id="namingyourrelationships"/><h2 id="naming-your-relationships">5.3 Naming Your Relationships</h2><a id="relationshipnames"/><h2 id="relationship-names">5.4 Relationship Names</h2><p>Most important of these are the decorations that name the relationship being shown.</p>
+    <p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width: 50%;"/> </p>
+    <ul>
+  <li>
+  <p><span class="firstterm">Names</span>: Names of relationships are written in the middle of the association line.</p>
+    </li>
+  <li>
+    <p>Good relation names make sense when you read them out loud:</p>
+    
+    <ul>
+      <li>“Every spreadsheet contains some number of cells”,</li>
+      <li>“an expression evaluates to a value”</li>
+    </ul>
+  </li>
+  <li>
+  <p>They often have a small arrowhead to show the direction in which direction to read the relationship, e.g., expressions evaluate to values, but values do not evaluate to expressions.</p>
+    </li>
+</ul><h2 id="roles">5.5 Roles</h2><p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width: 50%;"/></p>
+    <ul>
+  <li>
+  <p><span class="firstterm">Roles</span>: a role is a directional purpose of an association.</p>
+    </li>
+  <li>
+    <p>Roles are written at the ends of an association line and describe the purpose played by that class in the relationship.</p>
+    
+    <ul>
+      <li>
+      <p>E.g., A cell is related to an expression. The nature of the relationship  is that the expression is the formula of the cell.</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="rolesandattributes"/><h2 id="roles-and-attributes">5.6 Roles and Attributes</h2><p><div class="noFloat"> </div>
+    <img src="ssRoleAttr.png" style="float: right; max-width: 50%;"/> </p>
+    <p>In a specification or implementation perspective, roles often correspond to attribute names. These two representations are, in a sense, equivalent.</p>
+    <p>If we have conventions for naming attribute retrieval functions (e.g., get/set), we can infer those from the role name.</p>
+    <a id="rolesversusattributes"/><h2 id="roles-versus-attributes">5.7 Roles versus Attributes</h2><p>When should you use attributes within a class and when should you use associations with role names?</p>
+    <ul>
+  <li>
+  <p>Use associations when the relationship is not one-to-one.</p>
+    </li>
+  <li>
+  <p>Use associations when you want to target the attribute’s class for other associations (e.g., the “evaluates to” association in the earlier diagram.</p>
+    </li>
+</ul><a id="unnamedassociationsareuseless"/><h2 id="unnamed-associations-are-useless">5.8 Unnamed Associations are Useless</h2><p>As a rule, I would argue that <strong>every</strong> association should have either a name or roles <em>(or be replaced by one of the <strong>specialized associations</strong> described later).</em></p>
+    <p><strong>Not everyone agrees.</strong></p>
+    <p>Some authors suggest that, if neither is given explicitly, then the association should be considered to have roles named for the classes. </p>
+    <p>In other words, this…</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssAssoc1.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>would default to…</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssDefaultRoles.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>Neither of these is an attractive choice, but, in practice, there are generally better options.</p>
+    <h2 id="multiplicity">5.9 Multiplicity</h2><p><span class="firstterm">Multiplicity</span> indicates how  many instances of a class participate in the relationship.</p>
+    <p>Multiplicity is encoded as:</p>
+    <ul>
+  <li>
+  <p><code>k</code>: Exactly k instances (where k is an integer or a known constant)</p>
+    </li>
+  <li>
+  <p><code>k..m</code>: Some value in the range from k to m (inclusive)</p>
+    </li>
+  <li>
+  <p><code>*</code>: Denotes the range 0..infinity. Can also be used on the upper end of a “..”, e.g., 1..* means “at least one”.</p>
+    </li>
+</ul><a id="diagrammingmultiplicity"/><h3 id="diagramming-multiplicity">5.9.1 Diagramming Multiplicity</h3><p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width: 50%;"/></p>
+    <p>This diagram above indicates that </p>
+    <ul>
+  <li>
+  <p>each spreadsheet contains any number of cells, but that</p>
+    </li>
+  <li>
+  <p>a cell is contained within exactly one spreadsheet. </p>
+    </li>
+  <li>
+  <p>Each cell contains exactly one expression and one value, and these values and expressions are not shared with other cells.</p>
+    </li>
+</ul><h2 id="navigability">5.10 Navigability</h2><p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width:  50%;"/></p>
+    <p><span class="firstterm">Navigability</span> arrows indicate whether, given one instance participating in a relationship, it is possible to determine the instances of the other class that are related to it.</p>
+    <p>The diagram above suggests that, </p>
+    <ul>
+  <li>
+    <p>given a spreadsheet, we can locate all of the cells that it contains, but that</p>
+    
+    <ul>
+      <li>
+      <p>we cannot determine from a cell in what spreadsheet it is contained.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Given a cell, we can obtain the related expression and value, but </p>
+    
+    <ul>
+      <li>
+      <p>given a value (or expression) we cannot find the cell of which those are  attributes.</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="navigabilityandrolenames"/><h3 id="navigability-and-role-names">5.10.1 Navigability and Role Names</h3><p>There’s a relationship between navigability and role names. </p>
+    <p><div class="noFloat"> </div>
+    <img src="ssAssoc2.png" style="float: right; max-width: 50%;"/></p>
+    <p>In perspectives and relationships where the role names are attribute names, we would not have a role name for an un-navigable direction of an association. </p>
+    <p>Hence, we have no role name naming the cell related to a value or expression.</p>
+    <a id="navigabilityandperspectives"/><h3 id="navigability-and-perspectives">5.10.2 Navigability and Perspectives</h3><p>Navigability is probably not useful in a conceptual diagram.</p>
+    <p>In a specification/implementation diagram, if no arrows are shown on an association, navigability defaults to two-way. </p>
+    <p>For example, in a specification perspective, this</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssAssoc1.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>defaults to</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssDefaultNav.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>In an implementation perspective, this would imply pointers in each object going to the related objects.</p>
+    <a id="specializedassociations"/><h1 id="specialized-associations">6 Specialized Associations</h1><p>Certain kinds of associations occur so frequently that they are given special symbols that replace names and (often) role labels.</p>
+    <h2 id="aggregation">6.1 Aggregation</h2><p>Denoted by an arrowhead drawn as an unfilled diamond, <span class="firstterm">aggregation</span> can be read as “is part of” or, in the opposite direction as “has a”.</p>
+    <p><div class="noFloat"> </div>
+    <img src="ssAggregation.png" style="float: right; max-width:  50%;"/> This diagram suggests that cells are part of a  spreadsheet and that an expression and a value are each part of a  cell.</p>
+    <hr/><p><strong>Aggregation Details</strong></p>
+    <ul>
+  <li>
+  <p>The multiplicity at the arrowhead defaults to “1”.</p>
+    </li>
+  <li>
+  <p>Aggregation is almost never named and roles are only used if the  attribute name would be unexpected.</p>
+    </li>
+  <li>
+    <p>There is a lot of variation in deciding when to use use aggregation. </p>
+    
+    <ul>
+      <li>For  example, experts might disagree on whether a Library can be represented  as an aggregate of its Librarians and of its Patrons.</li>
+      <li>I recommend  reading your suggested aggregations, out loud, as “is part of” and  asking yourself whether they make sense.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Should This Be Aggregation?</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="checkedOut1.png" style="float: right; max-width: 25%;"/>  For example, this diagram tries to circumvent our  rule that attributes are single-valued by having a “single” set as an  attribute. </p>
+    <ul>
+  <li>
+  <p>That would be OK in an implementation perspective (i.e., in a  design model),</p>
+    </li>
+  <li>
+    <p>but not in an earlier model/perspective where it  prematurely suggests a data structure.</p>
+    
+    <ul>
+      <li>Though if a more neutral “seq. of” or “coll. of” were used, it  might be OK.</li>
+    </ul>
+  </li>
+</ul><p/>
+    <hr/><p><strong>Example: Should This Be Aggregation? (2)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="checkedOut2.png" style="float: right; max-width: 30%;"/></p>
+    <ul>
+  <li>
+  <p>This alternative would also be OK in a design  model.</p>
+    </li>
+  <li>
+    <p>But it’s terrible in a conceptual perspective and uncomfortable  in a specification perspective.</p>
+    
+    <ul>
+      <li>
+      <p>If I read this as “books can be part of  a patron”, I get a mental picture of books being surgically implanted  into people. I would not accept that in a domain or analysis  model.  </p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Should This Be Aggregation? (3)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="checkedOut3.png" style="float: right; max-width: 30%;"/> This one is no better in the earlier perspectives.</p>
+    <ul>
+  <li>If “a patron can be part of a book”, does that mean that I will find  flat little people pressed between the pages?
+    <ul>
+      <li>
+      <p>I’m starting to feel like I will never visit a library again.</p>
+    </li>
+    </ul>
+  </li>
+</ul><p/>
+    <hr/><p><strong>Example: Should This Be Aggregation? (4)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="checkedOut4.png" style="float: right; max-width: 30%;"/> So, for conceptual or specification perspectives,  I’d avoid aggregation in this case and fall back to a general  association. </p>
+    <ul>
+  <li>(This also captures the bi-directional navigability with a  bit more elegance as well.)  </li>
+</ul><h2 id="composition">6.2 Composition</h2><p>Composition is stronger form of aggregation. It implies that the  “lifetime” of the parts is bound to the lifetime of the whole.</p>
+    <ul>
+  <li>
+  <p>The usual test to see if composition applies is to ask, “if I  delete/destroy the container, do the parts go away as well?”</p>
+    </li>
+  <li>
+  <p>Composition is denoted by an arrowhead drawn as a filled-in  diamond.</p>
+    </li>
+</ul><hr/><p><strong>Composition Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="ssComposition.png" style="float: right; max-width:  50%;"/> This diagram suggests that destroying a cell would  also destroy its value and formula. That makes sense if the cell does  not share those components with other objects.</p>
+    <p>However, destroying a spreadsheet does not necessarily destroy its  cells.</p>
+    <ul>
+  <li>(We can infer that because, if the cells have been cut or copied  to the clipboard, the spreadsheet could be destroyed and yet the cells  would remain available for pasting into some other spreadsheet.)</li>
+</ul><h2 id="qualification">6.3 Qualification</h2><p>A qualified association describes a situation in which one class  is related to multiple instances of another, but the collection of  related instances is “indexed” by a third class.</p>
+    <p><div class="noFloat"> </div>
+    <img src="ssQual.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>This diagram indicates that a spreadsheet provides  access to cells retrieved by cell name. It suggests an eventual  implementation by something along the lines of a map or table.  </li>
+</ul><h2 id="dependency">6.4 Dependency</h2><p>A class A <span class="firstterm">depends</span> on another class B if a  change to the interface of B might require alteration of A.</p>
+    <ul>
+  <li>
+  <p>A dependency is indicated by a dashed line ending at a  navigability arrow head.</p>
+    </li>
+  <li>
+  <p>Dependencies have little use outside of an  implementation perspective. </p>
+    </li>
+</ul><hr/><p><strong>Dependency Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="mvc.png" style="float: right; max-width:  50%;"/> This diagram shows a system that has been decomposed into three  major subsystems. </p>
+    <ul>
+  <li>
+  <p>The Model is the core data – the stuff that this  program is really all about.</p>
+    </li>
+  <li>
+  <p>The View is the portion of the code  responsible for printing or drawing portrayals of the model data - for  example, code to render graphics on a screen as part of a GUI. </p>
+    </li>
+  <li>
+  <p>The  Controller is the portion of the code responsible for accepting  interactive inputs (mouse clicks, key presses, etc) and responding to  them.  </p>
+    </li>
+</ul><hr/><p><strong>MVC</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="mvc.png" style="float: left; max-width:  50%;"/> The dependencies shown here are the defining characteristic of the  MVC approach to user interface design:</p>
+    <ul>
+  <li>the controller depends upon, and  therefore can make calls upon, the model
+    <ul>
+      <li>(e.g., if someone enters a new  data value via a GUI) and upon the view (e.g., someone clicks on a  scroll bar or zoom button to alter the view without actually affecting  the data).  </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>MVC</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="mvc.png" style="float: left; max-width:  50%;"/> The dependencies shown here are the defining characteristic of the  MVC approach to user interface design:</p>
+    <ul>
+  <li>
+  <p>the controller depends upon, and  therefore can make calls upon, the model</p>
+    </li>
+  <li>
+  <p>Neither the view nor the model depend on the controller.</p>
+    </li>
+  <li>
+    <p>The view depends on the model</p>
+    
+    <ul>
+      <li>you can’t draw something without being able  to look at it.</li>
+    </ul>
+  </li>
+  <li>
+  <p>But the model does not depend on the view.  </p>
+    </li>
+</ul><hr/><p><strong>Why MVC?</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="mvc.png" style="float: right; max-width:  50%;"/> The advantage  of this interface design is that we can radically change the user  interface without altering the core computations (the model).</p>
+    <a id="otherclassdiagramelements"/><h1 id="other-class-diagram-elements">7 Other Class Diagram Elements</h1><p>We won’t use these as often, but you should be able to recognize them.</p>
+    <a id="parameterizedclasses"/><h2 id="parameterized-classes">7.1 Parameterized Classes</h2><p><div class="noFloat"> </div>
+    <img src="paramClass.png" style="float: right; max-width: 40%;"/></p>
+    <p>Used to represent templates and similar concepts.</p>
+    <h2 id="constraints">7.2 Constraints</h2><p><div class="noFloat"> </div>
+    <img src="constraint.png" style="float: right; max-width: 50%;"/></p>
+    <p>Constraints can be added almost any place by writing them within brackets.</p>
+    <h2 id="stereotypes">7.3 Stereotypes</h2><p>Stereotypes are an extension mechanism built in to UML. Written within <code>&lt;&lt;</code>…<code>&gt;&gt;</code>, these are labels used to indicate that you are deviating slightly from the standard interpretation of a UML construct.</p>
+    <p><div class="noFloat"> </div>
+    <img src="stereotype.png" style="float: right; max-width: 30%;"/></p>
+    <p>For example, an <span class="firstterm">interface</span> is a collection of related operations.</p>
+    <ul>
+  <li>It is not a full-fledged class.</li>
+  <li>We represent it, however, as a variation on the normal idea of a class.</li>
+</ul><a id="satisfiesrealizes"/><h2 id="satisfies-realizes">7.4 Satisfies / Realizes</h2><p><div class="noFloat"> </div>
+    <img src="satisfies.png" style="float: right; max-width: 50%;"/></p>
+    <p>Another specialized association, this is actually  a combination of dependency with the arrowhead of generalization.</p>
+    <a id="drawingumlclassdiagrams"/><h1 id="drawing-uml-class-diagrams">8 Drawing UML Class Diagrams</h1><p>In theory, you can use almost any drawing tool.</p>
+    <ul>
+  <li>
+  <p>But general-purpose tools offer you more opportunities to mess up</p>
+    </li>
+  <li>
+  <p>Better to use a tool that “understands” UML</p>
+    </li>
+</ul><a id="exportingthefinalproduct"/><h2 id="exporting-the-final-product">8.1 Exporting the Final Product</h2><p>As a general rule, you edit and save your documents in the tool’s native file format…</p>
+    <p>Then export as graphics to be pasted into your documentation</p>
+    <ul>
+  <li>
+  <p>Use vector graphics formats whenever possible (e.g., PDF, EPS, SVG)</p>
+    </li>
+  <li>
+    <p>Best choice depends on what your document tool can import</p>
+    
+    <ul>
+      <li>Avoid: GIF, BMP, , PNG</li>
+      <li>Especially avoid “lossy” raster formats: JPEG</li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20UML%20Class%20Relationship%20Diagrams"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Preparing and Submitting Programming Assignments</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Preparing%20and%20Submitting%20Programming%20Assignments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Preparing and Submitting Programming Assignments</h1><h2 class="author">Steven J. Zeil</h2><div class="date">Last modified: Apr 23, 2016</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#walking-through-a-typical-assignment">1 Walking Through A Typical Assignment</a></div><div class="toc-h1"><a href="#policies">2 Policies</a></div><div class="toc-h2"><a href="#why-are-the-programs-used-in-assignments-so-big-">2.1 Why are the Programs used in Assignments so Big?</a></div><div class="toc-h2"><a href="#the-grading-platform">2.2 The Grading Platform</a></div><div class="toc-h2"><a href="#the-grading-criteria-for-programming-assignments">2.3 The Grading Criteria for Programming Assignments</a></div><div class="toc-h2"><a href="#the-auto-grader">2.4 The Auto-Grader</a></div><div class="toc-h2"><a href="#multiple-submissions">2.5 Multiple Submissions</a></div><div class="toc-h2"><a href="#appeals">2.6 Appeals</a></div><div class="toc-h2"><a href="#files-provided-in-assignment-directories">2.7 Files Provided in Assignment Directories</a></div><div class="toc-h2"><a href="#submission-guidelines">2.8 Submission guidelines</a></div><div class="toc-h1"><a href="#appendix-protecting-your-files-on-the-unix-network">3 Appendix: Protecting Your Files on the Unix Network</a></div></div><p>This document explains the procedures for preparing and turning in programming assignments in this course. For information on non-programming assignments, see <a href="../nonProgrammingAssignments/index.html">here</a>.</p>
+    <a id="walkingthroughatypicalassignment"/><h1 id="walking-through-a-typical-assignment">1 Walking Through A Typical Assignment</h1><ol>
+  <li>
+  <p>Read the assignment itself. Most assignment pages describe the purpose  of the assignment (e.g., practice using the C++ standard <code>list</code>),  describe a problem and related program, and provide one or two  examples of program inputs and outputs.</p>
+    </li>
+  <li>
+    <p>Set up your assignment directory. Most of my assignments  <a href="#filesprovidedinassignmentdirectories">provide a set of starter code</a>  and a <code>makefile</code> for building the code on *nix systems.</p>
+    
+    <p>Get the provided code. Read through it, comparing it to the problem description. Look to see what changes you are likely to need.</p>
+    
+    <p>You may want to try compiling the code “as is”. On some assignments, this will work without errors. In many cases, missing or incorrect components will result in error messages. But those messages may help you identify what you need to add or fix in the program.</p>
+    
+  </li>
+  <li>
+  <p>Write your solution.</p>
+    </li>
+  <li>
+    <p>Test your solution.</p>
+    
+    <p>Don’t be satisfied with the one or two examples given on the assignment web page. Make up your own test data. Proper choice of test data was  <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/bbtesting/index.html">discussed</a> in the prerequisite courses CS250/333, and I expect you to exploit those skills.</p>
+    
+    <p>How can you be sure you know the correct output for a test case that you yourself created? In all assignments, I provide you with a compiled version of my own solution. Run your tests through your code. Run the same tests through my solution. The outputs should match.</p>
+    
+    <ul>
+      <li>
+      <p>This will be easiest if you <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/supplyingInputsLab/index.html">don’t rely on typing</a> every test directly at the keyboard.</p>
+    </li>
+      <li>
+      <p>You might want to use a program to <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/head2head/index.html">automatically compare the outputs</a> just to make sure you don’t miss something.)</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>If your testing reveals a problem,  <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/debugging1/index.html">debug your code</a>  (also  <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/debugging2/index.html">here (250/333)</a>,  <a href="https://www.cs.odu.edu/~zeil/cs252/s15/Public/debugging/index.html">here (252)</a>  and <a href="https://www.cs.odu.edu/~zeil/cs252/s15/Public/debugx/index.html">here (252)</a>.</p>
+    
+    <p>Once you have fixed the current problem, go back to the previous step and re-test.</p>
+    
+  </li>
+  <li>
+  <p><em>(Optional but recommended)</em> If you have been working on a non-Linux system,  transfer your code to one of our Linux boxes and compile and re-test  it there.</p>
+    </li>
+  <li>
+  <p>Submit your code using the button or link provided on the  assignment page.</p>
+    </li>
+  <li>
+    <p>Read the grade report.</p>
+    
+    <p>You should have a grade <a href="#theauto-grader">within the hour</a>. The results of the compilation and testing will be</p>
+    
+    <ul>
+      <li>emailed to you (at your <code>@cs.odu.edu</code> email account)</li>
+      <li>will be available on the website  <a href="../../Directory/grades/index.html">Grades page</a>.
+        <ul>
+          <li>This is updated about once an hour.</li>
+          <li>Click on the numeric score to see the detailed grade report.</li>
+        </ul>
+      </li>
+      <li>and can also be found by returning to the assignment’s submission page and selecting the “View Grade Report” button.</li>
+    </ul>
+    <p>If you <a href="#thegradingcriteriaforprogrammingassignments">aren’t satisfied</a>, and there is time left before the due date, and you have not <a href="#multiplesubmissions">exhausted your allowed submissions</a>, you may back up a few steps and try again.</p>
+    
+  </li>
+  <li>
+    <p>Now return to the assignment’s submission page, click the “Look at  Solution” button. This provides you both with the code of my own  solution and the tests that I used to evaluate your code. The tests  may be simple data files or may be  <a href="https://www.cs.odu.edu/~zeil/cs252/latest/Public/scripts/index.html">shell scripts</a>  that set up a test and then run it.</p>
+    
+    <p>If your code failed any tests, you can re-run those tests yourself to see what your program does. You can also run them through my solution to compare the outputs.</p>
+    
+    <p>Compare your code to mine. Are there differences that you don’t understand? Then email me or come to office hours and ask. </p>
+    
+  </li>
+</ol><h1 id="policies">2 Policies</h1><a id="whyaretheprogramsusedinassignmentssobig"/><h2 id="why-are-the-programs-used-in-assignments-so-big-">2.1 Why are the Programs used in Assignments so Big?</h2><p>In a sense, Object-Oriented programming (OOP) is all about organizing the classes that make up a program. A program that’s small enough to need only a few classes doesn’t need OOP, won’t benefit from it, and <em>can’t be used to practice OOP</em>. That creates a bit of a dilemma for an instructor when it comes to composing assignments. If you’re really supposed to get a feel for how OOP works, it can’t be on programs that are small enough for you to write in a day or two.</p>
+    <p>Most of the assignments in this course will involve making small changes to a set of code for a nearly complete program, or altering a completely working program to take advantage of some new data structure or algorithm we have studied. This feels “wrong” to some students, but, when I give an assignment, it’s designed to exercise a specific lesson you have just read. I want you spending your time and effort on that lesson’s material, not on writing yet another <code>main()</code> function, lots of basic I/O, or any of the other myriad details that suck up your time when writing a program from scratch.</p>
+    <p>As it happens, that’s probably a more realistic approach. Most real-world programming projects will not involve creating an entire program from scratch. Far more often, you will be asked to modify, fix, or enhance existing code.</p>
+    <p>So you may not be writing that much code in any given assignment, But part of the challenge in working with programs at this scale is that you have to develop a knack for reading existing code and seeing where you need to make changes and what you need to leave alone.</p>
+    <a id="thegradingplatform"/><h2 id="the-grading-platform">2.2 The Grading Platform</h2><p>Grading is performed on the CS Dept’s Linux servers. You may do your development work on the CS Dept’s PCs, or on other machines more convenient to you. It’s a good idea, though, before you submit your work, to upload your code to the CS Unix network and check to be sure that it still works after doing so. This is not something you should take for granted!</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>You can check the compiler version installed on our Linux servers by logging in to one of them and giving the command</p>
+    
+<pre><code>g++ -v
+</code></pre>
+<p>As of the writing of this document, the version is 4.8.4.</p>
+    
+<p>All C++ code will be compiled with the <code>-std=c++11</code> option to allow the 2011 standard C++ features. The 2014 revisions are currently considered “experimental” in this compiler and so will not be used.</p>
+    
+</div><p>The official C++ compiler for this course is the Free Software Foundation’s GNU g++ compiler, whatever version is currently installed on the CS Dept.’s Linux servers. This compiler is available on the CS Dept’s Linux workstations and Windows PCs. You can also download this compiler for free and install it on your own PC.</p>
+    <ul>
+  <li>
+  <p>In general, any compiler version that matches the first two digits  is probably OK.</p>
+    </li>
+  <li>
+  <p>Do <span class="emph">not</span> use Dev-C++, even if you used it in  a prior class. Its version of the GNU g++ compiler is outdated.</p>
+    </li>
+  <li>
+  <p>The Microsoft Visual compiler is not recommended. Historically,  Microsoft has paid little heed to compatibility with the rest of  the C++ world.</p>
+    </li>
+</ul><div class="noFloat"> </div><div class="sidebar pct50">
+<p>You can check the compiler version installed on our Linux servers by logging in to one of them and giving the command</p>
+    
+<pre><code>javac -version
+</code></pre>
+<p>As of the writing of this document, the version is 1.7.0_79.</p>
+    
+</div><p>The official Java compiler for this course is the Oracle <code>javac</code> compiler, whatever version is currently installed on the CS Dept.’s Linux servers. This compiler is available on the CS Dept’s Linux workstations and Windows PCs. You can also download this compiler for free and install it on your own PC.</p>
+    <ul>
+  <li>
+  <p>In general, any compiler version that matches the first two digits  is probably OK.</p>
+    </li>
+  <li>
+  <p>You may also be able to use newer versions if you set the  appropriate “compatibility” settings in your IDE.</p>
+    </li>
+</ul><p>It’s important that you not only use the same compiler that we will use to grade your code, but that you compile your code the same way we will be compiling it – using the same commands and options. This will be easy for you to check. Each assignment will be supplied with a <code>makefile</code>. On *nix systems, you can compile your code by simply giving the command</p>
+    <pre><code class="sh">make
+</code></pre><p>If you are on a non *nix system or using an IDE that doesn’t play well with makefiles, you might want to try running a compilation via <code>make</code> once on one of our Linux machines just to see the sequence of commands issued and the options used on each command. Then try to match those in your own environment.</p>
+    <blockquote>
+  <p>g++ options: For most assignments, I recommend the following options:</p>
+    
+  <p><code>-g -std=c++11 -Wall -Wextra -Weffc++</code></p>
+    
+  <p>The <code>-W</code>… options add warning messages for a variety of common errors. They are warnings, not errors, and will not actually prevent your code from compiling. They can alert you to potential problems, but only if you actually read and consider the warning messages. </p>
+    
+</blockquote><a id="thegradingcriteriaforprogrammingassignments"/><h2 id="the-grading-criteria-for-programming-assignments">2.3 The Grading Criteria for Programming Assignments</h2><p>For any programming assignment, you must</p>
+    <ol>
+  <li>
+    <p>Satisfy the stipulations and limitations of the  assignment.</p>
+    
+    <p>Each assignment will have certain stipulations. You may be limited in what files you can change, what data structures you can use, etc. The point of any assignment is to practice and demonstrate your ability with certain skills and techniques that we have covered in class.</p>
+    
+    <p>You might be able to get that program running in some completely different manner, maybe rewriting the whole thing from scratch. It might even be easier for you to do it that way. That doesn’t matter. If you have not employed the stipulated techniques, your submission will be disqualified.</p>
+    
+  </li>
+  <li>
+    <p>Produce the correct output.</p>
+    
+    <p>The primary scoring criteria for programming projects is the percentage of the test cases on which your code produces correct output.</p>
+    
+    <p>While it’s common in beginning programming classes to write interactive code that prompts for inputs and accepts them from the keyboard, few programs these days work that way. Most truly interactive programs will work through a graphic user interface. But there <span class="emph">are</span> still many programs that work through simple text input/output interfaces. These programs typically read and write to files or possibly directly to other programs. Consequently, <strong>the I/O formats of these programs are crucial and must be followed very precisely</strong>.</p>
+    
+    <p>The good news is that, in most assignments for this course, I will provide the I/O code so you should not run into issues with formatting of I/O.</p>
+    
+  </li>
+</ol><a id="theantigradingcriteriaforprogrammingassignments"/><h3 id="the-anti-grading-criteria-for-programming-assignments">2.3.1 The Anti-Grading Criteria for Programming Assignments</h3><p>These are things that you will <span class="emph">not</span> get points  for in the grading of programming assignments:</p>
+    <ol>
+  <li>
+    <p>The code is “almost correct” or “looks similar to” a correct  solution. <a id="almostCorrect"> </a></p>
+    
+    <p>Sorry, but almost everyone who submits buggy code thinks that their code is “almost correct”, that it “looks like” code that “should work”. It’s a <a href="http://en.wikipedia.org/wiki/Ninety-ninety_rule">well-known truism</a> in our field that most software projects are 90% complete for 90% of their development time.</p>
+    
+    <p>It’s very easy to get code to a point where it <em>looks</em> like something that should be correct and yet fails every test case submitted to it. The real effort in programming, and what you are rewarded for in the grading, is for getting past that point to something that actually passes one or more tests.</p>
+    
+    <p>This does not mean, as some folks complain, that I don’t give partial credit on programming assignments. Some credit is awarded for code that compiles. More importantly, I generally have multiple test cases, and you will get credit for those that you pass, even if you fail some others.</p>
+    
+  </li>
+  <li>
+    <p>Time spent on the assignment <a id="timeSpent"> </a></p>
+    
+    <p>“I spent so many hours on this assignment.” That’s gratifying, but do you think that your classmates did not? Or, if someone managed to produce correct output while spending only half the time that you did, do you think that I should take points away from them for having worked more efficiently than you?</p>
+    
+    <p>Telling me how much time you spent on an assignment may earn you sympathy. But it does not demonstrate your mastery of whatever techniques the assignment is trying to showcase.</p>
+    
+    <p>And if you are really spending outlandish amounts of time on the programming assignments, you may want to think about working <em>smarter</em> instead of <em>harder</em>. Make sure that you are applying all the lessons of designing, coding, testing, and debugging from the prerequisite courses. Go back and <a href="https://www.cs.odu.edu/~zeil/cs333/latest/">review</a> if necessary. There’s many good reasons why your programming training did not end with your first C++ course!</p>
+    
+  </li>
+</ol><a id="theautograder"/><h2 id="the-auto-grader">2.4 The Auto-Grader</h2><p>Most programs in this course will be graded automatically. You will submit your assignments electronically. Within a limited amount of time (typically 15-30 minutes, but this may vary depending upon how many other people are submitting) your code will be compiled. If it compiles successfully, it will be run on the instructor’s test data and scored on how well it performs.</p>
+    <p>The point of the auto-grader is to provide you quick feedback. In many cases, you may be able to use that feedback to fix things before the final due date of the assignment. If I graded in the “traditional” manner (you turn things in and I grade them after the due date), you would not get that opportunity. That can be very frustrating (to me as well as to the students) when students make “silly” mistakes such as submitting the wrong file, writing code that takes its input from the wrong source, writing output in an incorrect format, etc.</p>
+    <p>Some people complain that the auto-grader is too picky or too strict. That’s a bit misguided. The auto-grader only runs the tests that I would have run if I were executing your program “manually”. (Now, if you want to complain that <span class="emph">I</span> am too picky, that’s another matter entirely.)</p>
+    <a id="multiplesubmissions"/><h2 id="multiple-submissions">2.5 Multiple Submissions</h2><blockquote>
+  <p>If there is time before the due date, programs may be resubmitted without penalty at most twice (after the first submission, for a maximum of three total submissions).} A few programming assignments may not permit re-submissions, in which case that will be stated explicitly as part of the assignment description. Non-programming assignments, in general, cannot be resubmitted.</p>
+    
+</blockquote><p>The reason for allowing resubmissions is to give you a chance to recover from “silly mistakes” (e.g., submitting the wrong file, writing code that takes its input from the wrong source, writing output in an incorrect format, etc.) or from fundamental misunderstandings about what the program is supposed to be doing. It is not intended to allow you to keep chasing points by passing one more test each time. You are expected to test your own code before submitting, and, if you have done that, you should not actually be surprised by the percentage of my tests that you pass or fail.</p>
+    <blockquote>
+  <p>You are allowed multiple submissions <strong>because</strong> I want you to be able to notice and fix “silly” mistakes that would otherwise have caused you to get a zero, for reasons unrelated to the purpose of the assignment.</p>
+    
+  <ol>
+    <li>
+    <p>I therefore expect you to <strong>read</strong> your automatic grade reports,  find any such trivial issues, and fix them.</p>
+    </li>
+    <li>
+    <p>If you <em>don’t</em> make any silly mistakes and decide to use the  extra submissions to try and improve your score, I don’t object  to that. But that’s entirely secondary to my real purpose in  allowing multiple submissions.</p>
+    </li>
+  </ol>
+  <p>So please don’t ask me to allow you additional submissions to improve your score because you “wasted” early submissions on trivial mistakes. That’s <strong>why</strong> you are allowed multiple submissions in the first place. </p>
+    
+  <p>When you submit, you should do so with the understanding that you will be graded on that submission and may have to accept that grade as your <em>final</em> grade for that assignment.</p>
+    
+</blockquote><h2 id="appeals">2.6 Appeals</h2><p>Instructors are fallible too, and sometimes we will have a bad test. If you discover a bad test when you review the assignment solution, you can ask to have it re-scored.</p>
+    <p>If you have done multiple submissions and actually made your code score lower on your final submission than it had on an earlier one, you may ask that your score be rolled back to the higher score. You have to ask, though. I generally don’t notice when this has happened unless you tell me.</p>
+    <a id="filesprovidedinassignmentdirectories"/><h2 id="files-provided-in-assignment-directories">2.7 Files Provided in Assignment Directories</h2><p>Each programming assignment is found in a separate directory,  specified on the assignment web page. You will need to copy the files  from that directory into your own working directory.</p>
+    <p>Make sure your files are protected! It is your responsibility to protect your assignments and other course work from access by your fellow students. Of course, they shouldn’t be looking there, but the ODU honor code recognizes that making your work freely available for copying is also unethical behavior.</p>
+    <blockquote>
+  <p>Leaving your assignment solution files unprotected for your classmates to read is considered a violation of the ODU honor code and may result in sanctions up to and including expulsion from the University.</p>
+    
+</blockquote><p>Typically, each assignment directory will include a number of source  code files. Some of these are for you to modify, some should be left  alone. You can tell which should be modified by consulting the list  of files to be submitted. Anything that you aren’t going to turn in  <span class="emph">must</span> be left unchanged.</p>
+    <p>Other files that you may find in the assignment directories include: </p>
+    <ul>
+  <li>
+    <p><code>makefile</code>:</p>
+    
+    <p>This is a standard Unix tool for <a href="https://www.cs.odu.edu/~zeil/cs252/website/Lectures/make/pages/">project management</a>. If an assignment comes with a <code>makefile</code>, then you can compile the program by giving the command <code>make</code> and you can clean up your directory when the project is done by giving the command <code>make clean</code></p>
+    
+  </li>
+  <li>
+    <p><code>make.dep</code>, <code>*.d</code>:</p>
+    
+    <p>These files support the <code>makefile</code>. You can ignore them. If you get  a warning message about a “missing make.dep”, ignore it. The  <code>make.dep</code> file will be created automatically.</p>
+    
+  </li>
+  <li>
+    <p>executable program:</p>
+    
+    <p>In many cases, I will provide you with a compiled version of my solution. You can use this as an aid to testing your program by running your version and mine on the same inputs and comparing the outputs to see if they agree.</p>
+    
+    <p><span class="emph">Important:</span> Executable files can only be run on the same CPU model and operating system for which they were compiled. I typically provide, in the <code>bin</code> directory, one executable for Windows PCs and one for our Linux servers.</p>
+    
+  </li>
+  <li>
+    <p><em>assignmentName</em><code>.jar</code>:</p>
+    
+    <p>This is the compiled version of my solution for Java programs. Typically, the program can be run via the command</p>
+    
+    <pre><code>java -jar _assignmentName_.jar _parameters_
+</code></pre>
+    <p>where the <em>parameters</em> are any command line parameters required by the program itself. If the program requires no command line parameters, the the program can probably be executed on a Windows or other GUI-based system by double-clicking the <code>.jar</code> file in a file explorer display.</p>
+    
+  </li>
+  <li>
+    <p><em>assignmentName</em>.zip: <a id="zip"> </a></p>
+    
+    <p>For easy downloading, this provides all the files (except for sample executables) in a single package.</p>
+    
+    <p>Because Java often requires source code files to be arranged in  subdirectories of your project, some assignments may provide  source code files already arranged in the appropriate file  structure. The zip file will preserve that structure.</p>
+    
+  </li>
+</ul><a id="submissionguidelines"/><h2 id="submission-guidelines">2.8 Submission guidelines</h2><ul>
+  <li>
+    <p>Pay attention to the list of files you are expected to submit. Under no circumstances should you ever turn in compiled object code (.o or .obj) or executables (.exe).</p>
+    
+    <p>The one thing that you may turn in, in addition to the files explicitly listed in the assignment’s submission list, is an optional file named README.txt, in which you may include any special notes to the grader that you feel may be necessary.</p>
+    
+  </li>
+  <li>
+  <p>Be very sure you have the correct names on all files. In particular, note that Unix file names are case-sensitive: “foo.cpp” and “Foo.cpp” are not equivalent, as they are on some Windows file systems. If the names are wrong, your program will not compile. If it doesn’t compile on the Unix system, it’s wrong. “But I had it working on my home PC!” is not an acceptable excuse.</p>
+    </li>
+  <li>
+  <p>Do not change any other files provided with the assignment (except for your own temporary testing/debugging purposes). In particular, beware of changing interfaces! The instructor’s test drivers may or may not be identical to the code provided with the assignment, but it will certainly assume that you have not altered the function names, parameter lists, or other visible interfaces. In the end, the files that you submit must compile with the <span class="emph">original</span> versions of the other files provided with the assignment.</p>
+    </li>
+  <li>
+    <p>Pay close attention to the expected format of the output. Output that is printed in a different order, in an incorrect format, has extra or missing characters, or in which you’ve inserted extra debugging information, is <span class="emph">wrong</span>.</p>
+    
+    <p>If this seems a bit harsh, consider that, in the real world, programs must talk to each other, and to do that they must agree on I/O formats. Using an incorrect output format in those circumstances will not only break the communications path between the programs, but will earn you the enmity of your fellow programmers because management may suspect that it was <span class="emph">their</span> input code that failed rather than your output code.</p>
+    
+  </li>
+</ul><a id="appendixprotectingyourfilesontheunixnetwork"/><h1 id="appendix-protecting-your-files-on-the-unix-network">3 Appendix: Protecting Your Files on the Unix Network</h1><p>The basic protection commands for Linux are <a href="https://www.cs.odu.edu/~zeil/cs252/website/Lectures/protection/pages/">covered in CS252</a>. Here, however, I outline a simple setup that will make sure your files are protected from snooping without you’re needing to worry about it every time you start a new assignment.</p>
+    <p>For the same of example, let’s suppose that you are working on an assignment “asst1”, with the instructor-provided files contained in the directory /home/zeil/Assignments/cs361/asst1.</p>
+    <ol>
+  <li>
+    <p>If this is your first assignment for the course, create a course work area and protect it from access by anyone except yourself.</p>
+    
+    <pre><code class="bash">mkdir ~/CS330
+chmod 700 ~/CS330
+</code></pre>
+  </li>
+  <li>
+    <p>Create a working directory for this assignment: </p>
+    
+    <pre><code class="bash">cd ~/CS330
+mkdir asst1
+cd asst1
+</code></pre>
+    <p>You need not worry about protecting this directory, as it is inside a directory that only you can access.</p>
+    
+  </li>
+  <li>
+    <p>Copy any files you need into this directory. E.g., </p>
+    
+    <pre><code class="bash">cd asst1 
+cp /home/zeil/Assignments/CS330/asst1/* .
+</code></pre>
+    <p>(Typically, the assignment page will indicate the exact directory path that you would use to obtain the files for that specific assignment. If the assignment involves source code arranged into subdirectories, it may be easier to copy the <a href="#zip">zip file</a> and then unpack that.)</p>
+    
+    <p>It’s important, by the way that you copy “<code>*</code>” and not “<code>*.*</code>”. The latter will only copy files that have a ‘.’ in their name. Many files do not. Most notably, the <code>makefile</code> I provide with most assignments does not.</p>
+    
+    <p>This <code>cp</code> command will not copy anything inside subdirectories of the assignment directory. Usually, that’s OK because the only subdirectory is probably the <code>bin</code> directory where the sample solutions are kept, and you don’t need a distinct copy of that.</p>
+    
+  </li>
+  <li>
+    <p>You are now ready to start work.</p>
+    
+    <p>For most assignments, you can compile the code by just giving the command</p>
+    
+    <pre><code class="bash">make
+</code></pre>
+  </li>
+</ol><hr/><p>In future assignments, just make it a habit to do all of your assignments inside the protected <code>~/CS330</code> directory, and you won’t have to worry about anyone else seeing your code.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Preparing%20and%20Submitting%20Programming%20Assignments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

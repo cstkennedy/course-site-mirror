@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Conceptual Questions - Simple Classes & ADTs</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Conceptual%20Questions%20-%20Simple%20Classes%20%26%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Conceptual Questions - Simple Classes &amp; ADTs</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overarching-questions">1 Overarching Questions</a></div><div class="toc-h2"><a href="#writing-constructors">1.1 Writing Constructors</a></div><div class="toc-h2"><a href="#struct-vs-class">1.2 Struct vs Class</a></div><div class="toc-h1"><a href="#lambdas-when-and-when-not-">2 Lambdas - When and When Not?</a></div></div><a id="overarchingquestions"/><h1 id="overarching-questions">1 Overarching Questions</h1><p>When designing or analyzing or writing code there are many overarching questions one needs to keep in mind. The next few questions were asked by your colleagues in previous semesters. An entire lecture (or two) could be dedicated to answering and discussing these questions.</p>
+    <a id="writingconstructors"/><h2 id="writing-constructors">1.1 Writing Constructors</h2><blockquote>
+  <p><strong>Constructor:</strong> How do I determine what to include in the Constructor?</p>
+    
+</blockquote><p><strong>Everything.</strong> Your mindset when writing a constructor must be: <em>I defined a Thing. What do I need to initialize to have a complete <strong>(and conceptually valid)</strong> Thing?</em> Consider</p>
+    <pre><code class="cpp">public class Thing
+{
+      int    anInteger;
+      String name;
+      double cost;
+
+      double[]     anArray;
+
+      //...
+
+      Thing()
+      {
+          //...
+      }
+
+      Thing(String name, int aNum)
+      {
+          //...
+      }
+
+      //...
+}
+</code></pre><p>In our example <code>Thing</code> class we have four attributes (specifically, four private data members). We need to guarantee that all four are set to appropriate initial values. This leads us to a fundamental Constructor rule–one I have stated throughout my examples.</p>
+    <p><strong>Every Constructor must initialize every attribute.</strong> If <code>Thing</code> has 4 pieces of private member data, all 4 must be initialized. In our Thing example we would end up with something similar to…</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>I am an stickler for including <code>this</code> for private data members (due to the requirement to do the equivalent with <code>self</code> in Rust and Python).</p>
+    
+</div><pre><code class="java">    public Thing()
+    {
+        this.name      = "None";
+        this.anInteger = 0;
+        this.cost      = 0.0;
+        this.anArray   = null;
+    }
+</code></pre><p>Notice how I chose <em>zero</em> for each datatype (except <code>String</code> and <code>double[]</code>)? This is a choice that one must make based on the underlying problem (or codebase). I chose <code>"None"</code> for name for the same reason I often use <code>"Empty"</code> or <code>"Generic"</code>…</p>
+    <blockquote>
+  <p>I am a human being.</p>
+    
+</blockquote><p>Recognizing a word is more natural than recognizing a lack of value (e.g., an empty string). Let us implement the Non-Default Constructor:</p>
+    <pre><code class="java">    public Thing(String name, int aNum)
+    {
+        this.name = String.format("This thing is called %s!", this.name);
+
+        this.anInteger = aNum * 337;
+        this.cost = 72 + aNum / 3.14;
+
+        this.anArray = new double[anInteger];
+    }
+</code></pre><p>Notice this less obvious use of <code>name</code> and <code>aNum</code>? There is no rule saying how each of these attributes must be initialized. <strong>However,</strong> the initial values must <strong>make sense</strong>. To determine what <strong>makes sense</strong>, we must understand the problem domain and what <code>Thing</code> represents.</p>
+    <a id="structvsclass"/><h2 id="struct-vs-class">1.2 Struct vs Class</h2><blockquote>
+  <p>Struct or Class: How do I determine when to use a struct or when to use a  class?</p>
+    
+</blockquote><p><em>I will use the C++ term <code>struct</code> to refer to a <code>class</code> where all fields (data members) are <code>public</code>.</em></p>
+    <p><strong>Encapsulation and JBOD.</strong></p>
+    <ul>
+  <li>
+  <p>Encapsulation refers to containing all the data in a single struct/class and limiting access through member functions.</p>
+    </li>
+  <li>
+  <p>JBOD is a term I stole from RAID (storage) literature. It traditionally means <em>Just a Bunch of Disks</em>. I use it slightly differently… <em>Just a Bunch of Data.</em></p>
+    </li>
+</ul><p>A struct comes from the C language, where it was a wrapper for data and nothing more.</p>
+    <p>If you are simply bundling together data, use a struct (consider the <code>Node</code> <code>struct</code> from my <a href="https://github.com/cstkennedy/cs330-examples">Linked List examples</a>). If you have a more complex interface, use a class (consider the Linked List in my examples).</p>
+    <p><em>TL;DR</em> - If you have private data and a definable interface, use a class. If you are going to leave everything public without member functions, use a struct.</p>
+    <a id="lambdaswhenandwhennot"/><h1 id="lambdas-when-and-when-not-">2 Lambdas - When and When Not?</h1><p>Lambda (or anonymous) functions are a fairly new Java addition (from Java 8 in 2014). Before we use lambda functions, we need to ask the following:</p>
+    <ol>
+  <li>Why?
+    <ul>
+      <li>Why is a <em>lambda function</em> necessary here?</li>
+      <li>Why not use a proper method?</li>
+    </ul>
+  </li>
+  <li>Am I using… ?
+    <ul>
+      <li>the Java Stream API?</li>
+      <li>Higher-Order Functions</li>
+    </ul>
+  </li>
+  <li>Am I using iterators?</li>
+  <li><strong>Is this a one-off function?</strong> <em>(Consider the Java Listener interface)</em></li>
+  <li>Does this lambda function take (implicit or explicit) arguments? Or does  it rely exclusively on a capturing data from the enclosing scope?</li>
+  <li>When using a <em>lambda</em> simplify readability of the code?</li>
+  <li>Will using a <em>lambda</em> conceivably (more aptly possibly) prevent compiler  or runtime optimizations (e.g., loop unrolling, inlining, out-of-order  execution, or speculative execution)?</li>
+  <li>Will the <em>lambda</em> belong in the scope of a function/method that will be  called multiple times?
+    <ul>
+      <li>Is it possible to broaden the scope of this lambda?</li>
+    </ul>
+  </li>
+  <li>Does this lambda wrap a function call?</li>
+</ol><p>This list has grown beyond my original expectations. How about two simple questions:</p>
+    <ol>
+  <li>Am I working with low-level (the bottom) or high-level (the top) parts of  the codebase?</li>
+  <li>Did I get the answer from StackOverflow, ChatGPT, or GitHub Copilot?</li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Conceptual%20Questions%20-%20Simple%20Classes%20%26%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-slides.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-slides-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-slides.js" type="text/javascript"> </script><script src="../../styles/md-slides-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Language Specific Class Checklists</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 6};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"><a class="slideshowcontrol" onclick="sshow2start(sshowControl0)" title="start"><img alt="first" src="../../graphics/first.png"/></a><span style="minWidth: 2ex;">  </span><a class="slideshowcontrol" onclick="sshowback(sshowControl0)" title="previous"><img alt="prev" src="../../graphics/prev.png"/></a></td><td class="slideshowcontrolMiddle"><span id="slideshowpositionA0">1 of 5</span>
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Language%20Specific%20Class%20Checklists"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="classChecklists__scroll.html"><img src="../../graphics/scroll.png" title="single-page HTML version"/></a></td><td class="slideshowcontrolRight"><a class="slideshowcontrol" onclick="sshowforward(sshowControl0)" title="next"><img alt="next" src="../../graphics/next.png"/></a><span style="minWidth: 2ex;">  </span><a class="slideshowcontrol" onclick="sshow2end(sshowControl0)" title="last"><img alt="last" src="../../graphics/last.png"/></a></td></tr></table></div><div class="page" id="slide-0-0"><div class="titleblock"><h1 class="title">Language Specific Class Checklists</h1><h2 class="author">Thomas Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-quick-history-lesson">1 A Quick History Lesson</a></div><div class="toc-h1"><a href="#accessors-vs-mutators">2 Accessors vs Mutators</a></div><div class="toc-h1"><a href="#the-current-table">3 The Current Table</a></div><div class="toc-h1"><a href="#reducing-scope">4 Reducing Scope</a></div><div class="toc-h1"><a href="#rote-memorization-is-bad">5 Rote Memorization is Bad</a></div></div></div><div class="page" id="slide-0-1" style="display: none;"><p>We will start with a quick history lesson… way back in the year 2018.</p>
+    <a id="aquickhistorylesson"/><h1 id="a-quick-history-lesson">1 A Quick History Lesson</h1><p>Every semester… I used to draw a table on the whiteboard. I last drew this table on 16 October 2018, to discuss the C++ class checklist and how each item compared to Java and Python 3.</p>
+    <p><img src="./2018-10-16.jpg"/></p>
+    <p>It was obvious that the potato used to take the photo was not properly calibrated. The original iteration of these notes started as a transcription of that table.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Copy Constructor </td>
+      <td align="left"><code>clone</code> and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (consider <code>@property</code>) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setter (consider <code>@attribute.setter</code>) </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left"><code>equals</code> </td>
+      <td align="left"><code>__eq__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left"><code>hashCode</code> </td>
+      <td align="left"><code>__hash__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left"><code>toString</code> </td>
+      <td align="left"><code>__str__</code> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>__repr__</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+    </tr>
+  </tbody>
+</table><p>That table became the <em>Cross-Language Class Checklist</em>. This table has become (after a few iterations) the starting point for our <em>let us look at <code>[insert
+language here]</code> discussions</em>.</p>
+    </div><!--end page 1--><div class="page" id="slide-0-2" style="display: none;"><a id="accessorsvsmutators"/><h1 id="accessors-vs-mutators">2 Accessors vs Mutators</h1><p>You should recall from your previous coursework that <em>not all accessors are getters</em> and <em>not all mutators are setters</em>. The accessor and mutator rows deal with getters and setters, respectively.</p>
+    </div><!--end page 2--><div class="page" id="slide-0-3" style="display: none;"><a id="thecurrenttable"/><h1 id="the-current-table">3 The Current Table</h1><p>The current <em>Cross-Language Class Checklist Table</em> includes one more language… Rust.</p>
+    <p>The class checklist can be thought of as a set of emergent properties (or, if you think as the table as a single entity, an emergent property). <em>There is quite a bit of information in the table. Focus on the Java column.</em></p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+      <td align="left"><code>new()</code> or Default trait </td>
+    </tr>
+    <tr>
+      <td align="left">Copy Constructor </td>
+      <td align="left"><code>clone</code> and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+      <td align="left"><code>Clone</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"><code>finalize</code> (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+      <td align="left"><code>Drop</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (<code>@property</code>) </td>
+      <td align="left">Accessors (Getters) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setters (<code>@attribute.setter</code>) </td>
+      <td align="left">Mutators (setters) </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left"><code>equals</code> </td>
+      <td align="left"><code>__eq__</code> </td>
+      <td align="left"><code>std::cmp::PartialEq</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left"><code>hashCode</code> </td>
+      <td align="left"><code>__hash__</code> </td>
+      <td align="left"><code>std::cmp::PartialOrd</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left"><code>std::hash</code> <em>(actual hashing)</em> </td>
+      <td align="left"><code>hashCode</code> </td>
+      <td align="left"><code>__hash__</code> </td>
+      <td align="left"><code>std::hash::Hash</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left"><code>toString</code> </td>
+      <td align="left"><code>__str__</code> </td>
+      <td align="left"><code>std::fmt::Display</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>__repr__</code> </td>
+      <td align="left"><code>std::fmt::Debug</code> trait </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+      <td align="left"><code>iter()</code> and <code>iter_mut()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>into_iter</code> </td>
+    </tr>
+  </tbody>
+</table><p>For this discussion… we will focus on the Java column. However, the <strong>Java Class Checklist</strong> emerges out of how object-oriented code is written (e.g., needing to compare two user-defined objects).</p>
+    </div><!--end page 3--><div class="page" id="slide-0-4" style="display: none;"><a id="reducingscope"/><h1 id="reducing-scope">4 Reducing Scope</h1><p>Let us <em>extract</em> the Java column from the table…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Java </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+    </tr>
+    <tr>
+      <td align="left"><code>clone</code> and/or Copy Constructor </td>
+    </tr>
+    <tr>
+      <td align="left">  </td>
+    </tr>
+    <tr>
+      <td align="left"><code>finalize</code> (deprecated/discouraged) </td>
+    </tr>
+    <tr>
+      <td align="left">  </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+    </tr>
+    <tr>
+      <td align="left">  </td>
+    </tr>
+    <tr>
+      <td align="left"><code>equals</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>hashCode</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>hashCode</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>toString</code> </td>
+    </tr>
+    <tr>
+      <td align="left">  </td>
+    </tr>
+    <tr>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+  </tbody>
+</table><p>Let us also remove the empty rows (along with the duplicated <code>hashCode</code>) while adding a description column…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Description </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Create a “default” or “empty” object </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Create an identical (yet distinct) copy of an object </td>
+      <td align="left"><code>clone</code> and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Define resources that need to be “closed” before deallocation </td>
+      <td align="left"><code>finalize</code> (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Access a pseudo-private data member </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (<code>@property</code>) </td>
+    </tr>
+    <tr>
+      <td align="left">Update a pseudo-private data member </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setters (<code>@attribute.setter</code>) </td>
+    </tr>
+    <tr>
+      <td align="left">Compare two objects </td>
+      <td align="left"><code>equals</code> </td>
+      <td align="left"><code>__eq__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Compute a number in hash-based operations </td>
+      <td align="left"><code>hashCode</code> </td>
+      <td align="left"><code>__hash__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Generate a human readable string for output </td>
+      <td align="left">  </td>
+      <td align="left"><code>__str__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Generate a string for debugging output </td>
+      <td align="left"><code>toString</code> </td>
+      <td align="left"><code>__repr__</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Allow access to entries in a collection </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+    </tr>
+  </tbody>
+</table><p>That is a bit more manageable… even with the sneakily added Python column. Take note of how similar Python’s Class Checklist is to the Java Class Checklist.</p>
+    </div><!--end page 4--><div class="page" id="slide-0-5" style="display: none;"><a id="rotememorizationisbad"/><h1 id="rote-memorization-is-bad">5 Rote Memorization is Bad</h1><p>The biggest <strong>mistake</strong> one can make is to say… <strong>I must include all of these in my class.</strong> This is a checklist… every item must be considered based on the nature of the class to be implemented.</p>
+    </div><!--end page 5--><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 6};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"><a class="slideshowcontrol" onclick="sshow2start(sshowControl0)" title="start"><img alt="first" src="../../graphics/first.png"/></a><span> </span><a class="slideshowcontrol" onclick="sshowback(sshowControl0)" title="previous"><img alt="prev" src="../../graphics/prev.png"/></a></td><td class="slideshowcontrolMiddle"><span id="slideshowposition0">1 of 5</span>
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Language%20Specific%20Class%20Checklists"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="classChecklists__scroll.html"><img src="../../graphics/scroll.png" title="single-page HTML version"/></a></td><td class="slideshowcontrolRight"><a class="slideshowcontrol" onclick="sshowforward(sshowControl0)" title="next"><img alt="next" src="../../graphics/next.png"/></a><span> </span><a class="slideshowcontrol" onclick="sshow2end(sshowControl0)" title="last"><img alt="last" src="../../graphics/last.png"/></a></td></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div><script>collectID('slide-0-1', 1);
+collectID('a-quick-history-lesson', 1);
+collectID('slide-0-2', 2);
+collectID('accessors-vs-mutators', 2);
+collectID('slide-0-3', 3);
+collectID('the-current-table', 3);
+collectID('slide-0-4', 4);
+collectID('reducing-scope', 4);
+collectID('slide-0-5', 5);
+collectID('rote-memorization-is-bad', 5);
+</script></body></html>

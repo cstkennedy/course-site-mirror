@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>The Beginning</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">The Beginning</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#object-oriented-programming-design">1 Object Oriented Programming &amp; Design</a></div><div class="toc-h1"><a href="#s-o-what-">2 S.O. What?</a></div><div class="toc-h1"><a href="#is-there-more-">3 Is There More?</a></div><div class="toc-h1"><a href="#tools-of-the-trade">4 Tools of the Trade</a></div><div class="toc-h1"><a href="#lecture-examples">5 Lecture Examples</a></div><div class="toc-h1"><a href="#why-insert-language-here-">6 Why [insert language here]?</a></div><div class="toc-h1"><a href="#questions">7 Questions…</a></div><div class="toc-h1"><a href="#beginning-of-the-semester-concerns">8 Beginning of the Semester Concerns</a></div></div><p>Welcome to CS 330 (Object Oriented Programming and <em>Design</em>).</p>
+    <a id="objectorientedprogrammingdesign"/><h1 id="object-oriented-programming-design">1 Object Oriented Programming &amp; Design</h1><p>The title of this course is Object-Oriented <strong>Design</strong> and Programming. </p>
+    <p>Let us start by discussing <a href="https://web.archive.org/web/20180824134615/https://www.infoq.com/podcasts/uncle-bob-solid-ddd/">S.O.L.I.D</a>. My colleagues and I disagree on when this should be introduced. I believe <em>S.O.L.I.D</em> should be discussed now… at the very beginning of the semester. To do so, we will have to split the word:</p>
+    <pre><code>S.O.L.I.D = (S.O.) + (L.I.D.)
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Start finding the humour in my jokes… they will not get any better.</p>
+    
+</div><p>This gives us two sub-acronyms. We will start with <em>S.O</em>. If you do not like my puns… you can put a <em>L.I.D</em> on it.</p>
+    <a id="sowhat"/><h1 id="s-o-what-">2 S.O. What?</h1><p>Why are we starting with <em>S.O.</em>? First… we have all the tools we need to understand it:</p>
+    <ul>
+  <li>S - Single Responsibility Principle</li>
+  <li>O - Open/Closed Principle</li>
+</ul><p>Second… these emerge naturally out of how we write code. We want to write reusable functions and classes. We want to be able to extend those classes without modifying the underlying code. Think about:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Select the sub-list for the language with which you are most comfortable/familiar.</p>
+    
+</div><ul>
+  <li><strong>C++</strong>
+    <ul>
+      <li><code>std::vector</code></li>
+      <li><code>std::list</code></li>
+      <li><code>std::unordered_map</code></li>
+      <li><code>std::iterator</code></li>
+    </ul>
+  </li>
+  <li><strong>Java</strong>
+    <ul>
+      <li><code>ArrayList</code></li>
+      <li><code>LinkedList</code></li>
+      <li><code>Vector</code></li>
+      <li><code>Iterator</code></li>
+    </ul>
+  </li>
+  <li><strong>Python</strong>
+    <ul>
+      <li><code>list</code></li>
+      <li><code>Iterator</code></li>
+      <li><code>Generator</code></li>
+    </ul>
+  </li>
+  <li><strong>Rust</strong>
+    <ul>
+      <li><code>std::vec::Vec</code></li>
+      <li><code>Iterator</code></li>
+    </ul>
+  </li>
+</ul><p>You have used at least one of these in a previous course (most likely <code>std::vector</code> or <code>ArrayList</code> or <code>list</code>). Did you look at how it was implemented? You probably looked up which functions/methods were available…</p>
+    <a id="istheremore"/><h1 id="is-there-more-">3 Is There More?</h1><p>Throughout the course of the semester we will discuss various best practices, design principles, design patterns, and mechanics that will allow us to build complete, reusable, and extensible ADTs.</p>
+    <p>These discussions will include discussion of S.O.L.I.D. and D.R.Y. We will cover design patterns with the following foci…</p>
+    <ul>
+  <li>Iterators</li>
+  <li>the Factory Pattern</li>
+  <li>the Builder Pattern</li>
+  <li>the Strategy Pattern</li>
+</ul><a id="toolsofthetrade"/><h1 id="tools-of-the-trade">4 Tools of the Trade</h1><p>In this course we will use many tools, including…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Category </th>
+      <th align="left">Tool </th>
+      <th align="center">Assignments </th>
+      <th align="center">Lecture </th>
+      <th align="center">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">General </td>
+      <td align="left">Linux </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">General </td>
+      <td align="left">SSH </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Editor </td>
+      <td align="left">Vim </td>
+      <td align="center">Hopefully </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Version Control </td>
+      <td align="left">Git </td>
+      <td align="center">Hopefully </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Methodology </td>
+      <td align="left">Unit Testing / TDD </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Diagram </td>
+      <td align="left">PlantUML </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Diagram </td>
+      <td align="left">SDEdit </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+  </tbody>
+</table><p>…and language specific tools…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Category </th>
+      <th align="left">Language </th>
+      <th align="left">Tool </th>
+      <th align="center">Assignments </th>
+      <th align="center">Lecture </th>
+      <th align="center">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Compiler </td>
+      <td align="left">C++ </td>
+      <td align="left"><code>g++</code> </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler </td>
+      <td align="left">Rust </td>
+      <td align="left"><code>rustc</code> </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler/Interpreter </td>
+      <td align="left">Java </td>
+      <td align="left"><code>javac</code> and <code>java</code> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Compiler/Interpreter </td>
+      <td align="left">Python </td>
+      <td align="left"><code>python3.11</code> </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">C++ </td>
+      <td align="left">Makefiles </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">Java </td>
+      <td align="left">Gradle </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Build System </td>
+      <td align="left">Rust </td>
+      <td align="left">Cargo </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Java </td>
+      <td align="left">Gradle </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Python </td>
+      <td align="left">Tox </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Configuration Management </td>
+      <td align="left">Rust </td>
+      <td align="left">Cargo </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">C++ </td>
+      <td align="left">Doxygen </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Java </td>
+      <td align="left">Javadoc </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Python </td>
+      <td align="left">Pydoc </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Documentation </td>
+      <td align="left">Rust </td>
+      <td align="left">Rustdoc </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">C++ </td>
+      <td align="left">CPPLint </td>
+      <td align="center"> </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Java </td>
+      <td align="left">Checkstyle </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Python </td>
+      <td align="left">Pycodestyle / Pylint </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style </td>
+      <td align="left">Python </td>
+      <td align="left">Ruff </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Code Style (Type Hints) </td>
+      <td align="left">Python </td>
+      <td align="left">mypy </td>
+      <td align="center">Maybe </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+  </tbody>
+</table><p>A few tools will be used heavily for office hours and questions…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Tool </th>
+      <th align="center">Assignments </th>
+      <th align="center">Lecture </th>
+      <th align="center">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Zoom (Office Hours) </td>
+      <td align="center">✔ </td>
+      <td align="center"> </td>
+      <td align="center"> </td>
+    </tr>
+    <tr>
+      <td align="left">Email </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Questions </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+      <td align="center">✔ </td>
+    </tr>
+  </tbody>
+</table><a id="lectureexamples"/><h1 id="lecture-examples">5 Lecture Examples</h1><p>Most lectures will be based on the <a href="https://github.com/cstkennedy/cs330-examples">Review (recorded lecture) Examples</a>. If you are curious… take a look at the <a href="https://github.com/cstkennedy/cs330-examples/commits/master">commit history on GitHub</a>. The example code is not stagnant. It is updated every semester.</p>
+    <a id="whyinsertlanguagehere"/><h1 id="why-insert-language-here-">6 Why [insert language here]?</h1><p>Through your coursework you have focused all but exclusively on Java.</p>
+    <ol>
+  <li>
+  <p>We are continuing with Java out of familiarity.</p>
+    </li>
+  <li>
+  <p>We will reference C++ based on its similarity to Java.</p>
+    </li>
+  <li>
+  <p>We will learn Python because you will have a S.O.L.I.D. (get it? puns!)  foundation (and Python is fun).</p>
+    </li>
+  <li>
+  <p>We will discuss Rust since it provides a different perspective (and Rust is fun).</p>
+    </li>
+</ol><h1 id="questions">7 Questions…</h1><ol>
+  <li>
+    <p><strong>Do I need to know all the tools listed in <a href="#tools-of-the-trade">Tools of the Trade</a>?</strong></p>
+    
+    <p><em>No.</em> you do not need to know all the tools. However, you must be familiar with SSH, Makefiles and Linux based on previous coursework.</p>
+    
+  </li>
+  <li>
+    <p><strong>Why do you use Vim?</strong></p>
+    
+    <p>The short answer is that… Vim works. I can write code quickly, compile and run code, and switch between languages. Most importantly, I can do everything completely from the keyboard (without the mouse).</p>
+    
+  </li>
+  <li>
+    <p><strong>Am I required to use Gradle and SSH?</strong></p>
+    
+    <p><em>Yes.</em> You may write, complile, and run your code using your tool(s) of choice. However, you must compile and run each piece of code on the CS Linux servers at least once per exercise.</p>
+    
+  </li>
+  <li>
+    <p><strong>Can I use VSCode or Eclipse?</strong></p>
+    
+    <p><em>Yes.</em> You may use any IDE of your choosing. However, I will strongly recommend VSCode.</p>
+    
+  </li>
+  <li>
+    <p><strong>What is your favorite language?</strong></p>
+    
+    <p>It is currently a tie between Python and Rust.</p>
+    
+  </li>
+  <li>
+    <p><strong>Will you tell us a Morris story?</strong></p>
+    
+    <p><em>Maybe.</em></p>
+    
+  </li>
+  <li>
+    <p><strong>Can I ask you about a topic not covered in lecture?</strong></p>
+    
+    <p><em>Yes.</em> </p>
+    
+  </li>
+  <li>
+    <p><strong>Who is <a href="https://github.com/rhettinger">Raymond Hettinger</a>?</strong></p>
+    
+    <p>Raymond Hettinger is one of the Python core developers. He is known for his amazing Python talks/lectures.</p>
+    
+  </li>
+</ol><a id="beginningofthesemesterconcerns"/><h1 id="beginning-of-the-semester-concerns">8 Beginning of the Semester Concerns</h1><p>You will hear me discuss and reference topics from various courses, including:</p>
+    <ul>
+  <li>CS 361 - Data Structures &amp; Algorithms</li>
+  <li>CS 381 - Discrete Structures</li>
+  <li>CS 417 - Computational Methods &amp; Software</li>
+</ul><p>Every semester a few students end up terrified that they have missed a required prerequisite course. Before you start second guessing yourself… take a look at the <a class="doc" href="../../Public/syllabus/index.html#course-prerequisites" target="CS330_Public">prerequisites section of the syllabus</a>. If a course is not listed as a prerequisite… you are not expected to have completed it.</p>
+    <p><strong>Why mention other courses?</strong></p>
+    <p>Computer Science is a broad field. There are many connections between topics and concepts. One of the biggest mistakes anyone can make (especially students and teachers) is to treat a course as <em>existing in a vacuum</em>. Remember two things:</p>
+    <ol>
+  <li>
+  <p>One of our goals is to learn how to see these connections and use them to  solidify understanding in this course and other courses.</p>
+    </li>
+  <li>
+  <p>I enjoy Computer Science (including this course) and have a  penchant to get carried away.</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

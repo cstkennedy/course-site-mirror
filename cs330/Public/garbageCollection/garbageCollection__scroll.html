@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Sharing Pointers and Garbage Collection</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Sharing%20Pointers%20and%20Garbage%20Collection"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Sharing Pointers and Garbage Collection</h1><h2 class="author">Steven J Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#shared-structures">1 Shared Structures</a></div><div class="toc-h2"><a href="#singly-linked-lists">1.1 Singly Linked Lists</a></div><div class="toc-h2"><a href="#doubly-linked-lists">1.2 Doubly Linked Lists</a></div><div class="toc-h2"><a href="#airline-connections">1.3 Airline Connections</a></div><div class="toc-h1"><a href="#garbage-collection">2 Garbage Collection</a></div><div class="toc-h2"><a href="#reference-counting">2.1 Reference Counting</a></div><div class="toc-h2"><a href="#mark-and-sweep">2.2 Mark and Sweep</a></div><div class="toc-h2"><a href="#generation-based-collectors">2.3 Generation-Based Collectors</a></div><div class="toc-h2"><a href="#incremental-collection">2.4 Incremental Collection</a></div><div class="toc-h1"><a href="#strong-and-weak-pointers">3 Strong and Weak Pointers</a></div><div class="toc-h1"><a href="#c-11-std-reference-counting">4 C++11: std Reference Counting</a></div><div class="toc-h1"><a href="#java-programmers-have-it-easy">5 Java Programmers Have it Easy</a></div></div><p><strong>Swearing by Sharing</strong></p>
+    <p>We’ve talked a lot about using pointers to share information, but  mainly as something that causes problems. </p>
+    <ul>
+  <li>
+  <p>We have a <a href="../big3/">pretty good idea</a> of how to handle ourselves when we  have pointers among our data members and <span class="emph">don’t</span> want to  share.</p>
+    </li>
+  <li>
+    <p>But not every data structure can be treated this way. </p>
+    
+    <ul>
+      <li>Sometimes,  sharing is essential to the behavior of the data structure that we  want to implement.</li>
+      <li>(In data structures, there is an entire class of  structures and algorithms associated with “graphs” that exhibit  this property.)  </li>
+    </ul>
+  </li>
+</ul><a id="sharedstructures"/><h1 id="shared-structures">1 Shared Structures</h1><p>In this section, we will introduce three examples that we will  explore further in the remainder of the lesson. All three involve some  degree of essential sharing.</p>
+    <a id="singlylinkedlists"/><h2 id="singly-linked-lists">1.1 Singly Linked Lists</h2><p><div class="noFloat"> </div>
+    <img src="singlyLinked.png" style="float: right; max-width: 40%;"/></p>
+    <p>We’ll start with a fairly prosaic example. In its simplest  form, a singly linked list involves no sharing, and so we could safely  treat all of its components as deep-copied. </p>
+    <hr/><p><strong>SLL Destructors</strong></p>
+    <p>In particular, we can take a  simple approach of writing the destructors — if you have a pointer,  delete it:</p>
+    <pre><code class="cpp">struct SLNode {
+   string data;
+   SLNode* next;
+     &#x22ee;
+   ~SLNode () {delete next;}
+};
+
+class List {
+   SLNode* first;
+public:
+     &#x22ee;
+   ~List() {delete first;}
+};
+</code></pre><p>Problem: stack size is $O(N)$ where $N$ is the length of the list.</p>
+    <hr/><p><strong>Destroy the List, not the Nodes</strong></p>
+    <pre><code class="cpp">struct SLNode {
+   string data;
+   SLNode* next;
+     &#x22ee;
+   ~SLNode () {/* do nothing */}
+};
+
+class List {
+   SLNode* first;
+public:
+     &#x22ee;
+   ~List() 
+    {
+      while (first != 0)
+        {
+          SLNode* next = first-&gt;next;
+          delete first;
+          first = next;
+        }
+    }
+};
+</code></pre><p>This avoids stacking up large numbers of recursive calls. </p>
+    <a id="firstlastheaders"/><h3 id="first-last-headers">1.1.1 First-Last Headers</h3><p><div class="noFloat"> </div>
+    <img src="sllist.png" style="float: right; max-width: 40%;"/>  But now let’s consider one of the more common  variations on linked lists. </p>
+    <ul>
+  <li>
+  <p>If our header contains pointers to  both the first and last nodes of this list, then we can do O(1)  insertions at both ends of this list.  </p>
+    </li>
+  <li>
+  <p>Notice, however, that the final node in the list is now “shared”  by both the list header and the next-to-last node. </p>
+    </li>
+</ul><p>So, if we were to  extend our basic approach of writing destructors that simply delete  their pointers:</p>
+    <hr/><p>** Aggressively Deleting Pointers</p>
+    <pre><code class="cpp">struct SLNode {
+   string data;
+   SLNode* next;
+     &#x22ee;
+   ~SLNode () {delete next;}
+};
+
+class List {
+   SLNode* first;
+   SLNode* last;
+public:
+     &#x22ee;
+   ~List() {delete first; delete last;}
+};
+
+</code></pre><p>Then, when a list object is destroyed, the final node in the list  will actually be deleted twice. </p>
+    <a id="doublylinkedlists"/><h2 id="doubly-linked-lists">1.2 Doubly Linked Lists</h2><p><div class="noFloat"> </div>
+    <img src="dllist.png" style="float: right; max-width: 40%;"/></p>
+    <p>Now, let’s make things just a little <span class="emph">more</span> difficult.</p>
+    <p>If we consider doubly linked lists, our straightforward approach of “delete everything” is really going to be a problem.</p>
+    <pre><code class="cpp">struct DLNode {
+   string data;
+   DLNode* prev;
+   DLNode* next;
+     &#x22ee;
+   ~DLNode () {delete prev; delete next;}
+};
+
+class List {
+   DLNode* first;
+   DLNode* last;
+public:
+     &#x22ee;
+   ~List() {delete first; delete last;}
+};
+</code></pre><hr/><p><strong>Deleting the DLL</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="dllist.png" style="float: right; max-width: 40%;"/></p>
+    <ul>
+  <li>
+    <p>When a list object is destroyed, it will start by deleting the  <span class="varname">first</span> pointer.</p>
+    
+    <ul>
+      <li>That node (Adams) will delete its  <span class="varname">next</span> pointer (pointing to Baker).</li>
+      <li>That second node  will delete its <span class="varname">prev</span> pointer (Adams).  </li>
+    </ul>
+  </li>
+  <li>
+    <p>Now we’ve  deleted the same node twice, potentially corrupting the heap. </p>
+    
+    <ul>
+      <li>But,  worse, the Adam node’s destructor will be invoked again.</li>
+      <li>It will delete  its <span class="varname">next</span> pointer, and we will have deleted the Baker  node a second time.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Then the Baker node deletes its  <span class="varname">prev</span> pointer <span class="emph">again</span>. </p>
+    </li>
+</ul><hr/><p><strong>Deleting and Cycles</strong></p>
+    <p>We’re now in an infinite  recursion, </p>
+    <ul>
+  <li>
+  <p>which will continue running until either the heap is so badly  corrupted that we crash when trying to process a delete,</p>
+    </li>
+  <li>
+  <p>or when we  finally fill up the activati0on stack to its maximum possible  size.  </p>
+    </li>
+</ul><p>What makes this so much nastier than the singly linked list? </p>
+    <ul>
+  <li>It’s  the fact that not only are we doing sharing via pointers, but that the  various connections form <span class="firstterm">cycles</span>, in which we can  trace a path via pointers from some object eventually back to  itself.</li>
+</ul><a id="airlineconnections"/><h2 id="airline-connections">1.3 Airline Connections</h2><p><div class="noFloat"> </div>
+    <img src="airline0.png" style="float: right; max-width: 40%;"/> Lest you think that this issue only arises in low-level data  structures, let’s consider how it might arise in programming at the  application level.</p>
+    <p>This graph illustrates flight connections available from an airline.</p>
+    <hr/><p><strong>Aggressively Deleting a Graph</strong></p>
+    <p>If we were to implement this airport graph with Big 3-style  operations:</p>
+    <pre><code class="cpp">class Airport
+{
+   &#x22ee;
+
+private:
+   vector&lt;Airport*&gt; hasFlightsTo;
+};
+
+Airport::~Airport()
+{
+   for (int i = 0; i &lt; hasFlightsTo.size(); ++i)
+      delete hasFlightsTo[i];
+}
+</code></pre><p>we would quickly run into a disaster. </p>
+    <hr/><p><strong>Deleting the Graph</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="airline0.png" style="float: right; max-width: 40%;"/> Suppose that we delete the  Boston airport. </p>
+    <ul>
+  <li>
+  <p>Its destructor would be invoked, which would delete the  N.Y. airport and Wash DC airports.  * Let’s say, for the sake of example,  that the NY airport is deleted first.</p>
+    </li>
+  <li>
+    <p>The act of deleting the pointer to  the NY airport causes its destructor to be invoked, which would delete the  Boston and Wash DC airports. </p>
+    
+    <ul>
+      <li>
+      <p>But Boston has already been deleted.</p>
+    </li>
+      <li>
+      <p>If we don’t crash right away, we will quickly wind up deleting  Wash DC twice.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>In fact, we would wind up, again, in an infinite recursion among the  destructors.  </p>
+    </li>
+</ul><hr/><p><strong>The Airline</strong></p>
+    <p>Now, you might wonder just how or why we would have deleted that  Boston pointer in the first place. </p>
+    <ul>
+  <li>The  airport graph is really a part of the description of an airline:</li>
+</ul><pre><code class="cpp">class AirLine {
+   &#x22ee;
+   string name;
+   map&lt;string, Airport*&gt; hubs;
+};
+
+
+AirLine::~Airline()
+{
+   for (map&lt;string, Airport*&gt;::iterator i = hubs.begin;
+        i != hubs.end(); ++i)
+     delete i-&gt;second;
+}
+</code></pre><hr/><p><strong>The AirLine Structure</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="hubs.png" style="max-width: 60%;"/></div>
+    </p>
+    <ul>
+  <li>The map <span class="varname">hubs</span> provides access to all those  airports where planes are serviced and stored when not in flight,  indexed by the airport name.
+    <ul>
+      <li>Not all airports are hubs.</li>
+    </ul>
+  </li>
+</ul><p> Suppose that PuddleJumper Air goes bankrupt.</p>
+    <ul>
+  <li>It makes sense that when  an airline object is destroyed, we would delete those hub pointers.
+    <ul>
+      <li>But we’ve seen that this is dangerous.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Can We Do Better?</strong></p>
+    <p>Now, that’s a problem. But what makes this example particularly  vexing is that it’s not all that obvious what would constitute a better  approach.</p>
+    <ul>
+  <li>Let’s consider some other changes to the airline structure.</li>
+</ul><hr/><p><strong>Changing the Hubs</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubs2.png" style="float: right; max-width: 50%;"/></p>
+    <p>Suppose that Wash DC were to lose its  status as a hub.</p>
+    <p>Even though the pointer to it was removed from the  <span class="varname">hubs</span> table, the Wash DC airport needs to remain in  the map.</p>
+    <hr/><p><strong>Changing the Connections</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsGarbage.png" style="float: right; max-width: 50%;"/></p>
+    <p>On the other hand, if Wash DC were to drop its service to  Norfolk, one might argue that Norfolk and Raleigh should then be  deleted, as there would be no way to reach them. </p>
+    <ul>
+  <li>But how could you write  code into your destructors and your other code that adds and removes  pointers that could tell the difference between these two cases?</li>
+</ul><a id="garbagecollection"/><h1 id="garbage-collection">2 Garbage Collection</h1><hr/><p><strong>Garbage</strong></p>
+    <p>Objects on the heap that can no longer be reached (in one or more hops) from any pointers in the activation stack</p>
+    <p>or from any pointers in the static storage area</p>
+    <p>are called <span class="firstterm">garbage</span>.</p>
+    <hr/><p><strong>Garbage Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsGarbage.png" style="float: right; max-width: 50%;"/></p>
+    <ul>
+  <li>
+    <p>In this example, if we assume that the airline object is actually a local variable in some function, then Norfolk and Raleigh appear to be garbage.</p>
+    
+    <ul>
+      <li>
+      <p>Unless there’s some other pointer not shown in this picture, there’s no way to get to either of them.  </p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Being garbage is not the same thing as “nothing points to it”.</p>
+    
+    <ul>
+      <li>Raleigh is garbage even though something is pointing to it. Nonetheless, there is no way to get to Raleigh from the non-heap storage.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Garbage Collection</strong></p>
+    <p>Determining when something on the heap has become garbage is  sufficiently difficult that many programming languages take over this job  for the programmer. </p>
+    <p>The runtime support system for these languages  provides <span class="firstterm">automatic garbage collection</span>, a service  that determines when an object on the heap has become garbage anf  automatically <span class="firstterm">scavenges</span> (reclaims the storage of)  such objects.</p>
+    <hr/><p><strong>Java has GC</strong></p>
+    <p>Although Java and C++ look very similar, in Java there is no “delete” operator. </p>
+    <p>Java programmers use many more pointers than typical C++ programmers do.</p>
+    <p>But Java programmers never worry about deleting anything. They just trust in the garbage collector to come along eventually and clean up the mess.</p>
+    <hr/><p><strong>C++ Does Not</strong></p>
+    <p>Automatic garbage collection really can simplify a programmer’s life. Sadly, C++ does not support automatic garbage collection.</p>
+    <ul>
+  <li>C++11 adds a very limited form.</li>
+</ul><p>But how is this magic accomplished (and why doesn’t C++ support it)?</p>
+    <a id="referencecounting"/><h2 id="reference-counting">2.1 Reference Counting</h2><p><span class="firstterm">Reference counting</span> is one of the simplest techniques for implementing garbage collection.</p>
+    <ul>
+  <li>
+  <p>Keep a hidden counter in each object on the heap. The counter  will indicate how many pointers to that object exist.</p>
+    </li>
+  <li>
+  <p>Each time we reassign a pointer that used to point at this  object, we decrement the counter.</p>
+    </li>
+  <li>
+  <p>Each time we reassign a pointer so that it now points at  this object, we increment the counter.</p>
+    </li>
+  <li>
+  <p>If that counter ever reaches 0, scavenge the object.</p>
+    </li>
+</ul><hr/><p><strong>Reference Counting Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsref.png" style="float: right; max-width: 60%;"/><br/>For example, here’s our airline example with reference  counts. Now, suppose that Wash DC loses its hub status.</p>
+    <ul>
+  <li>The removal of the pointer from the airline object causes the  reference count of Wash DC to decrease by one, but it’s still more than  zero, so we don’t try to scavenge Wash DC.</li>
+</ul><p/>
+    <hr/><p><strong>Reference Counting Example II</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsgarbageref1.png" style="float: right; max-width: 60%;"/> Now, suppose that Wash DC drops its service to Norfolk</p>
+    <ul>
+  <li>When the pointer from Wash DC to Norfolk is removed, then  the reference count of Norfolk decreases. In this case, it decreases to  zero.  </li>
+</ul><hr/><p><strong>Reference Counting Example III</strong></p>
+    <p>So the Norfolk object can be scavenged. </p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsgarbageref2.png" style="float: right; max-width: 60%;"/></p>
+    <ul>
+  <li>When we do so,  however, its pointer to Raleigh disappears, reducing Raleigh’s reference  count to zero.
+    <ul>
+      <li>That means that Raleigh can be scavenged.  </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Reference Counting Example IV</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsgarbageref3.png" style="float: right; max-width: 60%;"/></p>
+    <p>Doing that reduces N.Y.’s reference count, but the count  stays above zero, so we don’t try to scavenge N.Y.</p>
+    <hr/><p><strong>Can we do this?</strong></p>
+    <p>Implementing reference counting requires that we take control of  pointers. </p>
+    <ul>
+  <li>
+  <p>To properly update reference counts, we would need to know  whenever a pointer is assigned a new address (or null), whenever a  pointer is created to point to a newly allocated object, and whenever  a pointer is destroyed.</p>
+    </li>
+  <li>
+    <p>Now, we can’t do that for “real” pointers in C++. </p>
+    
+    <ul>
+      <li>But it is quite possible to create an ADT that looks and behaves much like a regular pointer.</li>
+      <li>And, by now, we know how to take control of assignment, copying, and destroying of ADT objects.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>A Reference Counted Pointer</strong></p>
+    <p>Here is an (incomplete) sketch of a reference counted  pointer ADT (which I will call a “smart pointer” for short).</p>
+    <div class="details"><span class="summary"><a href="refCountPtr.h" target="listing">refCountPtr.h</a></span> <input id="but_details_d6e486" onclick="toggleDisplay('_details_d6e486')" type="button" value="+"/><div class="detailPart" id="_details_d6e486"><pre><code id="_details_d6e486_code">template &lt;class T&gt;
+class RefCountPointer {
+  T* p;   &#x2780;
+  unsigned* count;
+
+  void checkIfScavengable()  &#x2781;
+  {
+    if (*count == 0)
+      {
+        delete count;
+        delete p;
+      }
+  }
+
+public:
+  // This constructor is used to hand control of a newly
+  // allocated object (*s) over to the reference count
+  // system.  Example:
+  //    RefCountPointer&lt;PersonelRecord&gt; p (new PersonelRecord());
+  // It's critical that, once you create a reference counted
+  // pointer to something, that you not continue playing with
+  // regular pointers to the same object.
+  RefCountPointer (T* s)   &#x2782;
+    : p(s), count(new unsigned)
+    {*count = 1;} 
+
+  RefCountPointer (const RefCountPointer&amp; rcp)
+    : p(rcp.p), count(rcp.count)
+    {++(*count);}   &#x2783;
+
+  ~RefCountPointer() {--(*count); checkIfScavengable();} &#x2784;
+  
+
+  RefCountPointer&amp; operator= (const RefCountPointer&amp; rcp)
+    {
+      ++(*(rcp.count));  &#x2785;
+      --(*count);
+      checkIfScavengable();
+      p = rcp.p;
+      count = rcp.count;
+      return *this;
+    }
+
+  T&amp; operator*() const {return *p;}  &#x2786;
+  T* operator-&gt;() const {return p;}
+
+
+  bool operator== (const RefCountPointer&lt;T&gt;&amp; ptr) const
+  {return ptr.p == p;}
+
+
+  bool operator!= (const RefCountPointer&lt;T&gt;&amp; ptr) const
+  {return ptr.p != p;}
+
+};
+</code></pre></div></div><ul>
+  <li>
+  <p><span>➀</span> The data stored for each of our smart pointers is p, the  pointer to the real data, and count, a pointer to an integer  counter for that data.</p>
+    </li>
+  <li>
+  <p><span>➁</span> This function will be called whenever we decrease the count.  It checks to see if the count has reached zero and, if so,  scavenges the object (and its counter).</p>
+    </li>
+  <li>
+  <p><span>➂</span> When the very first smart pointer is created for a newly  allocated object, we set its counter to 1.</p>
+    </li>
+  <li>
+  <p><span>➃</span> When a smart pointer is copied, we increment its counter.</p>
+    </li>
+  <li>
+  <p><span>➄</span> When a smart pointer is destroyed, we decrement the count  and see if we can scavenge the object.</p>
+    </li>
+  <li>
+  <p><span>➅</span> When a smart pointer is assigned a new value, we increment the  counter of the object whose pointer is being copied,  decrement the counter of the object whose pointer is being  replaced, and check to see if that object can be  scavenged.</p>
+    </li>
+  <li>
+  <p><span>➆</span> Other than that, the smart pointer has to behave like a real  pointer, supporting the <code>*</code> and <code>-&gt;</code> operators.  </p>
+    </li>
+</ul><hr/><p><strong>Is it worth the effort?</strong></p>
+    <ul>
+  <li>
+    <p>Reference counting is fairly easy to implement.</p>
+    
+    <ul>
+      <li>
+      <p>Unlike the more advanced garbage collection techniques that we will look at shortly, it can be done in C++ because it does not require any special support from the compiler and the runtime system.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>There’s a problem with reference counting, though. </p>
+    
+    <ul>
+      <li>
+      <p>One that’s serious enough to make it unworkable in many practical situations.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Disappearing Airline</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubsref.png" style="float: right; max-width: 60%;"/>  Let’s return to our original airline example, with  reference counts.</p>
+    <ul>
+  <li>
+    <p>Assume that</p>
+    
+    <ul>
+      <li>the airline object itself is a local variable in a function and that</li>
+      <li>we are about to return from that function.  </li>
+    </ul>
+  </li>
+  <li>
+  <p>That object will therefore be destroyed, and its reference  counted pointers to the three hubs will disappear.</p>
+    </li>
+</ul><hr/><p><strong>Leaky Airports</strong></p>
+    <p>Here is the result, with the updated reference counts. <div class="noFloat"> </div>
+    <img src="hubsreffail.png" style="float: right; max-width: 40%;"/></p>
+    <ul>
+  <li>Now, all of these airport objects are garbage, but none of them have  zero reference counts.
+    <ul>
+      <li>Therefore none of them will be scavenged.</li>
+      <li>We’re leaking memory, big time!  <br/>What went wrong? Let’s look at our other examples.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Ref Counted SLL</strong></p>
+    <p>Here is our singly linked list with reference counts. <div class="noFloat"> </div>
+    <img src="sllistref.png" style="float: right; max-width: 40%;"/> Assume that the list header itself is a local variable that is about  to be destroyed.</p>
+    <hr/><p><strong>Ref Counted SLL II</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="sllistref2.png" style="float: right; max-width: 40%;"/></p>
+    <ul>
+  <li>
+    <p>When the first and last pointers disappear, the reference  count for Adams goes to zero.</p>
+    
+    <ul>
+      <li>So Adams can be scavenged.</li>
+    </ul>
+  </li>
+  <li>
+    <p>When it is,  that will cause Baker’s reference count to drop to zero. </p>
+    
+    <ul>
+      <li>When Baker is scavenged, Davis’ count will drop to zero</li>
+    </ul>
+  </li>
+  <li>
+  <p>and it too will be  scavenged.  </p>
+    </li>
+</ul><p>So that works just fine!</p>
+    <hr/><p><strong>Ref Counted DLL</strong></p>
+    <p>Now let’s look at our doubly linked list. <div class="noFloat"> </div>
+    <img src="dllistref.png" style="float: right; max-width: 50%;"/>  Again, let’s assume that the list header itself is a local variable  that is about to be destroyed.</p>
+    <hr/><p><strong>Ref Counted DLL II</strong></p>
+    <p>Here’s the result. <div class="noFloat"> </div>
+    <img src="dllistref2.png" style="float: right; max-width: 35%;"/> Alas, we can see that none of the reference counters have gone to zero, so nothing will be scavenged, even though all three nodes are garbage.</p>
+    <hr/><p><strong>Reference Counting’s Achilles Heel</strong></p>
+    <p>What’s the common factor between the failures in the first and  third examples? </p>
+    <ul>
+  <li>
+  <p>It’s the <span class="emph">cycles</span>.</p>
+    </li>
+  <li>
+    <p>Reference counting won’t work if our data can form cycles of  pointers. </p>
+    
+    <ul>
+      <li>And, as the examples discussed here have shown, such cycles aren’t particularly unusual or difficult to find in practical structures.  </li>
+    </ul>
+  </li>
+</ul><a id="markandsweep"/><h2 id="mark-and-sweep">2.2 Mark and Sweep</h2><p><span class="firstterm">Mark and sweep</span> is one of the earliest and  best-known garbage collection algorithms. </p>
+    <ul>
+  <li>
+  <p>It works perfectly well with  cycles, but</p>
+    </li>
+  <li>
+  <p>requires some significant support from the compiler and  run-time support system.</p>
+    </li>
+</ul><hr/><p><strong>Assumptions</strong></p>
+    <p>The core assumptions of mark and sweep are:</p>
+    <ul>
+  <li>
+  <p>Each object on the heap has a hidden “mark” bit.</p>
+    </li>
+  <li>
+  <p>We can find all pointers outside the heap (i.e., in the  activation stack and static area)</p>
+    </li>
+  <li>
+  <p>For each data object on the heap, we can find all pointers  within that object.</p>
+    </li>
+  <li>
+  <p>We can iterate over all objects on the heap</p>
+    </li>
+</ul><hr/><p><strong>The Mark and Sweep Algorithm</strong></p>
+    <p>With those assumptions, the mark and sweep garbage collector is  pretty simple:</p>
+    <div class="details"><span class="summary"><a href="markAndSweep.cpp" target="listing">markAndSweep.cpp</a></span> <input id="but_details_d6e746" onclick="toggleDisplay('_details_d6e746')" type="button" value="+"/><div class="detailPart" id="_details_d6e746"><pre><code id="_details_d6e746_code">void markAndSweep()
+{
+ // mark
+ for (all pointers P on the run-time stack or
+   in the static data area )
+  {
+    mark *P;
+  }
+
+ //sweep
+ for (all objects *P on the heap)
+   {
+     if *P is not marked then
+        delete P
+     else
+        unmark *P
+   }
+}
+
+template &lt;class T&gt;
+void mark(T* p)
+{
+  if *p is not already marked
+    {
+      mark *p;
+      for (all pointers q inside *p)
+        {
+          mark *q;
+        }
+     }
+}
+</code></pre></div></div><p>The algorithm works in two stages. </p>
+    <ul>
+  <li>
+  <p>In the first stage, we start  from every pointer outside the heap and recursively mark each object  reachable via that pointer.</p>
+    </li>
+  <li>
+    <p>In the second stage, we look at each item on the heap. </p>
+    
+    <ul>
+      <li>If it’s  marked, then we have demonstrated that it’s possible to reach that  object from a pointer outside the heap.
+        <ul>
+          <li>It isn’t garbage, so we leave it  alone (but clear the mark so we’re ready to repeat the whole process at  some time in the future).</li>
+        </ul>
+      </li>
+      <li>If the object on the heap is not marked, then  it’s garbage and we scavenge it.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Mark and Sweep Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="preMarkandSweep.png" style="float: right; max-width: 60%;"/>  As an example, suppose that we start with this data.</p>
+    <p>Then,  let’s assume that the local variable holding the list header is  destroyed.</p>
+    <hr/><p><strong>Mark and Sweep Example II</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="preMarkandSweep2.png" style="float: right; max-width: 50%;"/></p>
+    <ul>
+  <li>
+  <p>At some point later in time, the mark and sweep algorithm is  started</p>
+    </li>
+  <li>
+    <p>The main algorithm begins the marking phase, looping through the  pointers in the activation stack. </p>
+    
+    <ul>
+      <li>
+        <p>We have two. The first points to the  Boston node. So we invoke the<code>mark()</code> function on the  pointer to Boston.</p>
+    
+        <ul>
+          <li>The Boston node has not been marked yet, so we mark  it.</li>
+        </ul>
+      </li>
+      <li>
+      <p>Then the mark() function iterates over the pointers in the  Boston object. It first looks at the N.Y. pointer and recursively  invokes itself on that.</p>
+    </li>
+      <li>
+      <p>The N.Y. object has not been marked yet, so we mark it and then  iterate over the pointers in N.Y.,  </p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Mark and Sweep Example III</strong></p>
+    <p>Once the mark phase of the main algorithm is complete,</p>
+    <ul>
+  <li>
+  <p>We have  marked the Boston, N.Y., and Wash DC objects.</p>
+    </li>
+  <li>
+  <p>The Norfolk, Raleigh,  Adams, Baker, and Davis objects are unmarked.</p>
+    </li>
+</ul><hr/><p><strong>The Sweep Phase</strong></p>
+    <p>In the sweep phrase, we visit each object on the heap. </p>
+    <ul>
+  <li>
+  <p>The three  marked hubs will be kept, but their marks will be cleared in preparation  for running the algorithm again at some time in the future.</p>
+    </li>
+  <li>
+  <p>All of the  other objects will be scavenged.</p>
+    </li>
+</ul><hr/><p><strong>Assessing Mark and Sweep</strong></p>
+    <p>In practice, the recursive form of mark-and-sweep requires too  much stack space. </p>
+    <ul>
+  <li>It can frequently result in recursive calls of the  mark() function running thousands deep.
+    <ul>
+      <li>Since we call this algorithm precisely because we are running out of space, that’s not a good idea.</li>
+    </ul>
+  </li>
+</ul><p>Practical implementations of mark-and-sweep have countered this  problem with an iterative version of the mark function that “reverses”  the pointers it is exploring so that they leave a trace behind it of  where to return to.</p>
+    <ul>
+  <li>Even with that improvement, systems that use mark and sweep are  often criticized as slow.</li>
+</ul><a id="generationbasedcollectors"/><h2 id="generation-based-collectors">2.3 Generation-Based Collectors</h2><hr/><p><strong>Old versus New Garbage</strong></p>
+    <p>In many programs, people have observed that object lifetime tends  toward the extreme possibilities.</p>
+    <ul>
+  <li>
+  <p>temporary objects that are created, used, and become garbage  almost immediately</p>
+    </li>
+  <li>
+  <p>long-lived objects that do not become garbage until program  termination</p>
+    </li>
+</ul><hr/><p><strong>Generational GC</strong></p>
+    <p>Generational collectors take advantage of this behavior by  dividing the heap into “generations”. </p>
+    <ul>
+  <li>
+  <p>The area holding  the older generation is scanned only occasionally.</p>
+    </li>
+  <li>
+    <p>The area holding the youngest  generation is scanned frequently for possible garbage. </p>
+    
+    <ul>
+      <li>an object in the young generation area that survives a few  garbage collection passes is moved to the older generation  area</li>
+    </ul>
+  </li>
+</ul><a id="incrementalcollection"/><h2 id="incremental-collection">2.4 Incremental Collection</h2><p>Another way to avoid the appearance that garbage collection is  locking up the system is to modify the algorithm so that it can be run  one small piece at a time. </p>
+    <ul>
+  <li>
+  <p>Conceptually, every time a program tries to  allocate a new object, we run just a few mark steps or a few sweep  steps,</p>
+    </li>
+  <li>
+  <p>By dividing the effort into small pieces, we give the illusion  that garbage collection is without a major cost. </p>
+    </li>
+  <li>
+  <p>In languages like Java where parallel processes/threads are built  in to the language capabilities, systems can take the incremental  approach event further by running the garbage collector in parallel with  the main calculation. </p>
+    </li>
+</ul><a id="strongandweakpointers"/><h1 id="strong-and-weak-pointers">3 Strong and Weak Pointers</h1><hr/><p><strong>Doing Without</strong></p>
+    <p>OK, garbage collection is great if you can get it.</p>
+    <ul>
+  <li>
+  <p>But C++ does not provide it, and C++ compilers don’t really provide the kind of support necessary to implement mark ans sweep or the even more advanced forms of GC.</p>
+    </li>
+  <li>
+  <p>So what can we, as C++ programmers do, when faced with data structures that need to share heap data with one another?</p>
+    </li>
+</ul><hr/><p><strong>Ownership</strong></p>
+    <p>One approach that works in many cases is to try to identify which  ADTs are the <span class="firstterm">owners</span> of the shared data, and which  ones merely use the data. </p>
+    <ul>
+  <li>
+  <p>The owner of a collection of shared data has the responsibility for creating it, sharing out pointers to it, and deleting it.</p>
+    </li>
+  <li>
+  <p>Other ADTs that share the data without owning it should never create or delete new instances of that data.</p>
+    </li>
+</ul><hr/><p><strong>Ownership Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubs.png" style="float: right; max-width: 60%;"/><br/>In this example that we looked at earlier, we saw that if both the Airline object on the left and the Airport objects on the right deleted their own pointers when destroyed, our program would crash.</p>
+    <hr/><p><strong>Ownership Example</strong></p>
+    <p>We could improve this situation by deciding that the Airline  <span class="emph">owns</span> the Airport descriptors that it uses. So the  Airline object would delete the pointers it has, but the Airports would  never do so.</p>
+    <pre><code class="cpp">class Airport
+{
+   &#x22ee;
+
+private:
+   vector&lt;Airport*&gt; hasFlightsTo;
+};
+
+Airport::~Airport()
+{
+  /* for (int i = 0; i &lt; hasFlightsTo.size(); ++i)
+      delete hasFlightsTo[i]; */
+}
+
+class AirLine {
+   &#x22ee;
+   string name;
+   map&lt;string, Airport*&gt; hubs;
+};
+
+
+AirLine::~Airline()
+{
+   for (map&lt;string, Airport*&gt;::iterator i = hubs.begin;
+        i != hubs.end(); ++i)
+     delete i-&gt;second;
+}
+
+
+</code></pre><hr/><p><strong>Ownership Example</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="hubs.png" style="float: right; max-width: 60%;"/><br/>Thus, when the airline object on the left is destroyed, it will  delete the Boston, N.Y., and Wash DC objects. </p>
+    <ul>
+  <li>
+  <p>Each of those will be deleted exactly once, so our program should no longer crash.  </p>
+    </li>
+  <li>
+  <p>This solution isn’t perfect. The Norfolk and Raleigh objects are never reclaimed, so we do wind up leaking memory. </p>
+    </li>
+</ul><hr/><p><strong>Asserting Ownership</strong></p>
+    <p>I would probably resolve this by modifying the Airline class to keep  better track of its Airports.</p>
+    <pre><code class="cpp"><br/>class AirLine {
+   &#x22ee;
+   string name;
+   set&lt;string&gt; hubs;
+   map&lt;string, Airport*&gt; airportsServed;
+};
+
+
+AirLine::~Airline()
+{
+   for (map&lt;string, Airport*&gt;::iterator i = airportsServed.begin;
+        i != airportsServed.end(); ++i)
+     delete i-&gt;second;
+}
+
+
+</code></pre><hr/><p><strong>Asserting Ownership (cont.)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="airline.png" style="float: right; max-width: 50%;"/>  The new map tracks all of the airports served by this airline,  and we use a separate data structure to indicate which of those airports  are hubs. </p>
+    <p>Now, when an airline object is destroyed, all of its airport  descriptors will be reclaimed as well.</p>
+    <hr/><p><strong>Ownership Can Be Too Strong</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="sllist.png" style="float: right; max-width: 40%;"/>  Ownership is sometimes a bit too strong a relation to be  useful. </p>
+    <ul>
+  <li>
+  <p>In this example, if we simply say that the list header owns the nodes it points to, then we would delete the first and last node and would leave Baker on the heap.  </p>
+    </li>
+  <li>
+  <p>And if we say that the nodes owned the other nodes that they point to <span class="emph">and</span> that the list header owns the ones it points to, we would delete the last node twice.</p>
+    </li>
+</ul><hr/><p><strong>Strong and Weak Pointers</strong></p>
+    <p>We can generalize the notion of ownership by characterizing the  various pointer data members as strong or weak. </p>
+    <ul>
+  <li>
+  <p>A <span class="firstterm">strong pointer</span> is a pointer data member that indicates that the object pointed to must remain in memory.</p>
+    </li>
+  <li>
+    <p>A <span class="firstterm">weak pointer</span> is a pointer data member that is allowed to point to data that might have been deleted. </p>
+    
+    <ul>
+      <li>(Obviously, we never want to follow a weak pointer unless we are sure that the data has not, in fact, been deleted.)  </li>
+    </ul>
+  </li>
+</ul><p>When an object containing pointer data members is destroyed, it  deletes its strong pointer members and leaves its weak ones alone.</p>
+    <hr/><p><strong>Strong and Weak SLL</strong></p>
+    <p>In this example, if we characterize the pointers as shown:</p>
+    <pre><code class="cpp">struct SLNode {
+   string data;
+   SLNode* next; // strong
+     &#x22ee;
+   ~SLNode () {delete next;}
+};
+
+class List {
+   SLNode* first; // strong
+   SLNode* last;  // weak
+public:
+     &#x22ee;
+   ~List() 
+    {
+      delete first;  // OK, because this is strong
+      /*delete last;*/ // Don't delete. last is weak.
+     }
+};
+</code></pre><p>then our program will run correctly.</p>
+    <hr/><p><strong>Picking the Strong Ones</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="dllist.png" style="float: right; max-width: 40%;"/> The key idea is to select the smallest set of pointer data members  that would connect together all of the allocated objects, while giving you  exactly one path to each such object.</p>
+    <hr/><p><strong>Strong and Weak DLL</strong></p>
+    <p>Similarly, in a doubly linked list, we can designate the pointers as  follows:</p>
+    <pre><code class="cpp">struct DLNode {
+   string data;
+   DLNode* prev; // weak
+   DLNode* next; // strong
+     &#x22ee;
+   ~DLNode () {delete next;}
+};
+
+class List {
+   DLNode* first; // strong
+   DLNode* last;  // weak
+public:
+     &#x22ee;
+   ~List() {delete first;}
+};
+</code></pre><p>and so achieve a program that recovers all garbage without deleting  anything twice.</p>
+    <a id="c11stdreferencecounting"/><h1 id="c-11-std-reference-counting">4 C++11: std Reference Counting</h1><p>The new C++11 standard contains smart pointer templates, quite similar in concept to the <span class="type">RefCountPointer</span> discussed earlier.</p>
+    <hr/><p><strong>shared and weak ptrs</strong></p>
+    <p>There are two primary class templates involved</p>
+    <ul>
+  <li>
+    <p><span class="type"><code>shared_ptr&lt;T&gt;</code></span> provides a strong pointer with  an associated reference counter.</p>
+    
+    <ul>
+      <li>Shared pointers may be freely assigned to one another.</li>
+      <li>If all shared pointers to an object on the heap are destroyed or are reassigned to point elsewhere, then that reference count will drop to zero and the object on the heap will be deleted.</li>
+    </ul>
+  </li>
+  <li>
+    <p><span class="type"><code>weak_ptr&lt;T&gt;</code></span> provides a weak pointer to an  object that has an associated reference counter, but </p>
+    
+    <ul>
+      <li>creating, copying, assigning, or destroying weak pointers does not affect the reference counter value.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Strong and weak pointers may be copied to one  another.</p>
+    </li>
+</ul><a id="javaprogrammershaveiteasy"/><h1 id="java-programmers-have-it-easy">5 Java Programmers Have it Easy</h1><hr/><p><strong>Java Programmers Have it Easy</strong></p>
+    <p>Java has included automatic garbage collection since its beginning.</p>
+    <ul>
+  <li>
+  <p>From a practical point of view, sharing in Java is actually easier (and more common) than deep copying.</p>
+    </li>
+  <li>
+  <p>Java programmers typically are unconcerned with many of the memory management errors that C++ programmers must strive to avoid.</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Sharing%20Pointers%20and%20Garbage%20Collection"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

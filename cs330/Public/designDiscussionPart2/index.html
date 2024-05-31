@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Continuing Our Tic-Tac-Toe Design</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Continuing%20Our%20Tic-Tac-Toe%20Design"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="designDiscussionPart2__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Continuing Our Tic-Tac-Toe Design</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#our-model-thus-far">1 Our Model Thus Far</a></div><div class="toc-h1"><a href="#validating-our-model">2 Validating Our Model</a></div><div class="toc-h1"><a href="#our-first-use-case">3 Our First Use Case</a></div><div class="toc-h2"><a href="#play-one-round">3.1 Play One Round</a></div><div class="toc-h2"><a href="#step-2-our-first-update">3.2 Step 2: Our First Update</a></div><div class="toc-h2"><a href="#step-2-cleanup">3.3 Step 2 Cleanup</a></div><div class="toc-h2"><a href="#step-3">3.4 Step 3</a></div><div class="toc-h2"><a href="#steps-4-to-10">3.5 Steps 4 to 10</a></div><div class="toc-h2"><a href="#step-11">3.6 Step 11</a></div><div class="toc-h2"><a href="#steps-12-13">3.7 Steps 12 &amp; 13</a></div><div class="toc-h1"><a href="#post-first-use-case-domain-model">4 Post First Use Case Domain Model</a></div><div class="toc-h1"><a href="#lingering-and-new-questions">5 Lingering (And New) Questions</a></div></div><p>During the <a class="doc" href="../../Public/designDiscussion/index.html" target="CS330_Public">First Design Discussion</a> we covered a number of topics:</p>
+    <ul>
+  <li><a href="doc:classChecklistsAndPlantUML#language-specific-class-checklists">C++, Java, and Python Class Checklists</a></li>
+  <li><a class="doc" href="../../Public/designDiscussion/index.html#step-1" target="CS330_Public">Starting a Domain Model</a></li>
+  <li><a class="doc" href="../../Public/designDiscussion/index.html#step-2-the-big-picture" target="CS330_Public">Building a Domain Model</a></li>
+  <li><a class="doc" href="../../Public/designDiscussion/index.html#tackling-game-and-referee" target="CS330_Public">Capturing Behaviors</a></li>
+  <li><a class="doc" href="../../Public/designDiscussion/index.html#constructing-useful-uml-class-diagrams" target="CS330_Public">Building UML Class Diagrams</a></li>
+</ul><a id="ourmodelthusfar"/><h1 id="our-model-thus-far">1 Our Model Thus Far</h1><p>We concluded the discussion with a Pseudo-Final Domain Model.</p>
+    <p><img alt="A Decent Start" src="../designDiscussion/tic-tac-toe-17.svg"/></p>
+    <div class="details"><span class="summary"><a href="../designDiscussion/tic-tac-toe-17.puml" target="listing">../designDiscussion/tic-tac-toe-17.puml</a></span> <input id="but_details_d6e34" onclick="toggleDisplay('_details_d6e34')" type="button" value="+"/><div class="detailPart" id="_details_d6e34"><pre><code id="_details_d6e34_code">@startuml
+hide empty members
+
+class Player {
+    name
+    symbol
+
+    nextMove(theBoard : Board)
+}
+
+class Board {
+    getCell(position)
+    setCell(position, symbol)
+    isFull()
+}
+
+class Strategy {
+
+}
+
+class Referee {
+    validate(selectedMove, theBoard : Board)
+    checkForWin(theBoard: Board)
+    checkForLoss(theBoard: Board)
+    checkForStalemate(theBoard: Board)
+}
+
+class Game {
+    player1: Player
+    player2: Player
+
+    getWinner() : Player
+    getLoser() : Player
+    playOneRound()
+    isOver()
+    endedWithWin()
+    endedWithLoss()
+    endedWithStalemate()
+}
+
+Player &lt;|---- HumanPlayer
+Player &lt;|---- ComputerPlayer
+
+@enduml
+</code></pre></div></div><a id="validatingourmodel"/><h1 id="validating-our-model">2 Validating Our Model</h1><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Why two tools? PlantUML does support UML Sequence diagrams. However, the markup is cumbersome and the results are dubious.</p>
+    
+</div><p>This is the fun part! We will be using two tools:</p>
+    <ul>
+  <li><a href="http://plantuml.com/class-diagram">PlantUML</a> for <strong>UML Class Diagrams</strong></li>
+  <li><a href="https://sourceforge.net/projects/sdedit/files/">SDEdit</a> for <strong>UML Sequence Diagrams.</strong></li>
+</ul><p>Now on to the fun part! For real this time…</p>
+    <p>I will assume <strong>you have watched</strong> <a href="https://github.com/cstkennedy/cs330-examples#whirlwind-introduction-to-uml-sequence-diagrams">Whirlwind Introduction to UML Sequence Diagrams</a>.</p>
+    <a id="ourfirstusecase"/><h1 id="our-first-use-case">3 Our First Use Case</h1><p>Our goal is to validate our model. This involves:</p>
+    <ul>
+  <li>confirming our model can capture the entirety of each case.</li>
+  <li>addressing missing elements (both responsibilities and classes).</li>
+</ul><a id="playoneround"/><h2 id="play-one-round">3.1 Play One Round</h2><blockquote>
+  <p>1: A new <code>game</code> starts with two <code>player</code>s, <strong>Tom</strong> and <strong>Jay</strong>.</p>
+    
+  <p>2: The <code>referee</code> flips a coin. <strong>Tom</strong> and <strong>Jay</strong> choose heads and tails, respectively.</p>
+    
+  <p>3: The coin lands on tails. <strong>Jay</strong> will go first as player 1 (‘X’). <strong>Tom</strong> will  second as player 2 (‘O’).</p>
+    
+  <p>4: Jay selects cell 5 (the center of the board). His move is recorded.</p>
+    
+  <p>5: Tom selects cell 1 (top-left). His move is recorded.</p>
+    
+  <p>6: Jay selects cell 3 (top-right). His move is recorded.</p>
+    
+  <p>7: Tom selects cell 7 (bottom-left). His move is recorded.</p>
+    
+  <p>8: Jay selects cell 4 (middle-left). His move is recorded.</p>
+    
+  <p>9: Tom selects cell 9 (bottom-right). His move is recorded.</p>
+    
+  <p>10: Jay selects cell 8 (middle-right). His move is recorded.</p>
+    
+  <p>11: The referee recognizes 3 ‘X’ symbols in a row. Jay is declared the winner.</p>
+    
+  <p>12: Jay’s win is recorded in the Tournament Scoreboard. Jay is awarded 1 point.</p>
+    
+  <p>13: The scoreboard is updated to indicate that Tom and Jay played 1 match.</p>
+    
+</blockquote><p>Remember, we now have a UML Sequence Diagram in which we work with <strong>objects</strong>. Let us take this step-by-step.</p>
+    <blockquote>
+  <p>1: A new <code>game</code> starts with two <code>player</code>s, <strong>Tom</strong> and <strong>Jay</strong>.</p>
+    
+</blockquote><p>We have four objects (instances of classes).</p>
+    <p><img alt="sequence1" src="seq1.svg"/></p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Note that this is SDEdit markup. The first line is used to name the diagram. The lines that start with ‘#’ denote a comment.</p>
+    
+<p>We have four objects (recall from our previous discussion that a board is linked to a single game).</p>
+    
+</div><pre><code>#![Play One Round]
+# Objects
+tom:Player
+jay:Player
+game:Game[a]
+/board:Board[a]
+#
+game:board.new()
+</code></pre><p>Notice how <strong>jay</strong> and <strong>tom</strong> are named objects? I have two players. If I am given names for my objects, I must use those names. Take note of the syntax:</p>
+    <pre><code>tom:Player
+jay:Player
+</code></pre><p>The name goes before the colon. The class goes after the colon. This can be though of as:</p>
+    <pre><code>Player tom;
+Player jay;
+</code></pre><p>I left game and board as anonymous objects. While I have given them names out of necessity, the names are placeholders. They have no inherent meaning. Both <code>game</code> and <code>board</code> are <em>anonymous objects</em>.</p>
+    <p>So far we have been lucky. Our existing model captures the entirety of step 1.</p>
+    <a id="step2ourfirstupdate"/><h2 id="step-2-our-first-update">3.2 Step 2: Our First Update</h2><p>Our luck does not hold in step 2.</p>
+    <blockquote>
+  <p>2: The <code>referee</code> flips a coin. <strong>Tom</strong> and <strong>Jay</strong> choose heads and tails, respectively.</p>
+    
+</blockquote><p>We can add the referee object, but the referee class does not have a <em>flip coin</em> behavior. Our Player class does not have a <em>choose heads or tails</em> responsibility. The solution is simple, let us pretend…</p>
+    <p><img alt="sequence2" src="seq2.svg"/></p>
+    <div class="details"><span class="summary"><a href="seq2.sd" target="listing">seq2.sd</a></span> <input id="but_details_d6e200" onclick="toggleDisplay('_details_d6e200')" type="button" value="+"/><div class="detailPart" id="_details_d6e200"><pre><code id="_details_d6e200_code">#![Play One Round]
+# Objects
+tom:Player
+jay:Player
+game:Game[a]
+/board:Board[a]
+/ref:Referee[a]
+#
+game:board.new()
+game:ref.new()
+game:ref.flipCoin()
+ref:tomChoice=tom.choose()
+ref:jayChoice=jay.choose()
+</code></pre></div></div><p>We have identified oversights in our Player (choose), Referee (flipCoin) and Game classes. Yes, <code>Game</code> needs to be updated. What is missing? How about the function that runs the game from start to finish. I think I will call it <em>playMatch</em>.</p>
+    <p>Now we can update our UML class diagrams.</p>
+    <p><img alt="uml-class-2-01" src="design2-class-01.svg"/></p>
+    <div class="details"><span class="summary"><a href="design2-class-01.puml" target="listing">design2-class-01.puml</a></span> <input id="but_details_d6e211" onclick="toggleDisplay('_details_d6e211')" type="button" value="+"/><div class="detailPart" id="_details_d6e211"><pre><code id="_details_d6e211_code">@startuml
+hide empty members
+
+class Player {
+    name
+    symbol
+
+    nextMove(theBoard : Board)
+    choose()
+}
+
+class Board {
+    getCell(position)
+    setCell(position, symbol)
+    isFull()
+}
+
+class Strategy {
+
+}
+
+class Referee {
+    validate(selectedMove, theBoard : Board)
+    checkForWin(theBoard: Board)
+    checkForLoss(theBoard: Board)
+    checkForStalemate(theBoard: Board)
+    flipCoin()
+}
+
+class Game {
+    player1: Player
+    player2: Player
+
+    getWinner() : Player
+    getLoser() : Player
+    playMatch()
+    playOneRound()
+    isOver()
+    endedWithWin()
+    endedWithLoss()
+    endedWithStalemate()
+}
+
+Player &lt;|---- HumanPlayer
+Player &lt;|---- ComputerPlayer
+
+@enduml
+</code></pre></div></div><a id="step2cleanup"/><h2 id="step-2-cleanup">3.3 Step 2 Cleanup</h2><p>Things are getting confusing. Let us ignore the HumanPlayer and ComputerPlayer classes for now.</p>
+    <p><img alt="uml-class-2-02" src="design2-class-02.png"/></p>
+    <p>Let us rearrange our UML Sequence Diagram.</p>
+    <p><img alt="sequence3" src="seq3.svg"/></p>
+    <div class="details"><span class="summary"><a href="seq3.sd" target="listing">seq3.sd</a></span> <input id="but_details_d6e222" onclick="toggleDisplay('_details_d6e222')" type="button" value="+"/><div class="detailPart" id="_details_d6e222"><pre><code id="_details_d6e222_code">#![Play One Round]
+# Objects
+game:Game[a]
+/board:Board[a]
+/ref:Referee[a]
+tom:Player
+jay:Player
+#
+game:board.new()
+game:ref.new()
+game:ref.flipCoin()
+ref:tomChoice=tom.choose()
+ref:jayChoice=jay.choose()
+</code></pre></div></div><p>That is much better. We see that <em>Game::playMatch()</em> is driving everything. Let us put <em>:Game</em> in the left-most position. The order of our function calls has not changed. We rearranged <em><del>classes</del></em> <strong>objects</strong> for clarity.</p>
+    <a id="step3"/><h2 id="step-3">3.4 Step 3</h2><p>Step 3 is far less complex.</p>
+    <blockquote>
+  <p>3: The coin lands on tails. <strong>Jay</strong> will go first as player 1 (‘X’). <strong>Tom</strong> will  second as player 2 (‘O’).</p>
+    
+</blockquote><p>I think we might need <em>setPlayer1</em> and <em>setPlayer2</em> methods. <em>These are not the standard C++ (or Java or Python3) setters.</em> <strong>These two functions arise from our problem domain!</strong></p>
+    <p>Let us update our sequence diagram…</p>
+    <p><img alt="sequence4" src="seq4.svg"/></p>
+    <div class="details"><span class="summary"><a href="seq4.sd" target="listing">seq4.sd</a></span> <input id="but_details_d6e259" onclick="toggleDisplay('_details_d6e259')" type="button" value="+"/><div class="detailPart" id="_details_d6e259"><pre><code id="_details_d6e259_code">#![Play One Round]
+# Objects
+game:Game[a]
+/board:Board[a]
+/ref:Referee[a]
+tom:Player
+jay:Player
+#
+game:board.new()
+game:ref.new()
+game:ref.flipCoin()
+ref:tomChoice=tom.choose()
+ref:jayChoice=jay.choose()
+game:setPlayer1(jay)?
+game:jay.setSymbol('X')
+game:setPlayer2(tom)?
+game:tom.setSymbol('O')
+</code></pre></div></div><p>Note the question marks next to <em>setPlayer1</em> and <em>setPlayer2</em> I am not entirely sure these are needed. So far they appear to be sufficiently captured by the use of <em>setSymbol(…)</em>. I will add them to my model… for now.</p>
+    <p>Let us update our model accordingly.</p>
+    <p><img alt="uml-class-2-02" src="design2-class-03.png"/></p>
+    <a id="steps4to10"/><h2 id="steps-4-to-10">3.5 Steps 4 to 10</h2><p>The next 7 (10 - 4 + 1 = 7) steps are the same. Our <code>PLayer::nextMove</code> and <code>Board::setCell</code> functions capture the two required steps:</p>
+    <ol>
+  <li>Get the move from the player.</li>
+  <li>Update the board.</li>
+</ol><p>Let us capture step 4.</p>
+    <blockquote>
+  <p>4: Jay selects cell 5 (the center of the board). His move is recorded.</p>
+    
+</blockquote><p>We will add two new lines to our markup:</p>
+    <pre><code>game:jay.nextMove(...)
+game:board.setCell(5, jay.getSymbol())
+</code></pre><p>This corresponds to two function calls. Think about the context of these calls… These calls happen within the <code>Game::playMatch</code> method (responsibility/behavior).</p>
+    <p>The next few steps (i.e., steps 5-10) are similar. Let us add them all in <em>one fell swoop</em>.</p>
+    <p><img alt="sequence5" src="seq5.svg"/></p>
+    <div class="details"><span class="summary"><a href="seq5.sd" target="listing">seq5.sd</a></span> <input id="but_details_d6e306" onclick="toggleDisplay('_details_d6e306')" type="button" value="+"/><div class="detailPart" id="_details_d6e306"><pre><code id="_details_d6e306_code">#![Play One Round]
+# Objects
+game:Game[a]
+/board:Board[a]
+/ref:Referee[a]
+tom:Player
+jay:Player
+#
+game:board.new()
+game:ref.new()
+game:ref.flipCoin()
+ref:tomChoice=tom.choose()
+ref:jayChoice=jay.choose()
+game:setPlayer1(jay)?
+game:jay.setSymbol('X')
+game:setPlayer2(tom)?
+game:tom.setSymbol('O')
+game:jay.nextMove(...)
+game:board.setCell(5, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(1, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(3, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(7, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(4, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(9, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(8, jay.getSymbol())
+</code></pre></div></div><a id="step11"/><h2 id="step-11">3.6 Step 11</h2><p>Step 11 is captured by our existing model.</p>
+    <blockquote>
+  <p>11: The referee recognizes 3 ‘X’ symbols in a row. Jay is declared the winner.</p>
+    
+</blockquote><p>We can use one line!</p>
+    <pre><code>#
+game:winner=ref.checkforWin(...)
+</code></pre><p>However, I think we should capture the horizontal win more explicitly. Let us add <code>Referee::recognizeHorizontalWin</code> to our sequence diagram.</p>
+    <pre><code>#
+game:winner=ref.checkforWin(...)
+ref:ref.recognizeHorizontalWin(...)
+</code></pre><p>That is much better. I think we should also add <code>Referee::recognizeVerticalWin</code> and <code>Referee::recognizeDiagonalWin</code>. We will probably need them in other scenarios.</p>
+    <p>Let us update our model.</p>
+    <p><img alt="uml-class-2-04" src="design2-class-04.png"/></p>
+    <a id="steps1213"/><h2 id="steps-12-13">3.7 Steps 12 &amp; 13</h2><p>I think we can capture the last two steps simultaneously.</p>
+    <blockquote>
+  <p>12: Jay’s win is recorded in the Tournament Scoreboard. Jay is awarded 1 point.</p>
+    
+  <p>13: The scoreboard is updated to indicate that Tom and Jay played 1 match.</p>
+    
+</blockquote><p>It looks like we need a new class to capture the <em>Tournament Scoreboard</em>. I think <code>Scoreboard</code> is a reasonable name. I think steps 12 and 13 lead to <code>Scoreboard::awardPoint(p: Player)</code> and <code>Scoreboard::recordMatch(p1: Player, p2: Player 2)</code>, respectively.</p>
+    <p>That leaves us with our final UML Sequence Diagram.</p>
+    <p><img alt="sequence5" src="seq6.svg"/></p>
+    <div class="details"><span class="summary"><a href="seq6.sd" target="listing">seq6.sd</a></span> <input id="but_details_d6e356" onclick="toggleDisplay('_details_d6e356')" type="button" value="+"/><div class="detailPart" id="_details_d6e356"><pre><code id="_details_d6e356_code">#![Play One Round]
+# Objects
+game:Game[a]
+/board:Board[a]
+/ref:Referee[a]
+tom:Player
+jay:Player
+scoreBoard:ScoreBoard[a]
+#
+game:board.new()
+game:ref.new()
+game:ref.flipCoin()
+ref:tomChoice=tom.choose()
+ref:jayChoice=jay.choose()
+game:setPlayer1(jay)?
+game:jay.setSymbol('X')
+game:setPlayer2(tom)?
+game:tom.setSymbol('O')
+game:jay.nextMove(...)
+game:board.setCell(5, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(1, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(3, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(7, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(4, jay.getSymbol())
+game:tom.nextMove(...)
+game:board.setCell(9, tom.getSymbol())
+game:jay.nextMove(...)
+game:board.setCell(8, jay.getSymbol())
+#
+game:winner=ref.checkforWin(...)
+ref:ref.recognizeHorizontalWin(...)
+#
+game:scoreBoard.awardPoint(jay)
+game:scoreBoard.recordMatch(jay, tom)
+</code></pre></div></div><a id="postfirstusecasedomainmodel"/><h1 id="post-first-use-case-domain-model">4 Post First Use Case Domain Model</h1><p>We are left with a more complete model.</p>
+    <p><img alt="uml-class-2-05" src="design2-class-05.svg"/></p>
+    <div class="details"><span class="summary"><a href="design2-class-05.puml" target="listing">design2-class-05.puml</a></span> <input id="but_details_d6e363" onclick="toggleDisplay('_details_d6e363')" type="button" value="+"/><div class="detailPart" id="_details_d6e363"><pre><code id="_details_d6e363_code">@startuml
+hide empty members
+
+class Player {
+    name
+    symbol
+
+    nextMove(theBoard : Board)
+    choose()
+}
+
+class Board {
+    getCell(position)
+    setCell(position, symbol)
+    isFull()
+}
+
+class Strategy {
+
+}
+
+class Referee {
+    validate(selectedMove, theBoard : Board)
+    checkForWin(theBoard: Board)
+    checkForLoss(theBoard: Board)
+    checkForStalemate(theBoard: Board)
+    flipCoin()
+
+    recognizeHorizontalWin(...)
+    recognizeVerticalWin(...)
+    recognizeDiagonalWin(...)
+}
+
+class Game {
+    player1: Player
+    player2: Player
+
+    getWinner() : Player
+    getLoser() : Player
+    playMatch()
+    playOneRound()
+    isOver()
+    endedWithWin()
+    endedWithLoss()
+    endedWithStalemate()
+
+    setPlayer1(p: Player)?
+    setPlayer2(p: Player)?
+}
+
+class Scoreboard {
+    awardPoint(p: Player)
+    recordMatch(p1: Player, p2: Player 2)
+}
+
+Player &lt;|---- HumanPlayer
+Player &lt;|---- ComputerPlayer
+
+@enduml
+</code></pre></div></div><a id="lingeringandnewquestions"/><h1 id="lingering-and-new-questions">5 Lingering (And New) Questions</h1><p>Of course, we can see a number of questions remain. Examine the sequence diagram. Take note of the ellipses (…) in some of the function calls. We need to figure out the required arguments. We also need to determine whether <code>setPlayer1</code> and <code>setPlayer2</code> are necessary.</p>
+    <p><strong>We will leave these questions for later consideration.</strong></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Continuing%20Our%20Tic-Tac-Toe%20Design"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="designDiscussionPart2__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

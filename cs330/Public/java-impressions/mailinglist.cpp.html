@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>mailinglist.cpp</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20mailinglist.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">mailinglist.cpp</h1></div><pre><code>#include &lt;cassert&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+#include "mailinglist.h"
+
+
+using namespace std;
+using namespace rel_ops;
+
+
+
+MailingList::MailingList()
+  : first(NULL), last(NULL), theSize(0)
+{}
+
+MailingList::MailingList(const MailingList&amp; ml)
+  : first(NULL), last(NULL), theSize(0)
+{
+  for (ML_Node* current = ml.first; current != NULL;
+       current = current-&gt;next)
+    addContact(current-&gt;contact);
+}
+
+
+MailingList::~MailingList()
+{
+  clear();
+}
+
+const MailingList&amp; MailingList::operator= (const MailingList&amp; ml)
+{
+  if (this != &amp;ml)
+    {
+      clear();
+      for (ML_Node* current = ml.first; current != NULL;
+       current = current-&gt;next)
+    addContact(current-&gt;contact);
+    }
+  return *this;
+}
+
+
+// Add a new contact to the list
+void MailingList::addContact (const Contact&amp; contact)
+{
+  if (first == NULL) 
+    { // add to empty list
+      first = last = new ML_Node(contact, NULL);
+      theSize = 1;
+    }
+  else if (contact &gt; last-&gt;contact)
+    { // add to end of non-empty list
+      last-&gt;next = new ML_Node(contact, NULL);
+      last = last-&gt;next;
+      ++theSize;
+    }
+  else if (contact &lt; first-&gt;contact)
+    { // add to front of non-empty list
+      first = new ML_Node(contact, first);
+      ++theSize;
+    }
+  else
+    { // search for place to insert
+      ML_Node* previous = first;
+      ML_Node* current = first-&gt;next;
+      assert (current != NULL);
+      while (contact &lt; current-&gt;contact)
+    {
+      previous = current;
+      current = current-&gt;next;
+      assert (current != NULL);
+    }
+      previous-&gt;next = new ML_Node(contact, current);
+      ++theSize;
+    }
+}
+
+
+// Remove one matching contact
+void MailingList::removeContact (const Contact&amp; contact)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL &amp;&amp; contact &gt; current-&gt;contact)
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL &amp;&amp; contact == current-&gt;contact)
+    remove (previous, current);
+}
+
+
+void MailingList::removeContact (const Name&amp; name)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL
+     &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+     &amp;&amp; name == current-&gt;contact.getName())
+    remove (previous, current);
+}
+
+
+
+// Find and retrieve contacts
+bool MailingList::contains (const Name&amp; name) const 
+{
+  ML_Node* current = first;
+  while (current != NULL
+     &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  return (current != NULL 
+      &amp;&amp; name == current-&gt;contact.getName());
+}
+
+
+Contact MailingList::getContact (const Name&amp; name) const
+{
+  ML_Node* current = first;
+  while (current != NULL
+     &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+      &amp;&amp; name == current-&gt;contact.getName())
+    return current-&gt;contact;
+  else
+    return Contact();
+}
+
+
+
+
+
+// combine two mailing lists
+void MailingList::merge (const MailingList&amp; anotherList)
+{
+  // For a quick merge, we will loop around, checking the 
+  // first item in each list, and always copying the smaller
+  // of the two items into result
+  MailingList result;
+  ML_Node* thisList = first;
+  const ML_Node* otherList = anotherList.first;
+  while (thisList != NULL and otherList != NULL)
+    {
+      if (thisList-&gt;contact &lt; otherList-&gt;contact)
+    {
+      result.addContact(thisList-&gt;contact);
+      thisList = thisList-&gt;next;
+    }
+      else
+    {
+      result.addContact(otherList-&gt;contact);
+      otherList = otherList-&gt;next;
+    }
+    }
+  // Now, one of the two lists has been entirely copied. 
+  // The other might still have stuff to copy. So we just copy
+  // any remaining items from the two lists. Note that one of these
+  // two loops will execute zero times.
+  while (thisList != NULL)
+    {
+      result.addContact(thisList-&gt;contact);
+      thisList = thisList-&gt;next;
+    }
+  while (otherList != NULL)
+    {
+      result.addContact(otherList-&gt;contact);
+      otherList = otherList-&gt;next;
+    }
+  // Now result contains the merged list. Transfer that into this list.
+  clear();
+  first = result.first;
+  last = result.last;
+  theSize = result.theSize;
+  result.first = result.last = NULL;
+  result.theSize = 0;
+}
+
+// How many contacts in list?
+int MailingList::size() const
+{
+  return theSize;
+}
+
+
+bool MailingList::operator== (const MailingList&amp; right) const
+{
+  if (theSize != right.theSize) // (easy test first!)
+    return false;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+    {
+      if (thisList-&gt;contact != otherList-&gt;contact)
+        return false;
+      thisList = thisList-&gt;next;
+      otherList = otherList-&gt;next;
+    }
+      return true;
+    }
+}
+
+
+bool MailingList::operator&lt; (const MailingList&amp; right) const
+{
+  if (theSize &lt; right.theSize)
+    return true;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+    {
+      if (thisList-&gt;contact &lt; otherList-&gt;contact)
+        return true;
+      else if (thisList-&gt;contact &gt; otherList-&gt;contact)
+        return false;
+      thisList = thisList-&gt;next;
+      otherList = otherList-&gt;next;
+    }
+      return false;
+    }
+}
+
+
+// helper functions
+void MailingList::clear()
+{
+  ML_Node* current = first;
+  while (current != NULL)
+    {
+      ML_Node* next = current-&gt;next;
+      delete current;
+      current = next;
+    }
+  first = last = NULL;
+  theSize = 0;
+}
+
+
+void MailingList::remove (MailingList::ML_Node* previous,
+           MailingList::ML_Node* current)
+{
+  if (previous == NULL)
+    { // remove front of list
+      first = current-&gt;next;
+      if (last == current)
+    last = NULL;
+      delete current;
+    }
+  else if (current == last)
+    { // remove end of list
+      last = previous;
+      last-&gt;next = NULL;
+      delete current;
+    }
+  else
+    { // remove interior node
+      previous-&gt;next = current-&gt;next;
+      delete current;
+    }
+  --theSize;
+}
+
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const MailingList&amp; list)
+{
+  MailingList::ML_Node* current = list.first;
+  while (current != NULL)
+    {
+      out &lt;&lt; current-&gt;contact &lt;&lt; "\n";
+      current = current-&gt;next;
+    }
+  out &lt;&lt; flush;
+  return out;
+}
+
+
+book1.setTitle(''bogus title'');
+assert (book1.getTitle() == ''bogus title'');
+
+book2 = book1;
+assert (book1 == book2);
+book1.setTitle(''bogus title 2'');
+assert (! (book1  == book2));
+
+
+
+catalog.add(book1);
+assert (catalog.firstBook() == book1);&gt;
+
+
+
+string s1, s2;
+cin &gt;&gt; s1 &gt;&gt; s2;
+if (s1 &lt; s2)       ''abc'' &lt; ''def''
+                       ''abc'' &lt; ''abcd''
+
+    x y
+
+Exactly one of the following is true for any x and y
+    x == y
+    x &lt; y
+    y &lt; x
+
+ namespace std{
+
+   namespace relops {
+template &lt;class T&gt;
+bool operator!= (T left, T right)
+{
+  return !(left == right);
+}
+
+
+template &lt;class T&gt;
+bool operator&gt; (T left, T right)
+{
+  return (right &lt; left);
+}
+
+
+
+     using namespace std::relops;
+</code></pre><p><a href="mailinglist.cpp">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20mailinglist.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

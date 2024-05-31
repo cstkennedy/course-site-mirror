@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Review - Makefiles & Command Line Arguments</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Review%20-%20Makefiles%20%26%20Command%20Line%20Arguments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Review - Makefiles &amp; Command Line Arguments</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-quick-makefile">1 A Quick makefile</a></div><div class="toc-h1"><a href="#command-line-arguments">2 Command Line Arguments</a></div><div class="toc-h2"><a href="#playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</a></div><div class="toc-h2"><a href="#using-command-line-arguments">2.2 Using Command Line Arguments</a></div></div><p>All example C++ code (e.g., from <a href="https://github.com/cstkennedy/cs330-examples">recorded lectures</a>) makes use of makefiles. You will use makefiles in each C++ assignment. Makefiles are used to perform compilation and linking steps. For C++, this takes the form of:</p>
+    <ol>
+  <li>Compiling C++ implementation files (e.g., <code>.cpp</code>, <code>.cc</code>, <code>.cxx</code>) to <code>*.o</code>  files.</li>
+  <li>Linking <code>.o</code> files to create one or more executables (binaries).</li>
+</ol><p>Writing a makefile is an exercise best left to CS 252 (Introduction to Unix/Linux) or an equivalent course. You are required to <strong>use</strong> makefiles in this course.</p>
+    <a id="aquickmakefile"/><h1 id="a-quick-makefile">1 A Quick makefile</h1><p>Most of my examples make use of a quick-and-dirty makefile.</p>
+    <div class="details"><span class="summary"><a href="makefile" target="listing">makefile</a></span> <input id="but_details_d6e32" onclick="toggleDisplay('_details_d6e32')" type="button" value="+"/><div class="detailPart" id="_details_d6e32"><pre><code id="_details_d6e32_code">MAINPROG=cmd_line_example
+
+SOURCES:=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+FLAGS=-std=c++17 -fsanitize=leak,address -Wall -Wpedantic -fuse-ld=gold
+
+all: $(SOURCES) $(MAINPROG)
+
+$(MAINPROG): $(OBJECTS)
+	g++ $(FLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	g++ $(FLAGS) -c $&lt; -o $@
+
+clean:
+	rm *.o $(MAINPROG)
+</code></pre></div></div><p>Let us break everything down…</p>
+    <pre><code>MAINPROG=cmd_line_example
+</code></pre><p>The first line is a variable. It is used to specify the name for the final executable. In this example, the final executable will be named <code>cmd_line_example</code>.</p>
+    <pre><code>SOURCES:=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+</code></pre><p>The <code>SOURCES</code> line uses a wild card (i.e., <code>.cpp</code>) to grab a list of all <code>cpp</code> files in the current directory. The <code>OBJECTS</code> line constructs a list of <code>.o</code> files that need to be compiled (one per <code>cpp</code> file).</p>
+    <pre><code>FLAGS=-std=c++17 -fsanitize=leak,address -Wall -Wpedantic -fuse-ld=gold
+</code></pre><p>The <code>FLAGS</code> line specifies what compilation flags need to be used:</p>
+    <ul>
+  <li>
+  <p><code>-std=c++17</code> - use the C++17 standard (this could also be <code>c++0x</code>, <code>c++11</code>, <code>c++14</code>, or <code>c++2a</code> depending on compiler).</p>
+    </li>
+  <li>
+  <p><code>-fsanitize=leak,address</code> - add memory leak checks and a few other address checks, generating a report if any are encountered during program execution.</p>
+    </li>
+  <li>
+  <p><code>-Wall</code> - enable warning for <em>potential</em> issues (e.g., comparing signed and unsigned numbers).</p>
+    </li>
+  <li>
+  <p><code>-Wpedantic</code> - enable even more warnings (This is essentially… <strong>ALL THE WARNINGS</strong>).</p>
+    </li>
+  <li>
+  <p><code>-fuse-ld=gold</code> - this is required due to a linker bug on Ubuntu Linux and certain version of <code>g++</code>.</p>
+    </li>
+</ul><pre><code>all: $(SOURCES) $(MAINPROG)
+</code></pre><p>When <code>make</code> or <code>make all</code> is run, compile everything (all <code>cpp</code> files) and build the main program.</p>
+    <pre><code>$(MAINPROG): $(OBJECTS)
+	g++ $(FLAGS) $(OBJECTS) -o $@
+</code></pre><pre><code>.cpp.o:
+	g++ $(FLAGS) -c $&lt; -o $@
+</code></pre><p>This is a <em>meta-rule</em> that tells the makefile how to compile each <code>cpp file</code>.</p>
+    <pre><code>clean:
+	rm *.o $(MAINPROG)
+</code></pre><p>When <code>make clean</code> is run, delete all <code>.o</code> files and delete the final executable.</p>
+    <a id="commandlinearguments"/><h1 id="command-line-arguments">2 Command Line Arguments</h1><p>Most (almost all) examples will make use of command line arguments. Take a look at…</p>
+    <div class="details"><span class="summary"><a href="cmd_line_ex.cpp" target="listing">cmd_line_ex.cpp</a></span> <input id="but_details_d6e143" onclick="toggleDisplay('_details_d6e143')" type="button" value="+"/><div class="detailPart" id="_details_d6e143"><pre><code id="_details_d6e143_code">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+/**
+ * Echo all command line arguments, one per line in the form:
+ *
+ *   idx: arg
+ *
+ * where idx is the index (0, 1, ...) and arg is the argument.
+ *
+ * @param argc number of arguments
+ * @param argv 2D array of C-style (null terminated) strings
+ * @param outs output destination (e.g., cerr or cout)
+ */
+void echo_arguments(const int argc, char** argv, ostream&amp; outs=std::cerr)
+{
+    // There is always at least one argument, i.e., the program name
+    outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; 0 &lt;&lt; ": " &lt;&lt; argv[0] &lt;&lt; "\n";
+    outs &lt;&lt; "\n";
+
+    for (int i = 1; i &lt; argc; i++) {
+        // Technically "right" does not need to be repeated, but
+        // we would probably tweak formatting more in the future
+        outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; i &lt;&lt; ": " &lt;&lt; argv[i] &lt;&lt; "\n";
+    }
+}
+
+int main(int argc, char** argv)
+{
+    echo_arguments(argc, argv);
+
+    return 0;
+}
+</code></pre></div></div><p><code>cmd_line_ex.cpp</code> is a simple program. All it does is echo any entered command line arguments using the <code>echo_arguments</code> function.</p>
+    <pre><code class="cpp">void echo_arguments(const int argc, char** argv, ostream&amp; outs=std::cerr)
+{
+    // There is always at least one argument, i.e., the program name
+    outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; 0 &lt;&lt; ": " &lt;&lt; argv[0] &lt;&lt; "\n";
+    outs &lt;&lt; "\n";
+
+    for (int i = 1; i &lt; argc; i++) {
+        // Technically "right" does not need to be repeated, but
+        // we would probably tweak formatting more in the future
+        outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; i &lt;&lt; ": " &lt;&lt; argv[i] &lt;&lt; "\n";
+    }
+}
+</code></pre><p>The first argument (i.e., <code>argv[0]</code>) is a special case. It is always the program name, and it is supplied automatically.</p>
+    <a id="playingwithcommandlinearguments"/><h2 id="playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</h2><p>Save a copy of </p>
+    <div class="details"><span class="summary"><a href="makefile" target="listing">makefile</a></span> <input id="but_details_d6e160" onclick="toggleDisplay('_details_d6e160')" type="button" value="+"/><div class="detailPart" id="_details_d6e160"><pre><code id="_details_d6e160_code">MAINPROG=cmd_line_example
+
+SOURCES:=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+FLAGS=-std=c++17 -fsanitize=leak,address -Wall -Wpedantic -fuse-ld=gold
+
+all: $(SOURCES) $(MAINPROG)
+
+$(MAINPROG): $(OBJECTS)
+	g++ $(FLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	g++ $(FLAGS) -c $&lt; -o $@
+
+clean:
+	rm *.o $(MAINPROG)
+</code></pre></div></div><p>and</p>
+    <div class="details"><span class="summary"><a href="cmd_line_ex.cpp" target="listing">cmd_line_ex.cpp</a></span> <input id="but_details_d6e163" onclick="toggleDisplay('_details_d6e163')" type="button" value="+"/><div class="detailPart" id="_details_d6e163"><pre><code id="_details_d6e163_code">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+/**
+ * Echo all command line arguments, one per line in the form:
+ *
+ *   idx: arg
+ *
+ * where idx is the index (0, 1, ...) and arg is the argument.
+ *
+ * @param argc number of arguments
+ * @param argv 2D array of C-style (null terminated) strings
+ * @param outs output destination (e.g., cerr or cout)
+ */
+void echo_arguments(const int argc, char** argv, ostream&amp; outs=std::cerr)
+{
+    // There is always at least one argument, i.e., the program name
+    outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; 0 &lt;&lt; ": " &lt;&lt; argv[0] &lt;&lt; "\n";
+    outs &lt;&lt; "\n";
+
+    for (int i = 1; i &lt; argc; i++) {
+        // Technically "right" does not need to be repeated, but
+        // we would probably tweak formatting more in the future
+        outs &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; i &lt;&lt; ": " &lt;&lt; argv[i] &lt;&lt; "\n";
+    }
+}
+
+int main(int argc, char** argv)
+{
+    echo_arguments(argc, argv);
+
+    return 0;
+}
+</code></pre></div></div><p>..then open a Linux terminal (e.g., SSH into a CS Linux server or open a local Linux terminal). Run <code>make</code> to compile <code>cmd_line_ex.cpp</code>.</p>
+    <ol>
+  <li>
+    <p>Run <code>./cmd_line_example</code></p>
+    
+    <p>You should see…</p>
+    
+    <pre><code>  0: ./cmd_line_example
+</code></pre>
+  </li>
+  <li>
+    <p>Run <code>./cmd_line_example 1 2 77 The letter Q "Hello, and..."</code></p>
+    
+    <p>You should see…</p>
+    
+    <pre><code>  0: ./cmd_line_example
+
+  1: 1
+  2: 2
+  3: 77
+  4: The
+  5: letter
+  6: Q
+  7: Hello, and...!
+</code></pre>
+  </li>
+</ol><p>Do not forget… The double quotes are required for any argument that contains spaces.</p>
+    <a id="usingcommandlinearguments"/><h2 id="using-command-line-arguments">2.2 Using Command Line Arguments</h2><p>Most programs will not simply echo command line arguments. Many programs will use command line arguments to specify input files. Consider the following excerpt…</p>
+    <pre><code class="cpp">    if (argc &lt; 2) {
+        cout &lt;&lt; "No input file provided." &lt;&lt; "\n";
+        cout &lt;&lt; "Usage: " &lt;&lt; argv[0] &lt;&lt; " input_file" &lt;&lt; "\n";
+        return 1;
+    }
+
+    ifstream shapesFile(argv[1]);
+
+    if (!shapesFile) {
+        cout &lt;&lt; "Error: " &lt;&lt; argv[1] &lt;&lt; "could not be opened" &lt;&lt; "\n";
+        return 2;
+    }
+</code></pre><p>The first conditional block checks that the required number of arguments were supplied by the user.</p>
+    <pre><code class="cpp">    if (argc &lt; 2) {
+</code></pre><p>In this excerpt, only one argument is required… an input file name. Note that the first <em>true</em> argument (<code>argv[1]</code>) is the input file name. The first supplied argument (<code>argv[0]</code>) is the executable name.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Review%20-%20Makefiles%20%26%20Command%20Line%20Arguments"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

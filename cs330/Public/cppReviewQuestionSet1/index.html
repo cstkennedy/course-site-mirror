@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>(C++) Conceptual Questions - Simple Classes & ADTs</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20%28C%2B%2B%29%20Conceptual%20Questions%20-%20Simple%20Classes%20%26%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">(C++) Conceptual Questions - Simple Classes &amp; ADTs</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overarching-questions">1 Overarching Questions</a></div><div class="toc-h2"><a href="#writing-constructors">1.1 Writing Constructors</a></div><div class="toc-h2"><a href="#member-initializer-list">1.2 Member Initializer List</a></div><div class="toc-h2"><a href="#pass-by-reference-vs-pass-by-value">1.3 Pass-by-Reference vs Pass-by-Value</a></div><div class="toc-h2"><a href="#construct-additional-pylons-pointers">1.4 Construct Additional <del>Pylons</del> Pointers</a></div><div class="toc-h2"><a href="#struct-vs-class">1.5 Struct vs Class</a></div><div class="toc-h1"><a href="#lambdas-when-and-when-not-">2 Lambdas - When and When Not?</a></div><div class="toc-h1"><a href="#uml-class-diagrams">3 UML Class Diagrams</a></div></div><a id="overarchingquestions"/><h1 id="overarching-questions">1 Overarching Questions</h1><p>When designing or analyzing or writing code there are many overarching questions one needs to keep in mind. The next few questions were asked by your colleagues in previous semesters. An entire lecture (or two) could be dedicated to answering and discussing these questions.</p>
+    <a id="writingconstructors"/><h2 id="writing-constructors">1.1 Writing Constructors</h2><blockquote>
+  <p><strong>Constructor:</strong> How do I determine what to include in the Constructor?</p>
+    
+</blockquote><p><strong>Everything.</strong> Your mindset when writing a constructor must be: <em>I defined a Thing. What do I need to initialize to have a complete <strong>(and conceptually valid)</strong> Thing?</em> Consider</p>
+    <pre><code class="cpp">class Thing {
+    private:
+        int         anInteger;
+        std::string name;
+        double      cost;
+
+        double*     anArray;
+
+        //...
+
+    public:
+
+        Thing();
+
+        Thing(std::string name, int aNum);
+
+        //...
+};
+</code></pre><p>In our example <code>Thing</code> class we have four attributes (specifically, four private data members). We need to guarantee that all four are set to appropriate initial values. This leads us to a fundamental Constructor rule–one I have stated throughout my examples.</p>
+    <p><strong>Every Constructor must initialize every attribute.</strong> If <code>Thing</code> has 4 pieces of private member data, all 4 must be initialized. In our Thing example we would end up with something similar to</p>
+    <pre><code class="cpp">Thing::Thing()
+  :name("None")
+{
+    anInteger = 0;
+    cost      = 0.0;
+    anArray   = nullptr;
+}
+</code></pre><p>Notice how I chose <em>zero</em> for each datatype (except <code>std::string</code>)? This is a choice that one must make based on the underlying problem (or codebase). I chose <code>"None"</code> for name for the same reason I often use <code>"Empty"</code> or <code>"Generic"</code>…</p>
+    <blockquote>
+  <p>I am a human being.</p>
+    
+</blockquote><p>Recognizing a word is more natural than recognizing a lack of value (e.g., an empty string). Let us implement the Non-Default Constructor:</p>
+    <pre><code class="cpp">Thing::Thing(std::string name, int aNum)
+{
+    this-&gt;name = "This thing is called " + name + "!";
+
+    anInteger = aNum * 337;
+    cost = 72 + aNum / 3.14;
+
+    anArray = new double[anInteger];
+}
+</code></pre><p>Notice this less obvious use of <code>name</code> and <code>aNum</code>? There is no rule saying how each of these attributes must be initialized. <strong>However,</strong> the initial values must <strong>make sense</strong>. To determine what <strong>makes sense</strong>, we must understand the problem domain and what <code>Thing</code> represents.</p>
+    <a id="memberinitializerlist"/><h2 id="member-initializer-list">1.2 Member Initializer List</h2><p>The <a href="https://en.cppreference.com/w/cpp/language/constructor">member initializer list</a> is a syntax/mechanic we use quite heavily in CS 330 (starting with in the <a href="https://github.com/cstkennedy/cs330-examples#review-1-linked-lists">Review 01 Example set and lectures,</a> and in most C++ codebases). At the most basic level, it can be viewed as equivalent to a normal assignment. <strong>Note the qualifier “viewed as.” There are mechanical differences.</strong> Let us take the <code>Thing</code> code snippet</p>
+    <pre><code class="cpp">Thing::Thing()
+  :name("None")
+{
+    anInteger = 0;
+    cost      = 0.0;
+    anArray   = nullptr;
+}
+</code></pre><p>and replace the member initialization with an assignment</p>
+    <pre><code class="cpp">Thing::Thing()
+{
+    name      = "None";
+    anInteger = 0;
+    cost      = 0.0;
+    anArray   = nullptr;
+}
+</code></pre><p>Of course… I am an stickler for including <code>this</code> for private data members (due to the requirement to do the equivalent in Rust and Python). Let us add in <code>this-&gt;</code>…</p>
+    <pre><code class="cpp">Thing::Thing()
+{
+    this-&gt;name      = "None";
+    this-&gt;anInteger = 0;
+    this-&gt;cost      = 0.0;
+    this-&gt;anArray   = nullptr;
+}
+</code></pre><p>The end result is the same… <code>this-&gt;name</code> is initialized to <code>"None"</code> However, the compiler actually initializes name to the empty string first (i.e., before the body of the Constructor is reached). The compiler will actually insert an implicit <code>name()</code>:</p>
+    <pre><code class="cpp">Thing::Thing()
+    :name()
+{
+    this-&gt;name      = "None";
+    this-&gt;anInteger = 0;
+    this-&gt;cost      = 0.0;
+    this-&gt;anArray   = nullptr;
+}
+</code></pre><p>The result is name being initialized twice… once to the empty string… then to <code>"Name"</code>. Going back to the original constructor</p>
+    <pre><code class="cpp">Thing::Thing()
+  :name("None")
+{
+    anInteger = 0;
+    cost      = 0.0;
+    anArray   = nullptr;
+}
+</code></pre><p>overrides this first initialization. The <code>name</code> private data member is initialized exactly once… to <code>"Name"</code>.</p>
+    <hr/><p><strong>Why <code>name</code> and not the other data members?</strong></p>
+    <p>We could initialize everything using the member initialization list syntax. However, <code>name</code> is a <code>std::string</code> (i.e., an object). The compiler will implicitly call its <strong>Default Constructor</strong>. The remaining data members are an <code>int</code>, a <code>double</code>, and a pointer. They do not have constructors (i.e., they are not objects).</p>
+    <a id="passbyreferencevspassbyvalue"/><h2 id="pass-by-reference-vs-pass-by-value">1.3 Pass-by-Reference vs Pass-by-Value</h2><blockquote>
+  <p><strong>References:</strong> How do I determine what to pass by reference and what not to  pass by reference? Do I pass everything by reference?</p>
+    
+</blockquote><p><strong>Cost.</strong> How expensive is it to copy what you are passing? Primitive types such as int, double, and char, are cheap (i.e., introduce little overhead).</p>
+    <p>If you are passing a non-trivial data structure, pass-by-reference (read/write access) or pass-by-const-reference (read only access) will avoid the overhead of a deep-copy.</p>
+    <a id="constructadditionalpylonspointers"/><h2 id="construct-additional-pylons-pointers">1.4 Construct Additional <del>Pylons</del> Pointers</h2><blockquote>
+  <p>Pointers: when do I want to use pointers? as much as possible? Are there  any cases where I absolutely don’t want to use pointers?</p>
+    
+</blockquote><p>Use pointers when you want to:</p>
+    <ul>
+  <li>perform memory allocations directly (e.g., use <code>new</code>, <code>delete</code>,<code>malloc</code>, or <code>realloc</code>)</li>
+  <li>pseudo-resize an array</li>
+  <li>work with c-strings</li>
+  <li>perform low-level optimizations</li>
+  <li>build non-trivial data structures.</li>
+</ul><p>If you can avoid using pointers, without introducing substantial overhead, do not use pointers. If you can get away with reference variables e.g.,</p>
+    <pre><code class="cpp">Thing&amp; somethingCool = aDifferentThingInstance;
+</code></pre><p>or leverage move-semantics (a topic not covered formally in any 100, 200, or 300 level courses) do not use pointers.</p>
+    <p>Pointers introduce the cost of a de-reference operation (i.e., we must first go to the block of memory before performing our desired operation). Of course, we can side step this issue with something along the lines of:</p>
+    <pre><code>LinkedList* list = new LinkedList();
+
+const LinkedList&amp; printAccess = someList;  // read-only access
+LinkedList&amp; justSwitchToRust = someList;   // read-and-write access
+</code></pre><a id="structvsclass"/><h2 id="struct-vs-class">1.5 Struct vs Class</h2><blockquote>
+  <p>Struct or Class: How do I determine when to use a struct or when to use a  class?</p>
+    
+</blockquote><p><strong>Encapsulation and JBOD.</strong></p>
+    <ul>
+  <li>
+  <p>Encapsulation refers to containing all the data in a single struct/class and limiting access through member functions.</p>
+    </li>
+  <li>
+  <p>JBOD is a term I stole from RAID (storage) literature. It traditionally means <em>Just a Bunch of Disks</em>. I use it slightly differently… <em>Just a Bunch of Data.</em></p>
+    </li>
+</ul><p>A struct comes from the C-language, where it was a wrapper for data and nothing more.</p>
+    <p>If you are simply bundling together data, use a struct (consider the Node struct from my <a href="https://github.com/cstkennedy/cs330-examples">examples</a>). If you have a more complex interface, use a class (consider the Linked List in my examples).</p>
+    <p><em>TL;DR</em> - If you have private data and a definable interface, use a class. If you are going to leave everything public without member functions, use a struct.</p>
+    <hr/><a id="lambdaswhenandwhennot"/><h1 id="lambdas-when-and-when-not-">2 Lambdas - When and When Not?</h1><p>Lambda (or anonymous) functions are a fairly new C++ addition (from the C++11 standard). Before we use lambda functions, we need to ask the following:</p>
+    <ol>
+  <li>Why?
+    <ul>
+      <li>Why is a <em>lambda function</em> necessary here?</li>
+      <li>Why not use a proper method?</li>
+    </ul>
+  </li>
+  <li>Am I using… ?
+    <ul>
+      <li><code>std::for_each</code></li>
+      <li><code>std::transform</code></li>
+      <li><code>std::accumulate</code></li>
+      <li><code>std::copy</code></li>
+      <li><code>std::find_if</code></li>
+      <li><code>std::max_element</code></li>
+      <li><code>std::min_element</code></li>
+      <li><code>std::min_max_element</code></li>
+      <li><code>std::lexicographical_compare_three_way</code></li>
+      <li>Another function from the <a href="https://en.cppreference.com/w/cpp/algorithm">Algorithm Library</a></li>
+    </ul>
+  </li>
+  <li>Am I using iterators?</li>
+  <li><strong>Is this a one-off function?</strong> <em>(Consider the Java Listener interface)</em></li>
+  <li>Does this lambda function take (implicit or explicit) arguments? Or does  it rely exclusively on a capture clause?</li>
+  <li>When using a <em>lambda</em> simplify readability of the code?</li>
+  <li>Will using a <em>lambda</em> conceivably (more aptly possibly) prevent compiler  optimizations (e.g., loop unrolling, inlining, out-of-order execution, or  speculative execution)?</li>
+  <li>Will the <em>lambda</em> belong in the scope of a function/method that will be  called multiple times?
+    <ul>
+      <li>Is it possible to broaden the scope of this lambda?</li>
+    </ul>
+  </li>
+  <li>Does this lambda wrap a function call? Should I consider  <a href="https://en.cppreference.com/w/cpp/utility/functional/bind"><code>std::bind</code></a> instead?</li>
+</ol><p>This list has grown beyond my original expectations. How about two simple questions:</p>
+    <ol>
+  <li>Am I working with low-level (the bottom) or high-level (the top) parts of  the codebase?</li>
+  <li>Did I get the answer from StackOverflow?</li>
+</ol><a id="umlclassdiagrams"/><h1 id="uml-class-diagrams">3 UML Class Diagrams</h1><p>Is the UML Class diagram from <a href="https://github.com/cstkennedy/cs330-examples">Review 03</a> <em>readable</em>?</p>
+    <a href="./overview.svg" target="_blank">
+<div style="text-align: center">
+<h4> Click Image to View Full-Size </h4>
+<img src="overview.svg" width="800px"/>
+</div>
+    
+</a><div class="details"><span class="summary"><a href="overview.puml" target="listing">overview.puml</a></span> <input id="but_details_d6e348" onclick="toggleDisplay('_details_d6e348')" type="button" value="+"/><div class="detailPart" id="_details_d6e348"><pre><code id="_details_d6e348_code">Could not open file overview.puml</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20%28C%2B%2B%29%20Conceptual%20Questions%20-%20Simple%20Classes%20%26%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

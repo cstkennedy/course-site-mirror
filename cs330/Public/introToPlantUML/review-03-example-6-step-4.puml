@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+
+class Room {
+    String name
+
+    Room()
+    Room(Dimension l, Dimension w, Cost c)
+    Room(String n, Dimension l, Dimension w, Cost c)
+    Room(String n, DimensionSet d, Cost c, String fn)
+
+    double area()
+    Cost flooringCost()
+    String toString()
+    boolean equals(Object rhs)
+    Room clone()
+}
+
+class Room.Flooring {
+    String type
+    Cost unitCost
+
+    Flooring()
+    Flooring(String n, Cost c)
+}
+
+class Room.DimensionSet {
+    Dimension length
+    Dimension width
+
+    DimensionSet()
+    DimensionSet(Dimension l, Dimension w)
+}
+
+Room  *----- Room.Flooring
+Room  *----- Room.DimensionSet
+
+@enduml

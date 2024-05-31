@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Writing a Unit Test - Identifying Mutators & Accessors</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Writing%20a%20Unit%20Test%20-%20Identifying%20Mutators%20%26%20Accessors"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Writing a Unit Test - Identifying Mutators &amp; Accessors</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#getting-started">1 Getting Started</a></div><div class="toc-h1"><a href="#an-example-cookbook-class">2 An Example Cookbook Class</a></div><div class="toc-h1"><a href="#what-does-appropriate-mean-">3 What Does Appropriate Mean?</a></div><div class="toc-h1"><a href="#the-mutator-accessor-strategy">4 The Mutator-Accessor Strategy</a></div><div class="toc-h2"><a href="#applying-the-strategy-to-cookbook">4.1 Applying the Strategy to Cookbook</a></div><div class="toc-h2"><a href="#time-to-write-some-tests">4.2 Time to Write Some Tests</a></div></div><p>In CS 330 I use a <code>Cookbook</code> class as an example in a few discussions. For this example, we will use the final version of the class from <a class="doc" href="../../Public/reviewJavaChecklist/index.html" target="CS330_Public">Using the Java Class Checklist</a>.</p>
+    <a id="gettingstarted"/><h1 id="getting-started">1 Getting Started</h1><p>When working with member functions (i.e., functions that are part of a class), two terms must be kept in mind:</p>
+    <ul>
+  <li><strong>Mutator</strong> - any member function that changes the state of an object.</li>
+  <li><strong>Accessor</strong> - any member function that examines the state of an object but does <strong>not</strong> change the state of that object.</li>
+</ul><p>By definition constructors are mutators. Each constructor creates an initial object. The terms <em>getter</em> and <em>setter</em> refer to member functions (methods) that work with (public, private, or protected) member data, e.g.,</p>
+    <ul>
+  <li><code>setTitle</code> - would change the title of some object.</li>
+  <li><code>getTitle</code> - would return the title of some object <strong>without</strong> making any changes,</li>
+</ul><p>To write <strong>good</strong> unit tests, the result(s) of calling each mutator must be fully examined, using the available accessors. In this course… we will follow the <strong>mutator-accessor</strong> strategy.</p>
+    <a id="anexamplecookbookclass"/><h1 id="an-example-cookbook-class">2 An Example Cookbook Class</h1><p>Let us work with an example <code>Cookbook</code> class. <em>Note that I have been fairly cavalier with a few parts of the Javadoc documentation.</em></p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Cookbook Class Interface</div>
+<pre><code class="java">/**
+ * A collection of Recipes.
+ */
+public class Cookbook
+    implements Cloneable, Iterable&lt;Recipe&gt;
+{
+    /**
+     * Create a Cookbook that can contain at most MAX_RECIPES
+     * recipes
+     */
+    public Cookbook()
+    {
+        //...
+    }
+
+    /**
+     * Create a Cookbook that can contain at most _r_
+     * recipes
+     */
+    public Cookbook(int r)
+    {
+        //...
+    }
+
+    /**
+     * Add a Recipe
+     *
+     * @param toAdd new Recipe
+     */
+    public void addRecipe(Recipe toAdd)
+    {
+        //...
+    }
+
+    /**
+     * Remove a Recipe
+     *
+     * @param toRemove index of Recipe to remove
+     */
+    public void removeRecipe(int toRemove)
+    {
+        //...
+    }
+
+    /**
+     * Compare two recipes based on the recipes they contain, ignoring the
+     * the order of the recipes.
+     *
+     * @param rhs object against which to compare
+     *
+     * @return true if both this and rhs are Cookbooks with the same recipes
+     */
+    @Override
+    public boolean equals(Object rhs)
+    {
+        //...
+    }
+
+    /**
+     * Compute the hashcode by adding all recipe hashcodes together.
+     *
+     * @return integer hashcode
+     */
+    @Override
+    public int hashCode()
+    {
+        //...
+    }
+
+    /**
+     * Create a deep copy.
+     */
+    @Override
+    public Cookbook clone()
+    {
+        //...
+    }
+
+    /**
+     * This depends on implementation decisions (e.g., selected data structure).
+     */
+    @Override
+    public Iterator&lt;Recipe&gt; iterator()
+    {
+        //...
+    }
+
+    /**
+     * List each Recipe, seperating them with a blank line followed by "---"
+     * and a second blank line.
+     */
+    @Override
+    public String toString()
+    {
+        //...
+    }
+}
+</code></pre>
+</blockquote><p>Take note of the member functions. There are no implementations/definitions listed. When following proper Test Driven Development (TDD), code is written in the following order:</p>
+    <ol>
+  <li>function/method interfaces</li>
+  <li>unit tests</li>
+  <li>function/method implementations</li>
+</ol><p>The first step is to design what each function/method will:</p>
+    <ul>
+  <li>take as input</li>
+  <li>generate as output (i.e., return value or side-effect).</li>
+  <li>have as a name</li>
+</ul><p>When writing tests, we are not concerned with the <em>how</em>. We are concerned with the <em>what</em>. Take as an example the <code>addRecipe</code> method. What data structure is being used? Is it a <code>List</code>, a <code>Vector</code>, a <code>LinkedHashSet</code>, or an array? The data structure does not matter for the test. We are only concerned with:</p>
+    <ul>
+  <li>confirming new Recipes can be added.</li>
+  <li>making sure insertion order is maintained.</li>
+  <li>confirming <code>Cookbook</code> state is updated appropriately.</li>
+</ul><a id="whatdoesappropriatemean"/><h1 id="what-does-appropriate-mean-">3 What Does Appropriate Mean?</h1><p>What does the phrase <em>updated appropriately mean</em>? The term appropriate is <a href="https://www.merriam-webster.com/dictionary/nebulous">nebulous</a>. In this context… the phrase <em>updated appropriately</em> can be answered by using two questions:</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Unit Test Questions</div>
+<pre><code class="java">/**
+ * 1 - Does this piece of code perform the operations
+ *     it was designed to perform?
+ *
+ * 2 - Does this piece of code do something it was not
+ *     designed to perform?
+ *
+ * 1 Test per mutator
+ */
+</code></pre>
+</blockquote><p>Why did I write these questions as a multiline Java comment? Anytime I am writing unit tests, I copy-and-paste that exact comment at the top of my test code.</p>
+    <p>Consider the</p>
+    <ul>
+  <li>
+  <p><code>toString</code> method in <code>Cookbook</code>. How surprised would you be if <code>toString</code> removed a recipe at random, before outputting everything as a <code>String</code>?</p>
+    </li>
+  <li>
+  <p><code>addRecipe</code> method in <code>Cookbook</code>. How surprised would you be if  <code>addRecipe</code> stored a new <code>Recipe</code>, and removed another recipe then  generated output (using <code>System.out.println</code>)?</p>
+    </li>
+</ul><p>Now… we are getting dangerously close to <em>testing for failures</em>. We are not writing test code to check for failures. We are writing test code to confirm correct behavior (which is a subtle distinction).</p>
+    <a id="themutatoraccessorstrategy"/><h1 id="the-mutator-accessor-strategy">4 The Mutator-Accessor Strategy</h1><p>The <strong>mutator-accessor strategy</strong> is a method of writing unit test suites for object-oriented code. The methodology is:</p>
+    <ol>
+  <li>Identify all mutators.</li>
+  <li>Identify all accessors.</li>
+  <li>Create a test function for each mutator.</li>
+  <li>Within in each test function call (invoke) each accessor.</li>
+</ol><a id="applyingthestrategytocookbook"/><h2 id="applying-the-strategy-to-cookbook">4.1 Applying the Strategy to Cookbook</h2><p>Take another look at the <code>Cookbook</code> class. We need to classify each method as either an accessor or mutator.</p>
+    <ul>
+  <li><code>public Cookbook()</code></li>
+  <li><code>public Cookbook(int r)</code></li>
+  <li><code>public void addRecipe(Recipe toAdd)</code></li>
+  <li><code>public void removeRecipe(int toRemove)</code></li>
+  <li><code>public boolean equals(Object rhs)</code></li>
+  <li><code>public int hashCode()</code></li>
+  <li><code>public Cookbook clone()</code></li>
+  <li><code>public Iterator&lt;Recipe&gt; iterator()</code></li>
+  <li><code>public String toString()</code></li>
+</ul><p>Did you notice how these are all public member functions? We are writing tests using the public interface of <code>Cookbook</code>. Testing private/protected member functions is a <em>debated</em> issue. For now… we will treat private/protected member functions as implementation details (i.e., part of the how).</p>
+    <p>Let us create a table.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Mutators </th>
+      <th align="left">Accessors </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><code>Cookbook()</code> </td>
+      <td align="left"><code>equals()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>Cookbook(int r)</code> </td>
+      <td align="left"><code>hashCode()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>clone</code> </td>
+      <td align="left"> </td>
+    </tr>
+  </tbody>
+</table><p>The first four entries are fairly easy (compared to the rest of the methods). Constructors <em>create objects</em>. Both <code>equals</code> and <code>hashCode</code> are comparison functions. We are left with four methods to classify:</p>
+    <ul>
+  <li><code>public void addRecipe(Recipe toAdd)</code></li>
+  <li><code>public void removeRecipe(int toRemove)</code></li>
+  <li><code>public Iterator&lt;Recipe&gt; iterator()</code></li>
+  <li><code>public String toString()</code></li>
+</ul><p>If we take a look at the names of the next two functions, <code>addRecipe</code> and <code>removeRecipe</code>, along with their <em>documentation</em>, we know that they store a <code>Recipe</code> or remove a <code>Recipe</code>, respectively. </p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Mutators </th>
+      <th align="left">Accessors </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><code>Cookbook()</code> </td>
+      <td align="left"><code>equals()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>Cookbook(int r)</code> </td>
+      <td align="left"><code>hashCode()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>clone</code> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>addRecipe</code> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>removeRecipe</code> </td>
+      <td align="left"> </td>
+    </tr>
+  </tbody>
+</table><p>That leaves us with two methods:</p>
+    <ul>
+  <li><code>public Iterator&lt;Recipe&gt; iterator()</code></li>
+  <li><code>public String toString()</code></li>
+</ul><p>Both methods are accessors:</p>
+    <ul>
+  <li><code>toString</code> generates a <code>String</code> representing a <code>Cookbook</code></li>
+  <li><code>iterator</code> returns an <code>Iterator&lt;Recipe&gt;</code> object that allows us to retrieve each <code>Recipe</code> object.
+    <p><em>We will treat Java Iterators as C++ <code>const_iterator</code>s.</em></p>
+    
+  </li>
+</ul><a id="timetowritesometests"/><h2 id="time-to-write-some-tests">4.2 Time to Write Some Tests</h2><p>Now that all functions have been classified, we know that we will have:</p>
+    <ol>
+  <li><em>at a minimum</em>, 5 test functions (one for each mutator).</li>
+  <li><em>at a minimum</em>, 4 assertions within each test function (one for each accessor).</li>
+  <li><em>at a minimum</em>, 20 (5 times 4) assertions in the entire test suite.</li>
+</ol><table>
+  <thead>
+    <tr>
+      <th align="left">Mutators </th>
+      <th align="left">Accessors </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><code>Cookbook()</code> </td>
+      <td align="left"><code>equals()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>Cookbook(int r)</code> </td>
+      <td align="left"><code>hashCode()</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>clone</code> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>addRecipe</code> </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>removeRecipe</code> </td>
+      <td align="left"><code>toString</code> </td>
+    </tr>
+  </tbody>
+</table></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Writing%20a%20Unit%20Test%20-%20Identifying%20Mutators%20%26%20Accessors"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

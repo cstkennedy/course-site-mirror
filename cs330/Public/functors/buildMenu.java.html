@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>buildMenu.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20buildMenu.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">buildMenu.java</h1></div><pre><code>    private void buildMenu()
+    {
+    MenuBar menuBar = new MenuBar();    &#x2780;
+
+    Menu fileMenu = new Menu ("File");  &#x2781;
+
+    MenuItem loadItem = new MenuItem ("Load");  &#x2782;
+    fileMenu.add (loadItem);                    &#x2783;
+    loadItem.addActionListener(new ActionListener() {  &#x2784;
+       public void actionPerformed(ActionEvent e) {
+           loadFile();
+       }});
+
+    if (inApplet == null) { // Applets can't write to the hard drive
+        MenuItem saveItem = new MenuItem ("Save");
+        fileMenu.add (saveItem);
+        saveItem.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+         saveFile();
+           }});
+    }
+
+    MenuItem exitItem = new MenuItem ("Exit");
+    fileMenu.add (exitItem);
+    exitItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           if (inApplet != null) {
+         hide();
+         dispose();
+           }
+           else
+         System.exit(0);
+       }});
+
+
+    Menu editMenu = new Menu ("Edit");          &#x2785;
+
+    MenuItem cutItem = new MenuItem ("Cut");
+    editMenu.add (cutItem);
+    cutItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           cutFormulae();
+       }});
+
+    MenuItem copyItem = new MenuItem ("Copy");
+    editMenu.add (copyItem);
+    copyItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           copyFormulae();
+       }});
+
+    MenuItem pasteItem = new MenuItem ("Paste");
+    editMenu.add (pasteItem);
+    pasteItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           pasteFormulae();
+       }});
+
+
+    MenuItem eraseItem = new MenuItem ("Erase");
+    editMenu.add (eraseItem);
+    eraseItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           eraseFormulae();
+       }});
+
+
+
+    Menu helpMenu = new Menu ("Help");
+
+    MenuItem helpItem = new MenuItem ("Quick Help");
+    helpMenu.add (helpItem);
+    helpItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           quickHelp();
+       }});
+
+    MenuItem aboutItem = new MenuItem ("About");
+    helpMenu.add (aboutItem);
+    aboutItem.addActionListener(new ActionListener() {
+       public void actionPerformed(ActionEvent e) {
+           about();
+       }});
+
+
+    menuBar.add (fileMenu);  &#x2786;
+    menuBar.add (editMenu);
+    menuBar.add (helpMenu);
+
+    setMenuBar (menuBar);    &#x2787;
+    }
+</code></pre><p><a href="buildMenu.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20buildMenu.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

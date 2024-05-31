@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>CS 330: Frequently Asked Questions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20CS%20330%3A%20Frequently%20Asked%20Questions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">CS 330: Frequently Asked Questions</h1><h2 class="author">Steven J. Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#general-programming-questions">1 General Programming Questions</a></div><div class="toc-h2"><a href="#im-not-sure-i-have-a-correct-algorithm-to-solve-this-problem-how-do-i-check-before-writing-and-debugging-the-code-">1.1 I’m not sure I have a correct algorithm to solve this problem. How do I check before writing and debugging the code?</a></div><div class="toc-h2"><a href="#my-program-crashed-how-do-i-find-out-why-">1.2 My program crashed. How do I find out why?</a></div><div class="toc-h2"><a href="#why-do-compilers-error-messages-often-give-the-wrong-line-number-or-even-the-wrong-file-">1.3 Why do compilers’ error messages often give the wrong line number, or even the wrong file?</a></div><div class="toc-h2"><a href="#what-is-a-segmentation-error-segementation-fault-bus-error-null-reference-error-">1.4 What is a segmentation error? Segementation fault? Bus error? Null reference error?</a></div><div class="toc-h2"><a href="#what-are-formal-and-actual-parameters-">1.5 What are formal and actual parameters?</a></div><div class="toc-h1"><a href="#the-c-programming-language">2 The C++ Programming Language</a></div><div class="toc-h2"><a href="#whats-the-odd-expression-with-the-and-">2.1 What’s the odd expression with the ‘?’ and ‘:’ ?</a></div><div class="toc-h2"><a href="#how-do-i-convert-a-string-to-a-character-array-or-a-character-array-to-string-">2.2 How do I convert a string to a character array (or a character array to string)?</a></div><div class="toc-h2"><a href="#how-do-i-convert-a-string-to-a-number-or-a-number-to-a-string-">2.3 How do I convert a string to a number (or a number to a string)?</a></div><div class="toc-h2"><a href="#what-is-the-difference-between-a-declaration-and-a-definition-">2.4 What is the difference between a declaration and a definition?</a></div><div class="toc-h2"><a href="#what-goes-in-a-h-file-what-goes-in-a-cpp-file-">2.5 What goes in a .h file? What goes in a .cpp file?</a></div><div class="toc-h2"><a href="#what-is-an-inline-function-">2.6 What is an inline function?</a></div><div class="toc-h2"><a href="#why-is-operator-sometimes-declared-with-an-int-parameter-">2.7 Why is operator++ sometimes declared with an int parameter?</a></div><div class="toc-h2"><a href="#i-have-other-c-questions-">2.8 I have other C++ questions.</a></div><div class="toc-h1"><a href="#c-compilers-and-error-messages">3 C++ Compilers and Error Messages</a></div><div class="toc-h2"><a href="#how-do-i-fix-errors-involving-undeclared-undefined-names-">3.1 How do I fix errors involving undeclared/undefined names? }</a></div><div class="toc-h2"><a href="#what-should-i-do-about-the-error-message-warning-is-implicitly-a-typename-or-warning-implicit-typename-is-deprecated-">3.2 What should I do about the error message “warning: … is  implicitly a typename” or “warning: implicit typename is  deprecated”?</a></div><div class="toc-h2"><a href="#why-do-i-get-a-message-about-discarding-qualifiers-">3.3 Why do I get a message about discarding qualifiers?</a></div><div class="toc-h2"><a href="#how-do-i-fix-errors-no-match-for-or-cannot-bind">3.4 How do I fix errors “No match for…” or “Cannot bind …”</a></div><div class="toc-h1"><a href="#the-java-programming-language">4 The Java Programming Language</a></div><div class="toc-h2"><a href="#how-do-i-determine-the-starting-class-of-a-java-program-">4.1 How do I determine the starting class of a Java program?</a></div></div><p>This is a collection of questions (and answers!) that have arisen  repeatedly in some of my past classes.</p>
+    <a id="generalprogrammingquestions"/><h1 id="general-programming-questions">1 General Programming Questions</h1><a id="imnotsureihaveacorrectalgorithmtosolvethisproblemhowdoicheckbeforewritinganddebuggingthecode"/><h2 id="im-not-sure-i-have-a-correct-algorithm-to-solve-this-problem-how-do-i-check-before-writing-and-debugging-the-code-">1.1 I’m not sure I have a correct algorithm to solve this problem. How do I check before writing and debugging the code?</h2><p>The worst thing you can do is to simply start throwing C++ statements  around at random trying to guess at an algorithm design.</p>
+    <ol>
+  <li>
+    <p>Research - is there a known algorithm for addressing this  kind of problem? Check your text and the lecture notes. Check  the web.</p>
+    
+    <p>Even if you find something, you will likely have to adapt it to the details of the problem at hand, but this can get you started.</p>
+    
+  </li>
+  <li>
+  <p>Use a systematic procedure for design, such as stepwise  refinement, to derive a new algorithm that solves your  problem.</p>
+    </li>
+  <li>
+  <p>Whatever you come up with, use <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/basicDebugging/">desk checking</a> to make sure you have something reasonable before you start sweating all the fine details of coding.</p>
+    </li>
+</ol><a id="myprogramcrashedhowdoifindoutwhy"/><h2 id="my-program-crashed-how-do-i-find-out-why-">1.2 My program crashed. How do I find out why?</h2><p>There’s no easy answer to that. Here’s what I do, though, when faced with a crash that I just don’t understand:</p>
+    <ol>
+  <li>
+  <p>Look at the output produced before the crash. That can give you a  clue as to where in the program you were when the crash occurred.</p>
+    </li>
+  <li>
+    <p>Run the program from within a  <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/cb_debugger/">debugger</a>  (or  <a href="https://www.cs.odu.edu/~zeil/cs252/latest/Public/debugging/">here</a>  and <a href="https://www.cs.odu.edu/~zeil/cs252/latest/Public/progdevx/">here</a> ).</p>
+    
+    <p>Don’t worry about breakpoints or single-stepping or any of that stuff at first. Just run it.</p>
+    
+    <p>When the crash occurs, the debugger should tell you what line of code in what file eas being executed at the moment of the crash.</p>
+    
+    <p>Actually, it’s not quite that simple. There’s a good chance that the crash will occur on some line of code you didn’t actually write yourself, deep inside some system library function that was called by some other system library function that was called by some other … until we finally get back to your own code. That crash occurred because you are using a function but passed it some data that was incorrect or corrupt in some way.</p>
+    
+    <p>Your debugger should let you view the entire runtime stack of calls that were in effect at the moment of the crash. So you should be able to determine <strong>where</strong> the crash occurred. That’s not as good as determining <strong>why</strong>, but it’s a start.</p>
+    
+  </li>
+  <li>
+    <p>Take a good look at the data being manipulated at the location of  the crash. Are you using pointers? Could some of them be null? Are  you indexing into an array? Could your index value be too large or  negative? Are you reading from a file? Could the file be at the  end already, or might the data be in a different format than you  expected?</p>
+    
+    <p>If you used a debugger to find the crash locations, you can probably move up and down the stack and to view the values of variables within each active call. This may give a clue about what was happening.</p>
+    
+  </li>
+  <li>
+  <p>Form some hypotheses (take a guess) as to what was going on at the  time of the crash. Then  <a href="https://www.cs.odu.edu/~zeil/cs333/latest/Public/debugging2/">test your hypothesis</a>!</p>
+    </li>
+</ol><a id="whydocompilerserrormessagesoftengivethewronglinenumberoreventhewrongfile"/><h2 id="why-do-compilers-error-messages-often-give-the-wrong-line-number-or-even-the-wrong-file-">1.3 Why do compilers’ error messages often give the wrong line number, or even the wrong file?</h2><p>A compiler can only report where it <em>detected</em> a problem. Where you actually <em>committed</em> a mistake may be someplace entirely different.</p>
+    <p>The vast majority of error messages that C++ programmers will see are</p>
+    <ul>
+  <li>
+  <p>syntax errors (missing brackets, semi-colons, etc.)</p>
+    </li>
+  <li>
+  <p>undeclared symbols</p>
+    </li>
+  <li>
+  <p>undefined symbols</p>
+    </li>
+  <li>
+  <p>type errors (often “cannot find a matching  function” complaints)</p>
+    </li>
+  <li>
+  <p>const errors</p>
+    </li>
+</ul><p>Let’s look at these from the point of view of the compiler.</p>
+    <a id="syntaxerrors"/><h3 id="syntax-errors">1.3.1 Syntax errors</h3><p>Assume that the compiler has read part, but not all, of your program. The part that has just been read contains a syntax error. For the sake of example, let’s say you wrote:</p>
+    <pre><code class="cpp">x = y + 2 * x // missing semi-colon
+</code></pre><p>Now, when the compiler has read only the first line, it can’t tell that anything is wrong. That’s because it is still possible, as far as the compiler knows, that the next line of source code will start with a “;” or some other valid expression. So the compiler will <span class="emph">never</span> complain about this line.</p>
+    <p>If the compiler reads another line, and discovers that you had written: </p>
+    <pre><code class="cpp">x = y + 2 * x // missing semi-colon
+++i;
+</code></pre><p>it still won’t conclude that there’s a missing semi-colon. For all it knows, the “real” mistake might be that you meant to type “+” instead of “++”.</p>
+    <p>Now, things can be much worse. Suppose that inside a file <code>foo.h</code> you write </p>
+    <pre><code class="cpp">class Foo {
+    &#x22ee;
+   Foo();
+   int f();
+   // missing };
+</code></pre><p>and inside another file, <code>bar.cpp</code>, you write</p>
+    <pre><code class="cpp">#include "foo.h"
+
+int g() { ... }
+
+void h(Foo) { ... }
+
+int main()  { ... }
+
+</code></pre><p>Where will the error be reported? Probably on the very last line of <code>bar.cpp</code>! Why? Because until then, it’s still possible, as far as the compiler knows, for the missing “<code>};</code>” to come, in which case <code>g</code>, <code>h</code>, and <code>main</code> would just be additional member functions of the class <code>Foo</code>.</p>
+    <p>So, with syntax errors, you know only that the real mistake occurred on the line reported <span class="emph">or earlier</span>, possibly even in an earlier-<code>\#include</code>’d file.</p>
+    <a id="undeclaredandundefinedsymbols"/><h3 id="undeclared-and-undefined-symbols">1.3.2 undeclared and undefined symbols</h3><p>See <a href="#">this discussion</a>.</p>
+    <a id="typeerrors"/><h3 id="type-errors">1.3.3 type errors</h3><p>When you use the wrong object in an expression or try to apply the wrong operator/function to an object, the compiler may detect this as a type mismatch between the function and the expression supplied as the parameter to that function. These messages seem to cause students the most grief, and yet the compiler is usually able to give very precise descriptions of what is going wrong. The line numbers are usually correct, and the compiler will often tell you exactly what is going wrong. That explanation, however, may be quite lengthy, for three reasons:</p>
+    <ol>
+  <li>
+  <p>Type names, especially when templates are  involved, can be very long and messy-looking.</p>
+    </li>
+  <li>
+  <p>Because C++ allows function overloading (multiple functions with  the same name, as long as they take different kinds of parameters),  there may be many functions with the same name. The compiler will  have to look at each of these to see if any one matches the parameter  types you supplied. Some compilers report on each function tried,  explaining why it didn’t match the parameters in the faulty call.</p>
+    </li>
+  <li>
+  <p>If the function call was itself produced by a template  instantiation or an inline function, then the problem is detected at  the function call (often inside a C++ standard library routine) but  the actual problem lies at the place where the template was  used/instantiated. So most compilers will list both the line where  the error was detected and all the lines where templates were  instantiated that led to the creation of the faulty call.</p>
+    </li>
+</ol><p>So, to deal with these, look at the error message on the faulty  function call. Note what function/operator name is being complained  about. Then look at the line where the faulty call occurred. If it’s  inside a template or inline function that is not your own code, look  back through the “instantiated from” or “called from” lines until you  get back into your own code. That’s probably where the problem lies.</p>
+    <p>Here’s an example taken from a student’s code:</p>
+    <pre><code>g++ -g -MMD -c testapq.cpp
+/usr/local/lib/gcc-lib/sparc-sun-solaris2.7/2.95.2/../../../../include/g++-3/
+stl_relops.h: In function `bool operator &gt;&lt;_Rb_tree_iterator&lt;pair&lt;const 
+ PrioritizedNames,int&gt;,pair&lt;const PrioritizedNames,int&gt; &amp;,pair&lt;const 
+ PrioritizedNames,int&gt; *&gt; &gt;(const _Rb_tree_iterator&lt;pair&lt;const 
+ PrioritizedNames,int&gt;,pair&lt;const PrioritizedNames,int&gt; &amp;,pair&lt;const 
+ PrioritizedNames,int&gt; *&gt; &amp;, const _Rb_tree_iterator&lt;pair&lt;const 
+ PrioritizedNames,int&gt;,pair&lt;const PrioritizedNames,int&gt; &amp;,pair&lt;const 
+ PrioritizedNames,int&gt; *&gt; &amp;)':
+adjpq.h:234:   instantiated from `adjustable_priority_queue&lt;
+ PrioritizedNames,map&lt;PrioritizedNames,int,CompareNames,allocator&lt;int&gt; &gt;,
+ ComparePriorities&gt;::percolateDown(unsigned int)'
+adjpq.h:177:   instantiated from `adjustable_priority_queue&lt;PrioritizedNames,
+ map&lt;PrioritizedNames,int,CompareNames,allocator&lt;int&gt; &gt;,
+ ComparePriorities&gt;::makeHeap()'
+adjpq.h:84:   instantiated from here
+ /usr/local/lib/gcc-lib/sparc-sun-solaris2.7/2.95.2/../../../../include/
+ g++-3/stl_relops.h:43: no match for `const _Rb_tree_iterator&lt;pair&lt;const 
+ PrioritizedNames,int&gt;,pair&lt;const PrioritizedNames,int&gt; &amp;,pair&lt;const 
+ PrioritizedNames,int&gt; *&gt; &amp; &lt; const _Rb_tree_iterator&lt;pair&lt;const 
+ PrioritizedNames,int&gt;,pair&lt;const PrioritizedNames,int&gt; &amp;,pair&lt;const 
+ PrioritizedNames,int&gt; *&gt; &amp;'
+</code></pre><p>Now, that may look intimidating, but that’s mainly because of the  long type names (due to template use) and the long path names to  files from the C++ standard library. Let’s strip that down to the  essentials:</p>
+    <pre><code>g++ -g -MMD -c testapq.cpp
+stl_relops.h: In function `bool operator &gt;:
+adjpq.h:234:   instantiated from `percolateDown(unsigned int)'
+adjpq.h:177:   instantiated from `makeHeap()'
+adjpq.h:84:   instantiated from here
+stl_relops.h:43 no match for ... &lt; ...
+</code></pre><p>This one is actually worse than most error messages, because it’s easy to miss the “<code>&lt;</code>” operator amidst all the <code>&lt; ... &gt;</code> template markers.</p>
+    <p>The problem is a “no match for” a less-than operator call in line 43 of a template within the standard library file <code>stl_relops.h</code>. But that template is instantiated from the student’s own code (adjpq.h) and so the thing to do is to look at those three lines (234, 177, and 84) for a data type that is supposed to support a less-than operator, but doesn’t.</p>
+    <a id="consterrors"/><h3 id="const-errors">1.3.4 const errors</h3><p>Technically, “const”-ness is part of a type, so while sometimes these get special messages of their own, often they masquerade as ordinary type errors and must be interpreted in the same way.</p>
+    <a id="whatisasegmentationerrorsegementationfaultbuserrornullreferenceerror"/><h2 id="what-is-a-segmentation-error-segementation-fault-bus-error-null-reference-error-">1.4 What is a segmentation error? Segementation fault? Bus error? Null reference error?</h2><p>These are all various errors signaled by the underlying operating system when your program tries to retrieve from, store into, or execute instructions from an address that either doesn’t exist or is reserved for another program. In practical terms, these kinds of messages almost always arise because of</p>
+    <ul>
+  <li>
+  <p>a pointer that is null, uninitialized, or pointing to an object that has already been <code>delete</code>’d, or</p>
+    </li>
+  <li>
+  <p>array indices that are out-of-bounds, or</p>
+    </li>
+  <li>
+  <p>iterators that are uninitialized or out of bounds.</p>
+    </li>
+</ul><p>To debug these problems, concentrate on your pointers, arrays, and iterators. Add debugging output or use a debugger to find out which one is being used when the crash occurs. Then work backwards to figure out why that pointer/index/iterator has an invalid value. Keep in mind that you might not be using a pointer, array, or iterator directly, but might be using (abusing?) a function or class that does. </p>
+    <a id="whatareformalandactualparameters"/><h2 id="what-are-formal-and-actual-parameters-">1.5 What are formal and actual parameters?</h2><p>The <span class="firstterm">formal parameters</span> of a function are the parameter names that are declared in the function header and that are used when we write the function body. For example, in the code</p>
+    <pre><code class="cpp">int sequentialInsert (T a[], unsigned&amp; n, const T&amp; x)
+// insert x into sorted position within a,
+//   with a already containing n items.
+//   Return the position where inserted.
+{
+  int i = n;
+  while ((i &gt; 0) &amp;&amp; (x &lt; a[i-1]))
+      {
+       a[i] = a[i-1];
+       i = i - 1;
+      }
+  a[i] = x;
+  ++n;
+  return i;
+}   
+
+</code></pre><p>the formal parameters are named <code>a</code>, <code>n</code>, and <code>x</code>. The <span class="firstterm">actual parameters</span> of a <span class="emph">call</span> to a function are the values passed by the caller. So, in the call</p>
+    <pre><code class="cpp">k =  sequentialInsert (myArray, size-1, value);
+
+</code></pre><p>the actual parameters are <code>myArray</code>, <code>size-1</code>, and <code>value</code>. Note that formal parameters are always just names. Actual parameters can be simple names or arbitrarily complicated expressions.</p>
+    <a id="thecprogramminglanguage"/><h1 id="the-c-programming-language">2 The C++ Programming Language</h1><a id="whatstheoddexpressionwiththeand"/><h2 id="whats-the-odd-expression-with-the-and-">2.1 What’s the odd expression with the ‘?’ and ‘:’ ?</h2><p>You’re probably looking at a <span class="firstterm">conditional expression</span>. It’s a convenient shorthand for an if-then-else structure inside an ordinary expression. A typical example would be</p>
+    <pre><code class="cpp">x = (x &lt; 0.0) ? -x : x;
+</code></pre><p>The part before the ‘?’ is the condition and is evaluated first. If  the condition is true, then the then-part expression (between the ‘?’  and the ‘:’) is evaluated and the result used as the value of the  entire expression. If, however, the condition is false, then the  else-part (after the ‘:’) is evaluated and that result is used as the  value of the entire expression. This assignment, then, replaces <code>x</code>  by its own absolute value. The whole thing, then, is equivalent to</p>
+    <pre><code class="cpp">double temp;
+if (x &lt; 0.0)
+  temp = -x;
+else
+  temp = x;
+x = temp;
+</code></pre><p>A conditional expression can apear inside other expressions, anywhere a value of the same type as its then-part and else-part might appear: </p>
+    <pre><code class="cpp">x = sqrt((x &lt; 0.0) ? -x : x);
+</code></pre><a id="howdoiconvertastringtoacharacterarrayoracharacterarraytostring"/><h2 id="how-do-i-convert-a-string-to-a-character-array-or-a-character-array-to-string-">2.2 How do I convert a string to a character array (or a character array to string)?</h2><p>To get a character array from a <code>std::string</code>, use the string’s <code>c_str()</code> function: </p>
+    <pre><code class="cpp">std::string str;
+   &#x22ee;
+char* cstr = str.c_str();
+</code></pre><p>You will often see this done with older library functions that were originally designed to work with character arrays and noy yet updated to work with strings:</p>
+    <div class="details"><span class="summary"><a href="copyFile.cpp" target="listing">copyFile.cpp</a></span> <input id="but_details_d6e305" onclick="toggleDisplay('_details_d6e305')" type="button" value="+"/><div class="detailPart" id="_details_d6e305"><pre><code id="_details_d6e305_code">void copyFile (string fileName)
+{
+   ifstream input (fileName<span class='hli'>.c_str()</span>); // open an input file;
+   ofstream output ("output.txt"); // No c_str() required - "output.txt" is a
+                                   //    character array, not a string.
+   string line;
+   getline (input, line);
+   while (input) 
+   {
+      output &lt;&lt; line &lt;&lt; endl;
+      getline (input, line);
+   }   
+}
+</code></pre></div></div><p>Going in the opposite direction is even simpler. The <code>string</code> class has a constructor for building strings from character arrays, so this takes palce automatically most of the time:</p>
+    <pre><code class="cpp">void copyFile (string fileName);
+   &#x22ee;
+copyFile ("input.dat");  // automatically converted to std::string
+
+</code></pre><a id="howdoiconvertastringtoanumberoranumbertoastring"/><h2 id="how-do-i-convert-a-string-to-a-number-or-a-number-to-a-string-">2.3 How do I convert a string to a number (or a number to a string)?</h2><p>There are some quick-and-dirty functions for doing this in  <code>&lt;cstdlib&gt;</code> for converting to numbers:</p>
+    <pre><code class="cpp">#include &lt;cstdlib&gt;
+using namespace std;
+   &#x22ee;
+int i = atoi("123");
+double f = atof("3.14159");
+
+</code></pre><p>Now, these functions actually convert from character arrays, not strings, so if you have a string you need to <a href="#howdoiconvertastringtoacharacterarrayoracharacterarraytostring">convert to a character array</a>:</p>
+    <pre><code class="cpp">#include &lt;cstdio&gt;
+#include &lt;string&gt;
+using namespace std;
+   &#x22ee;
+string s1 = "123";
+string s2 = "3.14159";
+   &#x22ee;
+int i = atoi(s1.c_str());
+double f = atof(s2.c_str());
+</code></pre><p>If you need to go in the other direction, or if you need to deal with strings with unusual formatting, then there is a more general technique. In fact, you can convert <span class="emph">any</span> datatype that has <code>&lt;&lt;</code> and <code>&gt;&gt;</code> I/O operators to and from strings by reading from and writing into a string. The <code>istringstream</code> is an input stream that reads from a string:</p>
+    <pre><code class="cpp">#include &lt;sstream&gt; // provides istringstream and ostringstream
+#include &lt;string&gt;
+using namespace std;
+   &#x22ee;
+string s1 = "123 3.14159";
+   &#x22ee;
+istringstream in (s1); // create a stream reading from s1
+int i;
+double f;
+in &gt;&gt; i &gt;&gt; f;  // i will contain 123 and f will contain 3.14159
+</code></pre><p>The <code>ostringstream</code> is an output stream that writes into a string: </p>
+    <pre><code class="cpp">#include &lt;sstream&gt; // provides istringstream and ostringstream
+#include &lt;string&gt;
+using namespace std;
+   &#x22ee;
+string s1;
+ostringstream out (); // create a stream writing into a string
+int i = 245;
+double f = 1.2;
+out &lt;&lt; i &lt;&lt; ":" &lt;&lt; f;
+string s = out.str();  // Retrieve the string we have written
+cout &lt;&lt; s &lt;&lt; endl;     // Prints "245:1.2"
+
+</code></pre><p>Again, let me point out that this <code>stringstream</code> approach can be used to convert between <code>string</code> and <em>any</em> data type that you can read and write. </p>
+    <a id="whatisthedifferencebetweenadeclarationandadefinition"/><h2 id="what-is-the-difference-between-a-declaration-and-a-definition-">2.4 What is the difference between a declaration and a definition?</h2><p>Pretty much everything that has a “name” in C++ must be declared before you can use it. Many of these things must also be defined, but that can generally be done at a much later time. You <span class="firstterm">declare</span> a name by saying what kind of thing it is:</p>
+    <pre><code class="cpp"> const int MaxSize;          // declares a constant
+ extern int v;               // declares a variable
+ void foo (int formalParam); // declares a function (and a formal parameter)
+ class Bar{&lt;: ... :&gt;};               // declares a class
+ typedef Bar* BarPointer;    // declares a type name
+
+</code></pre><p>In most cases, once you have declared a name, you can write code that uses it. Furthermore, a program may declare the same thing any number of times, as long as it does so consistently. That’s why a single .h file can be included by several different .cpp files that make up a program — most .h files contain only declarations. You <span class="firstterm">define</span> constants, variables, and functions as follows:</p>
+    <pre><code class="cpp"> const int MaxSize = 1000;                   // defines a constant
+ int v;                                      // defines a variable
+ void foo (int formalParam) {++formalParam;} // defines a function
+
+</code></pre><p>A definition must be seen by the compiler once and only once in all the compilations that get linked together to form the final program. A definition is itself also a declaration (i.e., if you define something that hasn’t been declared yet, that’s OK. The definition will serve double duty as declaration and definition.).</p>
+    <a id="whatgoesinahfilewhatgoesinacppfile"/><h2 id="what-goes-in-a-h-file-what-goes-in-a-cpp-file-">2.5 What goes in a .h file? What goes in a .cpp file?</h2><p>The short answer is that a .h file contains shared <span class="emph">declarations</span>, a .cpp file contains <span class="emph">definitions</span> and declarations that you don’t want to share..</p>
+    <p>It’s important that you understand <a href="#whatisthedifferencebetweenadeclarationandadefinition">difference between declarations and definitions</a>. </p>
+    <ul>
+  <li>
+  <p>A .h file is intended to be <code>#include</code>d from many  different .cpp files that make up a single program. In fact, the  earliest stage of compilation, the  <span class="firstterm">preprocessor</span>, actually replaces each  <code>#include</code> by the full contents of the included file.  Consequently, a .h file may be processed many times during the  compilation of a single program, and should contain should contain  only <span class="firstterm">declarations</span>.</p>
+    </li>
+  <li>
+  <p>A .cpp file is intended to be compiled once for any given build of  the program. So the .cpp file can have any declarations that it  doesn’t need to share with other parts of the program, and it can  have definitions. But the main purpose of a <code>.cpp</code> file is to contain  definitions that must only be compiled once. The most common example of this would be function bodies. </p>
+    </li>
+</ul><blockquote>
+  <p><strong>Never, ever,</strong> <span class="emph">ever</span> name a <code>.cpp</code> file in an <code>#include</code>.</p>
+    
+  <p>That defeats the whole purpose of a C++ program structure.</p>
+    
+  <ul>
+    <li><code>.h</code> files are <code>#include</code>d;</li>
+    <li><code>.cpp</code> files are compiled.</li>
+  </ul>
+</blockquote><a id="whatisaninlinefunction"/><h2 id="what-is-an-inline-function-">2.6 What is an inline function?</h2><p>When we define a function, it is usually compiled into a self-contained unit of code. For example, a function </p>
+    <pre><code class="cpp">int foo(int a, int b)
+{
+  return a+b-1;
+}
+
+</code></pre><p>would compile into a block of code equivalent to </p>
+    <pre><code>stack[1] = stack[3] + stack[2] - 1; 
+jump to address in stack[0]
+
+</code></pre><p>where the “stack” is the <span class="firstterm">runtime  stack</span> a.k.a. the <span class="firstterm">activation stack</span> used to track function calls at the system level, stack[0] is the  top value on the stack, stack[1] the value just under that one, and  so on. A function call like </p>
+    <pre><code class="cpp">  x = foo(y,z+1);
+</code></pre><p>would be compiled into a code sequence along the lines of</p>
+    <pre><code>push y onto the runtime stack; 
+evaluate z+1; 
+push the result onto the runtime stack
+push (space for the return value) onto the runtime stack 
+save all CPU registers
+push address RET onto the runtime stack 
+jump to start of foo's body 
+RET: x = stack[1] 
+pop runtime stack 4 times 
+restore all CPU registers
+</code></pre><p>As you can see, there’s a fair amount of overhead involved in passing parameters and return address information to a function when making a call. The amount of time spent on this overhead is really all that large. If the function body contains several statements in any kind of loop, then the overhead is probably a negligable fraction of the total time spent on the call. </p>
+    <pre><code class="cpp">class Foo {
+private:
+   int bar;
+public:
+   int getBar ();
+   void setBar (int);
+};
+
+int Foo::getBar ()  {return bar;}
+
+void Foo::setBar (int b) {bar = b;}
+
+</code></pre><p>But many ADTs have member functions that are only one or two lines long, and often trivial lines at that. For these functions, the overhead associated with each call may exceed the time required to do the function body itself. Furthermore, because these functions are often the primary means of accessing the ADT’s contents, sometimes these functions get called thousands of times or more inside the application’s loops. </p>
+    <p>For these kinds of trivial functions, C++ offers the option of declaring them as <span class="firstterm">inline</span>. </p>
+    <div class="details"><span class="summary"><a href="inlineFunct.cpp" target="listing">inlineFunct.cpp</a></span> <input id="but_details_d6e483" onclick="toggleDisplay('_details_d6e483')" type="button" value="+"/><div class="detailPart" id="_details_d6e483"><pre><code id="_details_d6e483_code">class Foo {
+private:
+   int bar;
+public:
+   <span class='hli'>int getBar () {return bar;}</span>  
+   void setBar (int);
+};
+
+<span class='hlii'>inline</span>
+void Foo::setBar (int b) {bar = b;}
+</code></pre></div></div><p>An inline function can be written one of two ways. <span class="hli">First</span>, it can be written inside the class declaration. <span class="hlii">Second</span>, we can place the reserved word <code>inline</code> in front of the function definition written in its usual place outside the class declaration. When we make a call to an inline function, the compiler simply replaces the call by a compiled copy of the function body (with some appropriate renaming of variables to avoid conflicts). So, if we have</p>
+    <pre><code class="cpp">inline int foo(int a, int b)
+{
+  return a+b-1;
+}
+
+</code></pre><p>and we later make a call </p>
+    <pre><code class="cpp">  x = foo(y,z+1);
+
+</code></pre><p>This would be compiled into a code sequence along the lines of</p>
+    <pre><code>evaluate z+1, storing result in tempB 
+evaluate y + tempB - 1, storing result in x
+</code></pre><p>Most of the overhead of making a function call hs been eliminated. </p>
+    <p>Inline functions can reduce the run time of a program by removing unnecessary function calls, but, used unwisely, may also cause the size of the program to explode. Consequently, they should be used only by frequently-called functions with bodies that take only 1 or 2 lines of code. For larger functions, the times savings would be negligible (as a fraction of the total time) while the memory penalty is more severe, and for infrequently used functions, who cares? </p>
+    <p>Inlining is only a recommendation from the programmer to the compiler. The compiler may ignore an inline declaration and continue treating it as a conventional function if it prefers. In particular, note that inlining of functions with recursive calls is impossible, as is inlining of most virtual function calls. Many compilers will refuse to inline any function whose body contains a loop. Others may have their own peculiar limitations. </p>
+    <a id="whyisoperatorsometimesdeclaredwithanintparameter"/><h2 id="why-is-operator-sometimes-declared-with-an-int-parameter-">2.7 Why is operator++ sometimes declared with an int parameter?</h2><p>The <code>++</code> and <code>--</code> operators are unusual in that they can be written in either prefix (<code>++x</code>, <code>--x</code>) or postfix (<code>x++</code>, <code>x--</code>) form. Whether you write <code>++x</code> or <code>x++</code>, the value of <code>x</code> is increased by 1. But when you write a <code>++</code> expression inside another expression, its return value depends on whether you used the prefix or postfix form.</p>
+    <ul>
+  <li>
+  <p>The prefix form returns the value <em>after</em> the increment or decrement was performed.</p>
+    </li>
+  <li>
+  <p>The postfix form returns the value <em>before</em> the increment or decrement was performed.</p>
+    </li>
+</ul><p>So, for example, the code </p>
+    <pre><code class="cpp">int i = 0; 
+int j = 0;
+cout &lt;&lt; ++i &lt;&lt; ' ' &lt;&lt; j++ &lt;&lt; endl;
+cout &lt;&lt; i &lt;&lt; ' ' &lt;&lt; j &lt;&lt; endl;
+
+</code></pre><p>would print </p>
+    <pre><code class="cpp">1 0
+1 1
+</code></pre><p>Now that’s all very well for the builtin <code>++</code> for <code>int</code>, but what happens when we write <code>++</code> for our own classes? Like most operators, <code>++</code> can be thought of as a shorthand for a function named <code>operator++</code>, so it’s not too hard to see that we can say:</p>
+    <pre><code class="cpp">class SomethingWeCanIncrement
+{
+  &#x22ee;
+  SomethingWeCanIncrement&amp; operator++ (); 
+  &#x22ee;
+};
+
+</code></pre><p>but, somewhat late in the game, the designers of C++ realized that they had neglected to provide a syntax for indicating whether a unary operator was prefix or postfix. This is only a problem for <code>++</code> and <code>--</code>, because these are the only operators that can be written in both forms. The solution they came up with is a complete kludge. If you declare</p>
+    <pre><code class="cpp">const MyIncrementableClass operator++();
+const MyIncrementableClass operator--();
+</code></pre><p>you are declaring the <span class="emph">prefix</span> operators. If you declare </p>
+    <pre><code class="cpp">MyIncrementableClass operator++(int);
+MyIncrementableClass operator--(int);
+</code></pre><p>you are declaring the <span class="emph">postfix</span> operators.</p>
+    <p>What do you <em>do</em> with the <code>int</code> parameter for the postfix operators?</p>
+    <p><span class="emph">Absolutely nothing!</span> It’s just a dummy parameter used to distinguish the prefix and postfix forms. Finally, note that the prefix forms return a reference. The postfix forms return a non-reference value. That’s because the prefix forms are returning the value that has been incremented/decremented. That value exists, so it’s easy to return:</p>
+    <pre><code class="cpp">class MyIncrementableClass {
+   &#x22ee;
+  const MyIncrementableClass operator++() {
+        &#x22ee;
+     // do what you need to do to increment it
+        &#x22ee;
+     return *this;
+  }
+   &#x22ee;
+
+</code></pre><p>On the other hand, the postfix form returns the value before the increment/decrement takes place. Usually the only way to do that is to make a copy of that value first, then do the increment, then return the copied value.</p>
+    <pre><code class="cpp">class MyIncrementableClass {
+   &#x22ee;
+  const MyIncrementableClass operator++(int) {
+        MyIncrementableClass clone = *this; // save old value
+        operator++();                       // increment this
+        return clone;                       // return the old value
+  }
+   &#x22ee;
+
+</code></pre><a id="ihaveothercquestions"/><h2 id="i-have-other-c-questions-">2.8 I have other C++ questions.</h2><p>Many questions about C++ can be answered at the <a href="http://www.parashift.com/c++-faq-lite/">C++ FAQ  LITE</a>. Information about the class and function templates in the C++  standard library can be found at <a href="http://www.sgi.com/tech/stl/">SGI’s site</a>. </p>
+    <a id="ccompilersanderrormessages"/><h1 id="c-compilers-and-error-messages">3 C++ Compilers and Error Messages</h1><a id="howdoifixerrorsinvolvingundeclaredundefinednames"/><h2 id="how-do-i-fix-errors-involving-undeclared-undefined-names-">3.1 How do I fix errors involving undeclared/undefined names? }</h2><p>First, look <span class="emph">very</span> closely at the error messages. Does it say “undeclared” or “undefined”? These are two very different things, and <a href="##whatisthedifferencebetweenadeclarationandadefinition">understanding the difference</a> is the key to fixing the problem. </p>
+    <p>So, if the compiler says that a function is <span class="emph">undeclared</span>, it means that you tried to use it before presenting its declaration, or forgot to declare it at all. </p>
+    <p>The <span class="emph">compiler</span> never complains about definitions, because an apparently missing definition might just be in some other file you are going to compile as part of the program. </p>
+    <p>But when you try to produce the executable program by linking all the compiled .o or .obj files produced by the compiler, the <span class="emph">linker</span> may complain that a symbol is <span class="emph">undefined</span> (none of the compiled files provided a definition) or is <span class="emph">multiply defined</span> (you provided two definitions for one name, or somehow compiled the same definition into more than one .o or .obj file).</p>
+    <p>For example, if you forget a function body, the linker will eventually complain that the function is undefined (but the name of the function may be mangled in the error message, see below). If you put a variable or function definition in a .h file and include that file from more than one place, the linker will complain that the name is multiply defined. </p>
+    <a id="whatshouldidoabouttheerrormessagewarningisimplicitlyatypenameorwarningimplicittypenameisdeprecated"/><h2 id="what-should-i-do-about-the-error-message-warning-is-implicitly-a-typename-or-warning-implicit-typename-is-deprecated-">3.2 What should I do about the error message “warning: … is  implicitly a typename” or “warning: implicit typename is  deprecated”?</h2><p>Actually, you could just ignore these, because they are only warnings, not errors. Your code will compile properly even with these. This error arises in certain uses of template parameters (or of names that are <code>typedef</code>’d in terms of a template parameter. For example,</p>
+    <pre><code class="cpp">template &lt;class Container, class T&gt;
+void fillContainer (Container&amp; c, T value)
+{
+   Container::iterator b = c.begin();
+   Container::iterator e = c.end();
+   fill (b, e, value);
+}
+
+</code></pre><p>will probably get this warning from g++ complaining about the mentions of “<code>Container::iterator</code>”. The fix is</p>
+    <pre><code class="cpp">template &lt;class Container, class T&gt;
+void fillContainer (Container&amp; c, T value)
+{
+   typename Container::iterator b = c.begin();
+   typename Container::iterator e = c.end();
+   fill (b, e, value);
+}
+
+</code></pre><a id="whydoigetamessageaboutdiscardingqualifiers"/><h2 id="why-do-i-get-a-message-about-discarding-qualifiers-">3.3 Why do I get a message about discarding qualifiers?</h2><p>The message</p>
+    <blockquote>
+  <p>In <em>some-function-name</em>, passing const <em>some-type-name</em> …  discards qualifiers</p>
+    
+</blockquote><p>occurs when you try to pass a const object to a function that might try to change the object’s value. For example, if you have a class <code>C</code>:</p>
+    <pre><code class="cpp">class C {
+public:
+   C();
+   int foo ();
+   void bar (std::string&amp; s);
+   &#x22ee;  
+}
+
+</code></pre><p>and you try to compile the following code: </p>
+    <pre><code class="cpp">void baz (const C&amp; c1, C&amp; c2, const std::string&amp; str)
+{
+  int i = c1.foo();   // error!
+  int j = c2.foo();
+  c2.bar(str);        // error!
+    &#x22ee;
+
+</code></pre><p>then a C++ compiler should flag the 1st and 3rd line  indicated above. The g++ compiler will say something along the lines  of</p>
+    <pre><code class="sh">In function 'void baz(const C&amp;, C&amp;, const std::string&amp;)': 
+   passing 'const C' as 'this' argument of 'int C::foo()' discards qualifiers 
+
+In function 'void baz(const C&amp;, C&amp;, const std::string&amp;)':
+  passing 'const std::string' as argument 1 of 
+  'void C::bar(std::string&amp;)' discards qualifiers
+
+</code></pre><p>The first message complains that you have passed a const object as the left-hand parameter (implicitly named <code>this</code>) to the function <code>foo</code>, which has not promised to leave that parameter unchanged. You have, in effect, tried to discard the “qualifier” (the word “<code>const</code>”) in the <code>const C&amp;</code> datatype. The second message makes a similar complaint about the string parameter being passed to <code>bar</code>. Again, the object being passed is marked as <code>const</code>, but the declaration of <code>bar</code> suggests that <code>bar</code> is allowed to change the string it receives as a parameter. To get rid of this message, you must examine what it is you are trying to do and determine whether:</p>
+    <ul>
+  <li>The declarations of the functions you are trying to call are  incorrect. Perhaps <code>foo</code> and <code>bar</code> really <span class="emph">should</span> promise  to leave those parameters unchanged. I.e., perhaps they should  have been declared like this:</li>
+</ul><div class="details"><span class="summary"><a href="constfix1.cpp" target="listing">constfix1.cpp</a></span> <input id="but_details_d6e733" onclick="toggleDisplay('_details_d6e733')" type="button" value="+"/><div class="detailPart" id="_details_d6e733"><pre><code id="_details_d6e733_code">class C {
+public:
+   C();
+int foo () <span class='hli'>const</span>;  // don't change the object it's applied to
+void bar (<span class='hli'>const</span> std::string&amp; s);  // don't change s
+   &#x22ee;  
+}
+</code></pre></div></div><ul>
+  <li>or, perhaps the application code is declaring things as  <code>const</code> that it really <span class="emph">does</span> want to change:</li>
+</ul><div class="details"><span class="summary"><a href="constfix2.cpp" target="listing">constfix2.cpp</a></span> <input id="but_details_d6e746" onclick="toggleDisplay('_details_d6e746')" type="button" value="+"/><div class="detailPart" id="_details_d6e746"><pre><code id="_details_d6e746_code">void baz (<span class='hli'>C&amp;</span> c1, C&amp; c2, <span class='hli'>std::string&amp;</span> str)
+{
+  int i = c1.foo();   // ok
+  int j = c2.foo();
+  c2.bar(str);        // ok
+    &#x22ee;
+</code></pre></div></div><ul>
+  <li>or, perhaps the application really is not supposed to change those parameters, and you will need to find some other way to accomplish what you need to do. For example,</li>
+</ul><div class="details"><span class="summary"><a href="constfix3.cpp" target="listing">constfix3.cpp</a></span> <input id="but_details_d6e752" onclick="toggleDisplay('_details_d6e752')" type="button" value="+"/><div class="detailPart" id="_details_d6e752"><pre><code id="_details_d6e752_code">void baz (const C&amp; c1, C&amp; c2, const std::string&amp; str)
+{
+  <span class='hli'>C c1Copy = c1;</span>
+  int i = <span class='hli'>c1Copy</span>.foo();   // ok
+  int j = c2.foo();
+    &#x22ee;
+</code></pre></div></div><a id="howdoifixerrorsnomatchfororcannotbind"/><h2 id="how-do-i-fix-errors-no-match-for-or-cannot-bind">3.4 How do I fix errors “No match for…” or “Cannot bind …”</h2><p>These are variation on the messages saying a <a href="#howdoifixerrorsinvolvingundeclaredundefinednames">symbol is undeclared</a>. In particular, you will get this message when you call a function, and there are one or more functions with that name, but your set of actual parameters’ data types do not match up with the formal parameter list of any of the declared functions.</p>
+    <p>Either</p>
+    <ul>
+  <li>you are correctly calling a function that you have not declared, or</li>
+  <li>you are trying to call a declared function with the wrong kind of parameters.</li>
+</ul><p>This can be one of the longer error messages you will ever get, as g++ tries to list out <span class="emph">all</span> the functions with the same name that it knows, with the data types of all their parameters, as a way of showing you all your existing options. Although the list can be a bit daunting, if you are running in a support environment (e.g., emacs) that let’s you step from message to message while displaying the relevant line of code, this list can actually be quite helpful.</p>
+    <a id="thejavaprogramminglanguage"/><h1 id="the-java-programming-language">4 The Java Programming Language</h1><a id="howdoideterminethestartingclassofajavaprogram"/><h2 id="how-do-i-determine-the-starting-class-of-a-java-program-">4.1 How do I determine the starting class of a Java program?</h2><p>A starting class for a program must contain a function of the form</p>
+    <pre><code class="java">static int main (String[] args) {
+   &#x22ee;
+}
+</code></pre><p>This is quite similar to the <span class="function">main()</span> function used in C++, though because Java does not allow stand-alone functions, the <span class="function">main()</span> function in Java must be a class member. If a project is supposed to provide more than one program, then there may be many different starting classes within the project. A good way to list them quickly (on a Unix/Linux system) is</p>
+    <pre><code class="sh">find yourProjectDirectory -name '*.java' | xargs grep main
+
+</code></pre></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20CS%20330%3A%20Frequently%20Asked%20Questions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

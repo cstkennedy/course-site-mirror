@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>v1-day.cpp</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20v1-day.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">v1-day.cpp</h1></div><pre><code>/**
+   Day class
+
+   copyright Steven J Zeil, 2003, based upon
+     Day.java from Cay Horstmann's "Object-Oriented Design &amp; Patterns"
+**/
+
+#include "day.h"
+
+using namespace std;
+
+
+
+ const int Day::DAYS_PER_MONTH [12]
+  = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+
+
+
+/**
+   Constructs a day with a given year, month, and day
+   of the Julian/Gregorian calendar. The Julian calendar
+   is used for all days before October 15, 1582
+   @param aYear a year != 0
+   @param aMonth a month between 1 and 12
+   @param aDate a date between 1 and 31
+*/
+
+
+Day::Day(int aYear, int aMonth, int aDate)
+{
+  year = aYear;
+  month = aMonth;
+  date = aDate;
+}
+
+/**
+   Returns the year of this day
+   @return the year
+*/
+int Day::getYear() const
+{
+  return year;
+}
+
+/**
+   Returns the month of this day
+   @return the month
+*/
+int Day::getMonth() const
+{
+  return month;
+}
+
+/**
+   Returns the day of the month of this day
+   @return the day of the month
+*/
+int Day::getDate() const
+{
+  return date;
+}
+
+/**
+   Returns a day that is a certain number of days away from
+   this day
+   @param n the number of days, can be negative
+   @return a day that is n days away from this one
+*/
+Day Day::addDays(int n) const
+{
+  Day result = *this;
+  while (n &gt; 0)
+    {
+      result = result.nextDay();
+      n--;
+    }
+  while (n &lt; 0)
+    {
+      result = result.previousDay();
+      n++;
+    }
+  return result;
+}
+
+/**
+   Returns the number of days between this day and another
+   day
+   @param other the other day
+   @return the number of days that this day is away from 
+   the other (&gt;0 if this day comes later)
+*/
+int Day::daysFrom(Day other) const
+{
+  int n = 0;
+  Day d = *this;
+  while (d.compareTo(other) &gt; 0)
+    {
+      d = d.previousDay();
+      n++;
+    }
+  while (d.compareTo(other) &lt; 0)
+    {
+      d = d.nextDay();
+      n--;
+    }
+  return n;
+}
+
+
+/**
+   Compares this day with another day.
+   @param other the other day
+   @return a positive number if this day comes after the
+   other day, a negative number if this day comes before
+   the other day, and zero if the days are the same
+*/
+int Day::compareTo(Day other) const
+{
+  if (year &gt; other.year) return 1;
+  if (year &lt; other.year) return -1;
+  if (month &gt; other.month) return 1;
+  if (month &lt; other.month) return -1;
+  return date - other.date;
+}
+
+/**
+   Computes the next day.
+   @return the day following this day
+*/
+Day Day::nextDay() const
+{
+  int y = year;
+  int m = month;
+  int d = date;
+
+  if (y == GREGORIAN_START_YEAR
+      &amp;&amp; m == GREGORIAN_START_MONTH
+      &amp;&amp; d == JULIAN_END_DAY)
+    d = GREGORIAN_START_DAY;
+  else if (d &lt; daysPerMonth(y, m))
+    d++;
+  else
+    {
+      d = 1;
+      m++;
+      if (m &gt; DECEMBER) 
+    { 
+      m = JANUARY; 
+      y++; 
+      if (y == 0) y++;
+    }
+    }
+  return Day(y, m, d);
+}
+
+/**
+   Computes the previous day.
+   @return the day preceding this day
+*/
+Day Day::previousDay() const
+{
+  int y = year;
+  int m = month;
+  int d = date;
+
+  if (y == GREGORIAN_START_YEAR
+      &amp;&amp; m == GREGORIAN_START_MONTH
+      &amp;&amp; d == GREGORIAN_START_DAY)
+    d = JULIAN_END_DAY;
+  else if (d &gt; 1)
+    d--;
+  else
+    {   
+      m--;
+      if (m &lt; JANUARY) 
+    {             
+      m = DECEMBER; 
+      y--; 
+      if (y == 0) y--;
+    }
+      d = daysPerMonth(y, m);
+    }
+  return Day(y, m, d);
+}
+
+/**
+   Gets the days in a given month
+   @param y the year
+   @param m the month
+   @return the last day in the given month
+*/
+int Day::daysPerMonth(int y, int m)
+{
+  int days = DAYS_PER_MONTH[m - 1];
+  if (m == FEBRUARY &amp;&amp; isLeapYear(y)) 
+    days++;
+  return days;
+}
+
+/**
+   Tests if a year is a leap year
+   @param y the year
+   @return true if y is a leap year
+*/
+bool Day::isLeapYear(int y)
+{
+  if (y % 4 != 0) return false;
+  if (y &lt; GREGORIAN_START_YEAR) return true;
+  return (y % 100 != 0) || (y % 400 == 0);
+}
+</code></pre><p><a href="v1-day.cpp">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20v1-day.cpp"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

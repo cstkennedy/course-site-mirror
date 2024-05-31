@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="crc.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Discovering and Documenting Classes</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Discovering%20and%20Documenting%20Classes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Discovering and Documenting Classes</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#classification">1 Classification</a></div><div class="toc-h1"><a href="#driving-the-classification-process">2 Driving the classification process</a></div><div class="toc-h1"><a href="#informal-documentation-crc-cards">3 Informal Documentation: CRC Cards</a></div><div class="toc-h2"><a href="#crc-card-layout">3.1 CRC Card Layout</a></div><div class="toc-h2"><a href="#assigning-responsibilities">3.2 Assigning Responsibilities</a></div><div class="toc-h2"><a href="#attributes">3.3 Attributes</a></div><div class="toc-h2"><a href="#empty-columns">3.4 Empty Columns</a></div><div class="toc-h2"><a href="#common-mistakes-in-crc-cards">3.5 Common Mistakes in CRC Cards</a></div></div><h1 id="classification">1 Classification</h1><p><span class="firstterm">Classification</span>: Where do Classes Come From?</p>
+    <p>A key step in any OO analysis or design is identifying the appropriate classes.</p>
+    <ul>
+  <li>In practice, this process is
+    <ul>
+      <li>
+        <p>incremental</p>
+    
+        <p>We tend to add a few classes at a time.</p>
+    
+      </li>
+      <li>
+        <p>iterative</p>
+    
+        <p>We may revisit earlier decisions and change them.</p>
+    
+        <p>We often identify classes and then later add details about their relationships to other classes.</p>
+    
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Grouping Objects into Classes</strong></p>
+    <p>We may identify groups of objects as a class because they have  common</p>
+    <ul>
+  <li>
+    <p>properties,</p>
+    
+    <p>e.g., we regard all things that have titles, authors, and textual content as <span class="type">documents</span>, regardless of whether they are in a print medium, a file, or even chiseled into a set of stone tablets.</p>
+    
+    <ul>
+      <li>Don’t make the mistake of grouping things into a class  because they have common property <span class="emph">values</span>.
+        <ul>
+          <li>
+          <p>A “collection of documents” can be a class. The values of  that class can be collections that were selected by many  different criteria.</p>
+    </li>
+          <li>
+          <p>By contrast, the collection of documents written by Mark  Twain (i.e., whose <span class="varname">author</span> property has the  value <span class="varname">MarkTwain</span>) is not a class. It’s just a  particular value of the “collection of documents” class.</p>
+    </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>behaviors, </p>
+    
+    <p>e.g., the set of all documents that can be loaded from and saved  to a disk might represent a distinct class  <span class="type">ElectronicDocuments</span>.</p>
+    
+  </li>
+</ul><a id="drivingtheclassificationprocess"/><h1 id="driving-the-classification-process">2 Driving the classification process</h1><p>Where do we get the information from which we can identify classes during analysis?</p>
+    <p>The “program as simulation” philosophy suggests that we should be looking for a model of the “real world”.</p>
+    <ul>
+  <li>
+  <p>Initially we will build that model by looking at informal  English descriptions of the world.</p>
+    </li>
+  <li>
+  <p>Later, from use cases (scenarios)</p>
+    </li>
+</ul><hr/><p><strong>Working from Informal Descriptions</strong></p>
+    <p>Generally, this is done at the start of construction of a <span class="firstterm">domain model</span> or, if no domain model is needed, of the <span class="firstterm">analysis model</span>.</p>
+    <p>A fairly simple way to get started is to scan the informal statement looking for noun phrases and verb phrases </p>
+    <ul>
+  <li>
+  <p>Nouns represent candidate objects</p>
+    </li>
+  <li>
+  <p>Verbs the messages/operations upon them  (responsibilities)</p>
+    </li>
+</ul><p>This doesn’t scale well to large projects/documents, but it is simple and often a useful starting point.</p>
+    <p>After that, we move on by exploiting our knowledge to assign the responsibilities to the appropriate and to classes, refine our choice of classes and responsibilities.</p>
+    <hr/><p><strong>Use-Case analysis</strong></p>
+    <p>A <span class="firstterm">use-case</span> is a particular pattern of usage, a scenario that begins with some user of the system initiating a transaction or sequence of related events.</p>
+    <p>We analyze use-cases to discover the </p>
+    <ul>
+  <li>
+  <p>objects that participate in the scenario</p>
+    </li>
+  <li>
+  <p>responsibilities of each object</p>
+    </li>
+  <li>
+  <p>collaborations with other objects</p>
+    </li>
+</ul><p>More on this in later lessons.</p>
+    <a id="informaldocumentationcrccards"/><h1 id="informal-documentation-crc-cards">3 Informal Documentation: CRC Cards</h1><hr/><p><strong>CRC Cards</strong></p>
+    <p>Early in our development process, we won’t want to be slowed down by the need to construct detailed documentation that looks “pretty” enough to show people outside our team (management or domain experts).</p>
+    <p>CRC cards are a popular way of capturing early classification steps.</p>
+    <hr/><p><strong>CRC</strong></p>
+    <p>CRC (Class, Responsibility, &amp; Collaborators) cards are a  useful tool during early analysis, especially during team  discussions.</p>
+    <p>They are not exactly a high-tech tool:</p>
+    <ul>
+  <li>
+  <p>4x6 index cards</p>
+    </li>
+  <li>
+  <p>used to take notes during analysis,</p>
+    </li>
+  <li>
+    <p>as a concrete symbol for an object during disucssion</p>
+    
+    <ul>
+      <li>cards can be stacked, moved, etc. to illustrate proposed relationships</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>CRC Cards are Informal Documentation</strong></p>
+    <ul>
+  <li>
+  <p>The point of CRC cards is to capture info about an analysis discussion without slowing down that discussion so someone can take nicely formatted notes.</p>
+    </li>
+  <li>
+    <p>They aren’t pretty.</p>
+    
+    <ul>
+      <li>
+      <p>They aren’t something you ever want to show your customers or even your own upper-management.</p>
+    </li>
+      <li>
+      <p>If you come out of a group meeting and your CRC cards aren’t smudged, dog-eared, with lots of scratched-out bits, you probably weren’t really trying.  </p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="crccardlayout"/><h2 id="crc-card-layout">3.1 CRC Card Layout</h2><hr/><p><strong>CRC Card Layout</strong></p>
+    <ul>
+  <li>
+  <p>labeled with class name</p>
+    </li>
+  <li>
+    <p>divided into two columns</p>
+    
+    <ul>
+      <li>
+        <p>
+        <span class="firstterm">responsibilities</span></p>
+    
+        <p>A high-level description of a purpose of the class</p>
+    
+        <ul>
+          <li>attributes</li>
+          <li>behaviors</li>
+        </ul>
+      </li>
+      <li>
+        <span class="firstterm">collaborators</span>
+        <p>other classes with which this class must work with (send messages to) to fulfill this class’s responsibilities</p>
+    
+      </li>
+    </ul>
+  </li>
+</ul><div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">ClassName</td></tr>
+<tr><td> responsibility 1 </td><td> collaborator 1  </td></tr>
+<tr><td> responsibility 2 </td><td> collaborator 2  </td></tr>
+<tr><td> responsibility 3 </td><td>    </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <hr/><p><strong>CRC Card Example</strong></p>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Librarian</td></tr>
+<tr><td> Handles checkout and checkin of publications </td><td> Patrons </td></tr>
+<tr><td> Reshelves books </td><td> Publications </td></tr>
+<tr><td> Manages new acquisitions of publications </td><td> Inventory </td></tr>
+<tr><td> Has name, ID#, branch assignment </td><td> Catalog </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <a id="assigningresponsibilities"/><h2 id="assigning-responsibilities">3.2 Assigning Responsibilities</h2><ul>
+  <li>
+  <p>The responsibilities will eventually evolve into messages that can  be sent to this class and then into member functions of an  ADT.</p>
+    </li>
+  <li>
+  <p>Being aware of that intention can  be a good indicator of which class should receive a particular  responsibility.</p>
+    </li>
+</ul><hr/><p><strong>Assigning Responsibilities Example</strong></p>
+    <p>For example, if I were told “a library patron will give a  librarian a book to be checked out”, I would model this as</p>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Librarian</td></tr>
+<tr><td> Handles checkout of books for patrons </td><td>    </td></tr>
+<tr><td> ... </td><td>    </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Patron</td></tr>
+<tr><td>      </td><td> Librarian </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <p>but <span class="emph">not</span> as</p>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Librarian</td></tr>
+<tr><td>      </td><td>     </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Patron</td></tr>
+<tr><td>  Asks librarian to check out book </td><td>  Librarian </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <hr/><p><strong>When A does B to C</strong></p>
+    <p>A useful rule of thumb is that if “A does B to C”, then</p>
+    <ul>
+  <li>
+  <p>“doing B” is a responsibility.</p>
+    </li>
+  <li>
+  <p>But it is <span class="emph">usually</span> a responsibility of class C, not of A.</p>
+    </li>
+  <li>
+  <p>C is then a collaborator of A  </p>
+    </li>
+</ul><p>In pseudo-code terms, we might say</p>
+    <pre><code class="cpp">void A::fulfillSomeOtherResponsibilityOfA(C c1)
+{
+   &#x22ee;
+  c1.B();
+   &#x22ee;
+}
+</code></pre><hr/><p><strong>Containers</strong></p>
+    <p>A variation on this rule of thumb occurs when managing  collections. </p>
+    <p>If I told you that “the librarian adds the book’s  metadata to the catalog”, I would expect you to model that  as</p>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Catalog</td></tr>
+<tr><td>  Permits addition of metadata </td><td>     </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <p>and not as</p>
+    <div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Metadata</td></tr>
+<tr><td>  Can be added to a catalog </td><td>    </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <p><span class="firstterm">Metadata</span> refers to the set of  properties that identify and describe a document or other collection  of data. Typical metadata fields are author, title, date of  publication, etc. “Metadata” is a perfect example of the type of  specialized vocabulary that the people working in the Library World  would understand and that you as a software developer assigned to  that world would need to learn to use when communicating with  them.</p>
+    <hr/><p><strong>Containers (cont.)</strong></p>
+    <p>Again, by analogy with programming, we understand that if you had  something like</p>
+    <pre><code class="cpp">vector&lt;int&gt; v;
+set&lt;int&gt; myList;
+   &#x22ee;
+v.push_back(23);
+myList.insert (23);
+</code></pre><p>You would never say: </p>
+    <pre><code class="cpp">23.insertInto (myList);
+</code></pre><h2 id="attributes">3.3 Attributes</h2><hr/><p><strong>Attributes</strong></p>
+    <p>A common variation (used in the textbook) is to use the backs of  the cards to list attributes. </p>
+    <p>We won’t do that. We’ll list known  attributes among the responsibilities, </p>
+    <ul>
+  <li>By convention, “Has” introduces an attribute or list of  attributes.</li>
+</ul><div class="crc" markdown="1">
+<table>
+<tr><td colspan="2" style="font-weight: bold">Librarian</td></tr>
+<tr><td>  Handles checkout and checkin of publications </td><td> Patrons </td></tr>
+<tr><td>  Reshelves books </td><td>  Publications </td></tr>
+<tr><td>  Manages new acquisitions of publications </td><td>  Inventory </td></tr>
+<tr><td>  <span class="hlii">Has name, ID#, branch assignment</span> </td><td> Catalog </td></tr>
+<tr><td style="min-width: 8ex;"> </td> <td style="min-width: 5ex;"> </td></tr></table> </div>
+    <hr/><p><strong>Attribute Conventions</strong></p>
+    <ul>
+  <li>Singular and plurals are used in noun phrases to distinguish  between single occurrences (“name”) and collections (“publications”).
+    <ul>
+      <li>Avoid suggestions of specific data structures (e.g., “array of  publications”).</li>
+      <li>More generic terms “collection”, “sequence”  (if ordered) are OK.</li>
+    </ul>
+  </li>
+</ul><a id="emptycolumns"/><h2 id="empty-columns">3.4 Empty Columns</h2><hr/><p><strong>Empty Columns</strong></p>
+    <p>It’s OK for one or the other column to wind up being  empty.</p>
+    <ul>
+  <li>An empty list of responsibilities is often associated with  classes that are <span class="firstterm">actors</span> - they send  messages to other classes but nothing in this world sends messages  to them.</li>
+</ul><p>These often correspond to external systems or people who are  acting spontaneously to initiate some action.</p>
+    <ul>
+  <li>
+  <p>An empty list of collaborators can indicate that a class is  a <span class="firstterm">server</span> - it accepts messages but sends  out none. This is most likely in a “lower-level” class that is  little more than a collection of attributes. Most systems have  many such classes.</p>
+    </li>
+  <li>
+  <p>If both columns remain empty, however, that’s a good sign  that the class may not be needed in your model.</p>
+    </li>
+  <li>
+  <p>Be careful, though, about jumping to this conclusion too  soon. Dropping classes form the mode should only be done when you  are nearing the completion of the model. </p>
+    </li>
+</ul><a id="commonmistakesincrccards"/><h2 id="common-mistakes-in-crc-cards">3.5 Common Mistakes in CRC Cards</h2><hr/><p><strong>Common Mistakes in CRC Cards</strong></p>
+    <ul>
+  <li>
+  <p>Premature design: You aren’t doing code, selecting data  structures, etc., yet. If you <em>were</em> doing those, you shouldn’t be  using CRC cards.</p>
+    </li>
+  <li>
+  <p>Overly specific collaborators: There is no significance  between the vertical match up of the responsibilities and the  collaborators, There’s no implication that a particular collaborator  goes with a responsibility “on the same line”.</p>
+    </li>
+</ul><p>Consequently, there’s no reason to list a collaborator  twice.</p>
+    <ul>
+  <li>
+  <p>Mis-assigned responsibilities: [already][assigningresponsibilities] discussed</p>
+    </li>
+  <li>
+  <p>Inconsistent collaboration: If you place a class B in the  collaborator list of card A, then there needs to be some  responsibility of B that it actually makes sense for A to call upon  or make use of.</p>
+    </li>
+</ul><p>In particular, if class B has an empty responsibilities  column, it really can’t appear as a collaborator of anything at  all!</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Discovering%20and%20Documenting%20Classes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+class House {
+
+}
+
+class Room {
+
+}
+
+class Room.Flooring {
+
+}
+
+class Room.DimensionSet {
+
+}
+
+House *----- Room
+Room  *----- Room.Flooring
+Room  *----- Room.DimensionSet
+
+@enduml

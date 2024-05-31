@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="crc.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Example: Class Relationship Diagrams (Domain Model)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Class%20Relationship%20Diagrams%20%28Domain%20Model%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="quizDomainClasses__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Example: Class Relationship Diagrams (Domain Model)</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Feb 21, 2019</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#continuing-with-our-domain-model">1 Continuing with our Domain Model</a></div><div class="toc-h2"><a href="#problem-statement">1.1 Problem Statement</a></div><div class="toc-h2"><a href="#where-we-ended-up">1.2 Where We Ended Up</a></div><div class="toc-h1"><a href="#what-isnt-captured-in-our-class-descriptions-">2 What Isn’t Captured in Our Class Descriptions?</a></div><div class="toc-h2"><a href="#different-kinds-of-assessment">2.1 Different Kinds of Assessment</a></div><div class="toc-h2"><a href="#different-kinds-of-question">2.2 Different Kinds of Question</a></div><div class="toc-h2"><a href="#documents-involved-in-grading">2.3 Documents Involved in Grading</a></div><div class="toc-h1"><a href="#the-documentation-narrative">3 The Documentation Narrative</a></div></div><a id="continuingwithourdomainmodel"/><h1 id="continuing-with-our-domain-model">1 Continuing with our Domain Model</h1><p>First, a quick recap:</p>
+    <a id="problemstatement"/><h2 id="problem-statement">1.1 Problem Statement</h2><p>ODU offers a number of courses via the internet. A common  requirement among these courses is for a system of online assessment. An  assessment is any form of graded question-and-answer activity. Examples  include exams, quizzes, exercises, and self-assessments. In preparation  for automating such a system, our group has undertaken a study of  assessment techniques in traditional classrooms.</p>
+    <p>An assessment can contain a number of questions. Questions come in  many forms, including true/false, single-choice from among multiple  alternatives, multiple choices, fill-in-the-blank, and essay. There may be  other forms as well.</p>
+    <p>Students take assessments that are administered by instructors. The  students’ responses to each question are collected by the instructor, who  grades them by comparison to a rubric for each question. The instructor  may also elect to provide feedback (written comments), particularly about  incorrect responses.</p>
+    <p>A total score for the assessment is computed by the instructor. If  this is a self-assessment, the score is for informational purposes only.  For other kinds of assessments, the instructor records the score in  his/her grade book.</p>
+    <p>Information is returned to the student about their performance. At a  minimum, the student would learn of their score and any  instructor-provided feedback. Depending upon the instructor, students may  also receive the questions, a copy of their own responses, and the  instructor’s correct answer.</p>
+    <a id="whereweendedup"/><h2 id="where-we-ended-up">1.2 Where We Ended Up</h2><p>So far, we have diagrammed a number of classes, adding attributes and operations to a number of them:</p>
+    <table class="umlClass" markdown="1">
+<tr><th>Assessment</th></tr>
+<tr><td><tt>
+: seq of Question
+</tt></td></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>GradeBook</th></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr>
+<tr><td><tt>
+record(score, for: Student, on: Assessment)
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>GradedQuestionResponse?</th></tr>
+<tr><td><tt>
+score <br/>
+feedback
+</tt></td></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>GradedResponse?</th></tr>
+<tr><td><tt>
+overall score
+: seq of GradedQuestionResponses
+</tt></td></tr>
+<tr><td><tt>
+computeTotalScore(): score
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Instructor</th></tr>
+<tr><td><tt>
+: GradeBook
+<br/>
+</tt></td></tr>
+<tr><td><tt>
+administer(: Assessment, to: seq Student)
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Question</th></tr>
+<tr><td><tt>
+: Rubric
+</tt></td></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>QuestionResponse?</th></tr>
+<tr><td><tt>
+responseTo: Question
+</tt></td></tr>
+<tr><td><tt>
+grade(Rubric): GradedQuestionResponse
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Response</th></tr>
+<tr><td><tt>
+: seq of QuestionReponses? <br/>
+: seq of Rubric?
+</tt></td></tr>
+<tr><td><tt>
+gradeAllQuestionResponses()
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Rubric</th></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr>
+<tr><td><tt>
+grade(QuestionResponse?): GradedQuestionResponse
+</tt></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Student</th></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr>
+<tr><td><tt>
+take(:Assessment): Response <br/>
+receive(: GradedResponse)
+</tt></td></tr>
+<tr><td><tt>
+<br/>
+</tt></td></tr></table><p>We also had a handful of classes that we set aside in our first pass as variants of a more general case that we were looking at in detail:</p>
+    <table class="umlClass" markdown="1">
+<tr><th>Exam</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Quiz</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Exercise</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Self-Assessment</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>True/False Question</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Single-Choice Question</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Multiple Choices Question</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Fill-In-The-Blank Question</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><table class="umlClass" markdown="1">
+<tr><th>Essay Question</th></tr>
+<tr><td><br/></td></tr>
+<tr><td><br/></td></tr></table><a id="whatisntcapturedinourclassdescriptions"/><h1 id="what-isnt-captured-in-our-class-descriptions-">2 What Isn’t Captured in Our Class Descriptions?</h1><p>Let’s look for things that we learned but that the CRC cards don’t really capture.</p>
+    <a id="differentkindsofassessment"/><h2 id="different-kinds-of-assessment">2.1 Different Kinds of Assessment</h2><blockquote>
+  <p>ODU offers a number of courses via the internet. A common requirement among these courses is for a system of online assessment.  <strong>An assessment is any form of graded question-and-answer activity. Examples include exams, quizzes, exercises, and self-assessments</strong>. In preparation for automating such a system, our group has undertaken a study of assessment techniques in traditional classrooms.</p>
+    
+</blockquote><p>These two sentences tell us two things about assessments.</p>
+    <ol>
+  <li>
+    <p>There is some content inside each assessment.</p>
+    
+    <p>Arguably, we have already started to represent some of that as attributes of the Assessment: <table class="umlClass" markdown="1"> <tr><th>Assessment</th></tr> <tr><td><tt> : seq of Question </tt></td></tr> <tr><td><tt> <br/> </tt></td></tr></table></p>
+    
+    <p>We could also show this in a more visually intensive fashion as follows.</p>
+    
+    <img src="assessmentAgg.png" style="max-width: 80%;"/>
+    <p>(Note the ’*’ indicating the multiplicity, 0 or more, indicating  how many questions can be in an assessment.)</p>
+    
+  </li>
+  <li>
+    <p>There are many variations on the idea of assessment.</p>
+    
+    <p>We don’t yet have an explanation of why these variants exist, or how their attributes and behaviors might differ, but we know that the concept of these varying kinds of assessments was important enough to be mentioned even in this quick overview.</p>
+    
+    <p>Nonetheless, this suggests a generalization relationship.</p>
+    
+  </li>
+</ol><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentGen.png" style="max-width: 80%;"/></div>
+    </p>
+    <ul>
+  <li>Read the diamond-shaped arrow (aggregation) as “is part of”.</li>
+  <li>Read the open triangular arrow (generalization) as “is a specialized kind of”  (or sometimes just “is a” for short.)</li>
+</ul><a id="differentkindsofquestion"/><h2 id="different-kinds-of-question">2.2 Different Kinds of Question</h2><blockquote>
+  <p>An assessment can contain a number of questions. <strong>Questions come in many forms, including true/false, single-choice from among multiple alternatives, multiple choices, fill-in-the-blank, and essay.</strong> There may be other forms as well.</p>
+    
+</blockquote><p>Suggests another generalization relationship.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="questionGen.png" style="max-width: 70%;"/></div>
+    </p>
+    <p>The two generalization relationships that we have shown here are good examples of things hat are not captured at all by diagramming classes in isolation with one another.</p>
+    <p>Similarly, if we had used CRC cards to collect our candidate class information, these relationships would not be captured there.</p>
+    <a id="documentsinvolvedingrading"/><h2 id="documents-involved-in-grading">2.3 Documents Involved in Grading</h2><p>Looking at this paragraph overall, there is a more subtle set of relationships not captured in our class descriptions.</p>
+    <blockquote>
+  <p>Students take assessments that are administered by instructors. The students’ responses to each question are collected by the instructor, who grades them by comparison to a rubric for each question. The instructor may also elect to provide feedback (written comments), particularly about incorrect responses.</p>
+    
+</blockquote><ul>
+  <li>
+  <p>As we worked through our candidate classes, we came up with a number  of different documents: <em>assessments</em> are the things that students take,  from which they generate a <em>response</em> document_.</p>
+    </li>
+  <li>
+  <p>We later found that we also needed the concept of a <em>graded response</em> document to describe what the instructor produced when grading a student’s response.</p>
+    </li>
+  <li>
+  <p>We have not captured, in our classes, the idea that every response is generated  from a single assessment, although an assessment may be related to multiple  responses.</p>
+    </li>
+  <li>Similarly, we have not yet captured the notion that each response and each  graded response are in a direct, one-to-one relationship. Actually, it’s  not quite one-to-one – a response might not yet have a graded response  if the instructor has not yet gotten around to grading it.</li>
+</ul><p><div class="noFloat"> </div>
+    <img src="gradingDocuments0.png" style="float: right; max-width: 80%;"/></p>
+    <p>Here you can see an attempt to capture those ideas using associations with the appropriate multiplicity.</p>
+    <hr/><p><strong>Documents Involved in Grading (2)</strong></p>
+    <p>Or, we could even say a little more explicitly how student  responses are related to assessments.</p>
+    <p><div class="noFloat"> </div>
+    <img src="gradingDocuments1.png" style="float: right; max-width: 80%;"/></p>
+    <p>Here we are indicating that is we know which student we are discussing, we can identify which of the many responses to that assessment was written by that student.</p>
+    <p>One thing not well captured in our CRC cards is the relation among  the documents and the items that make up each document.</p>
+    <hr/><p><strong>Documents Involved in Grading (3)</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="gradingDocuments2.png" style="float: right; max-width: 80%;"/></p>
+    <p>We’ve already documented the aggregation relationship between assessments and questions. We can further take note of the stated relationship of a “rubric for each question”.</p>
+    <p><div class="noFloat"> </div>
+    <img src="gradingDocuments3.png" style="float: right; max-width: 80%;"/></p>
+    <p>However, we discovered in our discussion of grading that the response documents and the graded response documents also had a question-by-question organization.</p>
+    <hr/><p><strong>Documents Involved in Grading (4)</strong></p>
+    <p>What we could not easily show in those unrelated class descriptions, however what that each question is a graded response corresponds to a matching question in a response, which in turn corresponds to a matching question in the original assessment.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="gradingDocuments4.png" style="max-width: 80%;"/></div>
+    </p>
+    <p>This diagram, on the other hand, captures the essential parallelism in the document structures.</p>
+    <a id="thedocumentationnarrative"/><h1 id="the-documentation-narrative">3 The Documentation Narrative</h1><p>With these diagrams in hand, we can look back at our original problem statement, our discovered classes, and our newly discovered relationships, and write <a class="doc" href="../../Public/quizDomainClasses/narrative.mmd.html" target="CS330_Public">a narrative for our domain model along the lines of this</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Class%20Relationship%20Diagrams%20%28Domain%20Model%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="quizDomainClasses__slides.html"><img src="../../graphics/slides.png" title="Slides for lectures"/></a></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Mid-Semester Review</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Mid-Semester%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Mid-Semester Review</h1><h2 class="author">Thomas Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#no-explicitly-defined-constructors">1 No Explicitly Defined Constructors</a></div><div class="toc-h1"><a href="#uml-relationship-association-review">2 UML: Relationship &amp; Association Review</a></div><div class="toc-h1"><a href="#design-questions-to-consider">3 Design Questions to Consider</a></div></div><a id="noexplicitlydefinedconstructors"/><h1 id="no-explicitly-defined-constructors">1 No Explicitly Defined Constructors</h1><p>A smart aleck on your team has written a class, Cookbook. He has failed to declare a constructor–i.e., there are zero constructors. How would you persuade this team member that an explicitly declared Default constructor is necessary?</p>
+    <ul>
+  <li>
+    <p>Declare an array of Cookbooks</p>
+    
+    <pre><code class="java">Cookbook[] cookbooks = new Cookbook[10];
+</code></pre>
+    <p>or</p>
+    
+    <pre><code class="java">Cookbook[] cookbooks = null;
+cookbooks = new Cookbook[10];
+</code></pre>
+  </li>
+  <li>
+    <p>Declare and initialize a Cookbook</p>
+    
+    <pre><code class="java">Cookbook cookbook = new Cookbook();
+</code></pre>
+  </li>
+  <li>
+    <p>Create a specialized Cookbook–i.e., inherit from Cookbook</p>
+    
+    <pre><code class="java">public class SimpleCookbook extends Cookbook
+{
+    // Some code
+    // ...
+}
+</code></pre>
+  </li>
+  <li>
+    <p>Ask which data structure was used–e.g.,</p>
+    
+    <ul>
+      <li><code>Vector&lt;Recipe&gt;</code></li>
+      <li><code>ArrayList&lt;Recipe&gt;</code></li>
+      <li><code>Linked List</code></li>
+      <li><code>Array</code></li>
+    </ul>
+  </li>
+  <li>
+  <p>Try to use the Cookbook (e.g., output it)</p>
+    </li>
+</ul><a id="umlrelationshipassociationreview"/><h1 id="uml-relationship-association-review">2 UML: Relationship &amp; Association Review</h1><p>How would I represent the following in UML?</p>
+    <ol>
+  <li>
+    <p>A <code>Course</code> may be offered in multiple <code>Section</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-1.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p>A <code>Section</code> is composed of <code>Student</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-2.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p><code>Course</code>-s may have linked <code>Recitation</code>-s and <code>Lab</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-3.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p><code>Student</code>-s may be required to enroll in one <code>Lecture</code>, one <code>Lab</code>,  and one <code>Recitation</code> for a given <code>Course</code>.</p>
+    
+    <p>This is not a relationship that can be meaningfully captured with UML class  diagrams. This scenario is more suited for UML Sequence diagrams. <strong>This  type of scenario will not be present on the Midterm Exam.</strong></p>
+    
+  </li>
+</ol><a id="designquestionstoconsider"/><h1 id="design-questions-to-consider">3 Design Questions to Consider</h1><ol>
+  <li>
+  <p>Object-oriented analysis and design is useful even if a program will not  be written in an Object Oriented programming language.</p>
+    </li>
+  <li>
+    <p>When do I need index cards?</p>
+    
+    <ul>
+      <li>What am I creating?</li>
+      <li>In which phase of design am I currently engaged?</li>
+    </ul>
+  </li>
+  <li>
+    <p>Initial Design with <del>CRC cards</del> UML Class diagrams</p>
+    
+    <ul>
+      <li>Assigning Responsibilities.</li>
+      <li>Listing Collaborators.</li>
+      <li>The A-B-C Rule.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What is inheritance?</p>
+    
+    <ul>
+      <li>How do I represent inheritance in UML Class diagrams?</li>
+      <li>What is the name of this association?</li>
+    </ul>
+  </li>
+  <li>
+    <p>What are aggregation and composition?</p>
+    
+    <ul>
+      <li>How do I represent aggregation in UML?</li>
+      <li>How do I represent composition in UML?</li>
+      <li>How are aggregation and composition different?</li>
+    </ul>
+  </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Mid-Semester%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

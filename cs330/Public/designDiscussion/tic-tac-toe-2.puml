@@ -1,0 +1,17 @@
+@startuml
+hide empty members
+
+Player : name
+Player : symbol
+Player : makeMove(theBoard : Board, theMove)
+
+Board : getCell(position)
+Board : setCell(position, symbol)
+
+class Strategy {
+
+}
+
+Player --> Strategy: employs
+
+@enduml

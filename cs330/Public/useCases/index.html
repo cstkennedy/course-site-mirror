@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Use Cases</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Use%20Cases"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Use Cases</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Apr 23, 2016</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#scenarios">1 Scenarios</a></div><div class="toc-h1"><a href="#use-cases">2 Use Cases</a></div><div class="toc-h2"><a href="#evolving-a-collection-of-use-cases">2.1 Evolving a Collection of Use cases</a></div><div class="toc-h1"><a href="#organizing-use-cases">3 Organizing Use Cases</a></div><div class="toc-h2"><a href="#includes">3.1 Includes</a></div><div class="toc-h2"><a href="#generalization">3.2 Generalization</a></div><div class="toc-h2"><a href="#extends">3.3 Extends</a></div><div class="toc-h1"><a href="#how-to-use-a-use-case">4 How to Use a Use Case</a></div></div><h1 id="scenarios">1 Scenarios</h1><p>Most OOAD is scenario-driven.</p>
+    <ul>
+  <li>
+  <p>Scenarios are “stories” that describe interactions between a  system and its users.</p>
+    </li>
+  <li>
+  <p>Usually in informal natural language</p>
+    </li>
+  <li>
+  <p>Often with many variants on a common theme to accommodate  errors, exceptional cases, alternative processing, etc.</p>
+    </li>
+  <li>
+  <p>Gathered (during Elaboration) from documents and interviews with  domain experts</p>
+    </li>
+</ul><hr/><p><strong>Example: Assessment Scenarios</strong></p>
+    <ol>
+  <li>
+  <p>An instructor prepares three new questions for an upcoming  test. One is an essay question, one is a multiple-choice question,  and the third calls for students to perform a physical experiment to  submit tabulated data from that experiment. The instructor proceeds  to compose a test from these three questions plus an existing  question from his personal store.</p>
+    </li>
+  <li>
+  <p>A student wishes to attempt a test. She approaches the  instructor who provides a copy of the test on which the student is  supposed to write her answers.. The instructor authorizes the  student to begin the assessment session.</p>
+    </li>
+  <li>
+  <p>Same as #2, but the student is given a copy of the questions  and a separate form on which to record her responses.</p>
+    </li>
+  <li>
+  <p>Same as #3, but the student brings a set of blue books that  are approved by the instructor as a separate form on which to record  her responses.</p>
+    </li>
+  <li>
+  <p>A student wishes to attempt a test. He approaches the  instructor, but the instructor will not authorize the assessment  session because the test is not available until next day.</p>
+    </li>
+  <li>
+  <p>A student begins an assessment session. For each question on  the test, the student reads the question and takes note of the  expected response types. The first question is an essay question.  The student prepares a few paragraphs of text as her response. The  second question is a multiple-choice question. The student selects  one choice as her response. The third question calls for the student  to conduct an activity outside of the current session, so the  student suspends the assessment session, with the intention of  resuming it after the external activity has been completed.</p>
+    </li>
+  <li>
+  <p>An instructor begins to process the responses of a collection  of students. All responses are for the same assessment. For each  question in that assessment, the instructor obtains the question’s  rubric. Then for each response, the instructor obtains the response  for that question, applies the rubric, and records the score as part  of the assessment result. Once all questions have been scored, the  instructor computes and records the assessment score in the  assessment result.</p>
+    </li>
+  <li>
+    <p>An instructor is processing an question response to an essay  question. The rubric consists of a series of concepts that could be  considered valid, coupled with a score value for each. The  instructor reads the response, keeping a running total of the value  of all rubric concepts recognized. That total is compared to the  question’s normal minimum and normal maximum and adjusted, if  necessary, to fall within those bounds. The adjusted total is  recorded as the question score for that question response.</p>
+    
+    <p>If the question score is less than the normal max, then the  instructor adds a list of the rubric concepts not contained in the  response as feedback within the question outcome.</p>
+    
+  </li>
+</ol><a id="usecases"/><h1 id="use-cases">2 Use Cases</h1><p>A <span class="firstterm">use case</span> is</p>
+    <ul>
+  <li>
+  <p>a collection of scenarios</p>
+    </li>
+  <li>
+  <p>related to a common user goal</p>
+    </li>
+  <li>
+  <p>expressed in step-by-step form</p>
+    </li>
+</ul><hr/><p><strong>Where do use cases come from?</strong></p>
+    <p>Typically these arise from analysis of documents provided to the  analysis team or from interviews conducted with the domain experts.</p>
+    <hr/><p><strong>What are use cases good for?</strong></p>
+    <p>What do we do with use-cases once we have them?</p>
+    <ul>
+  <li>
+  <p>Use them to guide analysis and design</p>
+    </li>
+  <li>
+  <p>Validate models by walking through use cases to see if  model supports the scenario</p>
+    </li>
+  <li>
+  <p>Sometimes used as requirements statements</p>
+    </li>
+</ul><a id="evolvingacollectionofusecases"/><h2 id="evolving-a-collection-of-use-cases">2.1 Evolving a Collection of Use cases</h2><ol>
+  <li>
+  <p>Start with a collection of scenarios</p>
+    </li>
+  <li>
+  <p>Group by common user goals</p>
+    </li>
+  <li>
+  <p>Define the Actors</p>
+    </li>
+  <li>
+  <p>Give brief descriptions of use cases</p>
+    </li>
+  <li>
+  <p>Give a detailed description of the basic path</p>
+    </li>
+  <li>
+  <p>Add alternative paths</p>
+    </li>
+</ol><a id="startwithacollectionofscenarios"/><h3 id="start-with-a-collection-of-scenarios">2.1.1 Start with a collection of scenarios</h3><p>The informal scenarios are your starting point.</p>
+    <blockquote>
+  <p><strong>1. Assessment Scenarios</strong></p>
+    
+  <ol>
+    <li>
+    <p>Consultation with domain experts has revealed a standard set of terminology (<a href="http://www.imsglobal.org/question">QTI</a>) related to assessments, particularly automated assessments. Accordingly we replace certain informal terms by their more domain-appropriate equivalents (“question” <span>⇒</span> “item”, “student” <span>⇒</span> “candidate”) and the role of “instructor” is split into distinct classes of “author”, “proctor”, and “scorer”.</p>
+    </li>
+    <li>
+    <p>An author prepares three new items for an upcoming test. One is  an essay question, one is a multiple-choice question, and the  third calls for students to perform a physical experiment to  submit tabulated data from that experiment. These items become  part of that author’s personal item bank. The author proceeds to  compose a test from these three items plus an existing item (a  fill-in-the-blank question) from the item bank.</p>
+    </li>
+    <li>
+    <p>A candidate wishes to attempt a test. She approaches the proctor  who provides a copy of the test on which the candidate is  supposed to write her answers.. The proctor authorizes the  candidate to begin the assessment session.</p>
+    </li>
+    <li>
+    <p>Same as #2, but the candidate is given a copy of the questions and  a separate form on which to record her responses.</p>
+    </li>
+    <li>
+    <p>Same as #3, but the candidate brings a set of blue books that are  approved by the proctor as a separate form on which to record her  responses.</p>
+    </li>
+    <li>
+    <p>A candidate wishes to attempt a test. He approaches the proctor,  but the proctor will not authorize the assessment session because  the test is not available until next day.</p>
+    </li>
+    <li>
+    <p>A candidate attempts a test. She approaches the proctor who provides a copy of the test and a (possibly separate) empty response form. The proctor authorizes the student to begin the assessment session. For each item on the test, the candidate reads the item body and takes note of the item variables. The first item is an essay question. The candidate prepares a few paragraphs of text as her item response. The second item is a multiple-choice question. The student selects one choice as her item response. The third question calls for the candidate to conduct an activity outside of the current session, so the student suspends the assessment session, with the intention of resuming it after the external activity has been completed.</p>
+    </li>
+    <li>
+    <p>A scorer begins to process the responses of a collection of  candidates. All responses are for the same assessment. For each  item in that assessment, the scorer obtains the item’s  rubric. Then for each response, the scorer obtains the item  response for that item, applies the rubric, and records the item  outcome as part of the assessment result. Once all items have  been scored, the scorer computes and records the assessment  outcome in the assessment result.</p>
+    </li>
+    <li>
+      <p>A scorer is processing an item response to an essay question. The  rubric consists of a series of concepts that could be considered  valid, coupled with a score value for each. The scorer reads the  response, keeping a running total of the value of all rubric  concepts recognized. That total is compared to the item’s normal  minimum and normal maximum and adjusted, if necessary, to fall  within those bounds. The adjusted total is recorded as the item  outcome for that item response.</p>
+    
+      <p>If the item outcome is less than the normal max, then the scorer adds a list of the rubric concepts not contained in the response as feedback within the item outcome.</p>
+    
+    </li>
+  </ol>
+</blockquote><ul>
+  <li>CRC cards and class relationship diagrams should also be  updated accordingly.</li>
+</ul><a id="groupbycommonusergoals"/><h3 id="group-by-common-user-goals">2.1.2 Group by common user goals</h3><p>A use case describes a collection of scenarios related by common  use goals.</p>
+    <ul>
+  <li>Note that a given scenario might lack a clear goal or might  span multiple goals.</li>
+</ul><blockquote>
+  <p>2) Assessment User Goals</p>
+    
+  <ul>
+    <li>
+    <p>Create an assessment</p>
+    </li>
+    <li>
+    <p>Attempting an assessment</p>
+    </li>
+    <li>
+    <p>Grading an assessment</p>
+    </li>
+    <li>
+    <p>Grading a question</p>
+    </li>
+  </ul>
+  <p>We can summarize these with the initial stage of a UML  <span class="firstterm">Use case Diagram</span>:</p>
+    
+  <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC1.png" style="max-width: 40%;"/></div>
+    </p>
+    
+</blockquote><a id="definetheactors"/><h3 id="define-the-actors">2.1.3 Define the Actors</h3><p>An <span class="firstterm">actor</span> (in this context) is a role that a user plays in this system.</p>
+    <p>An actor is usually an entity that behaves spontaneously to initiate an interaction.</p>
+    <ul>
+  <li>
+  <p>Often include the major users and stakeholders in the  system</p>
+    </li>
+  <li>
+    <p>Relating use cases to actors helps identify the domain  experts who need to be consulted on each case to obtain details,  validate for accuracy, etc.</p>
+    
+    <ul>
+      <li>
+      <p>Later, these relations help characterize user interfaces.</p>
+    </li>
+    </ul>
+  </li>
+</ul><blockquote>
+  <p>3) Assessment Actors</p>
+    
+  <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC2.png" style="max-width: 50%;"/></div>
+    </p>
+    
+</blockquote><p>The connections between actors and use cases indicate that the actor participates in the use case.</p>
+    <a id="givebriefdescriptionsofusecases"/><h3 id="give-brief-descriptions-of-use-cases">2.1.4 Give brief descriptions of use cases</h3><p>For each of the use cases, describe briefly what goes on in this  case.</p>
+    <p>You can pull heavily on the original text of the scenarios, but  generalize to pull in the identified actors. You may abstract some  details.</p>
+    <blockquote>
+  <p>4) Assessment UC Brief Descriptions</p>
+    
+  <p><strong>Create Assessment</strong><br/>: An author creates a new assessment, using a variety of  different types of items (questions). Some of these items are  created specifically for this assessment. Others are pulled from  the author’s item bank.</p>
+    
+  <p><strong>Attempt Assessment</strong><br/>: A candidate attempts an assessment. The proctor provides a  copy of the assessment and a (possibly separate) empty response  document. The proctor authorizes the student to begin the  assessment session and can end the session when the candidate is  finished or upon expiration of a time limit. During the session,  the candidate prepares responses to items in the assessment. At  the end of the session, the student returns the response document  to the proctor.</p>
+    
+  <p><strong>Grade Assessment</strong><br/>: A scorer begins to process the response documents of a  collection of candidates. All response documents are for the same  assessment. The scorer may opt to process responses on an item by  item basis (grading all student responses to a single item) or on  a candidate by candidate basis (grading all item responses for a  given candidate). Once all items have been scored, the scorer  computes and records the assessment outcome in the assessment  result.</p>
+    
+  <p><strong>Grade Item</strong><br/>: A scorer begins to grade an item response within a response  document to an assessment. The scorer obtains the item’s rubric  for that assessment, applies that rubric to the item response, and  records the resulting score and, optionally, feedback as part of  the assessment result.</p>
+    
+</blockquote><hr/><p><strong>Give a detailed description of the basic path</strong></p>
+    <p>The basic path through your use case is the normal, everything-is-going-right, processing.</p>
+    <ul>
+  <li>
+  <p>This is expressed as a numbered sequence of steps.</p>
+    </li>
+  <li>
+  <p>Eventually you want enough detail to model this as a set of  messages exchanged between objects, but you may need multiple  iterations to get there.  </p>
+    </li>
+</ul><blockquote>
+  <p>5) Assessment UC Basic Paths</p>
+    
+  <p><strong>Create Assessment</strong></p>
+    
+  <ol>
+    <li>
+    <p>Author creates items of varying kinds, adding each to  his/her item bank.</p>
+    </li>
+    <li>
+    <p>Author creates an empty assessment, adding a title and  indicating the grading policy (graded immediately or in batch,  grades recorded in grade book or not), policy on re-attempts  permitted, dates &amp; time of availability, and security policy  (suspend &amp; resume permitted, open/closed book, etc.).</p>
+    </li>
+    <li>
+    <p>Author selects questions from item bank and adds them to  the assessment, assigning point value as he/she does so.</p>
+    </li>
+    <li>
+    <p>Author concludes creation of the assessment, making it  available to the appropriate proctors.</p>
+    </li>
+  </ol>
+  <p><strong>Attempt Assessment</strong></p>
+    
+  <ol>
+    <li>
+    <p>A candidate indicates to a proctor their desire to take  an assessment. (This may involve simply showing up at a  previously-schedule time and place when the assessment is  going to be available.)</p>
+    </li>
+    <li>
+    <p>The proctor provides the candidate with a copy of the  assessment and an empty response document.</p>
+    </li>
+    <li>
+    <p>The proctor authorizes the start of the assessment  session.</p>
+    </li>
+    <li>
+    <p>The candidate reads the assessment, and repeatedly  selects items from it. For each selected item, the candidate  creates a response, adding it to the response document.</p>
+    </li>
+    <li>
+    <p>The proctor ends the assessment session after time has  expired.</p>
+    </li>
+    <li>
+    <p>The candidate returns the response document to the  proctor.</p>
+    </li>
+  </ol>
+  <p><strong>Grade Assessment</strong></p>
+    
+  <ol>
+    <li>
+    <p>The scorer begins with an assessment and a collection of  response documents.</p>
+    </li>
+    <li>
+    <p>For each item in the assessment, the scorer obtains the  item’s rubric. Then for each response document, the scorer  goes to the item response for that same item, grades the  response using that rubric, and adds the resulting core and  (if provided) feedback to the result document for that  response document.</p>
+    </li>
+    <li>
+    <p>When all items have been graded, then the scorer  computes a total score for each results document.</p>
+    </li>
+    <li>
+    <p>The scorer add the score from each result document to  the grade book.</p>
+    </li>
+  </ol>
+  <p><strong>Grade Item</strong></p>
+    
+  <p>Given an assessment item, its rubric, and an item response,</p>
+    
+  <ol>
+    <li>
+    <p>The scorer applies the rubric to the item response to  obtain a raw score and, possibly, feedback text for the  item.</p>
+    </li>
+    <li>
+    <p>The raw score is scaled to match the point value in the  rubric to the point value of the item in the assessment. If need  be, the scaled score is subjected to the minimum/maximum point  constraints on the item.</p>
+    </li>
+    <li>
+    <p>The results is returned as the result score, together with  any feedback.</p>
+    </li>
+  </ol>
+</blockquote><a id="addalternativepaths"/><h3 id="add-alternative-paths">2.1.5 Add alternative paths</h3><p>A use case is a <span class="emph">collection</span> of scenarios.</p>
+    <ul>
+  <li>
+    <p>The basic path constitutes a single scenario.</p>
+    
+    <ul>
+      <li>
+      <p>not necessarily one of the original scenarios</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Additional scenarios are introduced as alternative  paths</p>
+    </li>
+</ul><blockquote>
+  <p>6) Assessment UC Alternate Paths</p>
+    
+  <p><strong>Create Assessment</strong></p>
+    
+  <p>1: Author creates items of varying kinds, adding each to  his/her item bank.</p>
+    
+  <p>2: Author creates an empty assessment, adding a title and  indicating the grading policy (graded immediately or in batch,  grades recorded in grade book or not), policy on re-attempts  permitted, dates &amp; time of availability, and security policy  (suspend &amp; resume permitted, open/closed book, etc.).</p>
+    
+  <p>3: Author selects questions from item bank and adds them to  the assessment, assigning point value as he/she does so.</p>
+    
+  <p>4: Author concludes creation of the assessment, making it  available to the appropriate proctors.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Edit assessment</span></p>
+    
+  <p>2: Author edits an existing assessment, possibly altering  one or more of the assessment properties.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Save assessment</span></p>
+    
+  <p>4: Author concludes this work session, saving the  assessment for later editing without releasing it to the  proctors.</p>
+    
+  <hr/>
+  <p><strong>Attempt Assessment</strong></p>
+    
+  <p>1: A candidate indicates to a proctor their desire to take  an assessment. (This may involve simply showing up at a  previously-schedule time and place when the assessment is  going to be available.)</p>
+    
+  <p>2: The proctor provides the candidate with a copy of the  assessment and an empty response document.</p>
+    
+  <p>3: The proctor authorizes the start of the assessment  session.</p>
+    
+  <p>4: The candidate reads the assessment, and repeatedly  selects items from it. For each selected item, the candidate  creates a response, adding it to the response document.</p>
+    
+  <p>5: The proctor ends the assessment session after time has  expired.</p>
+    
+  <p>6: The candidate returns the response document to the  proctor.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Unavailable</span></p>
+    
+  <p>2: The proctor determines that the candidate is not  eligible to take the assessment at this time (the assessment  is not available or the candidate has not fulfilled assessment  requirements such as being enrolled in the course).</p>
+    
+  <p>The use case terminates immediately.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Variant Assessments</span></p>
+    
+  <p>2A: Proctor randomly selects one of multiple available  variants of the assessment.</p>
+    
+  <p>2B: The proctor gives that selected assessment and an  empty response document to the candidate.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">In-line answers</span></p>
+    
+  <p>2: The response document and the assessment copy are a  single document.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Candidate provided response document</span></p>
+    
+  <p>2: The candidate brings blank sheets of paper or blue books  to serve as the response document.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Candidate finishes early</span></p>
+    
+  <p>5: The candidate indicates that he/she is finished prior to  the end of the allotted time. The proctor ends the assessment  session.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Suspended session</span></p>
+    
+  <p>5: The candidate asks to suspend the session, with the intention of  completing the assessment at a later date. The proctor determines  from the assessment properties that this is acceptable.</p>
+    
+  <p>6: The proctor collects the candidate’s response document  and copy of the assessment.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Resumed session</span></p>
+    
+  <p>1: The candidate asks to resume a previously suspended session. The  proctor determines from the assessment properties that this is  acceptable and provides the candidate with their former copy of  the assessment and former response document.</p>
+    
+  <hr/>
+  <p><strong>Grade Assessment</strong></p>
+    
+  <p>1: The scorer begins with an assessment and a collection of  response documents.</p>
+    
+  <p>2: For each item in the assessment, the scorer obtains the item’s  rubric. Then for each response document, the scorer goes to the  item response for that same item, grades the response using that  rubric, and adds the resulting score and (if provided) feedback  to the result document for that response document.</p>
+    
+  <p>3: When all items have been graded, then the scorer  computes a total score for each results document.</p>
+    
+  <p>4: The scorer add the score from each result document to  the grade book.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Candidate by Candidate Scoring</span></p>
+    
+  <p>2: For each candidate, the scorer goes through each of the items. For  each item, the scorer obtains the item’s rubric, grades the item  response using that rubric, adds the resulting score and (if  provided) feedback to the result document for that response  document.</p>
+    
+  <hr/>
+  <p><strong>Grade Item</strong></p>
+    
+  <p>Given an assessment item, its rubric, and an item response,</p>
+    
+  <p>1: The scorer applies the rubric to the item response to  obtain a raw score and, possibly, feedback text for the  item.</p>
+    
+  <p>2: The raw score is scaled to match the point value in the  rubric to the point value of the item in the assessment. If need  be, the scaled score is subjected to the minimum/maximum point  constraints on the item.</p>
+    
+  <p>3: The results is returned as the result score, together with  any feedback.</p>
+    
+  <p><strong>Alternative:</strong><span class="emph">Essay Question Scoring</span></p>
+    
+  <p>The item is an essay question.</p>
+    
+  <ul>
+    <li>The rubric consists of a series of concepts that could  be considered valid, coupled with a score value for  each.</li>
+  </ul>
+  <p>1: The scorer reads the response, keeping a running total of the  scores of all rubric concepts recognized.</p>
+    
+</blockquote><a id="organizingusecases"/><h1 id="organizing-use-cases">3 Organizing Use Cases</h1><ul>
+  <li>
+  <p>A 10 person-year project may typically have a dozen use cases  (Fowler) with lots of alternative paths.</p>
+    </li>
+  <li>
+    <p>In some cases, it’s preferred to break some of the alternative  paths to have simpler, related use cases.</p>
+    
+    <ul>
+      <li>
+      <p>UML recognizes 3 relations between use cases.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>The collection of use cases, actors, and the relations among  them constitutes our <span class="firstterm">use case model</span>.</p>
+    </li>
+</ul><h2 id="includes">3.1 Includes</h2><hr/><p><strong>One Use Case Invoking Another</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="assessmentUC2.png" style="float: right; max-width: 50%;"/> In our current model,<br/>the steps of <span class="varname">Grade Question</span> are actually a description of something that happens inside <span class="varname">Grade Assessment</span>.</p>
+    <blockquote>
+  <p><strong>Grade Assessment</strong></p>
+    
+  <p>1: The scorer begins with an assessment and a collection of  response documents.</p>
+    
+  <p>2: For each item in the assessment, the scorer obtains the item’s  rubric. Then for each response document, the scorer goes to the  item response for that same item,  <span class="hli">grades the response using that rubric</span>, and  adds the resulting score and (if provided) feedback  to the result document for that response document.</p>
+    
+  <p>3: When all items have been graded, then the scorer  computes a total score for each results document.</p>
+    
+  <p>4: The scorer add the score from each result document to  the grade book.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Candidate by Candidate Scoring</span></p>
+    
+  <p>2: For each candidate, the scorer goes through each of the items. For  each item, the scorer obtains the item’s rubric,  <span class="hli">grades the item response using that rubric</span>, adds  the resulting score and (if  provided) feedback to the result document for that response document.</p>
+    
+  <hr/>
+  <p><strong><span class="hli">Grade Item</span></strong></p>
+    
+  <p>Given an assessment item, its rubric, and an item response,</p>
+    
+  <p>1: The scorer applies the rubric to the item response to  obtain a raw score and, possibly, feedback text for the  item.</p>
+    
+  <p>2: The raw score is scaled to match the point value in the  rubric to the point value of the item in the assessment. If need  be, the scaled score is subjected to the minimum/maximum point  constraints on the item.</p>
+    
+  <p>3: The results is returned as the result score, together with  any feedback.</p>
+    
+  <p><strong>Alternative:</strong><span class="emph">Essay Question Scoring</span></p>
+    
+  <p>The item is an essay question.</p>
+    
+  <ul>
+    <li>The rubric consists of a series of concepts that could  be considered valid, coupled with a score value for  each.</li>
+  </ul>
+  <p>1: The scorer reads the response, keeping a running total of the  scores of all rubric concepts recognized.</p>
+    
+</blockquote><hr/><p><strong>The Includes Relation</strong></p>
+    <p>This is an example of an <span class="firstterm">includes</span> relation  between use cases.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC3.png" style="max-width: 50%;"/></div>
+    </p>
+    <h2 id="generalization">3.2 Generalization</h2><p>The <span class="firstterm">generalization</span> relation between use cases indicates that one use case meets the same user goal as the other but overrides one or more steps of the procedure for meeting that goal.</p>
+    <ul>
+  <li>For example, we will shortly look at sequence diagrams as a way of  mapping our analysis &amp; design models onto use cases.
+    <ul>
+      <li>It would be hard to document the two paths in the  following use case in that fashion:</li>
+    </ul>
+  </li>
+</ul><blockquote>
+  <p><strong>Grade Assessment</strong></p>
+    
+  <p>1: The scorer begins with an assessment and a collection of  response documents.</p>
+    
+  <p>2: For each item in the assessment, the scorer obtains the item’s  rubric. Then for each response document, the scorer goes to the  item response for that same item, grades the response using that  rubric, and adds the resulting score and (if provided) feedback  to the result document for that response document.</p>
+    
+  <p>3: When all items have been graded, then the scorer  computes a total score for each results document.</p>
+    
+  <p>4: The scorer add the score from each result document to  the grade book.</p>
+    
+  <p><strong>Alternative:</strong> <span class="emph">Candidate by Candidate Scoring</span></p>
+    
+  <p>2: For each candidate, the scorer goes through each of the items. For  each item, the scorer obtains the item’s rubric, grades the item  response using that rubric, adds the resulting score and (if  provided) feedback to the result document for that response  document.</p>
+    
+</blockquote><hr/><p><strong>Splitting a Use Case</strong></p>
+    <p>So we might choose to break this into two distinct cases:</p>
+    <blockquote>
+  <p><strong>Grade Assessment</strong></p>
+    
+  <p>1: The scorer begins with an assessment and a collection of  response documents.</p>
+    
+  <p>2: For each item in the assessment, the scorer obtains the item’s  rubric. Then for each response document, the scorer goes to the item  response for that same item, grades the response using that rubric,  and adds the resulting score and (if provided) feedback to the result  document for that response document.</p>
+    
+  <p>3: When all items have been graded, then the scorer computes  a total score for each results document.</p>
+    
+  <p>4: The scorer add the score from each result document to the  grade book.</p>
+    
+  <hr/>
+  <p><strong>Grade Assessment by Candidate</strong></p>
+    
+  <p>1: The scorer begins with an assessment and a collection of  response documents.</p>
+    
+  <p>2: For each candidate, the scorer goes through each of the items. For  each item, the scorer obtains the item’s rubric, grades the item  response using that rubric, adds the resulting score and (if  provided) feedback to the result document for that response document.</p>
+    
+  <p>3: When all items have been graded, then the scorer computes  a total score for each results document.</p>
+    
+  <p>4: The scorer adds the score from each result document to the  grade book.</p>
+    
+</blockquote><hr/><p><strong>Generalization</strong></p>
+    <p>The relation between these two use cases is shown like this:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC4.png" style="max-width: 50%;"/></div>
+    </p>
+    <h2 id="extends">3.3 Extends</h2><p>A more “disciplined” version of generalization.</p>
+    <ul>
+  <li>
+  <p>The base use case specifies specific <span class="firstterm">extension points</span> at which other use cases may override steps.</p>
+    </li>
+  <li>
+  <p>The derived use cases announce which extension points they are  going to override.</p>
+    </li>
+</ul><hr/><p><strong>Extends</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentUC5.png" style="max-width: 60%;"/></div>
+    </p>
+    <a id="howtouseausecase"/><h1 id="how-to-use-a-use-case">4 How to Use a Use Case</h1><ul>
+  <li>
+  <p>As an aid to analysis: read through the case, looking for  objects and interactions not listed in the current model.</p>
+    </li>
+  <li>
+  <p>As an aid to validation: Model the use case as a series of passed  messages, recording the interactions in a  <span class="firstterm">sequence diagram</span>.  Update the model as necessary so that a cause-and-effect  chain can be demonstrated from the start of the use case to its end.</p>
+    </li>
+  <li>
+  <p>As a statement of requirements: some companies now use  use-cases in place of older forms of requirements statements</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Use%20Cases"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

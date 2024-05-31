@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Cargo & Command Line Arguments in Rust</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Cargo%20%26%20Command%20Line%20Arguments%20in%20Rust"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Cargo &amp; Command Line Arguments in Rust</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#using-cargo">1 Using Cargo</a></div><div class="toc-h2"><a href="#compiling-and-running-a-rust-program">1.1 Compiling and Running a Rust Program</a></div><div class="toc-h2"><a href="#compiling-and-running-tests">1.2 Compiling and Running Tests</a></div><div class="toc-h1"><a href="#command-line-arguments">2 Command Line Arguments</a></div><div class="toc-h2"><a href="#playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</a></div><div class="toc-h2"><a href="#using-command-line-arguments">2.2 Using Command Line Arguments</a></div></div><a id="usingcargo"/><h1 id="using-cargo">1 Using Cargo</h1><p>All Rust code is accompanied by a <code>Cargo.toml</code> configuration file.</p>
+    <a id="compilingandrunningarustprogram"/><h2 id="compiling-and-running-a-rust-program">1.1 Compiling and Running a Rust Program</h2><p>In most cases… you can run any provided Rust code with…</p>
+    <pre><code class="console">cargo build; cargo run
+</code></pre><p>or</p>
+    <pre><code class="console">cargo run
+</code></pre><p>The latter command executes, compiles, <strong>and then</strong> executes the Rust program. This allows us to use fewer keystrokes (which are expensive).</p>
+    <a id="compilingandrunningtests"/><h2 id="compiling-and-running-tests">1.2 Compiling and Running Tests</h2><p>You can compile and run any included test code with…</p>
+    <pre><code class="console">cargo test
+</code></pre><a id="commandlinearguments"/><h1 id="command-line-arguments">2 Command Line Arguments</h1><p>Most (almost all) examples will make use of command line arguments. Take a look at…</p>
+    <pre><code class="rust">use std::env;
+
+fn main() {
+    let args: Vec&lt;String&gt; = env::args().collect();
+
+    for (idx, arg) in args.iter().enumerate() {
+        println!("{:&gt;2}: {}", idx, arg);
+    }
+}
+</code></pre><p><code>demo.rs</code> is a simple program. All it does is echo any entered command line arguments.</p>
+    <a id="playingwithcommandlinearguments"/><h2 id="playing-with-command-line-arguments">2.1 Playing with Command Line Arguments</h2><p>Save a copy of everything in the <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-00-Foundational-Concepts/Command-Line-Args-Rust">Review-00-Foundational-Concepts/Command-Line-Args-Rust</a> directory</p>
+    <p>…then open a Linux terminal (e.g., SSH into a CS Linux server or open a local Linux terminal). Run <code>./gradlew</code> to compile <code>Demo.rust</code>.</p>
+    <ol>
+  <li>
+    <p>Run</p>
+    
+    <pre><code class="console">cargo run
+</code></pre>
+    <p>You should see…</p>
+    
+    <pre><code> 0: target/debug/Command-Line-Args-Rust
+</code></pre>
+  </li>
+  <li>
+    <p>Run </p>
+    
+    <pre><code class="console">cargo run -- 1 2 77 The letter Q "Hello, and..."
+</code></pre>
+    <p>You should see…</p>
+    
+    <pre><code> 0: target/debug/Command-Line-Args-Rust
+ 1: 1
+ 2: 2
+ 3: 77
+ 4: The
+ 5: letter
+ 6: Q
+ 7: Hello, and...
+</code></pre>
+  </li>
+</ol><p>Do not forget… The double quotes are required for any argument that contains spaces.</p>
+    <a id="usingcommandlinearguments"/><h2 id="using-command-line-arguments">2.2 Using Command Line Arguments</h2><p>Most programs will not simply echo command line arguments. Many programs will use command line arguments to specify input files. Consider the following excerpt…</p>
+    <pre><code class="rust">    let argv: Vec&lt;String&gt; = env::args().collect();                                                                          
+                                                                                                                            
+    if argv.len() &lt; 2 {                                                                                                     
+        println!("Usage: {} file_name", argv[0]);                                                                           
+        std::process::exit(1);                                                                                              
+    }     
+</code></pre><p>In this excerpt, only one argument is required… an input file name. Note that the first <em>true</em> argument (<code>argv[1]</code>) is the input file name.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Cargo%20%26%20Command%20Line%20Arguments%20in%20Rust"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

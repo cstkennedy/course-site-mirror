@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Pointers & Smart Pointers</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Pointers%20%26%20Smart%20Pointers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Pointers &amp; Smart Pointers</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#pointers">1 Pointers</a></div><div class="toc-h1"><a href="#smart-pointers">2 Smart Pointers</a></div><div class="toc-h1"><a href="#unique-ownership">3 Unique Ownership</a></div><div class="toc-h1"><a href="#the-other-types-of-pointers">4 The Other Types of Pointers</a></div></div><p>You have worked with pointers at least once. Even if you managed to skip pointers in your previous programming courses… you had to work with pointers on the first assignment this semester.</p>
+    <h1 id="pointers">1 Pointers</h1><p>So far you have seen raw pointers used for a few things. This semester we have used pointers to build arrays.</p>
+    <pre><code class="cpp">    double* aBigArray = new double[1000];
+
+    //...
+    // Pretend there is more code here
+    //...
+
+    delete[] aBigArray;
+</code></pre><p>We have also used pointers to build linked lists by allocating nodes in a <code>push_back</code> or <code>append</code> function.</p>
+    <pre><code class="cpp">void LinkedList::appendNode(int to_add)
+{
+    Node* new_node = new Node(to_add);
+
+    // Handle the case where the first node is added
+    if (this-&gt;head == nullptr) {
+        this-&gt;head = new_node;
+        this-&gt;tail = new_node;
+    }
+    else {
+        (this-&gt;tail)-&gt;next = new_node;
+        this-&gt;tail = new_node;
+    }
+
+    // Increase the number of nodes
+    this-&gt;nodes++;
+}
+</code></pre><p>We made sure all nodes were deallocated in a Destructor.</p>
+    <pre><code class="cpp">LinkedList::~LinkedList()
+{
+    Node* this_iterator = this-&gt;head;
+
+    while (this_iterator != nullptr) {
+        Node* to_delete = this_iterator;
+
+        // move to next node
+        this_iterator = this_iterator-&gt;next;
+
+        // delete the current node
+        delete to_delete;
+    }
+}
+</code></pre><p>If we are building a data structure (e.g., a linked list or an array). Raw pointers are unavoidable.</p>
+    <a id="smartpointers"/><h1 id="smart-pointers">2 Smart Pointers</h1><p>What if we are working in high-level code? Suppose we are allocating a new <code>Cookbook</code> object in a main function.</p>
+    <pre><code class="cpp">int main(int argc, char** argv)
+{
+    Cookbook* aCookbookPtr = new Cookbook();
+
+    //...
+    // Pretend something fun happens here.
+    //...
+
+    return 0;
+}
+</code></pre><p><strong>Oops!</strong> We forgot to deallocate the <code>Cookbook</code> with <code>delete aCookbookPrt;</code> at the end of <code>main</code>. Now we have a memory leak (which you should remember from Assignment 1).</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Technically C++0x <em>introduced</em> smart pointers.</p>
+    
+</div><p>Modern C++ (i.e., C++14 and newer) provides a collection of smart pointers and associated helper functions. Take a quick look at <a href="https://en.cppreference.com/w/cpp/memory">https://en.cppreference.com/w/cpp/memory</a>. There are quite a few things listed. For now we will focus on:</p>
+    <ul>
+  <li>
+  <p><code>std::auto_ptr</code> - <em>Do not use this. It was deprecated in C++17</em>.</p>
+    </li>
+  <li>
+  <p><code>std::unique_ptr</code> - A pointer that guarantees unique ownership. This pointer can not be copied <em>(the compiler will yell at you).</em> When this pointer leaves scope (i.e., its destructor is called) <code>delete</code> is called automatically.</p>
+    </li>
+  <li>
+  <p><code>std::shared_ptr</code> - A pointer that keeps track of the number of copies (using a reference count). Once the count hits zero… <code>delete</code> is called automatically.</p>
+    </li>
+</ul><a id="uniqueownership"/><h1 id="unique-ownership">3 Unique Ownership</h1><p>If we revisit the <code>Cookbook</code> example… we probably only want one pointer to the <code>aCookbookPtr</code>. A <code>std::unique_ptr</code> is definitely what we want to use.</p>
+    <pre><code class="cpp">int main(int argc, char** argv)
+{
+    std::unique_ptr&lt;Cookbook&gt; aCookbookPtr(new Cookbook());
+
+    //...
+    // Pretend something fun happens here.
+    //...
+
+    return 0;
+}
+</code></pre><p>However, we should probably replace</p>
+    <pre><code class="cpp">    std::unique_ptr&lt;Cookbook&gt; aCookbookPtr(new Cookbook());
+</code></pre><p>with</p>
+    <pre><code class="cpp">    std::unique_ptr&lt;Cookbook&gt; aCookbookPtr = std::make_unique&lt;Cookbook&gt;();
+</code></pre><p>Since we know what type we have… <code>auto</code> is probably useful here.</p>
+    <pre><code class="cpp">    auto aCookbookPtr = std::make_unique&lt;Cookbook&gt;();
+</code></pre><p><strong>Considering how I tend to avoid <code>auto</code>… that is unexpected.</strong></p>
+    <a id="theothertypesofpointers"/><h1 id="the-other-types-of-pointers">4 The Other Types of Pointers</h1><p>We will see smart pointers again… in the <a href="https://github.com/cstkennedy/cs330-examples">C++ Shapes Example</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Pointers%20%26%20Smart%20Pointers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

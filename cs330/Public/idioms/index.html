@@ -1,0 +1,1051 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Inheritance and Dynamic Binding: idioms and common patterns</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%20and%20Dynamic%20Binding%3A%20idioms%20and%20common%20patterns"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Inheritance and Dynamic Binding: idioms and common patterns</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#inheritance-captures-variant-behavior">1 Inheritance Captures Variant Behavior</a></div><div class="toc-h1"><a href="#using-inheritance">2 Using Inheritance</a></div><div class="toc-h2"><a href="#specialization">2.1 Specialization</a></div><div class="toc-h2"><a href="#specification">2.2 Specification</a></div><div class="toc-h2"><a href="#extension">2.3 Extension</a></div><div class="toc-h1"><a href="#the-observer-pattern">3 The Observer Pattern</a></div><div class="toc-h2"><a href="#applications-of-observer">3.1 Applications of Observer</a></div></div><a id="inheritancecapturesvariantbehavior"/><h1 id="inheritance-captures-variant-behavior">1 Inheritance Captures Variant Behavior</h1><p>Why bother with inheritance &amp; dynamic binding at all?</p>
+    <p>Because it offers a convenient mechanism for capturing <span class="firstterm">variant behaviors</span> among different groups of objects.</p>
+    <pre><code class="cpp">  string render(int width)
+  Value* clone()
+</code></pre><p>But to actually store a numeric value, we need a data member to hold a number (and a function via which we can retrieve it, though we’ll ignore that for the moment). Similarly, we can expect that, to store a string value, we would need a data member to store the string.</p>
+    <p>We will assume, therefore, that </p>
+    <ul>
+  <li>
+  <p>Numeric values have an attribute <code>d</code> of type  <code>double</code></p>
+    </li>
+  <li>
+  <p>String values have an attribute <code>s</code> of type  <code>string</code></p>
+    </li>
+</ul><hr/><p><strong>A pre-OO Approach to Variant behavior</strong></p>
+    <pre><code class="cpp"> class Value {
+ public:
+   enum ValueKind {Numeric, String, Error};
+   Value (double dv);
+   Value (string sv);
+   Value ();
+ 
+   ValueKind kind;
+   double d;
+   string s;
+ 
+   string render(int width) const;
+ }
+
+</code></pre><ul>
+  <li>Any given value will presumably have something useful stored in  <code>d</code> <span class="emph">or</span> in <code>s</code>, but not in both.</li>
+</ul><hr/><p><strong>A pre-OO Approach to Variant behavior</strong></p>
+    <pre><code class="cpp"> class Value {
+ public:
+   enum ValueKind {Numeric, String, Error};
+   Value (double dv);
+   Value (string sv);
+   Value ();
+ 
+   ValueKind kind;
+   double d;
+   string s;
+ 
+   string render(int width) const;
+ }
+
+</code></pre><ul>
+  <li><code>kind</code> is a “control” data field.
+    <ul>
+      <li>It does not actually store useful data of its own.</li>
+      <li>It’s there to tell us which of the variants of value we have stored in any particular value.</li>
+      <li>We’ll use this mainly so that we can branch to code appropriate to that variant.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Multi-Way Branching</strong></p>
+    <pre><code class="cpp"> string Value::render(int width) const {
+   switch (kind) {
+     case Numeric: {
+       string buffer;
+       ostringstream out (buffer);
+       out &lt;&lt; dv.d;
+       return buffer.substr(0,width);
+       }
+     case String:
+       return sv.s.substr(0.width);
+     case Error:
+       return string("** error **").substr(0.width);
+   }
+ }
+
+</code></pre><ul>
+  <li>We can expect to see similar multi-way branches used to implement  <code>clone()</code> or just about every other function we might write for manipulating <code>Value</code>s.</li>
+</ul><hr/><p><strong>Variant Behavior under OO</strong></p>
+    <div class="details"><span class="summary"><a href="valuerender.h" target="listing">valuerender.h</a></span> <input id="but_details_d6e91" onclick="toggleDisplay('_details_d6e91')" type="button" value="+"/><div class="detailPart" id="_details_d6e91"><pre><code id="_details_d6e91_code"> class Value {
+ public:
+   virtual string render(int width) const;
+ };
+
+ class NumericValue: public Value {
+ public:
+   NumericValue (double dv);
+
+   double d;
+ 
+   string render(int width) const;
+ };
+
+ class StringValue: public Value {
+ public:
+   StringValue (string sv);
+
+   string s;
+ 
+   string render(int width) const;
+ };
+
+ class ErrorValue: public Value {
+   ErrorValue ();
+  
+   string render(int width) const;
+ };
+</code></pre></div></div><p>Now, compare that with the OO approach. </p>
+    <ul>
+  <li>
+    <p>We represent each variant with a distinct subclass.</p>
+    
+    <ul>
+      <li>Only objects of the <code>NumericValue</code> class get the <code>d</code> data member.</li>
+      <li>Only objects of the <code>StringValue</code> class get the <code>s</code> data member.</li>
+      <li>None of them get the <code>kind</code> data member.</li>
+    </ul>
+  </li>
+  <li>
+  <p>This saves memory when we have large numbers of values floating about (as in a very large spreadsheet). </p>
+    </li>
+  <li>
+  <p>But what’s more important is how it affects the code we write for manipulating <code>Value</code>s.</p>
+    </li>
+</ul><hr/><p><strong>Variants are Separated</strong></p>
+    <div class="details"><span class="summary"><a href="valuerender.cpp" target="listing">valuerender.cpp</a></span> <input id="but_details_d6e138" onclick="toggleDisplay('_details_d6e138')" type="button" value="+"/><div class="detailPart" id="_details_d6e138"><pre><code id="_details_d6e138_code"> string NumericValue::render(int width) const
+ {
+   string buffer;
+   ostringstream out (buffer);
+   out &lt;&lt; d;
+   return buffer.substr(0,width);
+ }
+ 
+ 
+ string StringValue::render(int width) const {
+   return s.substr(0.width);
+ }
+ 
+ string ErrorValue::render(int width) const {
+   return string("** error **").substr(0.width);
+ }
+</code></pre></div></div><p>Here’s the OO take on the same <code>render</code> function. </p>
+    <ul>
+  <li>
+  <p>None of the details of how to render specific kinds of value have been changed.</p>
+    </li>
+  <li>
+    <p>But we have repackaged that code into subclass-specific bodies.</p>
+    
+    <ul>
+      <li>
+      <p>The “variants” are now separate. In a team environment,  different people can work on different variants separately.</p>
+    </li>
+      <li>
+      <p>Each subclass operation is simpler.</p>
+    </li>
+      <li>
+      <p>Most important of all, new kinds of values can be added  without changing or recompiling the code of the earlier kinds of  values.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Summary</strong></p>
+    <p>We use inheritance in our programming designs whenever we find ourselves looking at objects that </p>
+    <ul>
+  <li>
+  <p>come in different varieties,</p>
+    </li>
+  <li>
+  <p>each of which has its own slightly different way of doing the “same  thing”.  </p>
+    </li>
+</ul><p>Conversely, if we <span class="emph">don’t</span> see that kind of variant behavior, we probably have no need for inheritance. </p>
+    <ul>
+  <li>Should we have, for example, a subclass for <code>AlphaNumericStringValues</code>?
+    <ul>
+      <li>Unlikely – I can’t  think of a way in which the behavior of an alphanumeric string would  vary, in the spreadsheet world, from that or an ordinary string.</li>
+    </ul>
+  </li>
+</ul><a id="usinginheritance"/><h1 id="using-inheritance">2 Using Inheritance</h1><p>We’ll look at 3 idioms describing good ways to use inheritance.</p>
+    <ul>
+  <li>
+  <p>Specialization</p>
+    </li>
+  <li>
+  <p>Specification</p>
+    </li>
+  <li>
+  <p>Extension</p>
+    </li>
+</ul><h2 id="specialization">2.1 Specialization</h2><p>When inheritance is used for <span class="firstterm">specialization</span>,</p>
+    <ul>
+  <li>
+  <p>The new class is a specialized form of the parent  class</p>
+    </li>
+  <li>
+  <p>but satisfies the specification of the parent in every  respect.</p>
+    </li>
+</ul><p>The new class may therefore be substituted for a value of  the parent.</p>
+    <p>This is, in many ways, the “classical” view of inheritance.</p>
+    <hr/><p><strong>Recognizing Specialization</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="gradtas2.png" style="float: right; max-width: 60%;"/></p>
+    <ul>
+  <li>
+  <p>A hallmark of specialization is that the base class</p>
+    </li>
+  <li>
+  <p>has objects of its own</p>
+    </li>
+  <li>
+  <p>may be processed in some applications without any  contributions from the subclasses.</p>
+    </li>
+</ul><h2 id="specification">2.2 Specification</h2><p>Inheritance for <span class="firstterm">specification</span></p>
+    <p>takes place when </p>
+    <ul>
+  <li>
+  <p>a parent class specifies a common interface for all  children</p>
+    </li>
+  <li>
+  <p>but does not itself implement the behavior </p>
+    </li>
+  <li>
+  <p>Sometimes called the “shared protocol” pattern</p>
+    </li>
+</ul><hr/><p><strong>Defining Protocols</strong></p>
+    <p>A <span class="firstterm">protocol</span> is a set of messages (functions) that can be used together to accomplish some desired task.</p>
+    <ul>
+  <li>
+  <p>The superclass defines the protocol.</p>
+    </li>
+  <li>
+  <p>The subclasses implement the messages of the protocol in  their own manner.</p>
+    </li>
+  <li>
+  <p>Application code invokes the messages of the protocol  without worrying about the individual methods.</p>
+    </li>
+</ul><hr/><p><strong>Recognizing the Specification Idiom of Inheritance</strong></p>
+    <ul>
+  <li>
+  <p>Base class typically has no instances (objects)</p>
+    </li>
+  <li>
+  <p>Only objects are actually instances of  subclasses</p>
+    </li>
+  <li>
+  <p>Some operations may not even be implementable in the  general base class</p>
+    </li>
+</ul><hr/><p><strong>Example: Varying Data Structures</strong></p>
+    <p>A common requirement in many libraries is to provide different data structures for the same abstraction.</p>
+    <ul>
+  <li>
+  <p>Allows application code writers to balance speed and storage  requirements against expected size and usage patterns.</p>
+    </li>
+  <li>
+  <p>Allows code in which the only mention of which data  structure is being used comes when the actual objects are  constructed</p>
+    </li>
+</ul><hr/><p><strong>libg++</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="libgpp.png" style="max-width: 50%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p><code>AVLSet</code> stored the data in AVL trees (a  balanced binary tree)</p>
+    </li>
+  <li>
+  <p><code>BSTSet</code> stored the data in ordinary binary  search trees</p>
+    </li>
+  <li>
+  <p><code>CHSet</code> stored the data in a conventional  hash table</p>
+    </li>
+  <li>
+  <p><code>SLSet</code> stored the data in a singly-linked  list</p>
+    </li>
+</ul><hr/><p><strong>Working with a Specialized Protocol</strong></p>
+    <div class="details"><span class="summary"><a href="genset.cpp" target="listing">genset.cpp</a></span> <input id="but_details_d6e373" onclick="toggleDisplay('_details_d6e373')" type="button" value="+"/><div class="detailPart" id="_details_d6e373"><pre><code id="_details_d6e373_code">void generateSet (int numElements, Set&amp; s, int *expected)
+{
+  int elements[MaxSetElement];
+  
+
+  for (int i = 0; i &lt; MaxSetElement; i++)
+    {
+      elements[i] = i;
+      expected[i] = 0;
+    }
+  
+
+  // Now scramble the ordering of the elements array
+  for (i = 0; i &lt; MaxSetElement; i++)
+    {
+      int j = rand(MaxSetElement);
+      int t = elements[i];
+      elements[i] = elements[j];
+      elements[j] = t;
+    }
+
+  // Insert the first numElements values into s
+  s.clear();
+  for (i = 0; i &lt; numElements; i++)
+    {
+      s.add(elements[i]);
+      expected[elements[i]] = 1;
+    }
+}
+</code></pre></div></div><p>A programmer could write code, like the code shown here, that  could work an <span class="emph">any</span> set. </p>
+    <ul>
+  <li>It is only in the code  that <span class="emph">declared</span> a new set variable that an actual  choice would have to be made.  </li>
+</ul><a id="abstractbaseclasses"/><h3 id="abstract-base-classes">2.2.1 Abstract Base Classes</h3><hr/><p><strong>Adding to a Set Subclass</strong></p>
+    <p>If we are working with <code>libg++</code> This is OK:</p>
+    <pre><code class="cpp">void foo (Set&amp; s, int x)
+{
+   s.add(x);
+   cout &lt;&lt; x &lt;&lt; " has been added." &lt;&lt; endl;
+}
+ 
+int main ()
+{
+   BSTSet s;
+   foo (s, 23);
+    &#x22ee;
+</code></pre><hr/><p><strong>Adding to a General Set</strong></p>
+    <p>But what should happen here? </p>
+    <pre><code class="cpp"> void foo (Set&amp; s, int x)
+ {
+     s.add(x);
+     cout &lt;&lt; x &lt;&lt; " has been added."   &lt;&lt; endl;
+ }
+ 
+ int main ()
+ {
+     Set s;
+     foo (s, 23);
+       &#x22ee;
+
+</code></pre><ul>
+  <li>
+  <p><code>add()</code> makes no sense if <code>Set</code> doesn’t have a data structure that can actually store elements.</p>
+    </li>
+  <li>
+  <p>In fact, <code>Set s;</code> makes no sense.</p>
+    </li>
+</ul><hr/><p><strong>How Do We Prevent This?</strong></p>
+    <pre><code class="cpp"> void foo (Set&amp; s, int x)
+ {
+     s.add(x);
+     cout &lt;&lt; x &lt;&lt; " has been added."   &lt;&lt; endl;
+ }
+ 
+ int main ()
+ {
+     Set s;
+     foo (s, 23);
+       &#x22ee;
+
+</code></pre><ul>
+  <li>
+  <p>We could add a method so <code>Set()</code> that prints an  error message when <code>add()</code> is called.</p>
+    </li>
+  <li>
+  <p>Better is to force a proper choice of data structure  at compile time.</p>
+    </li>
+</ul><hr/><p><strong>Abstract Member Functions</strong></p>
+    <pre><code class="cpp">class Set {
+      &#x22ee;
+    virtual Set&amp; add (int) = 0;
+      &#x22ee;
+};
+   
+</code></pre><ul>
+  <li>
+  <p>The <code>= 0</code> indicates that no method exists in  this class for implementing this message.</p>
+    </li>
+  <li>
+    <p><span class="function">add</span> is called an <span class="firstterm">abstract member function</span>.</p>
+    
+    <ul>
+      <li>
+      <p>Subclasses must provide the actual methods (bodies) for these functions.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Abstract Classes</strong></p>
+    <p>An <span class="firstterm">abstract class</span> in C++ is any class that </p>
+    <ul>
+  <li>
+  <p>contains an <code>= 0</code> annotation on a member  function, or</p>
+    </li>
+  <li>
+  <p>inherits such a function and does not provide a method  for it.</p>
+    </li>
+</ul><p>“Abstract classes” are also known as <span class="firstterm">pure virtual classes</span>.</p>
+    <hr/><p><strong>Set as an Abstract Class</strong></p>
+    <p><code>Set</code> in <code>libg++</code> is a good example of a class that should be abstract.</p>
+    <ul>
+  <li>We can’t possibly implement <code>Set::Add</code>
+    <ul>
+      <li>we need to do that in its subclasses.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Limitations of Abstract Classes</strong></p>
+    <p>Abstract classes carry some limitations, designed to make sure we use them in a safe manner.</p>
+    <pre><code class="cpp">class Set {
+   &#x22ee;
+  virtual Set&amp; add (int) = 0;
+   &#x22ee;
+};
+  &#x22ee;
+void foo (Set&amp; s, int x) // OK
+  &#x22ee;
+ 
+int main () {
+   Set s;  // error!
+   foo (s, 23);
+     &#x22ee;
+
+</code></pre><ul>
+  <li>
+  <p>You cannot construct an object whose type is an  abstract class.</p>
+    </li>
+  <li>
+    <p>You cannot declare function parameters of an abstract  class type when passing parameters “by copy”.</p>
+    
+    <ul>
+      <li>
+      <p>but you can pass pointers/references to the  abstract class type.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Abstract Classes &amp; Specification</strong></p>
+    <ul>
+  <li>
+  <p>Base classes in inheritance-for-specification are often  abstract</p>
+    </li>
+  <li>
+  <p>Base class exists to define a protocol</p>
+    </li>
+  <li>
+  <p>Not to provide actual objects</p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="value.h" target="listing">value.h</a></span> <input id="but_details_d6e569" onclick="toggleDisplay('_details_d6e569')" type="button" value="+"/><div class="detailPart" id="_details_d6e569"><pre><code id="_details_d6e569_code">#ifndef VALUE_H
+#define VALUE_H
+
+#include &lt;string&gt;
+#include &lt;typeinfo&gt;
+
+//
+// Represents a value that might be obtained for some spreadsheet cell
+// when its formula was evaluated.
+// 
+// Values may come in many forms. At the very least, we can expect that
+// our spreadsheet will support numeric and string values, and will
+// probably need an "error" or "invalid" value type as well. Later we may 
+// want to add addiitonal value kinds, such as currency or dates.
+//
+class Value
+{
+public:
+  virtual ~Value() {}
+
+
+  virtual std::string render (unsigned maxWidth) const = 0;
+  // Produce a string denoting this value such that the
+  // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+  // If maxWidth==0, then the output string may be arbitrarily long.
+  // This function is intended to supply the text for display in the
+  // cells of a spreadsheet.
+
+
+  virtual Value* clone() const = 0;
+  // make a copy of this value
+
+protected:
+  virtual bool isEqual (const Value&amp; v) const = 0;
+  //pre: typeid(*this) == typeid(v)
+  //  Returns true iff this value is equal to v, using a comparison
+  //  appropriate to the kind of value.
+
+  friend bool operator== (const Value&amp;, const Value&amp;);
+};
+
+inline
+bool operator== (const Value&amp; left, const Value&amp; right)
+{
+  return (typeid(left) == typeid(right))
+    &amp;&amp; left.isEqual(right);
+}
+
+#endif
+</code></pre></div></div><ul>
+  <li>
+  <p>Our spreadsheet <span class="type">Value</span> class is abstract.</p>
+    </li>
+  <li>
+  <p>So is our spreadsheet <span class="type">Expression</span> class. </p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="expression.h" target="listing">expression.h</a></span> <input id="but_details_d6e589" onclick="toggleDisplay('_details_d6e589')" type="button" value="+"/><div class="detailPart" id="_details_d6e589"><pre><code id="_details_d6e589_code">#ifndef EXPRESSION_H
+#define EXPRESSION_H
+
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+#include "cellnameseq.h"
+
+class SpreadSheet;
+class Value;
+
+// Expressions can be thought of as trees.  Each non-leaf node of the tree
+// contains an operator, and the children of that node are the subexpressions
+// (operands) that the operator operates upon.  Constants, cell references,
+// and the like form the leaves of the tree.
+// 
+// For example, the expression (a2 + 2) * c26 is equivalent to the tree:
+// 
+//                *
+//               / \
+//              +   c26
+//             / \
+//           a2   2
+
+class Expression 
+{
+public:
+
+  virtual ~Expression() {}
+
+
+  // How many operands does this expression node have?
+  virtual unsigned arity() const = 0;
+
+  // Get the k_th operand
+  virtual const Expression* operand(unsigned k) const = 0;
+  //pre: k &lt; arity()
+
+
+
+
+  // Evaluate this expression
+  virtual Value* evaluate(const SpreadSheet&amp;) const = 0;
+
+
+
+  // Copy this expression (deep copy), altering any cell references
+  // by the indicated offsets except where the row or column is "fixed"
+  // by a preceding $. E.g., if e is  2*D4+C$2/$A$1, then
+  // e.copy(1,2) is 2*E6+D$2/$A$1, e.copy(-1,4) is 2*C8+B$2/$A$1
+  virtual Expression* clone (int colOffset, int rowOffset) const = 0;
+
+
+
+  virtual CellNameSequence collectReferences() const;
+
+
+  static Expression* get (std::istream&amp; in, char terminator);
+  static Expression* get (const std::string&amp; in);
+  virtual void put (std::ostream&amp; out) const;
+
+
+
+  // The following control how the expression gets printed by 
+  // the default implementation of put(ostream&amp;)
+
+  virtual bool isInline() const = 0;
+  // if false, print as functionName(comma-separated-list)
+  // if true, print in inline form
+
+  virtual int precedence() const = 0;
+  // Parentheses are placed around an expression whenever its precedence
+  // is lower than the precedence of an operator (expression) applied to it.
+  // E.g., * has higher precedence than +, so we print 3*(a1+1) but not
+  // (3*a1)+1
+
+  virtual string getOperator() const = 0;
+  // Returns the name of the operator for printing purposes.
+  // For constants, this is the string version of the constant value.
+
+
+
+};
+
+
+
+inline std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Expression*&amp; e)
+{
+  string line;
+  getline(in, line);
+  e = Expression::get (line);
+  return in;
+}
+
+
+inline std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Expression&amp; e)
+{
+  e.put (out);
+  return out;
+}
+
+inline std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Expression* e)
+{
+  e-&gt;put (out);
+  return out;
+}
+
+#endif
+</code></pre></div></div><h2 id="extension">2.3 Extension</h2><p>In this style of inheritance, a limited number of “new” abilities  is grafted onto an otherwise unchanged superclass.</p>
+    <pre><code class="cpp"><br/> class FlashingString: public StringValue {
+   bool _flash;
+ public:
+   FlashingString (std::string);
+   void flash();
+   void stopFlashing();
+ };
+
+</code></pre><hr/><p><strong>Are Extensions OK?</strong></p>
+    <ul>
+  <li>
+  <p>Extensions are often criticized as “hacks” reflecting  afterthoughts &amp; poor hierarchy designs.</p>
+    </li>
+  <li>
+  <p>There is often a cleaner way to achieve the same design</p>
+    </li>
+  <li>
+  <p>A “socially acceptable” form of extension is the <span class="firstterm">mixin</span></p>
+    </li>
+</ul><hr/><p><strong>Mixins</strong></p>
+    <p>A mixin is a class that makes little sense by itself, but  provides a specialized capability when used as a base class.</p>
+    <ul>
+  <li>Mixins in C++ often wind up involving multiple  inheritance.</li>
+</ul><hr/><p><strong>Mixin Example: Noisy</strong></p>
+    <p><span class="type">Noisy</span> is a mixin I use when debugging.</p>
+    <div class="details"><span class="summary"><a href="noisy.h" target="listing">noisy.h</a></span> <input id="but_details_d6e635" onclick="toggleDisplay('_details_d6e635')" type="button" value="+"/><div class="detailPart" id="_details_d6e635"><pre><code id="_details_d6e635_code">#ifndef NOISY_H
+#define NOISY_H
+
+class Noisy 
+{
+  static int lastID;
+  int id;
+public:
+  Noisy();
+  Noisy(const Noisy&amp;);
+  virtual ~Noisy();
+
+  void operator= (const Noisy&amp;);
+};
+
+#endif
+</code></pre></div></div><div class="details"><span class="summary"><a href="noisy.cpp" target="listing">noisy.cpp</a></span> <input id="but_details_d6e637" onclick="toggleDisplay('_details_d6e637')" type="button" value="+"/><div class="detailPart" id="_details_d6e637"><pre><code id="_details_d6e637_code">#include "noisy.h"
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int Noisy::lastID = 0;
+
+Noisy::Noisy()
+{
+  id = lastID++;
+  cerr &lt;&lt; "Created object " &lt;&lt; id &lt;&lt; endl;
+}
+
+Noisy::Noisy(const Noisy&amp; x)
+{
+  id = lastID++;
+  cerr &lt;&lt; "Copied object " &lt;&lt; id &lt;&lt; " from object " &lt;&lt; x.id &lt;&lt; endl;
+}
+
+Noisy::~Noisy()
+{
+  cerr &lt;&lt; "Destroyed object " &lt;&lt; id &lt;&lt; endl;
+}
+  
+
+void Noisy::operator= (const Noisy&amp;) {}
+
+</code></pre></div></div><ul>
+  <li>
+  <p>Keep track of when and where constructors and  destructors are being invoked</p>
+    </li>
+  <li>
+  <p>Also helps to catch excessive copying.</p>
+    </li>
+</ul><hr/><p><strong>Using Noisy</strong></p>
+    <pre><code class="cpp"> class TreeSet
+   : public Set, public Noisy
+ {
+      &#x22ee;
+
+</code></pre><ul>
+  <li>
+  <p>This particular mixin also works if used as a data  member.</p>
+    </li>
+  <li>
+  <p>Should we worry about multiple inheritance  conflicts? </p>
+    </li>
+  <li>
+  <p>Probably not, because <code>Noisy</code> declares so few public members it is unlikely to conflict with the “real” member names of my classes.</p>
+    </li>
+</ul><hr/><p><strong>Mixin Example: checking for memory leaks</strong></p>
+    <div class="details"><span class="summary"><a href="counted.h" target="listing">counted.h</a></span> <input id="but_details_d6e675" onclick="toggleDisplay('_details_d6e675')" type="button" value="+"/><div class="detailPart" id="_details_d6e675"><pre><code id="_details_d6e675_code">#ifndef COUNTED_H
+#define COUNTED_H
+
+class Counted 
+{
+  static int numCreated;
+  static int numDestroyed;
+public:
+  Counted();
+  Counted(const Counted&amp;);
+  virtual ~Counted();
+
+  static void report();
+
+};
+
+#endif
+</code></pre></div></div><div class="details"><span class="summary"><a href="counted.cpp" target="listing">counted.cpp</a></span> <input id="but_details_d6e678" onclick="toggleDisplay('_details_d6e678')" type="button" value="+"/><div class="detailPart" id="_details_d6e678"><pre><code id="_details_d6e678_code">#include "counted.h"
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int Counted::numCreated = 0;
+int Counted::numDestroyed = 0;
+
+Counted::Counted()
+{
+  ++numCreated;
+}
+
+Counted::Counted(const Counted&amp; x)
+{
+  ++numCreated;
+}
+
+Counted::~Counted()
+{
+  ++numDestroyed;
+}
+  
+
+
+void Counted::report()
+{
+  cerr &lt;&lt; "Created " &lt;&lt; numCreated &lt;&lt; " objects." &lt;&lt; endl;
+  cerr &lt;&lt; "Destroyed " &lt;&lt; numDestroyed &lt;&lt; " objects." &lt;&lt; endl;
+}
+
+
+
+</code></pre></div></div><ul>
+  <li>
+  <p>A similar example is offered by the Counted class.</p>
+    </li>
+  <li>
+  <p>Lets me see if I have created more objects than I have destroyed.</p>
+    </li>
+</ul><a id="theobserverpattern"/><h1 id="the-observer-pattern">3 The Observer Pattern</h1><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="observer.png" style="max-width: 50%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p>A “design pattern” or idiom of OO programming</p>
+    </li>
+  <li>
+  <p>Based on 2 mixins </p>
+    </li>
+  <li>
+  <p>Observer </p>
+    </li>
+  <li>
+  <p>can ask an Observable object for notification  of any changes</p>
+    </li>
+  <li>
+  <p>Observable </p>
+    </li>
+  <li>
+  <p>will keep track of a list of Observers and  notify them when its state changes</p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="observer.h" target="listing">observer.h</a></span> <input id="but_details_d6e724" onclick="toggleDisplay('_details_d6e724')" type="button" value="+"/><div class="detailPart" id="_details_d6e724"><pre><code id="_details_d6e724_code">#ifndef OBSERVER_H
+#define OBSERVER_H
+
+//
+// An Observer can register itself with any Observable object
+// cell by calling the obervable's addObserver() function. Subsequently,
+// the oberver wil be notified whenever the oberver calls its 
+// notifyObservers() function (usually whenever the obervable object's
+// value has changed.
+//
+// Notification occurs by calling the notify() function declared here.
+
+class Observable;
+
+class Observer
+{
+public:
+  virtual void notify (Observable* changedObject) = 0;
+};
+#endif
+</code></pre></div></div><div class="details"><span class="summary"><a href="observable.h" target="listing">observable.h</a></span> <input id="but_details_d6e726" onclick="toggleDisplay('_details_d6e726')" type="button" value="+"/><div class="detailPart" id="_details_d6e726"><pre><code id="_details_d6e726_code">#ifndef OBSERVABLE_H
+#define OBSERVABLE_H
+
+#include "observerptrseq.h"
+
+// An Observable object allows any number of Observers to register
+// with it. When a significant change has occured to the Observable object, 
+// it calls notifyObservers() and each registered observer will be notified.
+// (See also oberver.h)
+
+class Observer;
+
+class Observable
+{
+public:
+
+  // Add and remove observers
+  void addObserver (Observer* observer);
+  void removeObserver (Observer* observer);
+
+  //   For each registered Observer, call notify(this)
+  void notifyObservers();
+
+private:
+  ObserverPtrSequence observers;
+};
+
+
+#endif
+</code></pre></div></div><div class="details"><span class="summary"><a href="observable.cpp" target="listing">observable.cpp</a></span> <input id="but_details_d6e728" onclick="toggleDisplay('_details_d6e728')" type="button" value="+"/><div class="detailPart" id="_details_d6e728"><pre><code id="_details_d6e728_code">#include "observable.h"
+#include "observer.h"
+
+
+// An Observable object allows any number of Observers to register
+// with it. When a significant change has occured to the Observable object, 
+// it calls notifyObservers() and each registered observer will be notified.
+//
+
+// Add and remove observers
+void Observable::addObserver (Observer* observer)
+{
+  observers.addToFront (observer);
+}
+
+
+void Observable::removeObserver (Observer* observer)
+{
+  ObserverPtrSequence::Position p = observers.find(observer);
+  if (p != 0)
+    observers.remove(p);
+}
+
+//   For each registered Observer, call hasChanged(this)
+void Observable::notifyObservers()
+{
+  for (ObserverPtrSequence::Position p = observers.front();
+       p != 0; p = observers.getNext(p))
+    {
+      observers.at(p)-&gt;notify(this);
+    }
+}
+</code></pre></div></div><a id="applicationsofobserver"/><h2 id="applications-of-observer">3.1 Applications of Observer</h2><a id="examplepropagatingchangesinaspreadsheet"/><h3 id="example-propagating-changes-in-a-spreadsheet">3.1.1 Example: Propagating Changes in a Spreadsheet</h3><p>Anyone who has used a spreadsheet has observed the way that, when one cell changes value, all the cells that mention that first cell in their formulas change, then all the cells the mention those cells change, and so on, in a characteristic “ripple” effect until all the effects of the original change have played out.</p>
+    <p>There are several ways to program that effect. One of the more elegant is to use the Observer/Observable pattern.</p>
+    <hr/><p><strong>Cells Observe Each Other</strong></p>
+    <pre><code class="cpp"><br/>class Cell: public Observable, Observer
+{
+public:
+
+</code></pre><p>The idea is that cells will observe one another. </p>
+    <ul>
+  <li>
+  <p>Suppose cell B2 contains the formula “2*A1 + B1”.</p>
+    </li>
+  <li>
+    <p>Then B2 will observe A1 and B1. </p>
+    
+    <p>It will use the <code>Observable::addObserver</code> function to add itself as an observer of both those cells.</p>
+    
+  </li>
+  <li>
+    <p>If something were to happen to A1 that  changes its value (e.g., we click on A1 and then enter a new value),  then </p>
+    
+    <ul>
+      <li>
+      <p>A1 will call <code>notifyObservers()</code>, which goes through  its list of observers, including, eventually including B2, notifying  each one.</p>
+    </li>
+      <li>
+      <p>When B2 is notified, it can re-evaluate its formula,  change its value, and notify <strong>its</strong> observers.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Changing a Cell Formula</strong></p>
+    <div class="details"><span class="summary"><a href="putFormula.cpp" target="listing">putFormula.cpp</a></span> <input id="but_details_d6e786" onclick="toggleDisplay('_details_d6e786')" type="button" value="+"/><div class="detailPart" id="_details_d6e786"><pre><code id="_details_d6e786_code">void Cell::putFormula(Expression* e)
+{
+  if (theFormula != 0)  
+    {  &#x2780;
+      CellNameSequence oldReferences = theFormula-&gt;collectReferences();
+      for (CellNameSequence::Position p = oldReferences.front();
+           p != 0; p = oldReferences.getNext(p))
+        {
+          Cell* c = theSheet.getCell(oldReferences.at(p));
+          if (c != 0)
+            c-&gt;removeObserver (this);
+        }
+      delete theFormula;
+    }
+  theFormula = e; &#x2781;
+  if (e != 0) 
+    {     &#x2782;
+      CellNameSequence newReferences = e-&gt;collectReferences();
+      for (CellNameSequence::Position p = newReferences.front();
+           p != 0; p = newReferences.getNext(p))
+        {
+          Cell* c = theSheet.getCell(newReferences.at(p));
+          if (c != 0)
+            c-&gt;addObserver (this);
+        }
+    }
+  theSheet.cellHasNewFormula (this); &#x2783;
+}
+</code></pre></div></div><p>Here’s the code that’s actually invoked to change the  expression stored in a cell. </p>
+    <ul>
+  <li>
+  <p><span>➀</span> The first if statement, and it’s loop,  looks at the expression already stored in the cell. It loops through  all cells already named in the expression and tells them that this  cell is no longer observing them (<span class="function">removeObserver</span>).</p>
+    </li>
+  <li>
+  <p><span>➁</span> After that, we store the new expression (<code>e</code>) into  the cell (<code>theFormula</code> is a data member of <code>Cell</code>).</p>
+    </li>
+  <li>
+  <p><span>➂</span> The next if statement and the loop inside look almost like the  first one. But now we are looking at the new formula, and calling  <code>addObserver</code> instead. So now any cells mentioned in the  new expression will notify this one when their values change.</p>
+    </li>
+  <li>
+  <span>➃</span></li>
+</ul><p>we tell the spreadsheet that this cell has a new formula.  The spreadsheet keeps a queue of cells that need to be re-evaluated,  and processes them one at a time.</p>
+    <hr/><p><strong>Evaluating a Cell’s Formula</strong></p>
+    <div class="details"><span class="summary"><a href="evaluateFormula.cpp" target="listing">evaluateFormula.cpp</a></span> <input id="but_details_d6e829" onclick="toggleDisplay('_details_d6e829')" type="button" value="+"/><div class="detailPart" id="_details_d6e829"><pre><code id="_details_d6e829_code">const Value* Cell::evaluateFormula()
+{
+  Value* newValue = (theFormula == 0)
+    ? new StringValue()
+    : theFormula-&gt;evaluate(theSheet);   &#x2780;
+
+  if (theValue != 0 &amp;&amp; *newValue == *theValue) &#x2781;
+    delete newValue;    &#x2782;
+  else
+    {    &#x2783;
+      delete theValue;
+      theValue = newValue;
+      notifyObservers();   &#x2784;
+    }
+  return theValue;
+}
+</code></pre></div></div><p>Eventually the spreadsheets calls this function on our recently changed cell. </p>
+    <ul>
+  <li>
+  <p><span>➀</span> We start by checking to see if the formula is  not null. If it is not, we evaluate it to get the value of the new  expression, <code>newValue</code>.</p>
+    </li>
+  <li>
+  <p><span>➁</span> We make sure the cell’s old value (stored in the cell’s data  member <code>theValue</code>) is not null, then check to see if it  is equal to the new value. </p>
+    </li>
+  <li>
+  <p><span>➂</span> If they are equal, we don’t need the new  value and can throw it away.</p>
+    </li>
+  <li>
+    <p><span>➃</span> If they are not equal, we throw out the old value and save the  new one. Now our cell’s value has definitely changed. </p>
+    
+    <ul>
+      <li><span>➄</span> So what do we do? We notify our observers.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Notifying a Cell’s Observers</strong></p>
+    <pre><code class="cpp">void Cell::notify (Observable* changedCell)
+{
+  theSheet.cellRequiresEvaluation (this);
+}  
+
+</code></pre><p>What does an observing cell do when it is notified? It tells  the spreadsheet that it needs to be re-evaluated. </p>
+    <ul>
+  <li>Again, the  spreadsheet puts the cell into a queue, but eventually calls  <code>evaluateFormula</code> on that cell,
+    <ul>
+      <li>which may change value and notify <span class="emph">its</span> observers,</li>
+      <li>which will tell the spreadsheet that they need to be re-evaluated,</li>
+      <li>which will eventually call <code>evaluateFormula</code> on them,  </li>
+    </ul>and so on.
+  </li>
+</ul><p>Eventually the propagation trickles to an end, as we eventually re-evaluate cells that either do not change value or that are not themselves mentioned in the formulae of any other cells.</p>
+    <a id="exampleobserverandguis"/><h3 id="example-observer-and-guis">3.1.2 Example: Observer and GUIs</h3><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="ssheet1.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>A spreadsheet GUI contains a rectangular array of  <code>CellViews</code>. Each <code>CellView</code> observes one  <code>Cell</code></p>
+    <ul>
+  <li>
+  <p>When value in a cell changes, it notifies its observers%if _printable,  as we have already seen. Some of those observers are other  cells, as described earlier. But one of those observers might be  a <code>CellView</code>. %endif
+</p>
+    </li>
+  <li>
+  <p>The observing <code>CellView</code> then redraws itself with the new value </p>
+    </li>
+</ul><hr/><p><strong>Scrolling the Spreadsheet</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="ssheet2.png" style="float: right; max-width: 50%;"/></p>
+    <p>Not every cell will have a <code>CellView</code> observer. </p>
+    <ul>
+  <li>
+  <p>That’s because most of the cells in a spreadsheet are not  actually visible at a given time.</p>
+    </li>
+  <li>
+  <p>Whenever we scroll the spreadsheet  GUI, the <code>CellView</code>s each register themselves with a  different cell, depending on how far we have scrolled.</p>
+    </li>
+</ul><hr/><p><strong>Model-View-Controller (MVC) Pattern</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="mvc.png" style="max-width: 50%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p>A powerful approach to GUI construction</p>
+    </li>
+  <li>
+    <p>Separate the system into 3 subsystems </p>
+    
+    <ul>
+      <li>
+      <p>Model: the “real” data managed by the program</p>
+    </li>
+      <li>
+        <p>View: portrayal of the model </p>
+    
+        <ul>
+          <li>updated as the data changes</li>
+        </ul>
+      </li>
+      <li>
+      <p>Controller: input &amp; interaction handlers</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>View <em>observes</em> the Model</p>
+    </li>
+</ul><hr/><p><strong>MVC Interactions</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="mvcinteraction.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>How do we actually accomplish this? </p>
+    <ul>
+  <li>The Oberver/Observable pattern is one important component of the MVC.
+    <ul>
+      <li>It allows the Model classes to notify appropriate parts of the GUI  without knowing anything detailed about the GUI class  interfaces.</li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%20and%20Dynamic%20Binding%3A%20idioms%20and%20common%20patterns"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

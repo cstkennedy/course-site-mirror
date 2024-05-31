@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>(C++) Mid-Semester Review</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20%28C%2B%2B%29%20Mid-Semester%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">(C++) Mid-Semester Review</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#example-no-explicitly-defined-constructors">1 Example: No Explicitly Defined Constructors</a></div><div class="toc-h1"><a href="#uml-relationship-association-review">2 UML: Relationship &amp; Association Review</a></div><div class="toc-h1"><a href="#questions-to-consider">3 Questions to Consider</a></div><div class="toc-h2"><a href="#coding">3.1 Coding</a></div><div class="toc-h2"><a href="#design">3.2 Design</a></div><div class="toc-h2"><a href="#cross-language-class-checklist-rules">3.3 Cross-Language Class Checklist Rules</a></div></div><a id="examplenoexplicitlydefinedconstructors"/><h1 id="example-no-explicitly-defined-constructors">1 Example: No Explicitly Defined Constructors</h1><p>We are <strong>not</strong> referring to the <code>explicit</code> keyword.</p>
+    <p>A smart aleck on your team has written a class, Cookbook. He has failed to declare a constructor–i.e., he has declared zero constructors. How would you persuade him that an explicitly declared Default constructor is necessary?</p>
+    <ul>
+  <li>Declare a Cookbook variable</li>
+  <li>Declare an array of Cookbooks</li>
+  <li>Create a specialized Cookbook–i.e., inherit from Cookbook</li>
+  <li>Create function that takes a Cookbook passed by value</li>
+  <li>Create function that takes a Cookbook passed by reference</li>
+  <li>Add a constant data member to CookBook</li>
+  <li>Ask which data structure he used</li>
+</ul><p>Let us individually examine each of these.</p>
+    <ul>
+  <li>
+    <p>Declare an array of Cookbooks</p>
+    
+    <pre><code class="cpp">Cookbook cookbooks[10];
+</code></pre>
+    <p>or</p>
+    
+    <pre><code class="cpp">Cookbook* cookbooks = new Cookbook[10];
+</code></pre>
+  </li>
+  <li>
+    <p>Declare a Cookbook variable</p>
+    
+    <pre><code class="cpp">Cookbook cookbook;
+</code></pre>
+  </li>
+  <li>
+    <p>Create a specialized Cookbook–i.e., inherit from Cookbook</p>
+    
+    <pre><code class="cpp">class SimpleCookbook : Cookbook {
+    // Some code
+    // ...
+};
+</code></pre>
+  </li>
+  <li>
+    <p>Create function that takes a Cookbook passed by reference</p>
+    
+    <pre><code class="cpp">bool teachMeToCook(Cookbook &amp;manual);
+</code></pre>
+  </li>
+  <li>
+    <p>Add a constant data member to CookBook</p>
+    
+    <pre><code class="cpp">class Cookbook {
+    private:
+        const int something;
+
+    // original code
+    // ...
+};
+</code></pre>
+  </li>
+  <li>
+    <p>Ask which data structure he used–e.g.,</p>
+    
+    <ul>
+      <li><code>vector&lt;Recipe&gt;</code></li>
+      <li><code>vector&lt;Recipe*&gt;</code></li>
+      <li><code>Linked List</code></li>
+      <li><code>Array</code></li>
+    </ul>
+  </li>
+</ul><a id="umlrelationshipassociationreview"/><h1 id="uml-relationship-association-review">2 UML: Relationship &amp; Association Review</h1><p>How would I represent the following in UML?</p>
+    <ol>
+  <li>
+    <p>A <code>Course</code> may be offered in multiple <code>Section</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-1.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p>A <code>Section</code> is composed of <code>Student</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-2.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p><code>Course</code>-s may have linked <code>Recitation</code>-s and <code>Lab</code>-s.</p>
+    
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="UMLex1-3.png" style="max-width: 100%;"/></div>
+    </p>
+    
+  </li>
+  <li>
+    <p><code>Student</code>-s may be required to enroll in one <code>Lecture</code>, one <code>Lab</code>,  and one <code>Recitation</code> for a given <code>Course</code>.</p>
+    
+    <p>This is not a relationship that can be meaningfully captured with UML class  diagrams. This scenario is more suited for UML Sequence diagrams. <strong>This  type of scenario will not be present on the Midterm Exam.</strong></p>
+    
+  </li>
+</ol><a id="questionstoconsider"/><h1 id="questions-to-consider">3 Questions to Consider</h1><h2 id="coding">3.1 Coding</h2><ol>
+  <li>When do I need to implement the Big-3?
+    <ol>
+      <li>What is shallow copy?</li>
+      <li>What is deep copy?</li>
+    </ol>
+  </li>
+  <li>What is const-correctness?</li>
+  <li>If I define <code>operator&lt;&lt;</code> or <code>operator&gt;&gt;</code> as member functions, what am I  defining?</li>
+  <li>What variable types allow me to make use of inheritance?
+    <ol>
+      <li>value-type?</li>
+      <li>reference-type?</li>
+      <li>pointer-type?</li>
+    </ol>
+  </li>
+</ol><h2 id="design">3.2 Design</h2><ol>
+  <li>
+  <p>Object-oriented analysis and design is useful even if a program will not  be written in an Object Oriented programming language.</p>
+    </li>
+  <li>
+    <p>When do I need index cards?</p>
+    
+    <ul>
+      <li>What am I creating?</li>
+      <li>In which phase of design am I currently engaged?</li>
+    </ul>
+  </li>
+  <li>
+    <p>Initial Design with <del>CRC cards</del> UML Class diagrams</p>
+    
+    <ul>
+      <li>Assigning Responsibilities.</li>
+      <li>Listing Collaborators.</li>
+      <li>The A-B-C Rule.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What is inheritance?</p>
+    
+    <ul>
+      <li>How do I represent inheritance in UML Class diagrams?</li>
+      <li>What is the name of this association?</li>
+    </ul>
+  </li>
+  <li>
+    <p>What are aggregation and composition?</p>
+    
+    <ul>
+      <li>How do I represent aggregation in UML?</li>
+      <li>How do I represent composition in UML?</li>
+      <li>How are aggregation and composition different?</li>
+    </ul>
+  </li>
+</ol><a id="crosslanguageclasschecklistrules"/><h2 id="cross-language-class-checklist-rules">3.3 Cross-Language Class Checklist Rules</h2><p>Consider our class checklist discussion, specifically the comparison of C++, Java and Python 3.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+      <td align="left"><code>new()</code> or Default trait </td>
+    </tr>
+    <tr>
+      <td align="left">Copy Constructor </td>
+      <td align="left">Clone and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+      <td align="left">Clone trait </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+      <td align="left">Drop trait </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (<code>@property</code>) </td>
+      <td align="left">Accessors (Getters) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setter (<code>@attribute.setter</code>) </td>
+      <td align="left">Mutators (setters) </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+      <td align="left"><code>__eq__</code> </td>
+      <td align="left">std::cmp::PartialEq trait </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+      <td align="left"><code>__hash__</code> </td>
+      <td align="left">std::cmp::PartialOrd trait </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+      <td align="left"><code>__str__</code> </td>
+      <td align="left">std::fmt::Display trait </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>__repr__</code> </td>
+      <td align="left">std::fmt::Debug trait </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+      <td align="left"><code>iter()</code> and <code>iter_mut()</code> </td>
+    </tr>
+  </tbody>
+</table><p>We can expand this table to include other languages (e.g., <a href="https://www.rust-lang.org/">Rust</a> or C++20).</p>
+    <ol>
+  <li>Think about why these parallels exist between languages that support  Object Oriented Programming (OOP).</li>
+  <li>Be able to compare these functions.</li>
+  <li>Think about <a href="https://en.cppreference.com/w/cpp/language/raii">RAII</a> and  the rule <strong>Every Constructor must intialize every attribute (data  member).</strong></li>
+  <li>Think about output in the context of <code>operator&lt;&lt;</code> in C++, <code>toString</code> in  Java, <code>__str__</code> in Python 3, and <code>std::fmt::Display::fmt</code> in Rust.</li>
+  <li>Think about the C++20 <a href="https://en.cppreference.com/w/cpp/language/operator_comparison">Three-Way Comparison (Spaceship operator)</a>.</li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20%28C%2B%2B%29%20Mid-Semester%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

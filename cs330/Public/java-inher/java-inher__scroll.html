@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Inheritance in Java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%20in%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Inheritance in Java</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: May 8, 2024</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#class-inheritance">1 Class Inheritance</a></div><div class="toc-h2"><a href="#shrubs-and-trees">1.1 Shrubs and Trees</a></div><div class="toc-h2"><a href="#inheriting-from-object">1.2 Inheriting from Object</a></div><div class="toc-h1"><a href="#dynamic-binding-in-java">2 Dynamic Binding in Java</a></div><div class="toc-h2"><a href="#the-animal-example-in-java">2.1 The Animal Example in Java</a></div><div class="toc-h2"><a href="#the-key-pattern-of-oop-in-java">2.2 The Key Pattern of OOP in Java</a></div><div class="toc-h2"><a href="#abstract-classes-in-java">2.3 Abstract Classes in Java</a></div><div class="toc-h1"><a href="#interfaces-in-java">3 Interfaces In Java</a></div><div class="toc-h2"><a href="#interface-implementation-is-not-inheritance">3.1 Interface Implementation is Not Inheritance</a></div><div class="toc-h2"><a href="#example-sorting-in-java">3.2 Example: Sorting in Java</a></div><div class="toc-h2"><a href="#iterators-in-java">3.3 Iterators in Java</a></div></div><a id="classinheritance"/><h1 id="class-inheritance">1 Class Inheritance</h1><p>Inheritance among classes in Java works almost identically to C++. The only difference is a rather minor change in syntax. Instead of this C++ syntax, for example, </p>
+    <pre><code class="cpp">class NumericValue: public Value {
+
+</code></pre><p>Java uses the reserved word <code>extends</code> to indicate the same thing: </p>
+    <pre><code class="java">class NumericValue extends Value {
+
+</code></pre><p>What is different in Java is not <span class="emph">how</span> we do inheritance, but <span class="emph">how often</span>. </p>
+    <p>In Java, if we do not explicitly inherit from another class, then our class will implicitly inherit from <span class="type">java.lang.Object</span></p>
+    <p>In C++, if we declare a new class and do not explicitly inherit from another, our new class has no base class. But in Java, if we do not explicitly inherit from another class, then our class will implicitly inherit from a class named <code>Object</code>, more specifically, <code>java.lang.Object</code>.</p>
+    <p>This is not an empty piece of language design theory. As we will see shortly, there are very real functions declared by <code>Object</code> that we inherit and may want to use. In fact, we have seen some of them (e.g., <code>equals</code>, <code>clone</code>, and <code>toString</code>) in our earlier checklist. One reason I was able to assert that these members represent a consensus among Java programmers is simply because they are encoded into the <code>Object</code>.</p>
+    <p>Keep in mind that, even if we do explicitly inherit from some other base class, that base class will either inherit from <code>Object</code> or from some other class that either inherits from <code>Object</code> or  … Eventually, we <span class="emph">will</span> be inheriting from <code>Object</code>, so the members declared there will be inherited by <span class="emph">every</span> class.</p>
+    <a id="shrubsandtrees"/><h2 id="shrubs-and-trees">1.1 Shrubs and Trees</h2><p><strong>Inheritance in C++</strong></p>
+    <p>This special <code>Object</code> class contributes to a difference in style between C++ and Java. </p>
+    <p>C++ programs use inheritance only rarely and when there is an obvious need for it.</p>
+    <blockquote>
+  <p><strong>Spreadsheet inheritance in C++:</strong></p>
+    
+  <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="cpp-spreadsheet.png" style="max-width: 50%;"/></div>
+    </p>
+    
+</blockquote><p>Our spreadsheet program has inheritance, but only for a minority  of closely related classes.</p>
+    <p>This style permeates C++. The std:: library has very little use of inheritance, particularly in the design of utility data structures and collections.</p>
+    <p><strong>Inheritance in Java</strong></p>
+    <blockquote>
+  <p><strong>Spreadsheet inheritance in Java:</strong></p>
+    
+  <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="java-spreadsheet.png" style="max-width: 50%;"/></div>
+    </p>
+    
+</blockquote><p>In Java, our spreadsheet program has the same “topical” inheritance , but our other classes are gathered together into the common tree of Java classes.</p>
+    <p>The Java API makes a great deal more obvious use of inheritance than does C++ std. </p>
+    <a id="inheritingfromobject"/><h2 id="inheriting-from-object">1.2 Inheriting from Object</h2><p>If a class declaration does not explicitly state a superclass, by default it inherits from <code>Object</code>.</p>
+    <p>What do we get from this? </p>
+    <p>Some examples of the members we inherit include:</p>
+    <ul>
+  <li>
+    <p><code>protected native Object clone()</code></p>
+    
+    <ul>
+      <li>Creates a new object of the same class as this object.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>public boolean equals(Object)</code></p>
+    
+    <ul>
+      <li>Compares two Objects for equality.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>finalize()</code></p>
+    
+    <ul>
+      <li>Called by the garbage collector on an object when there  are no more references to the object.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>public final Class getClass()</code></p>
+    
+    <ul>
+      <li>Returns the runtime class of an object.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>public native int hashCode()</code></p>
+    
+    <ul>
+      <li>Returns a hash code value for the object.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code>public String toString()</code></p>
+    
+    <ul>
+      <li>
+      <p>Returns a string representation of the object.</p>
+    </li>
+      <li>
+      <p>Called implicitly as needed for conversion to a string.</p>
+    </li>
+    </ul>
+  </li>
+</ul><p>We’ll encounter other <code>Object</code> functions later.</p>
+    <a id="dynamicbindinginjava"/><h1 id="dynamic-binding-in-java">2 Dynamic Binding in Java</h1><p>Dynamic binding is more pervasive in Java, because</p>
+    <ul>
+  <li>
+    <p>Almost all functions in Java are, implicitly, virtual.</p>
+    
+    <ul>
+      <li>
+      <p>The only exceptions are functions that are explicitly marked as <code>static</code>.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p><span class="emph">All</span> non-primitive variables in Java contain references to objects on the heap.</p>
+    </li>
+</ul><p>We don’t have the distinction made in C++ between functions invoked directly on an object as opposed to functions invoked via a pointer/reference.</p>
+    <a id="theanimalexampleinjava"/><h2 id="the-animal-example-in-java">2.1 The Animal Example in Java</h2><p>Start with an inheritance hierarchy.</p>
+    <pre><code class="java">public class Animal
+{
+    public String eats()
+    {
+        return "???";
+    }
+
+    public name()
+    {
+        return "Animal";
+    }
+}
+
+public class Herbivore extends Animal {
+public String eats() {return "plants";}
+public String name() {return "Herbivore";}
+}
+
+public class Ruminants extends Herbivore
+{
+    public String eats()
+    {
+        return "grass";
+    }
+
+    public String name()
+    {
+        return "Ruminant";
+    }
+}
+
+public class Carnivore extends Animal
+{
+    public String eats()
+    {
+        return "meat";
+    }
+
+    public String name()
+    {
+        return "Carnivore";
+    }
+}
+</code></pre><p><strong>The Main Program</strong></p>
+    <pre><code class="java">public class AnimalTest
+{
+
+    private static void show (String s1, String s2)
+    {
+        System.out.println (s1 + " " + s2);
+    }
+
+    public static void main (String[])
+    {
+        Animal a = new Animal();
+        Herbivore h = new Herbivore();
+        Ruminant r = new Ruminant();
+
+        Animal paa = a;
+        Animal pah = h;
+        Animal par = r;
+
+        show(a.name(), a.eats());      // AHRC ?pgm
+        show(paa.name(), paa.eats()); // AHRC ?pgm
+        show(h.name(), h.eats);        // AHRC ?pgm
+        show(pah.name(), pah.eats()); // AHRC ?pgm
+        show(par.name(), par.eats()); //AHRC ?pgm
+    }
+}
+
+</code></pre><p>keep in mind that Java does not allow standalone functions, so the <code>show</code> function needs to be inside a class. We assume the rest of the application code is in that same class.</p>
+    <p>Since almost everything is a pointer, special operators for dereferencing pointers and fetching addresses are not needed.</p>
+    <p><strong>Animal Hierarchy: a</strong></p>
+    <div class="details"><span class="summary"><a href="animal1.java" target="listing">animal1.java</a></span> <input id="but_details_d6e232" onclick="toggleDisplay('_details_d6e232')" type="button" value="+"/><div class="detailPart" id="_details_d6e232"><pre><code id="_details_d6e232_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     <span class='hli'>show(a.name(), a.eats());</span>      // AHRC ?pgm
+     show(paa.name(), paa.eats()); // AHRC ?pgm
+     show(h.name(), h.eats);        // AHRC ?pgm
+     show(pah.name(), pah.eats()); // AHRC ?pgm
+     show(par.name(), par.eats()); //AHRC ?pgm
+  }
+}
+</code></pre></div></div><p>Unlike C++, Java resolves <span class="emph">all</span> function calls by dynamic binding. And, unlike C++, <code>a</code> is a pointer, whether we like it or not. So, at runtime, the program follows <code>a</code> out to the heap, discovers that it actually points to an <code>Animal</code>, and invokes the <code>Animal::name()</code> function body to print “Animal”. Then it does the same for <code>eats()</code> and invokes the <code>Animal::eats()</code> function body to print “???”.</p>
+    <hr/><p><strong>Animal Hierarchy: paa</strong></p>
+    <div class="details"><span class="summary"><a href="animal2.java" target="listing">animal2.java</a></span> <input id="but_details_d6e255" onclick="toggleDisplay('_details_d6e255')" type="button" value="+"/><div class="detailPart" id="_details_d6e255"><pre><code id="_details_d6e255_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     show(a.name(), a.eats());      // Animal ???
+     <span class='hli'>show(paa.name(), paa.eats());</span> // AHRC ?pgm
+     show(h.name(), h.eats);        // AHRC ?pgm
+     show(pah.name(), pah.eats()); // AHRC ?pgm
+     show(par.name(), par.eats()); //AHRC ?pgm
+  }
+}
+</code></pre></div></div><p><code>paa</code> is treated just like <code>a</code> because, after all, they are both pointers and pointing to the same object.</p>
+    <hr/><p><strong>Animal Hierarchy: h</strong></p>
+    <div class="details"><span class="summary"><a href="animal3.java" target="listing">animal3.java</a></span> <input id="but_details_d6e266" onclick="toggleDisplay('_details_d6e266')" type="button" value="+"/><div class="detailPart" id="_details_d6e266"><pre><code id="_details_d6e266_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     show(a.name(), a.eats());      // Animal ???
+     show(paa.name(), paa.eats()); // Animal ???
+     <span class='hli'>show(h.name(), h.eats);</span>        // AHRC ?pgm
+     show(pah.name(), pah.eats()); // AHRC ?pgm
+     show(par.name(), par.eats()); //AHRC ?pgm
+  }
+}
+</code></pre></div></div><p>At runtime, the program follows <code>h</code> out to the heap, discovers that it actually points to an <code>Herbivore</code>, and invokes the <code>Herbivore::name()</code> function body to print “Herbivore”. Then it does the same for <code>eats()</code> and invokes the <code>Herbivore::eats()</code> function body to print “plants”.</p>
+    <hr/><p><strong>Animal Hierarchy: pah</strong></p>
+    <div class="details"><span class="summary"><a href="animal4.java" target="listing">animal4.java</a></span> <input id="but_details_d6e283" onclick="toggleDisplay('_details_d6e283')" type="button" value="+"/><div class="detailPart" id="_details_d6e283"><pre><code id="_details_d6e283_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     show(a.name(), a.eats());      // Animal ???
+     show(paa.name(), paa.eats()); // Animal ???
+     show(h.name(), h.eats);        // Herbivore plants
+     <span class='hli'>show(pah.name(), pah.eats());</span> // AHRC ?pgm
+     show(par.name(), par.eats()); //AHRC ?pgm
+  }
+}
+</code></pre></div></div><p>At runtime, the program follows <code>pah</code> out to the heap, discovers that it actually points to an <code>Herbivore</code>, and invokes the <code>Herbivore::name()</code> function body to print “Herbivore”. Then it does the same for <code>eats()</code> and invokes the <code>Herbivore::eats()</code> function body to print “plants”.</p>
+    <hr/><p><strong>Animal Hierarchy: par</strong></p>
+    <div class="details"><span class="summary"><a href="animal5.java" target="listing">animal5.java</a></span> <input id="but_details_d6e301" onclick="toggleDisplay('_details_d6e301')" type="button" value="+"/><div class="detailPart" id="_details_d6e301"><pre><code id="_details_d6e301_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     show(a.name(), a.eats());      // Animal ???
+     show(paa.name(), paa.eats()); // Animal ???
+     show(h.name(), h.eats);        // Herbivore plants
+     show(pah.name(), pah.eats()); // Herbivore plants
+     <span class='hli'>show(par.name(), par.eats());</span> //AHRC ?pgm
+  }
+}
+</code></pre></div></div><p>At runtime, the program follows <code>par</code> out to the heap, discovers that it actually points to a <code>Ruminant</code>, and invokes the <code>Ruminant::name()</code> function body to print “Ruminant”. Then it does the same for <code>eats()</code> and invokes the <code>Ruminant::eats()</code> function body to print “grass”.</p>
+    <hr/><p><strong>Final Results</strong></p>
+    <div class="details"><span class="summary"><a href="animal6.java" target="listing">animal6.java</a></span> <input id="but_details_d6e318" onclick="toggleDisplay('_details_d6e318')" type="button" value="+"/><div class="detailPart" id="_details_d6e318"><pre><code id="_details_d6e318_code">public class AnimalTest {
+
+  private static void show (String s1, String s2) {
+     System.out.println (s1 + " " + s2);
+  }
+
+  public static void main (String[]) {
+     Animal a = new Animal();
+     Herbivore h = new Herbivore();
+     Ruminant r = new Ruminant();
+
+     Animal paa = a;
+     Animal pah = h;
+     Animal par = r;
+     
+     show(a.name(), a.eats());      // Animal ???
+     show(paa.name(), paa.eats()); // Animal ???
+     show(h.name(), h.eats);        // Herbivore plants
+     show(pah.name(), pah.eats()); // Herbivore plants
+     show(par.name(), par.eats()); // Ruminant grass
+  }
+}
+</code></pre></div></div><p>The overall output here is slightly different from that in the earlier C++ example because, in Java, the <code>name()</code> function is “virtual” and so is handled by dynamic binding.</p>
+    <a id="thekeypatternofoopinjava"/><h2 id="the-key-pattern-of-oop-in-java">2.2 The Key Pattern of OOP in Java</h2><p>Just as in C++, suppose we have an inheritance hierarchy:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="keyPattern.png" style="max-width: 50%;"/></div>
+    </p>
+    <p>and that we have a collection of (references to) the  <code>BaseClass</code> </p>
+    <pre><code class="java"> Collection collection;
+</code></pre><p>Then this code:</p>
+    <pre><code class="java">BaseClass x;
+for (each x in collection) {
+   x.memberFunction(...);
+}
+
+</code></pre><p>uses dynamic binding to apply subclass-appropriate behavior to each element of a collection. </p>
+    <a id="examplesofthekeypattern"/><h3 id="examples-of-the-key-pattern">2.2.1 Examples of the key pattern</h3><p>There are lots of variations on this pattern. We can use almost any data structure for the collection.</p>
+    <hr/><p><strong>Example: arrays of Animals in Java</strong></p>
+    <pre><code class="java"> Animal[] animals = new Animal[numberOfAnimals];
+    &#x22ee;
+ for (int i = 0; i &lt; numberOfAnimals; ++i)
+    System.out.println (animals[i].name() 
+        + " " + animals[i].eats());
+</code></pre><p>Although the above loop form is familiar, it can be simplified:</p>
+    <pre><code class="java"> Animal[] animals = new Animal[numberOfAnimals];
+    &#x22ee;
+ for (Animal a: animals)
+    System.out.println (a.name() + " " + a.eats());
+
+</code></pre><ul>
+  <li>This is an example of the “for each” style loop in Java</li>
+</ul><hr/><p><strong>Example: Linked Lists of Animals (Java)</strong></p>
+    <pre><code class="java"> class ListNode {
+    Animal data;
+    ListNode next;
+ }
+ ListNode head; // start of list
+    &#x22ee;
+ for (ListNode current = head; current != null; 
+        current = current.next)
+    System.out.println (current.name() 
+         + " " + current.eats());
+
+</code></pre><ul>
+  <li>Notice the complete lack of <code>*</code> or <code>-&gt;</code> operators.
+    <ul>
+      <li>C++ programmers are used to seeing those as cues that we are dealing with pointers.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: vector (ArrayList) of Animals</strong></p>
+    <pre><code class="java"> ArrayList&lt;Animal&gt; animals = new ArrayList&lt;Animal&gt;();
+    &#x22ee;
+ for (int i = 0; i &lt; animals.size(); ++i) {
+    Animal a = animals.get(i);
+    System.out.println (a.name() + " " + a.eats());
+ }
+
+</code></pre><p>or</p>
+    <pre><code class="java"> ArrayList&lt;Animal&gt; animals = new ArrayList&lt;Animal&gt;();
+    &#x22ee;
+ for (Animal a: animals) {
+    System.out.println (a.name() + " " + a.eats());
+ }
+
+</code></pre><ul>
+  <li>
+  <p>The second function{for} loop shown here is, again, an example of the Java “for each” syntax.</p>
+    </li>
+  <li>
+  <p>Look also at the rather template-like declaration of the  <span class="varname">animals</span> container. </p>
+    </li>
+</ul><hr/><p><strong>Older Style Java</strong></p>
+    <p>Older Java code would leave out the part within the angle brackets, in which case we would have to treat animals as a container of <span class="varname">Object</span>s, not <span class="varname">Animal</span>s.</p>
+    <div class="details"><span class="summary"><a href="downcast.java" target="listing">downcast.java</a></span> <input id="but_details_d6e419" onclick="toggleDisplay('_details_d6e419')" type="button" value="+"/><div class="detailPart" id="_details_d6e419"><pre><code id="_details_d6e419_code"> ArrayList animals = new ArrayList();
+    //...
+ for (Object obja: animals) {
+     Animal a = <span class='hli'>(Animal)obja</span>;
+    System.out.println (a.name() + " " + a.eats());
+ }
+</code></pre></div></div><p>The <span class="hli">downcast</span> is required because the loop variable, <span class="varname">obja</span>, is of type <span class="varname">Object</span> and therefore does not support the <code>name()</code> and <code>eats()</code> functions.</p>
+    <a id="abstractclassesinjava"/><h2 id="abstract-classes-in-java">2.3 Abstract Classes in Java</h2><p>Abstract classes work much the same in Java as in C++. The only differences are </p>
+    <ul>
+  <li>
+  <p>In Java, you must label both the class and its abstract functions. (In C++ you label only the functions.)</p>
+    </li>
+  <li>
+  <p>Instead of putting <code>=0</code> at the end of the function, you put the keyword <code>abstract</code> in front of the function/class declaration.</p>
+    </li>
+</ul><hr/><p><strong>Abstract Class Example</strong></p>
+    <p>Here, for example, is the Java version of our abstract spreadsheet value class.</p>
+    <div class="details"><span class="summary"><a href="Value.java" target="listing">Value.java</a></span> <input id="but_details_d6e458" onclick="toggleDisplay('_details_d6e458')" type="button" value="+"/><div class="detailPart" id="_details_d6e458"><pre><code id="_details_d6e458_code">package SpreadSheetJ.Model;
+
+
+//
+// Represents a value that might be obtained for some spreadsheet cell
+// when its formula was evaluated.
+// 
+// Values may come in many forms. At the very least, we can expect that
+// our spreadsheet will support numeric and string values, and will
+// probably need an "error" or "invalid" value type as well. Later we may 
+// want to add addiitonal value kinds, such as currency or dates.
+//
+public abstract
+class Value implements Cloneable
+{
+    public abstract String valueKind();
+    // Indicates what kind of value this is. For any two values, v1 and v2,
+    // v1.valueKind() == v2.valueKind() if and only if they are of the
+    // same kind (e.g., two numeric values). The actual character string
+    // pointed to by valueKind() may be anything, but should be set to
+    // something descriptive as an aid in identification and debugging.
+    
+    
+    public abstract String render (int maxWidth);
+    // Produce a string denoting this value such that the
+    // string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+    // If maxWidth==0, then the output string may be arbitrarily long.
+    // This function is intended to supply the text for display in the
+    // cells of a spreadsheet.
+
+    public String toString()
+    {
+	return render(0);
+    }
+    
+    public boolean equals (Object value)
+    {
+	Value v = (Value)value;
+	return (valueKind() == v.valueKind()) &amp;&amp; isEqual(v);
+    }
+	
+
+    abstract boolean isEqual (Value v);
+    //pre: valueKind() == v.valueKind()
+    //  Returns true iff this value is equal to v, using a comparison
+    //  appropriate to the kind of value.
+
+}
+
+</code></pre></div></div><a id="interfacesinjava"/><h1 id="interfaces-in-java">3 Interfaces In Java</h1><p>Java offers an alternate, closely related, mechanism for relating classes to one another, the <span class="firstterm">interface</span>.</p>
+    <ul>
+  <li>
+    <p>An <span class="firstterm">interface</span> declares a related set of</p>
+    
+    <ul>
+      <li>member function declarations</li>
+      <li>constant values</li>
+    </ul>
+  </li>
+  <li>
+  <p>Classes may be declared to <span class="firstterm">implement</span> an interface  independently of where they are in the inheritance hierarchy.</p>
+    </li>
+</ul><hr/><p><strong>Example: AudioClip</strong></p>
+    <div class="details"><span class="summary"><a href="AudioClip.java" target="listing">AudioClip.java</a></span> <input id="but_details_d6e497" onclick="toggleDisplay('_details_d6e497')" type="button" value="+"/><div class="detailPart" id="_details_d6e497"><pre><code id="_details_d6e497_code">public interface AudioClip { 
+    /** 
+     * Starts playing this audio clip. Each time this method is called,  
+     * the clip is restarted from the beginning.  
+     */ 
+    void play(); 
+ 
+    /** 
+     * Starts playing this audio clip in a loop.  
+     */ 
+    void loop(); 
+ 
+    /** 
+     * Stops playing this audio clip.  
+     */ 
+    void stop(); 
+} 
+</code></pre></div></div><hr/><p><strong>Example: Cloneable</strong></p>
+    <p>Signals that a class has a working <code>clone()</code> function.</p>
+    <ul>
+  <li>Otherwise, <code>Object.clone()</code> will throw an exception.
+    <pre><code class="java">package java.lang;
+public interface Cloneable {
+   public Object clone();
+}
+
+</code></pre>
+  </li>
+</ul><a id="interfaceimplementationisnotinheritance"/><h2 id="interface-implementation-is-not-inheritance">3.1 Interface Implementation is Not Inheritance</h2><ul>
+  <li>
+  <p>You cannot inherit variables from an interface.</p>
+    </li>
+  <li>
+  <p>You cannot inherit method implementations (function bodies)  from an interface.</p>
+    </li>
+  <li>
+  <p>The interface hierarchy is independent of a the class  hierarchy.</p>
+    </li>
+  <li>
+  <p>A Java class may implement many different interfaces, but  can only inherit from one superclass.</p>
+    </li>
+</ul><hr/><p><strong>So What is it, Then?</strong></p>
+    <p>A class that implements an interface can be used wherever that interface is “expected”. That’s pretty much our definition of <span class="firstterm">subtyping</span>.</p>
+    <a id="examplesortinginjava"/><h2 id="example-sorting-in-java">3.2 Example: Sorting in Java</h2><p>Suppose we wanted to provide a class that collected a number of useful sorting algorithms. </p>
+    <ul>
+  <li>
+  <p>All sorting algorithms require the ability to compare  objects.</p>
+    </li>
+  <li>
+  <p>But class <code>Object</code> has no comparison function  except <code>equals</code>.</p>
+    </li>
+</ul><p>How do we tell potential users of our sorting routines  how to provide comparison functions that we can use?</p>
+    <hr/><p><strong>A C++ style Solution - Inheritance</strong></p>
+    <pre><code class="java">abstract class Comparable {
+  public abstract boolean comesBefore (Object o);
+}
+
+</code></pre><p>One solution is to define the “comparable” protocol as a class.</p>
+    <p>Then we can write our sorting functions to work on objects of this <code>Comparable</code> class (which we really never expect to ever see) or of any subtype of <code>Comparable</code>:</p>
+    <hr/><p><strong>Calling on a Comparable Class</strong></p>
+    <pre><code class="java">class Sorting {
+
+   public static void
+     insertionSort (Comparable[] array)
+   {
+      for (int i = 1; i &lt; array.length; ++i) {
+        Comparable temp = array[i];
+        int p = i;
+        while ((i &gt; 0)
+          &amp;&amp; temp.comesBefore(array[p-1])) {
+           array[p] = array[p-1];
+           p--;
+        }
+        array[p] = temp;
+     }
+   }
+     &#x22ee;
+ }
+
+</code></pre><hr/><p><strong>Extending Comparable</strong></p>
+    <p>Here’s an example of how we might declare a class that overrides <code>comesBefore</code> to provide a “sensible” implementation we can use for sorting.</p>
+    <pre><code class="java"> class Student extends Comparable
+ {
+   String name;
+   String id;
+   double gpa;
+   String school;
+ 
+   boolean comesBefore(Object o)
+   {
+     return gpa &gt; ((Student)o).gpa;
+   }
+ 
+ }
+
+</code></pre><p>In this case, we can sort students by grade point  average.</p>
+    <hr/><p><strong>A Closer Look</strong></p>
+    <p>The <span class="hli">downcast</span> in our application</p>
+    <div class="details"><span class="summary"><a href="studentsort1.java" target="listing">studentsort1.java</a></span> <input id="but_details_d6e605" onclick="toggleDisplay('_details_d6e605')" type="button" value="+"/><div class="detailPart" id="_details_d6e605"><pre><code id="_details_d6e605_code"> class Student extends Comparable
+ {
+   String name;
+   String id;
+   double gpa;
+   String school;
+ 
+   boolean comesBefore(Object o)
+   {
+     return gpa &gt; <span class='hli'>((Student)o)</span>.gpa;
+   }
+ 
+ }
+</code></pre></div></div><p>is ugly (but required) to match:</p>
+    <pre><code class="java">abstract class Comparable {
+  public abstract boolean comesBefore (Object o);
+}
+</code></pre><hr/><p><strong>Making Comparable Generic</strong></p>
+    <p>We can get rid of it by making <span class="type">Comparable</span> <span class="firstterm">generic</span>, so that it knows what kind of objects it is actually comparing:</p>
+    <pre><code class="java">abstract class Comparable&lt;T extends Object&gt; {
+  public abstract boolean comesBefore (T t);
+}
+
+</code></pre><p>and then letting the <span class="type">Student</span> class pass that info along:</p>
+    <pre><code class="java"> class Student extends Comparable&lt;Student&gt;
+ {
+   String name;
+   String id;
+   double gpa;
+   String school;
+ 
+   boolean comesBefore(Student s)
+   {
+     return gpa &gt; s.gpa;
+   }
+ 
+ }
+
+</code></pre><hr/><p><strong>A Lurking Problem</strong></p>
+    <p>What if <code>Student</code> is already inheriting from another class? </p>
+    <pre><code class="java"> class Person
+ {
+   String name;
+   String id;
+ }
+ 
+ class Student extends Person
+ {
+   double gpa;
+   String school;
+ }
+
+</code></pre><hr/><p><strong>Why is This a Problem?</strong></p>
+    <p>That would be no problem in C++, which permits multiple inheritance: </p>
+    <pre><code class="cpp">class Student: public Person, Comparable {
+</code></pre><p>But Java only allows a class to have a single superclass, so we can’t add <code>extends Comparable</code></p>
+    <hr/><p><strong>A Java style Solution - Interface</strong></p>
+    <p>Java programmers are more likely to approach this problem using  an interface:</p>
+    <pre><code class="java"> package java.lang;
+ 
+ public interface Comparable&lt;T extends Object&gt; {
+   /**
+       Compares this object with the specified object for order.
+       Returns a negative integer, zero, or a positive integer
+       as this object is less than, equal to, or greater than
+       the specified object.
+   */
+   int compareTo (T other);
+ }
+
+</code></pre><hr/><p><strong>Calling on a Comparable Interface</strong></p>
+    <p>We use interfaces in our sorting routine just like we would use any kind of data type: </p>
+    <pre><code class="java">  public static void
+     insertionSort (Comparable[] array)
+   {
+     for (int i = 1; i &lt; array.length; ++i) {
+        Comparable temp = array[i];
+        int p = i;
+        while ((p &gt; 0)
+          &amp;&amp; temp.compareTo(array[p-1]) &lt; 0) {
+           array[p] = array[p-1];
+           p--;
+        }
+        array[p] = temp;
+     }
+   }
+
+</code></pre><hr/><p><strong>Implementing the Comparable Interface</strong></p>
+    <p>But now our student class does not have to inherit</p>
+    <ul>
+  <li>It simply announces its intention to <span class="hli">implement</span> the interface:</li>
+</ul><div class="details"><span class="summary"><a href="comparableStudents.java" target="listing">comparableStudents.java</a></span> <input id="but_details_d6e681" onclick="toggleDisplay('_details_d6e681')" type="button" value="+"/><div class="detailPart" id="_details_d6e681"><pre><code id="_details_d6e681_code"> class Student extends Person
+               <span class='hli'>implements Comparable&lt;Student&gt;</span>
+ {
+   double gpa;
+   String school;
+ 
+ <span class='hlii'>  int compareTo(Object o)
+   {
+     Student s = (Student)o;
+     if (gpa &lt; s.gpa)
+       return -1;
+     else if (gpa == s.gpa)
+       return 0;
+     else
+       return 1;
+   }
+</span>}
+</code></pre></div></div><ul>
+  <li>Of course, having made that intention clear, we have to follow up by  <span class="hlii">providing the required function(s)</span> of the interface.
+    <ul>
+      <li>
+      <p>By the way, <code>Comparable</code> is not  something I have made up - it’s part of the Java API.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>This was Just an Example</strong></p>
+    <ul>
+  <li>In practice, we would not write out own sorting function,  but would use</li>
+</ul><pre><code class="java"> package java.util;
+ 
+ public class Arrays
+ {
+    &#x22ee;
+    public static void sort (Comparable[]);
+    public static int binarySearch 
+        (Comparable[], Comparable key);
+
+</code></pre><ul>
+  <li>and, to sort other data structures, the similar functions declared in  <code>java.util.Collection</code>.</li>
+</ul><a id="iteratorsinjava"/><h2 id="iterators-in-java">3.3 Iterators in Java</h2><p><strong>java.util.Iterator</strong></p>
+    <ul>
+  <li>A Java interface for looping through data structures</li>
+</ul><div class="details"><span class="summary"><a href="Iterator.java" target="listing">Iterator.java</a></span> <input id="but_details_d6e727" onclick="toggleDisplay('_details_d6e727')" type="button" value="+"/><div class="detailPart" id="_details_d6e727"><pre><code id="_details_d6e727_code">/*
+ * Copyright (c) 1997, 2010, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
+package java.util;
+
+/**
+ * An iterator over a collection.  {@code Iterator} takes the place of
+ * {@link Enumeration} in the Java Collections Framework.  Iterators
+ * differ from enumerations in two ways:
+ *
+ * &lt;ul&gt;
+ *      &lt;li&gt; Iterators allow the caller to remove elements from the
+ *           underlying collection during the iteration with well-defined
+ *           semantics.
+ *      &lt;li&gt; Method names have been improved.
+ * &lt;/ul&gt;
+ *
+ * &lt;p&gt;This interface is a member of the
+ * &lt;a href="{@docRoot}/../technotes/guides/collections/index.html"&gt;
+ * Java Collections Framework&lt;/a&gt;.
+ *
+ * @param &lt;E&gt; the type of elements returned by this iterator
+ *
+ * @author  Josh Bloch
+ * @see Collection
+ * @see ListIterator
+ * @see Iterable
+ * @since 1.2
+ */
+public interface Iterator&lt;E&gt; {
+    /**
+     * Returns {@code true} if the iteration has more elements.
+     * (In other words, returns {@code true} if {@link #next} would
+     * return an element rather than throwing an exception.)
+     *
+     * @return {@code true} if the iteration has more elements
+     */
+    boolean hasNext();
+
+    /**
+     * Returns the next element in the iteration.
+     *
+     * @return the next element in the iteration
+     * @throws NoSuchElementException if the iteration has no more elements
+     */
+    E next();
+
+    /**
+     * Removes from the underlying collection the last element returned
+     * by this iterator (optional operation).  This method can be called
+     * only once per call to {@link #next}.  The behavior of an iterator
+     * is unspecified if the underlying collection is modified while the
+     * iteration is in progress in any way other than by calling this
+     * method.
+     *
+     * @throws UnsupportedOperationException if the {@code remove}
+     *         operation is not supported by this iterator
+     *
+     * @throws IllegalStateException if the {@code next} method has not
+     *         yet been called, or the {@code remove} method has already
+     *         been called after the last call to the {@code next}
+     *         method
+     */
+    void remove();
+}
+</code></pre></div></div><p>The key operations are:</p>
+    <ul>
+  <li>
+  <p><span class="function">hasNext()</span>: tests to see if there are more elements to be visited</p>
+    </li>
+  <li>
+  <p><span class="function">next()</span>: advances the iterator to the next position and returns the element that it had been pointing to.</p>
+    </li>
+  <li>
+    <p>Most containers provide one or more functions that return iterators.</p>
+    
+    <ul>
+      <li>The most common name for that function is <span class="function">iterator()</span></li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Using an Iterator</strong></p>
+    <pre><code class="java"> LinkedList&lt;Book&gt; books = new LinkedList&lt;Book&gt;();
+ books.add(cs330Text);
+ books.add(cs361Text);
+ books.add(cs252Text);
+   &#x22ee;
+ boolean found = false;
+ Iterator&lt;Book&gt; it = books.iterator();
+ while (it.hasNext() &amp;&amp; !found)
+ {
+   Book b = it.next();
+   found = b.equals(cs252Text);
+ }
+ if (found)
+ {
+   it.remove();
+ }
+
+</code></pre><hr/><p><strong>Not as Strange as it Looks</strong></p>
+    <p>Compare that to the C++ equivalent:</p>
+    <pre><code class="cpp"> list&lt;Book&gt; books;
+ books.push_back(cs330Text);
+ books.push_back(cs361Text);
+ books.push_back(cs252Text);
+   &#x22ee;
+ bool found = false;
+ list&lt;Book&gt;::iterator it = books.begin();
+ while (it != books.end() &amp;&amp; !found)
+ {
+   found = (*it == cs252Text);
+   ++it;
+ }
+ if (found)
+ {
+   books.erase (it);
+ }
+
+</code></pre><hr/><p><strong>Iterators: java and C++</strong></p>
+    <p>Some rough correspondences:</p>
+    <table>
+  <thead>
+    <tr>
+      <th>Java </th>
+      <th>C++ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Iterator&lt;E&gt;</code> </td>
+      <td><code>container&lt;E&gt;::iterator</code> </td>
+    </tr>
+    <tr>
+      <td><code>container.iterator()</code> </td>
+      <td><code>container.begin()</code> </td>
+    </tr>
+    <tr>
+      <td><code>it.hasNext()</code> </td>
+      <td><code>it != container.end()</code> </td>
+    </tr>
+    <tr>
+      <td><code>x = it.next();</code> </td>
+      <td><code>x = *it; it++;</code> </td>
+    </tr>
+    <tr>
+      <td><code>it.remove();</code> </td>
+      <td><code>container.erase(it);</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>Notice that you can’t retrieve a value from the position denoted by a Java iterator without advancing the iterator.</li>
+</ul><hr/><p><strong>Limitations of the Java Iterator</strong></p>
+    <ul>
+  <li>One consequence of that is that Java iterators are</li>
+</ul><p>not useful as positions where something was found when searching. In C++ we might write:</p>
+    <pre><code class="cpp">list&lt;Book&gt;::iterator find (list&lt;Book&gt;&amp; books, 
+                           string title)
+{
+  for (list&lt;Book&gt;::iterator it = books.begin();
+         it != books.end(); ++it)
+    {
+     if (it-&gt;getTitle() == title)
+        return it;
+    }
+  return books.end();
+}
+
+</code></pre><pre><code>*  There's no equivalent to that using Java iterators. 
+</code></pre><hr/><p><strong>Limitations of the Java Iterator (cont.)</strong></p>
+    <p>Similarly, there’s no easy equivalent in Java to the C++ practice of using iterators as starting and ending positions of an operation:</p>
+    <pre><code class="cpp">template &lt;typename Iterator&gt;
+Iterator copy (Iterator start, Iterator stop, 
+               Iterator dest)
+{
+   while (start != stop)
+     {
+       *dest = *start;
+       ++start; ++dest;
+     }
+}
+
+</code></pre><hr/><p><strong>Iterators and the “for each” Loop</strong></p>
+    <p>For any container type <span class="type">C</span> that has a function <span class="function">iterator()</span> that returns a value of type <code>Iterator&lt;T&gt;</code>, we can rewrite</p>
+    <pre><code class="java"> C c = &lt;: ... :&gt;
+   &#x22ee;
+ for (Iterator&lt;T&gt; it = c.iterator();
+         it.hasNext(); ) {
+   T t = it.next();
+     &#x22ee;
+ }
+
+</code></pre><p>by</p>
+    <pre><code class="java"> C c = &lt;: ... :&gt;
+   &#x22ee;
+ for (T t: c) {
+     &#x22ee;
+ }
+
+</code></pre><hr/><p><strong>Extending Interfaces</strong></p>
+    <p>Interfaces can extend (inherit from) other interfaces.</p>
+    <div class="details"><span class="summary"><a href="ListIterator.java" target="listing">ListIterator.java</a></span> <input id="but_details_d6e897" onclick="toggleDisplay('_details_d6e897')" type="button" value="+"/><div class="detailPart" id="_details_d6e897"><pre><code id="_details_d6e897_code">/*
+ * Copyright (c) 1997, 2007, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
+package java.util;
+
+/**
+ * An iterator for lists that allows the programmer
+ * to traverse the list in either direction, modify
+ * the list during iteration, and obtain the iterator's
+ * current position in the list. A {@code ListIterator}
+ * has no current element; its &lt;I&gt;cursor position&lt;/I&gt; always
+ * lies between the element that would be returned by a call
+ * to {@code previous()} and the element that would be
+ * returned by a call to {@code next()}.
+ * An iterator for a list of length {@code n} has {@code n+1} possible
+ * cursor positions, as illustrated by the carets ({@code ^}) below:
+ * &lt;PRE&gt;
+ *                      Element(0)   Element(1)   Element(2)   ... Element(n-1)
+ * cursor positions:  ^            ^            ^            ^                  ^
+ * &lt;/PRE&gt;
+ * Note that the {@link #remove} and {@link #set(Object)} methods are
+ * &lt;i&gt;not&lt;/i&gt; defined in terms of the cursor position;  they are defined to
+ * operate on the last element returned by a call to {@link #next} or
+ * {@link #previous()}.
+ *
+ * &lt;p&gt;This interface is a member of the
+ * &lt;a href="{@docRoot}/../technotes/guides/collections/index.html"&gt;
+ * Java Collections Framework&lt;/a&gt;.
+ *
+ * @author  Josh Bloch
+ * @see Collection
+ * @see List
+ * @see Iterator
+ * @see Enumeration
+ * @see List#listIterator()
+ * @since   1.2
+ */
+public interface ListIterator&lt;E&gt; <span class='hli'>extends Iterator&lt;E&gt;</span> {
+    // Query Operations
+
+    /**
+     * Returns {@code true} if this list iterator has more elements when
+     * traversing the list in the forward direction. (In other words,
+     * returns {@code true} if {@link #next} would return an element rather
+     * than throwing an exception.)
+     *
+     * @return {@code true} if the list iterator has more elements when
+     *         traversing the list in the forward direction
+     */
+    boolean hasNext();
+
+    /**
+     * Returns the next element in the list and advances the cursor position.
+     * This method may be called repeatedly to iterate through the list,
+     * or intermixed with calls to {@link #previous} to go back and forth.
+     * (Note that alternating calls to {@code next} and {@code previous}
+     * will return the same element repeatedly.)
+     *
+     * @return the next element in the list
+     * @throws NoSuchElementException if the iteration has no next element
+     */
+    E next();
+
+    /**
+     * Returns {@code true} if this list iterator has more elements when
+     * traversing the list in the reverse direction.  (In other words,
+     * returns {@code true} if {@link #previous} would return an element
+     * rather than throwing an exception.)
+     *
+     * @return {@code true} if the list iterator has more elements when
+     *         traversing the list in the reverse direction
+     */
+    boolean hasPrevious();
+
+    /**
+     * Returns the previous element in the list and moves the cursor
+     * position backwards.  This method may be called repeatedly to
+     * iterate through the list backwards, or intermixed with calls to
+     * {@link #next} to go back and forth.  (Note that alternating calls
+     * to {@code next} and {@code previous} will return the same
+     * element repeatedly.)
+     *
+     * @return the previous element in the list
+     * @throws NoSuchElementException if the iteration has no previous
+     *         element
+     */
+    E previous();
+
+    /**
+     * Returns the index of the element that would be returned by a
+     * subsequent call to {@link #next}. (Returns list size if the list
+     * iterator is at the end of the list.)
+     *
+     * @return the index of the element that would be returned by a
+     *         subsequent call to {@code next}, or list size if the list
+     *         iterator is at the end of the list
+     */
+    int nextIndex();
+
+    /**
+     * Returns the index of the element that would be returned by a
+     * subsequent call to {@link #previous}. (Returns -1 if the list
+     * iterator is at the beginning of the list.)
+     *
+     * @return the index of the element that would be returned by a
+     *         subsequent call to {@code previous}, or -1 if the list
+     *         iterator is at the beginning of the list
+     */
+    int previousIndex();
+
+
+    // Modification Operations
+
+    /**
+     * Removes from the list the last element that was returned by {@link
+     * #next} or {@link #previous} (optional operation).  This call can
+     * only be made once per call to {@code next} or {@code previous}.
+     * It can be made only if {@link #add} has not been
+     * called after the last call to {@code next} or {@code previous}.
+     *
+     * @throws UnsupportedOperationException if the {@code remove}
+     *         operation is not supported by this list iterator
+     * @throws IllegalStateException if neither {@code next} nor
+     *         {@code previous} have been called, or {@code remove} or
+     *         {@code add} have been called after the last call to
+     *         {@code next} or {@code previous}
+     */
+    void remove();
+
+    /**
+     * Replaces the last element returned by {@link #next} or
+     * {@link #previous} with the specified element (optional operation).
+     * This call can be made only if neither {@link #remove} nor {@link
+     * #add} have been called after the last call to {@code next} or
+     * {@code previous}.
+     *
+     * @param e the element with which to replace the last element returned by
+     *          {@code next} or {@code previous}
+     * @throws UnsupportedOperationException if the {@code set} operation
+     *         is not supported by this list iterator
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this list
+     * @throws IllegalArgumentException if some aspect of the specified
+     *         element prevents it from being added to this list
+     * @throws IllegalStateException if neither {@code next} nor
+     *         {@code previous} have been called, or {@code remove} or
+     *         {@code add} have been called after the last call to
+     *         {@code next} or {@code previous}
+     */
+    void set(E e);
+
+    /**
+     * Inserts the specified element into the list (optional operation).
+     * The element is inserted immediately before the element that
+     * would be returned by {@link #next}, if any, and after the element
+     * that would be returned by {@link #previous}, if any.  (If the
+     * list contains no elements, the new element becomes the sole element
+     * on the list.)  The new element is inserted before the implicit
+     * cursor: a subsequent call to {@code next} would be unaffected, and a
+     * subsequent call to {@code previous} would return the new element.
+     * (This call increases by one the value that would be returned by a
+     * call to {@code nextIndex} or {@code previousIndex}.)
+     *
+     * @param e the element to insert
+     * @throws UnsupportedOperationException if the {@code add} method is
+     *         not supported by this list iterator
+     * @throws ClassCastException if the class of the specified element
+     *         prevents it from being added to this list
+     * @throws IllegalArgumentException if some aspect of this element
+     *         prevents it from being added to this list
+     */
+    void add(E e);
+}
+</code></pre></div></div><ul>
+  <li>The <span class="type">ListIterator</span> <span class="hli">extends</span> <span class="type">Iterator</span> by adding a function to add data at a position:</li>
+</ul><div class="details"><span class="summary"><a href="addViaIterator.java" target="listing">addViaIterator.java</a></span> <input id="but_details_d6e914" onclick="toggleDisplay('_details_d6e914')" type="button" value="+"/><div class="detailPart" id="_details_d6e914"><pre><code id="_details_d6e914_code"> LinkedList&lt;Book&gt; books = new LinkedList&lt;Book&gt;();
+ books.add(cs330Text);
+ books.add(cs361Text);
+ books.add(cs252Text);
+   &lt;:\smvdots:&gt;
+ boolean found = false;
+ <span class='hli'>ListIterator&lt;Book&gt;</span> it = books.<span class='hli'>listIterator()</span>;
+ while (it.hasNext() &amp;&amp; !found)
+ {
+   Book b = (Book)it.next();
+   found = (b.equals(cs252Text);
+ }
+ if (found)
+ {
+   it.remove();
+ }
+ <span class='hli'>it.add(cs252textVersion2);</span>
+</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Inheritance%20in%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

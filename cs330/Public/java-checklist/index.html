@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>A Class Designer's Checklist for Java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20Class%20Designer%27s%20Checklist%20for%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">A Class Designer's Checklist for Java</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: May 21, 2024</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-checklist">1 The Checklist</a></div><div class="toc-h1"><a href="#discussion-and-explanation">2 Discussion and Explanation</a></div><div class="toc-h2"><a href="#preconditions-and-assertions">2.1 Preconditions and Assertions</a></div><div class="toc-h2"><a href="#does-your-class-contain-a-clone-function-">2.2 Does your class contain a clone() function?</a></div><div class="toc-h2"><a href="#equals-">2.3 equals()</a></div><div class="toc-h2"><a href="#hashcode-">2.4 hashCode()</a></div><div class="toc-h2"><a href="#tostring-">2.5 toString()</a></div></div><a id="thechecklist"/><h1 id="the-checklist">1 The Checklist</h1><ol>
+  <li>Is the interface complete?</li>
+  <li>Are there redundant functions in the interface that could be removed? Are  there functions that could be generalized?</li>
+  <li>Have you used names that are meaningful in the application area?</li>
+  <li>Are pre-conditions and assumptions well documented?</li>
+  <li>Are the data members private?</li>
+  <li>Does every constructor initialize every data member?</li>
+  <li>Does your class provide a <code>clone()</code> function?</li>
+  <li>Does your class provide <code>equals()</code> and <code>hashCode()</code> functions?</li>
+  <li>Does your class provide a <code>toString()</code> function?</li>
+</ol><a id="discussionandexplanation"/><h1 id="discussion-and-explanation">2 Discussion and Explanation</h1><p><strong>The starting point is the same in C++, Python, Java, and Rust.</strong></p>
+    <ol>
+  <li>Is the interface complete?</li>
+  <li>Are there redundant functions or functions that can be generalized?</li>
+  <li>Have you used names that are meaningful in the application domain?</li>
+  <li>Are the data members private?</li>
+  <li>Does every constructor initialize every data member?</li>
+</ol><a id="preconditionsandassertions"/><h2 id="preconditions-and-assertions">2.1 Preconditions and Assertions</h2><p>A <span class="firstterm">pre-condition</span> is a condition that the person calling a function must be sure is true, before the call, if he/she expects the function to do anything reasonable. </p>
+    <ul>
+  <li>Java has an <code>assert</code> statement similar to the one in C++ and Python.
+    <ul>
+      <li>Failed assertions throw an <code>AssertionError</code></li>
+    </ul>
+  </li>
+  <li>However, Java disables assertions by default.
+    <ul>
+      <li>This it the opposite of C++.</li>
+      <li><code>assert</code> must be enabled with <code>-ea</code> option when executing a program.</li>
+    </ul>
+  </li>
+</ul><blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Assert</div>
+<pre><code class="java">/**
+ * Represents a day with a given year, month, and day
+ * of the Gregorian calendar. The Gregorian calendar
+ * replaced the Julian calendar beginning on
+ * October 15, 1582
+ */
+public class Day
+{
+  // pre: (aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12)
+  //   &amp;&amp; (aDate &gt; 0 &amp;&amp; aDate &lt;= daysInMonth(aMonth,aYear))
+  public Day(int aYear, int aMonth, int aDate)
+  {
+    assert(aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12); 
+    assert(aDate &gt; 0 &amp;&amp; aDate &lt;= 31);
+    assert(
+        aYear &gt; 1582 
+        || (aYear == 1582 &amp;&amp; aMonth &gt; 10)
+        || (aYear == 1582 &amp;&amp; aMonth == 10 &amp;&amp; aDate &gt;= 15)
+    );
+
+    &#x22ee;
+  } 
+
+</code></pre>
+</blockquote><a id="doesyourclasscontainaclonefunction"/><h2 id="does-your-class-contain-a-clone-function-">2.2 Does your class contain a clone() function?</h2><p><code>clone</code> is useful in C++, but even more so in Java. <code>clone</code> is standardized as part of the Java API</p>
+    <pre><code class="java">class C implements Cloneable
+{
+    &#x22ee;
+    public Object clone()
+    {
+        ...
+    }
+    &#x22ee;
+}
+</code></pre><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Spreadsheet</div>
+<div class="details"><span class="summary"><a href="Expression.java" target="listing">Expression.java</a></span> <input id="but_details_d6e106" onclick="toggleDisplay('_details_d6e106')" type="button" value="+"/><div class="detailPart" id="_details_d6e106"><pre><code id="_details_d6e106_code">package SpreadSheetJ.Model;
+
+import java.util.Enumeration;
+import java.util.Vector;
+
+
+/**
+ * Expressions can be thought of as trees.  Each non-leaf node of the tree
+ * contains an operator, and the children of that node are the subexpressions
+ * (operands) that the operator operates upon.  Constants, cell references,
+ * and the like form the leaves of the tree.
+ *
+ * For example, the expression (a2 + 2) * c26 is equivalent to the tree:
+ *
+ *                *
+ *               / \
+ *              +   c26
+ *             / \
+ *           a2   2
+ */
+public abstract class Expression implements Cloneable
+{
+    /**
+     * How many operands does this expression node have?
+     */
+    public abstract int arity();
+
+    /**
+     * Get the k_th operand
+     * pre: k &lt; arity()
+     */
+    public abstract Expression operand(int k);
+
+    /**
+     * Evaluate this expression
+     */
+    public abstract Value evaluate(SpreadSheet usingSheet);
+
+    /**
+     * Copy this expression (deep copy), altering any cell references
+     * by the indicated offsets except where the row or column is "fixed"
+     * by a preceding $. E.g., if e is  2*D4+C$2/$A$1, then
+     * e.copy(1,2) is 2*E6+D$2/$A$1, e.copy(-1,4) is 2*C8+B$2/$A$1
+     */
+    public abstract Expression clone (int colOffset, int rowOffset);
+
+    public Object clone()
+    {
+        return clone(0, 0);
+    }
+
+    public Sequence collectReferences()
+    {
+        Sequence refs = new Sequence();
+        for (int i = 0; i &lt; arity(); ++i) {
+            Sequence refsi = operand(i).collectReferences();
+            for (Enumeration p = refsi.front(); p.hasMoreElements(); ) {
+                CellName cn = (CellName)p.nextElement();
+                refs.addToBack (cn);
+            }
+        }
+        return refs;
+    }
+
+    public static Expression get(String in)
+    {
+        return new ExprParser().doParse(in);
+    }
+
+    public String toString ()
+    {
+        String out = "";
+        if (isInline() &amp;&amp; arity() == 0) {
+            out = getOperator();
+        }
+        else if (isInline() &amp;&amp; arity() == 1) {
+            out = getOperator();
+            Expression opnd = operand(0);
+            if (precedence() &gt; opnd.precedence()) {
+                out = out + '(' + opnd + ')';
+            }
+            else {
+                out = out + opnd;
+            }
+        }
+        else if (isInline() &amp;&amp; arity() == 2) {
+            Expression left = operand(0);
+            Expression right = operand(1);
+
+            if (precedence() &gt; left.precedence()) {
+                out = "(" + left + ')';
+            }
+            else {
+                out = left.toString();
+            }
+
+            out = out + getOperator();
+
+            if (precedence() &gt; right.precedence()) {
+                out = out + '(' + right + ')';
+            }
+            else {
+                out = out + right;
+            }
+        }
+        else {
+            // write in prefix function-call form
+            out = getOperator() + '(';
+            for (int k = 0; k &lt; arity(); ++k)	{
+                if (k &gt; 0) {
+                    out = out + ", ";
+                }
+                out = out + operand(k);
+            }
+            out = out + ')';
+        }
+        return out;
+    }
+
+    //--------------------------------------------------------------------------
+    // The following control how the expression gets printed by
+    // the default implementation of put(ostream&amp;)
+    //--------------------------------------------------------------------------
+
+    /**
+     * if false, print as functionName(comma-separated-list)
+     * if true, print in inline form
+     */
+    public abstract boolean isInline();
+
+    /**
+     * Parentheses are placed around an expression whenever its precedence
+     * is lower than the precedence of an operator (expression) applied to it.
+     * E.g., * has higher precedence than +, so we print 3*(a1+1) but not
+     * (3*a1)+1
+     */
+    public abstract int precedence();
+
+    /**
+     * Returns the name of the operator for printing purposes.
+     * For constants, this is the string version of the constant value.
+     */
+    public abstract String getOperator();
+}
+
+</code></pre></div></div>
+
+<div class="details"><span class="summary"><a href="Value.java" target="listing">Value.java</a></span> <input id="but_details_d6e109" onclick="toggleDisplay('_details_d6e109')" type="button" value="+"/><div class="detailPart" id="_details_d6e109"><pre><code id="_details_d6e109_code">package SpreadSheetJ.Model;
+
+
+/**
+ * Represents a value that might be obtained for some spreadsheet cell
+ * when its formula was evaluated.
+ *
+ * Values may come in many forms. At the very least, we can expect that
+ * our spreadsheet will support numeric and string values, and will
+ * probably need an "error" or "invalid" value type as well. Later we may
+ * want to add addiitonal value kinds, such as currency or dates.
+ */
+public abstract
+class Value implements Cloneable
+{
+    /** 
+     * Indicates what kind of value this is. For any two values, v1 and v2,
+     * v1.valueKind() == v2.valueKind() if and only if they are of the
+     * same kind (e.g., two numeric values). The actual character string
+     * pointed to by valueKind() may be anything, but should be set to
+     * something descriptive as an aid in identification and debugging.
+     */
+     public abstract String valueKind();
+
+    /**
+     * Produce a string denoting this value such that the
+     * string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+     * If maxWidth==0, then the output string may be arbitrarily long.
+     * This function is intended to supply the text for display in the
+     * cells of a spreadsheet.
+     */
+    public abstract String render (int maxWidth);
+
+    public String toString()
+    {
+    	return render(0);
+    }
+
+    public boolean equals(Object value)
+    {
+        Value v = (Value) value;
+        return (valueKind() == v.valueKind()) &amp;&amp; isEqual(v);
+    }
+
+    /**
+     * pre: valueKind() == v.valueKind()
+     *   Returns true iff this value is equal to v, using a comparison
+     *   appropriate to the kind of value.
+     */
+    abstract boolean isEqual (Value v);
+}
+
+</code></pre></div></div>
+
+<div class="details"><span class="summary"><a href="NumericValue.java" target="listing">NumericValue.java</a></span> <input id="but_details_d6e112" onclick="toggleDisplay('_details_d6e112')" type="button" value="+"/><div class="detailPart" id="_details_d6e112"><pre><code id="_details_d6e112_code">package SpreadSheetJ.Model;
+
+
+/**
+ * Numeric values in the spreadsheet.
+ */
+public class NumericValue extends Value
+{
+    private double d;
+    private static final String theValueKindName = "Numeric";
+
+    public NumericValue()
+    {
+        this.d = 0.0;
+    }
+
+    public NumericValue(double x)
+    {
+        this.d = x;
+    }
+
+    /**
+     * The string used to identify numeric value kinds.
+     */
+    public static String valueKindName()
+    {
+        return theValueKindName;
+    }
+
+    /**
+     * Indicates what kind of value this is. For any two values, v1 and v2,
+     * v1.valueKind() == v2.valueKind() if and only if they are of the
+     * same kind (e.g., two numeric values). The actual character string
+     * pointed to by valueKind() may be anything, but should be set to
+     * something descriptive as an aid in identification and debugging.
+     */
+    public String valueKind()
+    {
+      return theValueKindName;
+    }
+
+    /**
+     * Produce a string denoting this value such that the
+     * string's length() &lt;= maxWidth (assuming maxWidth &gt; 0)
+     * If maxWidth==0, then the output string may be arbitrarily long.
+     * This function is intended to supply the text for display in the
+     * cells of a spreadsheet.
+     */
+    public String render(int maxWidth)
+    {
+        String rendering = "" + d;
+
+        if (rendering.indexOf('.') &gt;= 0
+         &amp;&amp; rendering.indexOf('E') &lt; 0
+         &amp;&amp; rendering.indexOf('e') &lt; 0) {
+            while (rendering.charAt(rendering.length()-1) == '0') {
+                rendering = rendering.substring(0, rendering.length()-1);
+            }
+
+            if (rendering.charAt(rendering.length()-1) == '.') {
+                rendering = rendering.substring(0, rendering.length()-1);
+            }
+        }
+
+        if (maxWidth &gt; 0 &amp;&amp; rendering.length() &gt; maxWidth) {
+            String discarded = rendering.substring(maxWidth);
+            rendering = rendering.substring(0, maxWidth);
+            if (discarded.indexOf('.') &gt;= 0) {
+                // We have a problem - can't fit the decimal point into
+                // the allowed width
+                rendering = "****************************";
+                rendering = rendering.substring(0, maxWidth);
+            }
+        }
+        return rendering;
+    }
+
+    public Object clone()
+    {
+        return new NumericValue(this.d);
+    }
+
+    public double getNumericValue()
+    {
+        return this.d;
+    }
+
+    /**
+     * pre: valueKind() == v.valueKind()
+     *
+     * @return true iff this value is equal to v, using a comparison
+     * appropriate to the kind of value.
+     */
+    boolean isEqual(Value v);
+    {
+        NumericValue nv = (NumericValue)v;
+        return this.d == nv.d;
+    }
+}
+</code></pre></div></div>
+
+</blockquote><a id="equals"/><h2 id="equals-">2.3 equals()</h2><p><strong>Does your class provide <code>equals()</code> and <code>hashCode()</code> functions?</strong></p>
+    <p>Just as C++ libraries assume the availability of <code>==</code> and <code>&lt;</code> to support many data structures, Java libraries assume <code>equals()</code> and <code>hashCode()</code></p>
+    <ul>
+  <li>
+  <p><code>equals()</code> should compare two objects to see if they have the same value.</p>
+    </li>
+  <li>
+  <p><code>==</code> (in Java) compares two objects to see if they are in fact at the same address.</p>
+    </li>
+</ul><blockquote class="example" id="example3"><div class="exampleTitle">Example 3: equals</div>
+<div class="details"><span class="summary"><a href="bookEquals.java" target="listing">bookEquals.java</a></span> <input id="but_details_d6e149" onclick="toggleDisplay('_details_d6e149')" type="button" value="+"/><div class="detailPart" id="_details_d6e149"><pre><code id="_details_d6e149_code">public class Book
+{
+    private String authorName;
+    private String title;
+
+    public Book ()
+    {
+        authorName = new String();
+        title = new String();
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
+    }
+
+    public void setAuthorName(String a)
+    {
+        authorName = a;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String t)
+    {
+        title = t;
+    }
+
+    <span class='hli'>public boolean equals(Object right)
+    {
+        Book b = (Book) right;
+        return authorName.equals(b.authorName)
+            &amp;&amp; title.equals(b.title);
+    }</span>
+}
+</code></pre></div></div>
+
+</blockquote><a id="hashcode"/><h2 id="hashcode-">2.4 hashCode()</h2><ul>
+  <li>
+  <p>C++ programmers provide <code>&lt;</code> because the searchable data structures are based on binary search trees.</p>
+    </li>
+  <li>
+  <p>Java programmers provide <code>hashCode()</code> because the Java API’s searchable data structures are based on hash tables.</p>
+    </li>
+</ul><a id="hashing101"/><h3 id="hashing-101">2.4.1 Hashing 101</h3><p><div class="noFloat"> </div>
+    <img src="hashbasic.png" style="float: right; max-width: 60%;"/></p>
+    <p>Hash tables use a <span class="firstterm">hashing function</span> to compute an element’s position within the array that holds the table.</p>
+    <a id="inanidealworld"/><h3 id="in-an-ideal-world">2.4.2 In an ideal world…</h3><p>If we had a <span class="emph">really</span> good hashing function, we could implement table insertion and searching this way:</p>
+    <pre><code class="java">class Set
+{
+    &#x22ee;
+    private Object[] table = ...;
+
+    void insert(Object key)
+    {
+        int h = key.hashCode() % table.length;
+        table[h] = key;
+    }
+
+    Object get(Object key)
+    {
+        int h = key.hashCode() % table.length;
+        if (table[h].equals(key)) {
+            return table[h];
+        }
+        else {
+            return null;
+        }
+    } 
+</code></pre><h3 id="collisions">2.4.3 Collisions</h3><p><div class="noFloat"> </div>
+    <img src="hashbasic.png" style="float: right; max-width:  50%;"/></p>
+    <p>For that overly-simple form of hashing to work, <code>hashCode()</code> must …</p>
+    <ol>
+  <li>be fast and easy to compute</li>
+  <li>return a unique value for each key.</li>
+</ol><p>In practice, hash functions are never perfect.</p>
+    <ul>
+  <li>Two objects with unequal values may sometimes <span class="firstterm">collide</span> by returning the same hash value
+    <ul>
+      <li>Hash table algorithms apply various techniques to resolve collisions</li>
+      <li>ADT implementers try to choose hash functions that make collisions rare.
+        <ul>
+          <li>Distributes the keys uniformly across the table.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><blockquote class="example" id="example4"><div class="exampleTitle">Example 4: hashCode()</div>
+<div class="details"><span class="summary"><a href="bookhash.java" target="listing">bookhash.java</a></span> <input id="but_details_d6e232" onclick="toggleDisplay('_details_d6e232')" type="button" value="+"/><div class="detailPart" id="_details_d6e232"><pre><code id="_details_d6e232_code">public class Book
+{
+    private String authorName;
+    private String title;
+
+    public Book ()
+    {
+        authorName = new String();
+        title = new String();
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
+    }
+
+    public void setAuthorName(String a)
+    {
+        authorName = a;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String t)
+    {
+        title = t;
+    }
+
+    public boolean equals(Object right)
+    {
+        Book b = (Book) right;
+        return authorName.equals(b.authorName)
+            &amp;&amp; title.equals(b.title);
+    }
+
+    <span class='hli'>public int hashCode()
+    {
+        return 7 * authorName.hashCode()
+             + title.hashCode();
+    }</span>
+}
+</code></pre></div></div>
+
+</blockquote><a id="tostring"/><h2 id="tostring-">2.5 toString()</h2><p><strong>Does your class provide a <code>toString()</code> function?</strong></p>
+    <p>The <code>toString()</code> function is used to convert an object to a <code>String</code> </p>
+    <ul>
+  <li>Most Java I/O classes read and write <code>String</code>s.</li>
+  <li>Some debuggers use these <code>String</code>s to display objects in a human-readable form.</li>
+</ul><blockquote class="example" id="example5"><div class="exampleTitle">Example 5: toString()</div>
+<div class="details"><span class="summary"><a href="bookToString.java" target="listing">bookToString.java</a></span> <input id="but_details_d6e263" onclick="toggleDisplay('_details_d6e263')" type="button" value="+"/><div class="detailPart" id="_details_d6e263"><pre><code id="_details_d6e263_code">public class Book {
+    private String authorName;
+    private String title;
+
+    public Book ()
+    {
+        authorName = new String();
+        title = new String();
+    }
+
+    public String getAuthorName()
+    {
+        return authorName;
+    }
+
+    public void setAuthorName(String a)
+    {
+        authorName = a;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String t)
+    {
+        title = t;
+    }
+
+    public boolean equals(Object right)
+    {
+        Book b = (Book) right;
+        return authorName.equals(b.authorName)
+            &amp;&amp; title.equals(b.title);
+    }
+
+    <span class='hli'>public String toString()
+    {
+        return String.format(
+            "'%s' by %s",
+            title,
+            authorName
+        );
+  }</span>
+}
+</code></pre></div></div>
+
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20Class%20Designer%27s%20Checklist%20for%20Java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

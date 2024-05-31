@@ -1,0 +1,1709 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Implementing ADTs in C++ Classes</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Implementing%20ADTs%20in%20C%2B%2B%20Classes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Implementing ADTs in C++ Classes</h1><h2 class="author">Steven J Zeil</h2><div class="date">Last modified: Jan 21, 2020</div></div><a id="implementingadtsinc"/><h1 id="implementing-adts-in-c-">1 Implementing ADTs in C++</h1><p>An ADT is <span class="firstterm">implemented</span> by supplying</p>
+    <ul>
+  <li>
+  <p>a <span class="emph">data structure</span> for the type  name.</p>
+    </li>
+  <li>
+  <p>coded <span class="emph">algorithms</span> for the  operations.</p>
+    </li>
+</ul><p>We sometimes refer to the ADT itself as the <span class="firstterm">ADT specification</span> or the <span class="firstterm">ADT interface</span>, to distinguish it from the code of the ADT implementation.</p>
+    <a id="declaringnewdatatypes"/><h2 id="declaring-new-data-types">1.1 Declaring New Data Types</h2><p>In the course of designing a program, we discover that we need a  new data type. What are our options?</p>
+    <ul>
+  <li>
+  <p>Use an existing type</p>
+    </li>
+  <li>
+  <p>Build our ADT “from scratch” by declaring a new class</p>
+    </li>
+  <li>
+  <p>Inherit from an existing class and make slight modifications </p>
+    </li>
+</ul><hr/><p><strong>Use an Existing Type</strong></p>
+    <p>On rare occasions, we may be lucky enough to have an existing  type that provides <span class="emph">exactly</span> the capabilities we  want for our new type. </p>
+    <pre><code class="cpp">typedef std::string CityName;
+</code></pre><p><code>typedef</code> basically gives us a way to attach a more  convenient name to an existing type.</p>
+    <hr/><p><strong>Build our ADT “from scratch”</strong></p>
+    <ul>
+  <li>
+  <p>Specify exactly what data and functions we want to associate with the new ADT.</p>
+    </li>
+  <li>
+  <p>We do this by declaring a new class, e.g., </p>
+    </li>
+</ul><div class="details"><span class="summary"><a href="bookInterface.h" target="listing">bookInterface.h</a></span> <input id="but_details_d6e80" onclick="toggleDisplay('_details_d6e80')" type="button" value="+"/><div class="detailPart" id="_details_d6e80"><pre><code id="_details_d6e80_code">class Book {
+public:
+  Book (Author)                 // for books with single authors
+  Book (Author[], int nAuthors) // for books with multiple authors
+
+  std::string getTitle() const;
+  void putTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getIsBN() const;
+  void putISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void putPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+  &#x22ee;
+};
+</code></pre></div></div><hr/><p><strong>Inherit from an existing class</strong></p>
+    <p>In between those two extremes, we sometimes have an existing type that provides almost everything we want for our new type, but needs just a little more data or a few more functions to make it what we want.</p>
+    <ul>
+  <li>Create an extended version of the existing type using inheritance</li>
+</ul><div class="details"><span class="summary"><a href="bookInSeries.h" target="listing">bookInSeries.h</a></span> <input id="but_details_d6e90" onclick="toggleDisplay('_details_d6e90')" type="button" value="+"/><div class="detailPart" id="_details_d6e90"><pre><code id="_details_d6e90_code">class BookInSeries: public Book {
+   public:
+     std::string getSeriesTitle() const;
+     void putSeriesTitle(std::string theSeries);
+
+     int getVolume() const;
+     void putVolume(int);
+   private:
+     std::string seriesTitle;
+     int volume;
+};
+</code></pre></div></div><a id="datamembers"/><h2 id="data-members">1.2 Data Members</h2><pre><code class="cpp">class Book {
+ public:
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int maxAuthors = 12;
+  Author* authors;  // array of Authors
+};
+</code></pre><ul>
+  <li>To be useful, an ADT must usually contain some internal data. These are declared as data members of the class.</li>
+</ul><hr/><p><strong>Privacy</strong></p>
+    <pre><code class="cpp">class Book {
+ public:
+    &#x22ee;
+ private:
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int maxAuthors = 12;
+  Author* authors;  // array of Authors
+};
+</code></pre><a id="functionmembers"/><h2 id="function-members">1.3 Function Members</h2><p>In addition to data, we can associate selected functions  with our ADTs. For example, the missing access to the book data in our  prior example can be provided by such function members.</p>
+    <div class="details"><span class="summary"><a href="book1.h" target="listing">book1.h</a></span> <input id="but_details_d6e111" onclick="toggleDisplay('_details_d6e111')" type="button" value="+"/><div class="detailPart" id="_details_d6e111"><pre><code id="_details_d6e111_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const;
+  void setTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getISBN() const;
+  void setISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void setPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><ul>
+  <li>Now, any member functions that we declare must eventually be  implemented as well by providing the appropriate bodies.</li>
+</ul><p>Then, in a separate file named <code>book.cpp</code> we  would place the function definitions (bodies).</p>
+    <div class="details"><span class="summary"><a href="book1.cpp" target="listing">book1.cpp</a></span> <input id="but_details_d6e121" onclick="toggleDisplay('_details_d6e121')" type="button" value="+"/><div class="detailPart" id="_details_d6e121"><pre><code id="_details_d6e121_code">#include "book1.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  authors[0] = a;
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors[i] = au[i];
+    }
+}
+
+std::string Book::getTitle() const
+{
+  return title;
+}
+
+void Book::setTitle(std::string theTitle)
+{
+  title = theTitle;
+}
+
+int Book::getNumberOfAuthors() const
+{
+  return numAuthors;
+}
+
+std::string Book::getISBN() const
+{
+  return isbn;
+}
+
+void Book::setISBN(std::string id)
+{
+  isbn = id;
+}
+
+Publisher Book::getPublisher() const
+{
+  return publisher;
+}
+
+void Book::setPublisher(const Publisher&amp; publ)
+{
+  publisher = publ;
+}
+
+Book::AuthorPosition Book::begin() const
+{
+  return authors;
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return authors+numAuthors;
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt;= atk) 
+    {
+      authors[i+1] = authors[i];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  int atk = at - authors;
+  while (atk + 1 &lt; numAuthors)
+    {
+      authors[atk] = authors[atk + 1];
+      ++atk;
+    }
+  --numAuthors;
+}
+
+
+</code></pre></div></div><hr/><p><strong>ADTs need not be complicated</strong></p>
+    <p>None of the functions in that ADT are particularly complex.</p>
+    <ul>
+  <li>
+  <p>It’s a common mistake to believe that an abstract idea only “needs” to be an ADT if it is complicated.</p>
+    </li>
+  <li>
+    <p>Instead, an abstraction should become and ADT if doing so makes the code that uses it more expressive. </p>
+    
+    <ul>
+      <li>
+      <p>Most functions in a typical ADT are basic get/set <span class="firstterm">attribute</span> functions.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Inline Functions</strong></p>
+    <p>Many of the member functions in this example are simple enough  that we might consider an alternate approach, declaring them as  <span class="firstterm">inline functions</span>, in which case the  <code>book.h</code> file would look something like this:</p>
+    <div class="details"><span class="summary"><a href="book1in.h" target="listing">book1in.h</a></span> <input id="but_details_d6e160" onclick="toggleDisplay('_details_d6e160')" type="button" value="+"/><div class="detailPart" id="_details_d6e160"><pre><code id="_details_d6e160_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const
+  {
+      return title;
+  }
+
+  void setTitle(std::string theTitle) {
+      title = theTitle;
+  }
+
+  int getNumberOfAuthors() const
+  {
+      return numAuthors;
+  }
+
+  std::string getISBN() const
+  {
+      return isbn;
+  }
+
+  void setISBN(std::string id)
+  {
+      isbn = id;
+  }
+
+  Publisher getPublisher() const
+  {
+      return publisher;
+  }
+
+  void setPublisher(const Publisher&amp; publ)
+  {
+      publisher = publ;
+  }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>and the <code>book.cpp</code> file would be reduced to  this:</p>
+    <div class="details"><span class="summary"><a href="book1in.cpp" target="listing">book1in.cpp</a></span> <input id="but_details_d6e166" onclick="toggleDisplay('_details_d6e166')" type="button" value="+"/><div class="detailPart" id="_details_d6e166"><pre><code id="_details_d6e166_code">#include "book1.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  authors[0] = a;
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors[i] = au[i];
+    }
+}
+
+
+Book::AuthorPosition Book::begin() const
+{
+  return authors;
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return authors+numAuthors;
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt;= atk) 
+    {
+      authors[i+1] = authors[i];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  int atk = at - authors;
+  while (atk + 1 &lt; numAuthors)
+    {
+      authors[atk] = authors[atk + 1];
+      ++atk;
+    }
+  --numAuthors;
+}
+
+
+</code></pre></div></div><a id="specialfunctions"/><h1 id="special-functions">2 Special Functions</h1><h2 id="constructors">2.1 Constructors</h2><hr/><p><strong>Initializing Data</strong></p>
+    <div class="details"><span class="summary"><a href="noConstructors.h" target="listing">noConstructors.h</a></span> <input id="but_details_d6e176" onclick="toggleDisplay('_details_d6e176')" type="button" value="+"/><div class="detailPart" id="_details_d6e176"><pre><code id="_details_d6e176_code">class Address {
+public:
+  std::string getStreet() const;
+  void putStreet (std::string theStreet);
+  
+  std::string getCity() const;
+  void putCity (std::string theCity);
+  
+  std::string getState() const;
+  void putState (std::string theState);
+  
+  std::string getZip() const;
+  void putZip (std::string theZip);
+  
+private:
+  std::string street;
+  std::string city;
+  std::string state;
+  std::string zip;
+};
+
+
+class Author
+{
+public:
+  std::string getName() const        {return name;}
+  void putName (std::string theName) {name = theName;}
+
+  const Address&amp; getAddress() const   {return address;}
+  void putAddress (const Address&amp; addr) {address = addr;}
+
+  long getIdentifier() const     {return identifier;}
+
+private:
+  std::string name;
+  Address address;
+  const long identifier;
+};
+</code></pre></div></div><ul>
+  <li>
+  <p>One of the weaknesses of the ADT design shown above is that  there is no easy way to initialize new address and author objects.</p>
+    </li>
+  <li>
+  <p>Of  course, we could do it one data field at a time:  </p>
+    </li>
+</ul><pre><code class="cpp">Address addr;
+addr.putStreet ("21 Pennsylvania Ave.");
+addr.putCity ("Washington");
+addr.putState ("D.C.");
+addr.putZip ("10001");
+
+Author doe;
+doe.putName ("Doe, John");
+doe.putAddress (addr);
+</code></pre><hr/><p><strong>Problems with Field-By-Field Initialization</strong></p>
+    <ul>
+  <li>
+  <p>It would be quite easy to forget to initialize one or more  of the data fields.</p>
+    </li>
+  <li>
+  <p>As the code gets modified over the course of the project, some  misguided programmer might place some additional lines of code in  between these. </p>
+    </li>
+</ul><p>That leads to a real possibility of our using <code>addr</code>  before all the data fields have been initialized.</p>
+    <ul>
+  <li>
+    <p>There’s no way to initialize the Author’s  <code>identifier</code> data.</p>
+    
+    <ul>
+      <li>
+      <p>We don’t have a  <code>putIdentifier</code> function because we did not want to  allow arbitrary changes to that data.</p>
+    </li>
+      <li>
+      <p>Note that the <code>Author::identifier</code> field is declared as  <code>const</code>.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Last, but not least, the process just takes too long - too  many lines of code written just to initialize one data  object.</p>
+    </li>
+</ul><hr/><p><strong>Constructor Functions</strong></p>
+    <p>C++ provides a special kind of member function to streamline the initialization process. It’s called a <span class="firstterm">constructor</span>.</p>
+    <p>Suppose we add a constructor to each of our <span class="type">Address</span> and <span class="type">Author</span> classes.</p>
+    <div class="details"><span class="summary"><a href="withConstructors.h" target="listing">withConstructors.h</a></span> <input id="but_details_d6e258" onclick="toggleDisplay('_details_d6e258')" type="button" value="+"/><div class="detailPart" id="_details_d6e258"><pre><code id="_details_d6e258_code">class Address {
+public:
+  <span class='hli'>Address (std::string theStreet, std::string theCity,
+           std::string theState, std::string theZip);</span>
+
+  std::string getStreet() const;
+  void putStreet (std::string theStreet);
+  
+  std::string getCity() const;
+  void putCity (std::string theCity);
+  
+  std::string getState() const;
+  void putState (std::string theState);
+  
+  std::string getZip() const;
+  void putZip (std::string theZip);
+  
+private:
+  std::string street;
+  std::string city;
+  std::string state;
+  std::string zip;
+};
+
+
+class Author
+{
+public:
+  <span class='hli'>Author (std::string theName, Address theAddress, long id);</span>
+
+  std::string getName() const        {return name;}
+  void putName (std::string theName) {name = theName;}
+
+  const Address&amp; getAddress() const   {return address;}
+  void putAddress (const Address&amp; addr) {address = addr;}
+
+  long getIdentifier() const     {return identifier;}
+
+private:
+  std::string name;
+  Address address;
+  const long identifier;
+};
+</code></pre></div></div><hr/><p><strong>Declaring Variables with Constructors</strong></p>
+    <p>Then we can create a new author object  much more easily: </p>
+    <pre><code class="cpp">Address addr ("21 Pennsylvania Ave.",
+              "Washington",
+              "D.C.", "10001");
+
+Author doe ("Doe, John", addr, 1230157);
+
+</code></pre><p>or, since the <code>addr</code> variable is probably only  there only for the purpose of initializing this author and is probably  not used elsewhere, we can do: </p>
+    <pre><code class="cpp">Author doe ("Doe, John", 
+            Address (
+             "21 Pennsylvania Ave.",
+             "Washington",
+             "D.C.", "10001"),
+             1230157);
+
+</code></pre><hr/><p><strong>Implementing Constructors</strong></p>
+    <p>The implementation of this constructor is pretty  straightforward.</p>
+    <pre><code class="cpp">Address::Address 
+  (std::string theStreet, std::string theCity,
+   std::string theState, std::string theZip)
+{
+  street = theStreet;
+  city = theCity;
+  state = theState;
+  zip = theZip;
+}
+
+</code></pre><hr/><p><strong>Initialization Lists</strong></p>
+    <p>The implementation of the <code>Author</code> constructor has one  complication.</p>
+    <div class="details"><span class="summary"><a href="initializationList.cpp" target="listing">initializationList.cpp</a></span> <input id="but_details_d6e289" onclick="toggleDisplay('_details_d6e289')" type="button" value="+"/><div class="detailPart" id="_details_d6e289"><pre><code id="_details_d6e289_code">Author::Author (std::string theName,
+                Address theAddress, long id)
+  <span class='hli'>: identifier (id)</span>
+{
+  name = theName;
+  address = theAddress;
+}
+</code></pre></div></div><ul>
+  <li>We <span class="emph">can’t</span> say</li>
+</ul><pre><code class="cpp">identifier = id;
+</code></pre><p>in the function body, because <code>identifier</code> was declared as  being <code>const</code> and so cannot be assigned to.</p>
+    <hr/><p><strong>Example: Alternate Constructors</strong></p>
+    <pre><code class="cpp">Author::Author (std::string theName,
+                Address theAddress, long id)
+  : identifier (id)
+{
+  name = theName;
+  address = theAddress;
+}
+</code></pre><p>or</p>
+    <pre><code class="cpp">Author::Author (std::string theName, 
+                Address theAddress, long id)
+   : name(theName), address(theAddress),
+    identifier(id)
+{
+}
+</code></pre><p>The second constructor might run slightly faster.</p>
+    <h2 id="destructors">2.2 Destructors</h2><p>The flip-side of initializing new objects is cleaning up when old  objects are going away.</p>
+    <p>A <span class="firstterm">destructor</span> for the class <code>Foo</code> is a function of the  form </p>
+    <pre><code class="cpp">~Foo();
+</code></pre><p>Destructors are never called explicitly. Instead the compiler generates a call to an object’s destructor for us.</p>
+    <hr/><p><strong>The Compiler Calls a Destructor when…</strong></p>
+    <ul>
+  <li>Execution passes outside of the <code>{ ... }</code> within  which the object was declared. For example, if we wrote</li>
+</ul><pre><code class="cpp">if (someTest)
+  {
+   Book b = text361;
+   cout &lt;&lt; b.getTitle() &lt;&lt; endl;
+  }
+</code></pre><p>what the compiler would actually generate would be  something along the lines of </p>
+    <div class="details"><span class="summary"><a href="implicitDestruction.cpp" target="listing">implicitDestruction.cpp</a></span> <input id="but_details_d6e349" onclick="toggleDisplay('_details_d6e349')" type="button" value="+"/><div class="detailPart" id="_details_d6e349"><pre><code id="_details_d6e349_code">if (someTest)
+  {
+   Book b = text361;
+   cout &lt;&lt; b.getTitle() &lt;&lt; endl;
+<span class='hli'>   b.~Book();  // implicitly generated by the compiler
+</span>  }
+</code></pre></div></div><hr/><p><strong>The Compiler Calls a Destructor when…</strong></p>
+    <ul>
+  <li>When we <code>delete</code> a pointer to an object, the  object’s destructor is (implicitly) called prior to actually  recovering the memory occupied by the object. For example, if we  were to write:</li>
+</ul><pre><code class="cpp">  Book *bPointer = new Book(text361); // initialized using copy constructor
+     &#x22ee;
+  cout &lt;&lt; bPointer-&gt;getTitle() &lt;&lt; endl;
+  delete bPointer;
+</code></pre><p>what the compiler would actually generate  would be something along the lines of </p>
+    <div class="details"><span class="summary"><a href="deletionDestructor.cpp" target="listing">deletionDestructor.cpp</a></span> <input id="but_details_d6e366" onclick="toggleDisplay('_details_d6e366')" type="button" value="+"/><div class="detailPart" id="_details_d6e366"><pre><code id="_details_d6e366_code">  Book *bPointer = new Book(text361); // initialized using copy constructor
+      &#x22ee;
+  cout &lt;&lt; bPointer-&gt;getTitle() &lt;&lt; endl;
+<span class='hli'>  bPointer-&gt;~Book();
+  free(bPointer);  // recover memory at the address in bPointer
+</span>
+</code></pre></div></div><hr/><p><strong>Inside a Destructor</strong></p>
+    <p>The most common uses for destructors is to clean up  allocated memory for an object that is about to disappear. </p>
+    <ul>
+  <li>If we have  used <code>new</code> to allocate any memory on the heap for one or more  data members of the object,
+    <ul>
+      <li>we usually <code>delete</code> that memory  in the destructor.</li>
+    </ul>
+  </li>
+</ul><h2 id="operators">2.3 Operators</h2><p>Almost every operator in the language  can be declared in our own classes. </p>
+    <p>Almost all of the things we use  as operators, </p>
+    <ul>
+  <li>including <code>+ - * / | &amp; &lt; &gt; &lt;= &gt;= = == != ++ -- -&gt; += -= *= /=</code>,</li>
+  <li>and</li>
+</ul><p>the <code>[ ]</code> used in array indexing and  the <code>( )</code> used in function calls, * but not <code>.</code> or <code>::</code>,  </p>
+    <p>are actually “syntactic sugar” for a  function whose name if formed by appending the operator itself to the  word “<code>operator</code>”.</p>
+    <hr/><p><strong>Operators as Shorthand</strong></p>
+    <p>For example, </p>
+    <ul>
+  <li><code>a + b*(-c)</code> is actually  just a shorthand for</li>
+</ul><pre><code class="cpp">operator+(a, operator*(b, operator-(c)))
+</code></pre><ul>
+  <li>and if you write</li>
+</ul><pre><code class="cpp">testValue = (x &lt;= y);
+</code></pre><p>that is a shorthand for </p>
+    <pre><code class="cpp">operator=(testValue, operator&lt;=(x, y);
+</code></pre><hr/><p><strong>Declaring Operators</strong></p>
+    <pre><code class="cpp">Book operator+ (const Book&amp; left, const Book&amp; right);
+</code></pre><pre><code>   and then call it like this: 
+</code></pre><pre><code class="cpp">Book b = book1 + book2;
+</code></pre><p>but that’s probably not a good idea, because it’s not clear just what it  means to add two books together.</p>
+    <p>There are, however, a few operators that  <span class="emph">would</span> make sense for <code>Book</code> and for  almost all ADTs.</p>
+    <hr/><p><strong>Assignment</strong></p>
+    <p>Chief among these is the assignment operator. </p>
+    <ul>
+  <li>When we write  <code>book1 = book2</code>, that’s shorthand for <code>book1.operator=(book2)</code>  </li>
+</ul><p/>
+    <p>We’ll look more closely at when and how to write our own  assignment operators in the next lesson.</p>
+    <hr/><p><strong>I/O</strong></p>
+    <p>Another, <strong>very</strong> common set of  operators that programmers often write for their own code are the  I/O operators <code>&lt;&lt;</code> and <code>&gt;&gt;</code>,  particularly the output operator <code>&lt;&lt;</code>.</p>
+    <hr/><p><strong>Output Operator Example</strong></p>
+    <p>Here’s a possible output routine for our <code>Book</code> class. </p>
+    <div class="details"><span class="summary"><a href="bookOutput.cpp" target="listing">bookOutput.cpp</a></span> <input id="but_details_d6e495" onclick="toggleDisplay('_details_d6e495')" type="button" value="+"/><div class="detailPart" id="_details_d6e495"><pre><code id="_details_d6e495_code">ostream&amp; operator&lt;&lt; (ostream&amp; out, const Book&amp; b)
+{
+  out &lt;&lt; b.getISBN() &lt;&lt; "\n";
+  out &lt;&lt; b.getTitle() &lt;&lt; "\n";
+  for (AuthorPosition current = b.begin(); current != b.end(); ++current)
+  {
+    Author au = *current;
+    <span class='hli'>out &lt;&lt; au &lt;&lt; ", ";</span>;
+  }
+  out &lt;&lt; "\n  published by" &lt;&lt; b.getPublisher();
+  out &lt;&lt; endl;
+  <span class='hlii'>return out;</span>
+}
+</code></pre></div></div><ul>
+  <li><span class="hli">This</span> assumes that we have implemented an output operator for <span class="type">Author</span>.
+    <ul>
+      <li>But if you bought into the idea of providing an output operator for every class you write, that one should already exist.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Output Operator Example</strong></p>
+    <div class="details"><span class="summary"><a href="bookOutput.cpp" target="listing">bookOutput.cpp</a></span> <input id="but_details_d6e515" onclick="toggleDisplay('_details_d6e515')" type="button" value="+"/><div class="detailPart" id="_details_d6e515"><pre><code id="_details_d6e515_code">ostream&amp; operator&lt;&lt; (ostream&amp; out, const Book&amp; b)
+{
+  out &lt;&lt; b.getISBN() &lt;&lt; "\n";
+  out &lt;&lt; b.getTitle() &lt;&lt; "\n";
+  for (AuthorPosition current = b.begin(); current != b.end(); ++current)
+  {
+    Author au = *current;
+    <span class='hli'>out &lt;&lt; au &lt;&lt; ", ";</span>;
+  }
+  out &lt;&lt; "\n  published by" &lt;&lt; b.getPublisher();
+  out &lt;&lt; endl;
+  <span class='hlii'>return out;</span>
+}
+</code></pre></div></div><ul>
+  <li>The <span class="hlii">return statement</span> at the end returns the  output stream to which we are writing.
+    <pre><code>let's us write "chains" of output expressions like:
+</code></pre>
+  </li>
+</ul><pre><code class="cpp">cout &lt;&lt; book1 &lt;&lt; " is better than " 
+     &lt;&lt; book2 &lt;&lt; endl;
+</code></pre><pre><code>     which is treated by the compiler as if we had written: 
+</code></pre><pre><code class="cpp">(((cout &lt;&lt; book1) &lt;&lt; " is better than ") 
+        &lt;&lt; book2) &lt;&lt; endl;
+</code></pre><p>so that each output operation, in turn, passes  the stream on to the next one in line.</p>
+    <hr/><p><strong>Comparisons</strong></p>
+    <p>After assignments and I/O, the most commonly programmed operators would be the relational operators, especially <code>==</code> and <code>&lt;</code>. </p>
+    <pre><code class="cpp">class Address
+{
+   &#x22ee;
+  bool operator== (const Address&amp;) const;
+   &#x22ee;
+};
+</code></pre><p>The trickiest thing about providing these operators is making  sure we understand just what they should <span class="emph">mean</span> for  each individual ADT. </p>
+    <hr/><p><strong>Equality via All Data Members Equal</strong></p>
+    <p>This would be a  reasonable implementation: </p>
+    <pre><code class="cpp">bool Address::operator== (const Address&amp; right) const
+{
+  return (street == right.street)
+      &amp;&amp; (city   == right.city)
+      &amp;&amp; (state  == right.state)
+      &amp;&amp; (zip    == right.zip);
+}
+</code></pre><p>We could do something similar for <code>Author</code>: </p>
+    <pre><code class="cpp">bool Author::operator== (const Author&amp; right) const
+{
+  return (name       == right.name)
+      &amp;&amp; (address    == right.address)
+      &amp;&amp; (identifier == right.identifier);
+}
+</code></pre><p>(which, interestingly, makes use of the  <code>Address::operator==</code> that we have just defined). </p>
+    <hr/><p><strong>Equality via “keys”</strong></p>
+    <p>But  there’s actually another choice that might be reasonable. If every  author has a unique, unchanging identifier, we might be able to just  say: </p>
+    <pre><code class="cpp">bool Author::operator== (const Author&amp; right) const
+{
+  return (identifier == right.identifier);
+}
+</code></pre><p>on the grounds that two <code>Author</code> objects with  the same identifier value must actually be describing the same person,  even if they are inconsistent in the other fields. </p>
+    <ul>
+  <li>That’s a different <span class="emph">meaning</span> for <code>==</code>.
+    <ul>
+      <li>Neither of these two possible meanings is obviously better or “more correct” than the other.</li>
+    </ul>
+  </li>
+  <li>In a real project, we would need to look hard at how we will  use these objects to decide what meaning is appropriate for <code>==</code>.</li>
+</ul><hr/><p><strong>How Many Relational Ops do we Need?</strong></p>
+    <ul>
+  <li>
+    <p>In C++ we usually provide only operators <code>==</code> and <code>&lt;</code></p>
+    
+    <ul>
+      <li>
+      <p>Many <code>std::</code> functions use these two, but none rely on the other 4 (<code>!= &gt; &gt;= &lt;=</code>).</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>The standard library contains functions defining each of these 4 additional relational operators in terms of <code>==</code> and <code>&lt;</code>.</p>
+    
+    <ul>
+      <li>
+      <p>We get these additional operators by simply saying</p>
+    </li>
+    </ul>
+  </li>
+</ul><pre><code class="cpp">    using namespace std::rel_ops;
+
+</code></pre><hr/><p><strong>Designing a Good <code>&lt;</code></strong></p>
+    <p>In C++, we traditionally provide <code>operator&lt;</code> whenever possible</p>
+    <p>Again, just what this should <span class="emph">mean</span> depends upon the abstraction we are trying to support, but</p>
+    <ul>
+  <li>
+  <p>If <code>x &lt; y</code> is true, then <code>y &lt;
+          x</code> and <code>x == y</code> must be false.</p>
+    </li>
+  <li>
+  <p>If <code>x == y</code> is true, then <code>x &lt; y</code> and <code>y &lt; x</code> must be false.</p>
+    </li>
+  <li>
+  <p>If <code>x == y</code> is false, then either <code>x &lt;
+          y</code> or <code>y &lt; x</code> (but not both) must be  true.   In other words, given any two values <span class="varname">x</span> and <span class="varname">y</span>, one and exactly one of the relations <code>x &lt; y</code>, <code>y &lt; x</code>, and <code>x == y</code> should be true.</p>
+    </li>
+</ul><hr/><p><strong>Example: Comparing Authors</strong></p>
+    <p>For example, this would be a reasonable pair of  comparison operators for <code>Author</code>s: </p>
+    <pre><code class="cpp">bool Author::operator== (const Author&amp; right) const
+{
+  return (identifier == right.identifier);
+}
+
+bool Author::operator&lt; (const Author&amp; right) const
+{
+  return (identifier &lt; right.identifier);
+}
+</code></pre><hr/><p><strong>Example: Comparing Addresses</strong></p>
+    <p>Here is a reasonable pair for <code>Address</code>:</p>
+    <div class="details"><span class="summary"><a href="AddressRelops.cpp" target="listing">AddressRelops.cpp</a></span> <input id="but_details_d6e732" onclick="toggleDisplay('_details_d6e732')" type="button" value="+"/><div class="detailPart" id="_details_d6e732"><pre><code id="_details_d6e732_code">bool Address::operator== (const Address&amp; right) const
+{
+  return (street == right.street)
+      &amp;&amp; (city   == right.city)
+      &amp;&amp; (state  == right.state)
+      &amp;&amp; (zip    == right.zip);
+}
+
+bool Address::operator&lt; (const Address&amp; right) const
+{
+  if (street &lt; right.street)
+    return true;
+  else if (street == right.street)
+    {
+     if (city &lt; right.city)
+       return true;
+     else if (city == right.city)
+       {
+        if (state &lt; right.state)
+          return true;
+        else if (state == right.state)
+          {
+           if (zip &lt; right.zip)
+            return true;
+          }
+       }
+    }
+  return false;
+}
+</code></pre></div></div><a id="examplemultipleimplementationsof"/><h1 id="example-multiple-implementations-of">3 Example: Multiple Implementations of <code>Book</code></h1><p>One of the characteristics we expect when working with ADTs is that  the implementing data structures and algorithms can be altered without  changing the interface. </p>
+    <a id="simplearrays"/><h2 id="simple-arrays">3.1 Simple Arrays</h2><p><div class="noFloat"> </div>
+    <img src="bookarray.png" style="float: right; max-width: 35%;"/></p>
+    <p>The authors are stored in an array of fixed size, statically allocated as a part of the <code>Book</code> object.</p>
+    <div class="details"><span class="summary"><a href="book1in.h" target="listing">book1in.h</a></span> <input id="but_details_d6e749" onclick="toggleDisplay('_details_d6e749')" type="button" value="+"/><div class="detailPart" id="_details_d6e749"><pre><code id="_details_d6e749_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const
+  {
+      return title;
+  }
+
+  void setTitle(std::string theTitle) {
+      title = theTitle;
+  }
+
+  int getNumberOfAuthors() const
+  {
+      return numAuthors;
+  }
+
+  std::string getISBN() const
+  {
+      return isbn;
+  }
+
+  void setISBN(std::string id)
+  {
+      isbn = id;
+  }
+
+  Publisher getPublisher() const
+  {
+      return publisher;
+  }
+
+  void setPublisher(const Publisher&amp; publ)
+  {
+      publisher = publ;
+  }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><hr/><p><strong>Adding and Removing</strong></p>
+    <ul>
+  <li>The code to add and remove authors is rather typical array  manipulation code.</li>
+</ul><div class="details"><span class="summary"><a href="book1in.cpp" target="listing">book1in.cpp</a></span> <input id="but_details_d6e758" onclick="toggleDisplay('_details_d6e758')" type="button" value="+"/><div class="detailPart" id="_details_d6e758"><pre><code id="_details_d6e758_code">#include "book1.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  authors[0] = a;
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors[i] = au[i];
+    }
+}
+
+
+Book::AuthorPosition Book::begin() const
+{
+  return authors;
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return authors+numAuthors;
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt;= atk) 
+    {
+      authors[i+1] = authors[i];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  int atk = at - authors;
+  while (atk + 1 &lt; numAuthors)
+    {
+      authors[atk] = authors[atk + 1];
+      ++atk;
+    }
+  --numAuthors;
+}
+
+
+</code></pre></div></div><a id="dynamicallyallocatedarrays"/><h2 id="dynamically-allocated-arrays">3.2 Dynamically Allocated Arrays</h2><p>A more flexible approach can be obtained by allocating the array of authors on the heap.</p>
+    <p><div class="noFloat"> </div>
+    <img src="bookdynarray.png" style="float: right; max-width: 40%;"/>  In this approach, each book object occupies two distinct blocks of  memory, one of them an array allocated on the heap.</p>
+    <div class="details"><span class="summary"><a href="book2a.h" target="listing">book2a.h</a></span> <input id="but_details_d6e768" onclick="toggleDisplay('_details_d6e768')" type="button" value="+"/><div class="detailPart" id="_details_d6e768"><pre><code id="_details_d6e768_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+
+#endif
+</code></pre></div></div><p>In the .h file, the statically sized array <code>authors</code> is replaced by a pointer to an (array of) <code>Author</code>.</p>
+    <hr/><p><strong>Dynamically Allocated Arrays (cont.)</strong></p>
+    <div class="details"><span class="summary"><a href="book2a.cpp" target="listing">book2a.cpp</a></span> <input id="but_details_d6e780" onclick="toggleDisplay('_details_d6e780')" type="button" value="+"/><div class="detailPart" id="_details_d6e780"><pre><code id="_details_d6e780_code">#include "book2.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  MAXAUTHORS = 4;
+  authors = new Author[MAXAUTHORS];
+  numAuthors = 1;
+  authors[0] = a;
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  MAXAUTHORS = 4;
+  authors = new Author[MAXAUTHORS];
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors[i] = au[i];
+    }
+}
+
+
+Book::AuthorPosition Book::begin() const
+{
+  return authors;
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return authors+numAuthors;
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  if (numAuthors &gt;= MAXAUTHORS)
+    {
+      Author* newAuthors = new Author[2*MAXAUTHORS];
+      for (int i = 0; i &lt; MAXAUTHORS; ++i)
+	newAuthors[i] = authors[i];
+      MAXAUTHORS *= 2;
+      delete [] authors;
+      authors = newAuthors;
+    }
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt; atk) 
+    {
+      authors[i] = authors[i-1];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  int atk = at - authors;
+  while (atk + 1 &lt; numAuthors)
+    {
+      authors[atk] = authors[atk + 1];
+      ++atk;
+    }
+  --numAuthors;
+}
+
+</code></pre></div></div><p>The code is still pretty straightforwardly array-based. </p>
+    <ul>
+  <li>
+  <p>The constructors are changed to now allocate the array on the heap.</p>
+    </li>
+  <li>
+    <p>The array size allocated is smaller, because of a more sophisticated  approach used in <code>addAuthor</code>. </p>
+    
+    <ul>
+      <li>
+      <p>There, before adding a new  author to the book, we make a check to see if the array is already full.</p>
+    </li>
+      <li>
+      <p>If it is, we allocate a new, larger array, copy the former list of  authors from the old array into the new one, discard the old array, and  then proceed to add the new author into the new, larger array.</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="linkedlists"/><h2 id="linked-lists">3.3 Linked Lists</h2><p><div class="noFloat"> </div>
+    <img src="bookLL.png" style="float: right; max-width: 45%;"/></p>
+    <p>A still more flexible approach can be obtained by using a linked list of authors. In this case, I have chosen a doubly-linked list (pointers going both forward and backward from each node).</p>
+    <p>In this approach, each book object occupies many  blocks of memory, most of them being linked list nodes allocated on the  heap.</p>
+    <div class="details"><span class="summary"><a href="book3a.h" target="listing">book3a.h</a></span> <input id="but_details_d6e816" onclick="toggleDisplay('_details_d6e816')" type="button" value="+"/><div class="detailPart" id="_details_d6e816"><pre><code id="_details_d6e816_code">#ifndef BOOK_H
+#include "author.h"
+#include "authoriterator.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef AuthorIterator AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+
+#endif
+</code></pre></div></div><p>The <code>Book</code> itself holds pointers to the first and the last  node in the chain.</p>
+    <hr/><p><strong>Linked Lists impl</strong></p>
+    <div class="details"><span class="summary"><a href="book3a.cpp" target="listing">book3a.cpp</a></span> <input id="but_details_d6e826" onclick="toggleDisplay('_details_d6e826')" type="button" value="+"/><div class="detailPart" id="_details_d6e826"><pre><code id="_details_d6e826_code">#include "authoriterator.h"
+#include "book3.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  first = last = new AuthorNode (a, 0, 0);
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = 0;
+  first = last = 0;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      addAuthor(end(), au[i]);
+    }
+}
+
+
+Book::AuthorPosition Book::begin() const
+{
+  return AuthorPosition(first);
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return AuthorPosition(0);
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  if (first == 0)
+     first = last = new AuthorNode (author, 0, 0);
+  else if (at.pos == 0)
+    {
+      last-&gt;next = new AuthorNode (author, last, 0);
+      last = last-&gt;next;
+    }
+  else
+    {
+      AuthorNode* newNode = new AuthorNode(author, at.pos-&gt;prev, at.pos);
+      at.pos-&gt;prev = newNode;
+      if (at.pos == first)
+	first = newNode;
+      else
+	newNode-&gt;prev-&gt;next = newNode;
+    }
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  if (at.pos == first)
+    {
+      if (first == last)
+        first = last = 0;
+      else
+	{
+	  first = first-&gt;next;;
+	  first-&gt;prev = 0;
+	}
+    }
+  else if (at.pos == last)
+    {
+      last = last-&gt;prev;
+      last-&gt;next = 0;
+    }
+  else 
+    {
+      AuthorNode* prv = at.pos-&gt;prev;
+      AuthorNode* nxt = at.pos-&gt;next;
+      prv-&gt;next = nxt;
+      nxt-&gt;prev = prv;
+    }
+  delete at.pos;
+  --numAuthors;
+}
+</code></pre></div></div><p>The code is considerably messier - pointer manipulation can be tricky, no matter how many times you do it. </p>
+    <ul>
+  <li>The code is quite efficient  however.</li>
+  <li>Adding and removing nodes remains quick no matter how many  authors are actually in the list.</li>
+</ul><a id="standardlist"/><h2 id="standard-list">3.4 Standard List</h2><p><div class="noFloat"> </div>
+    <img src="bookstdL.png" style="float: right; max-width: 45%;"/></p>
+    <p>We presume that the data in this approach is arranged pretty much as before, though we don’t really <span class="emph">know</span> that for sure because we trust the abstraction provided by the <code>std::list</code> ADT.</p>
+    <div class="details"><span class="summary"><a href="book4.h" target="listing">book4.h</a></span> <input id="but_details_d6e848" onclick="toggleDisplay('_details_d6e848')" type="button" value="+"/><div class="detailPart" id="_details_d6e848"><pre><code id="_details_d6e848_code">#ifndef BOOK_H
+
+#include &lt;list&gt;
+
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef std::list&lt;Author&gt;::const_iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  const_AuthorPosition begin() const;
+  const_AuthorPosition end() const;
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  std::list&lt;Author&gt; authors;
+};
+
+#endif
+</code></pre></div></div><div class="details"><span class="summary"><a href="book4.cpp" target="listing">book4.cpp</a></span> <input id="but_details_d6e850" onclick="toggleDisplay('_details_d6e850')" type="button" value="+"/><div class="detailPart" id="_details_d6e850"><pre><code id="_details_d6e850_code">#include "authoriterator.h"
+#include "book4.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  authors.push_back(a);
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors.push_back(au[i]);
+    }
+}
+
+
+Book::const_AuthorPosition Book::begin() const
+{
+  return authors.begin();
+}
+
+Book::const_AuthorPosition Book::end() const
+{
+  return authors.end();
+}
+
+
+Book::AuthorPosition Book::begin()
+{
+  return authors.begin();
+}
+
+Book::AuthorPosition Book::end()
+{
+  return authors.end();
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  authors.insert (at, author);
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  authors.erase (at);
+  --numAuthors;
+}
+
+
+</code></pre></div></div><p>The code is quite simple, at least for anyone already familiar  with the <code>std::list</code> ADT.</p>
+    <a id="exampleimplementingbookauthorposition"/><h1 id="example-implementing-book-authorposition">4 Example: Implementing Book::AuthorPosition</h1><p>Our <code>Book</code> ADT calls for a “helper” ADT, the <code>AuthorPosition</code>, to represent the position of a particular author within the author list for the book.</p>
+    <hr/><p><strong>Iterator Interface Review</strong></p>
+    <p>To review, our iterator must supply the following operations:</p>
+    <pre><code class="cpp">class AuthorPosition {
+public:
+   AuthorPosition();
+
+   // get data at this position
+   Author operator*() const;
+
+   // get a data/function member at this position
+   Author* operator-&gt;() const;
+
+   // move forward to the position just after this one
+   AuthorPosition operator++();
+
+   // Is this the same position as pos?
+   bool operator== (const AuthorPosition&amp; pos) const;
+   bool operator!= (const AuthorPosition&amp; pos) const;
+
+};
+</code></pre><a id="simplearrays"/><h2 id="simple-arrays">4.1 Simple Arrays</h2><div class="details"><span class="summary"><a href="book1in.h" target="listing">book1in.h</a></span> <input id="but_details_d6e874" onclick="toggleDisplay('_details_d6e874')" type="button" value="+"/><div class="detailPart" id="_details_d6e874"><pre><code id="_details_d6e874_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const
+  {
+      return title;
+  }
+
+  void setTitle(std::string theTitle) {
+      title = theTitle;
+  }
+
+  int getNumberOfAuthors() const
+  {
+      return numAuthors;
+  }
+
+  std::string getISBN() const
+  {
+      return isbn;
+  }
+
+  void setISBN(std::string id)
+  {
+      isbn = id;
+  }
+
+  Publisher getPublisher() const
+  {
+      return publisher;
+  }
+
+  void setPublisher(const Publisher&amp; publ)
+  {
+      publisher = publ;
+  }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>If we implement <code>Book</code> using simple arrays, the  implementation of <code>AuthorPosition</code> is trivial. </p>
+    <p>It takes advantage of the fact that the conventional interface for iterators in  C++ is chosen to mimic the behavior of pointers to array  elements.</p>
+    <hr/><p><strong>Iterators and Arrays</strong></p>
+    <p>The only differences lie in how one gets access to the starting  and ending positions. </p>
+    <table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th><code>T a[N];</code> </th>
+      <th><code>Container c;</code> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>get element at position </td>
+      <td><code>*p p-&gt;</code> </td>
+      <td><code>*it it-&gt;</code></td>
+    </tr>
+    <tr>
+      <td>move forward 1 position </td>
+      <td><code>++p</code> </td>
+      <td><code>++it</code></td>
+    </tr>
+    <tr>
+      <td>compare positions </td>
+      <td><code>p1 == p2</code> </td>
+      <td><code>it1 == it2</code></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>p1!= p2</code> </td>
+      <td><code>it1 != it2</code></td>
+    </tr>
+    <tr>
+      <td>position of first element </td>
+      <td><code>a</code> </td>
+      <td><code>c.begin()</code></td>
+    </tr>
+    <tr>
+      <td>position just after last element </td>
+      <td><code>a+N</code> </td>
+      <td><code>c.end()</code></td>
+    </tr>
+  </tbody>
+</table><hr/><p><strong>Book (Array) Iterator</strong></p>
+    <pre><code class="cpp">class Book {
+public:
+   typedef const Author* AuthorPosition;
+     &#x22ee;
+};
+
+Book::AuthorPosition Book::begin() const 
+{
+ return authors; 
+}
+
+Book::AuthorPosition Book::end() const 
+{
+ return authors + numAuthors; 
+}
+
+</code></pre><p>The pointer type already provides the <code>*</code>,  <code>-&gt;</code>, <code>++</code>, <code>==</code>, and  <code>!=</code> operations we need.</p>
+    <a id="dynamicallyallocatedarrays"/><h2 id="dynamically-allocated-arrays">4.2 Dynamically Allocated Arrays</h2><div class="details"><span class="summary"><a href="book2a.h" target="listing">book2a.h</a></span> <input id="but_details_d6e1002" onclick="toggleDisplay('_details_d6e1002')" type="button" value="+"/><div class="detailPart" id="_details_d6e1002"><pre><code id="_details_d6e1002_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  int MAXAUTHORS;
+  Author* authors;
+
+};
+
+#endif
+</code></pre></div></div><p>Everything we have said about iterators over simple arrays  applies equally well to dynamic arrays. </p>
+    <p>So the implementation of AuthorPostion is  identical: </p>
+    <pre><code class="cpp">class Book {
+public:
+ typedef const Author* AuthorPosition; 
+    &#x22ee;
+
+</code></pre><a id="linkedlists"/><h2 id="linked-lists">4.3 Linked Lists</h2><div class="details"><span class="summary"><a href="book3a.h" target="listing">book3a.h</a></span> <input id="but_details_d6e1012" onclick="toggleDisplay('_details_d6e1012')" type="button" value="+"/><div class="detailPart" id="_details_d6e1012"><pre><code id="_details_d6e1012_code">#ifndef BOOK_H
+#include "author.h"
+#include "authoriterator.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef AuthorIterator AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  AuthorNode* first;
+  AuthorNode* last;
+
+  friend class AuthorIterator;  
+};
+
+#endif
+</code></pre></div></div><p>To get the desired behaviors for our iterator ADT, we will need  to implement it as a class in its own right. The declaration shown  here provides our desired interface.</p>
+    <div class="details"><span class="summary"><a href="authorIterator.h" target="listing">authorIterator.h</a></span> <input id="but_details_d6e1015" onclick="toggleDisplay('_details_d6e1015')" type="button" value="+"/><div class="detailPart" id="_details_d6e1015"><pre><code id="_details_d6e1015_code">class AuthorIterator {
+public:
+  AuthorIterator ();
+
+  Author operator*() const;
+  const Author* operator-&gt;() const;
+  const AuthorIterator&amp; operator++(); // prefix form ++i;
+  AuthorIterator operator++(int); // postfix form i++;
+
+  bool operator== (const AuthorIterator&amp; ai) const;
+  bool operator!= (const AuthorIterator&amp; ai) const; 
+
+private: 
+  AuthorNode* pos;
+  AuthorIterator (AuthorNode* p)
+    : pos(p) 
+  {}
+
+  friend class Book; 
+};
+</code></pre></div></div><p>Inside the <code>Book</code> class, we write </p>
+    <pre><code class="cpp">class Book { 
+public:
+   typedef AuthorIterator AuthorPosition; 
+     &#x22ee;
+ friend class AuthorIterator;
+};
+
+</code></pre><p>which gives <code>AuthorPosition</code> access to all  private members of <code>Book</code>.</p>
+    <hr/><p><strong>Implementing the Iterator Ops</strong></p>
+    <p>For example, we implement the <code>*</code> operator like this:</p>
+    <pre><code class="cpp">Author AuthorIterator::operator*() const 
+{
+  return pos-&gt;au; 
+} 
+</code></pre><p>returning the data field (only) from the linked list  node.</p>
+    <hr/><p><strong>Implementing the Iterator Ops (cont.)</strong></p>
+    <p>The other particularly interesting operator is <code>++</code>:</p>
+    <pre><code class="cpp">// prefix form ++i; 
+const AuthorIterator&amp; AuthorIterator::operator++() 
+{
+  pos = pos-&gt;next;
+  return *this; 
+}
+
+// postfix form i++; 
+AuthorIterator AuthorIterator::operator++(int) 
+{
+  AuthorIterator oldValue = *this;
+  pos = pos-&gt;next; return oldValue; 
+} 
+</code></pre><p>The main thing that happens here is simple advancing the  <span class="varname">pos</span> pointer to the next linked list node.</p>
+    <a id="standardlist"/><h2 id="standard-list">4.4 Standard List</h2><div class="details"><span class="summary"><a href="book4.h" target="listing">book4.h</a></span> <input id="but_details_d6e1059" onclick="toggleDisplay('_details_d6e1059')" type="button" value="+"/><div class="detailPart" id="_details_d6e1059"><pre><code id="_details_d6e1059_code">#ifndef BOOK_H
+
+#include &lt;list&gt;
+
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef std::list&lt;Author&gt;::const_iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const        { return title; }
+
+  void setTitle(std::string theTitle) {  title = theTitle; }
+
+  int getNumberOfAuthors() const { return numAuthors; }
+
+  std::string getISBN() const  { return isbn; }
+  void setISBN(std::string id) { isbn = id; }
+
+  Publisher getPublisher() const { return publisher; }
+  void setPublisher(const Publisher&amp; publ) { publisher = publ; }
+
+  const_AuthorPosition begin() const;
+  const_AuthorPosition end() const;
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  std::list&lt;Author&gt; authors;
+};
+
+#endif
+</code></pre></div></div><p>If we use a <code>std::list</code> to keep our authors, the  implementation of our iterator becomes fairly simple again. </p>
+    <ul>
+  <li>That’s because all the <code>std</code> containers provide their own iterators
+    <ul>
+      <li>(which, obviously, will follow the <code>std</code> interface), and so</li>
+      <li>we can simply implement our own iterator in terms of that one:</li>
+    </ul>
+  </li>
+</ul><pre><code class="cpp">class Book { 
+public:
+  typedef std::list&lt;Author&gt;::const_iterator AuthorPosition;
+  typedef std::list&lt;Author&gt;::const_iterator const_AuthorPosition; 
+</code></pre><hr/><p><strong>Implementing the Iterator Ops</strong></p>
+    <p>Implementing the <code>begin()</code> and <code>end()</code> functions is pretty straightforward. </p>
+    <div class="details"><span class="summary"><a href="stdlistIterators.cpp" target="listing">stdlistIterators.cpp</a></span> <input id="but_details_d6e1095" onclick="toggleDisplay('_details_d6e1095')" type="button" value="+"/><div class="detailPart" id="_details_d6e1095"><pre><code id="_details_d6e1095_code">Book::const_AuthorPosition Book::begin() const 
+{
+  return authors.begin(); 
+}
+
+Book::const_AuthorPosition Book::end() const 
+{
+  return authors.end(); 
+}
+
+Book::AuthorPosition Book::begin() 
+{
+  return authors.begin(); 
+}
+
+Book::AuthorPosition Book::end() 
+{
+  return authors.end(); 
+}
+</code></pre></div></div><p>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Implementing%20ADTs%20in%20C%2B%2B%20Classes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

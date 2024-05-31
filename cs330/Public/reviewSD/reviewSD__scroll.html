@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>A Quick Sequence Diagram Review</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20Quick%20Sequence%20Diagram%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">A Quick Sequence Diagram Review</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:</div><p>Consider a use case for a vending machine that accepts credit card payments</p>
+    <ol>
+  <li>A customer, Tom, swipes his credit card in the vending machine slot.</li>
+  <li>The vending machine relays the card number over the network to a bank,  requesting authorization for a small charge.</li>
+  <li>The bank responds with an authorization number, indicating that the  transaction is pre-approved.</li>
+  <li>Tom selects a diet soda.</li>
+  <li>The vending machine sends the charge (authorization number and the cost of  the soda) to the bank.</li>
+  <li>The vending machine dispenses the soda to Tom.</li>
+</ol><p>Let us start with the following diagram:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="seq1.png" style="max-width: 80%;"/></div>
+    </p>
+    <pre><code>#
+customer:Customer[a]
+card:CreditCard[a]
+machine:VendingMachine[a]
+bank:Bank[a]
+#
+customer:soda=machine.swipe(card)
+machine:auth_number=bank.authorize(card)
+machine:selection=customer.displaySelectionMessage()
+machine:bank.sendCharge(auth_number,cost)
+</code></pre><p>First we replace the anonymous customer object with a named customer object:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="seq2.png" style="max-width: 80%;"/></div>
+    </p>
+    <pre><code>#
+tom:Customer
+card:CreditCard[a]
+machine:VendingMachine[a]
+bank:Bank[a]
+#
+tom:soda=machine.swipe(card)
+machine:auth_number=bank.authorize(card)
+machine:selection=tom.displaySelectionMessage()
+machine:bank.sendCharge(auth_number,cost)
+</code></pre><p>We then remove <code>displaySelectionMessage()</code> and split the call to <code>VendingMachine</code>:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="seq3.png" style="max-width: 80%;"/></div>
+    </p>
+    <pre><code>tom:Customer
+card:CreditCard[a]
+machine:VendingMachine[a]
+bank:Bank[a]
+#
+tom:message=machine.swipe(card)
+machine:auth_number=bank.authorize(card)
+tom:soda=machine.select("diet soda")
+machine:bank.sendCharge(auth_number,cost)
+</code></pre><p>How would we modify this for the alternate case where Tom’s card is declined?</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="seq4.png" style="max-width: 80%;"/></div>
+    </p>
+    <pre><code>tom:Customer
+card:CreditCard[a]
+machine:VendingMachine[a]
+bank:Bank[a]
+#
+tom:message=machine.swipe(card)
+machine:auth_number=bank.authorize(card)
+#
+[c:alt message="make selection"]
+tom:soda=machine.select("diet soda")
+machine:bank.sendCharge(auth_number,cost)
+[/c]
+</code></pre></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20Quick%20Sequence%20Diagram%20Review"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,1324 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>ADTs</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">ADTs</h1><h2 class="author">Steven J Zeil</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#abstraction">1 Abstraction</a></div><div class="toc-h2"><a href="#procedural-abstraction">1.1 Procedural Abstraction</a></div><div class="toc-h2"><a href="#data-abstraction">1.2 Data Abstraction</a></div><div class="toc-h1"><a href="#abstract-data-types">2 Abstract Data Types</a></div><div class="toc-h2"><a href="#examples">2.1 Examples</a></div><div class="toc-h2"><a href="#design-patterns">2.2 Design Patterns</a></div><div class="toc-h1"><a href="#adts-as-contracts">3 ADTs as contracts</a></div><div class="toc-h2"><a href="#information-hiding">3.1 Information Hiding</a></div><div class="toc-h1"><a href="#adt-implementations">4 ADT Implementations</a></div><div class="toc-h2"><a href="#examples">4.1 Examples</a></div><div class="toc-h2"><a href="#calendar-day-implementations">4.2 Calendar Day Implementations</a></div><div class="toc-h2"><a href="#cellname-implementation">4.3 CellName Implementation</a></div><div class="toc-h2"><a href="#book-implementation">4.4 Book Implementation</a></div></div><h1 id="abstraction">1 Abstraction</h1><p>In general, <span class="firstterm">abstraction</span> is a creative process  of focusing attention on the main problems by ignoring lower-level  details.</p>
+    <p>In programming, we encounter two particular kinds of abstraction:</p>
+    <ul>
+  <li><span class="firstterm">procedural abstraction</span> and</li>
+  <li><span class="firstterm">data abstraction</span>.</li>
+</ul><a id="proceduralabstraction"/><h2 id="procedural-abstraction">1.1 Procedural Abstraction</h2><p>A <span class="firstterm">procedural abstraction</span> is a mental model  of <span class="emph">what</span> we want a subprogram to do (but not  <span class="emph">how</span> to do it). </p>
+    <p><strong>Example:</strong> if you wanted to  compute the length of the a hypotenuse of a right triangle, you might  write something like </p>
+    <pre><code class="cpp">double hypotenuse = sqrt(side1*side1 + side2*side2);
+</code></pre><p>We can write this, understanding that the <span class="function">sqrt</span> function is  supposed to compute a square root, even if we have no idea how that  square root actually gets computed. </p>
+    <ul>
+  <li>That’s because we understand what a  square root <span class="emph">is</span>.</li>
+</ul><p>When we start actually writing the code, we  <span class="firstterm">implement</span> a procedural abstraction by</p>
+    <ul>
+  <li>
+  <p>assigning an appropriately named “function” to  represent that procedural abstraction,</p>
+    </li>
+  <li>
+  <p>in the “main” code, calling that function,  trusting that it will actually do <span class="emph">what</span> we  want but not worrying about <span class="emph">how</span> it will do  it, and</p>
+    </li>
+  <li>
+  <p>finally, writing a function body using an appropriate  algorithm to do what we want.</p>
+    </li>
+</ul><p>In practice, there may be many algorithms to achieve  the same abstraction, and we use engineering considerations such as  speed, memory requirements, and ease of implementation to choose among  the possibilities.</p>
+    <p>For example, the “<span class="function">sqrt</span>” function  is probably implemented using a technique completely unrelated to any  technique you may have learned in grade school for computing square  roots. On many systems. <span class="function">sqrt</span> doesn’t  compute a square root at all, but computes a polynomial function that  was chosen as a good approximation to the actual square root and that  can be evaluated much more quickly than an actual square root. It may  then refine the accuracy of that approximation by applying Newton’s  method, a technique you may have learned in Calculus.</p>
+    <p>Does it <span class="emph">bother</span> you that <code>sqrt</code> does not actually compute via a square root algorithm? Probably not. It  shouldn’t. As long as we trust the results, the method is something we  are happy to ignore.</p>
+    <a id="dataabstraction"/><h2 id="data-abstraction">1.2 Data Abstraction</h2><p>Data abstraction works much the same way. </p>
+    <p>A <span class="firstterm">data abstraction</span> is a mental model of <code>what</code> can be  done to a collection of data. It deliberately excludes details of  <code>how</code> to do it.</p>
+    <hr/><p><strong>Example: calendar days</strong></p>
+    <p>A day (date?) in a calendar denotes a 24-hour period, identified  by a specific year, month, and day number.</p>
+    <p>That’s it. That’s probably all you need to know for you and I to  agree that we are talking about a common idea.</p>
+    <hr/><div class="noFloat"> </div><div class="sidebar pct50">
+<p>I will assume that you are familiar with some sort of spreadsheet program such as Microsoft’s Excel or the OpenOffice Calc program. All spreadsheets present a rectangular arrangement of cells, with each cell containing a mathematical expression or formula to be evaluated.</p>
+    
+</div><p>One of the running examples used throughout this course is the design and implementation of a spreadsheet.</p>
+    <p><strong>Example: cell names</strong></p>
+    <p>Every cell in a spreadsheet has a <a href="#cell-names">unique name</a>. The name has a  column part and a row part.</p>
+    <ul>
+  <li>
+  <p>The row indicators are integer values starting at 1.</p>
+    </li>
+  <li>
+  <p>The column indicators are case-insensitive strings of  alphabetic characters as follows: <code>A</code>,  <code>B</code>, … , <code>Z</code>,  <code>AA</code>, <code>AB</code>,  <code>AC</code>, … , <code>AZ</code>,  <code>BA</code>, <code>BB</code>, …  <code>ZZ</code>, <code>AAA</code>,  <code>AAB</code>, … and so on.</p>
+    </li>
+  <li>
+  <p>Optional <code>$</code> markers may appear in front of  each part to “fix” the row or column during copying.</p>
+    </li>
+</ul><p>For example, suppose we have a cell <code>B1</code> containing the formula <code>2*A1</code> and that we copy and  paste that cell to position C3. When we look in  <code>C3</code>, we would find the pasted formula was  <code>2*B3</code> adjusted for the number of rows and columns over  which we moved the copied value.</p>
+    <p>But if the cell <code>B1</code> originally contained  the formula <code>2*A$1</code>, the copied formula would be  <code>2*B$1</code>. The <code>$</code> indicates that we are  fixing the column indicator during copies. Similarly, if the cell  <code>B1</code> originally contained the formula  <code>2*$A$1</code>, the copied formula would be  <code>2*$A$1</code>. (If this isn’t clear, fire up a spreadsheet  and try it. We can’t expect to share mental models (abstractions)  if we don’t share an experience with the subject domain.)</p>
+    <hr/><p><strong>Example: a book</strong></p>
+    <p>How to <a href="#example-a-book">describe a book</a>? </p>
+    <ul>
+  <li>
+    <p>If we are implementing a card catalog  and library checkout, it is probably enough to list the  <a href="http://www.webopedia.com/TERM/m/metadata.html">metadata</a></p>
+    
+    <ul>
+      <li>
+      <p>(e.g., title, authors, publisher, date).</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>If, however, we are going to be working on a project involving the  full text of the document (e.g., <a href="http://www.cs.odu.edu/~extract/">automatic metadata extraction and  indexing</a>), then we might need all  the pages and all the text.</p>
+    </li>
+  <li>
+  <p>Of course, if we were building bookshelves, we might need more  physical attributes such as size and weight!</p>
+    </li>
+</ul><hr/><p><strong>Example: positions within a container</strong></p>
+    <p>Many of the abstractions that we work with are  “containers” of arbitrary numbers of pieces of other data.</p>
+    <p>Any time you have an ordered sequence of data, you can imagine  the need to look through it. That then leads to the concept of a  <a href="#positionabstr"><span class="emph">position within that sequence</span></a>,  with notions like </p>
+    <ul>
+  <li>finding the first and  last position,</li>
+  <li>going forward to the next position, etc.  </li>
+</ul><a id="abstractdatatypes"/><h1 id="abstract-data-types">2 Abstract Data Types</h1><p><strong>Adding Interfaces</strong></p>
+    <ul>
+  <li>
+  <p>The <span class="emph">mental model</span> offered by a data  abstraction gives us an informal understanding of how and when to  use it.</p>
+    </li>
+  <li>
+  <p>But because it is simply a mental model, it does not  tell us enough information to program with it.</p>
+    </li>
+  <li>
+  <p>An <span class="emph">abstract data type</span> (ADT) captures this  model in a programming language interface.</p>
+    </li>
+</ul><hr/><p><strong>Definition of an Abstract Data Type</strong></p>
+    <blockquote>
+  <p>(traditional): An <span class="firstterm">abstract data type</span> (ADT) is a type name and a list of operations on that type.</p>
+    
+</blockquote><p>It’s convenient, for the purpose of this course, to modify this  definition just slightly:</p>
+    <blockquote>
+  <p>Definition (alternate): An <span class="firstterm">abstract data type</span> (ADT) is a type name and a list of members (data or function) on that type.</p>
+    
+</blockquote><ul>
+  <li>an ADT corresponds, more or less, to the public portion of a typical class</li>
+  <li>the “list of members” includes
+    <ul>
+      <li>names</li>
+      <li>data types</li>
+      <li>expected behavior</li>
+    </ul>
+  </li>
+  <li>a.k.a. an <span class="firstterm">ADT specification</span></li>
+</ul><p>This change is not really all that significant. Traditionally, a  data member X is modeled as a pair of <code>getX()</code> and  <code>putX(x)</code> (or ’<code>setX(x)</code>) functions. But in practice, we will allow ADTs to  include data members in their specification. This definition may make it a  bit clearer that an ADT corresponds, more or less, to the public portion  of a typical class.</p>
+    <p>In either case, when we talk about listing the members, this  includes giving their names and their data types (for functions, their  return types and the data types of their parameters).</p>
+    <p>If you search the web for the phrase “abstract data  type”, you’ll find lots of references to stacks, queues, etc. - the  “classic” data structures. Certainly, these  <span class="emph">are</span> ADTs. But, just as with the abstractions  introduced earlier, each application domain has certain characteristic or  natural abstractions that may also need programming interfaces.</p>
+    <hr/><p><strong>ADT Members: attributes and operations</strong></p>
+    <p>Commonly divided into</p>
+    <ul>
+  <li>
+    <p><span class="firstterm">attributes</span>: the things that we think of as being data stored inthe ADT</p>
+    
+    <ul>
+      <li>Actual interface is often through <span class="function">get<span class="replaceable">Attr</span>()</span>  and <span class="function">set<span class="replaceable">Attr</span>()</span> functions.</li>
+      <li>which, in turn, might or might not actually involve direct access to a “data member”</li>
+    </ul>
+  </li>
+  <li>
+    <p>operations: the functions or behaviors or the ADT</p>
+    
+    <ul>
+      <li>the “type” of a function consists of its return type and  an ordered list of of its parameters’ types</li>
+    </ul>
+  </li>
+</ul><h2 id="examples">2.1 Examples</h2><a id="calendardays"/><h3 id="calendar-days">2.1.1 Calendar Days</h3><p>Nothing in the definition of ADT that says that the interface <span class="emph">has</span> to be written out in a programming language.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="dayClass.png" style="max-width: 20%;"/></div>
+    </p>
+    <p>UML diagrams present classes as a 3-part box: name, attributes, &amp; operations</p>
+    <a id="calendardaysalternative"/><h3 id="calendar-days-alternative">2.1.2 Calendar Days: Alternative</h3><p>But we can use a more programming-style interface:</p>
+    <p><div class="noFloat"> </div>
+    <img src="dayClass.png" style="float: right; max-width: 20%;"/></p>
+    <pre><code class="cpp">class Day {
+public:
+   // Attributes
+   int getDay();
+   void setDay (int);
+   int getMonth();
+   void setMonth(int);
+   int getYear();
+   void setYear(int);
+   
+   // Operations
+   Day operator+ (int numDays);
+   int operator- (Day);
+   bool operator&lt; (Day);
+   bool operator== (Day);
+     &#x22ee;
+
+</code></pre><h4 id="notations">Notations</h4><p><div class="noFloat"> </div>
+    <img src="dayClass.png" style="float: right; max-width: 20%;"/></p>
+    <pre><code class="cpp">class Day {
+public:
+   // Attributes
+   int getDay();
+   void setDay (int);
+   int getMonth();
+   void setMonth(int);
+   int getYear();
+   void setYear(int);
+   
+   // Operations
+   Day operator+ (int numDays);
+   int operator- (Day);
+   bool operator&lt; (Day);
+   bool operator== (Day);
+     &#x22ee;
+
+</code></pre><ul>
+  <li>Disadvantages of moving early to programming-style interfaces:
+    <ul>
+      <li>getting lost in language details</li>
+      <li>prematurely committing to those details</li>
+    </ul>
+  </li>
+</ul><a id="cellnames"/><h3 id="cell-names">2.1.3 Cell Names</h3><p>Here is a possible interface for our cell name abstraction.</p>
+    <p><div class="noFloat"> </div>
+    <img src="cellNameClass.png" style="float: right; max-width: 40%;"/></p>
+    <div class="details"><span class="summary"><a href="cellnameInterface.h" target="listing">cellnameInterface.h</a></span> <input id="but_details_d6e434" onclick="toggleDisplay('_details_d6e434')" type="button" value="+"/><div class="detailPart" id="_details_d6e434"><pre><code id="_details_d6e434_code">
+class CellName
+{
+public:
+  CellName (std::string column, int row,
+            bool fixTheColumn = false,
+            bool fixTheRow=false);
+  //pre: column.size() &gt; 0 &amp;&amp; all characters in column are alphabetic
+  //     row &gt; 0
+
+  CellName (std::string cellname);
+  //pre: exists j, 0&lt;=j&lt;cellname.size()-1, 
+  //        cellname.substr(0,j) is all alphabetic (except for a
+  //             possible cellname[0]=='$')
+  //        &amp;&amp; cellname.substr(j) is all numeric (except for a
+  //             possible cellname[j]=='$') with at least one non-zero
+  //             digit
+
+  CellName (unsigned columnNumber = 0, unsigned rowNumber = 0,
+            bool fixTheColumn = false,
+            bool fixTheRow=false);
+
+  std::string toString() const;
+  // render the entire CellName as a string
+
+  // Get components in spreadsheet notation
+  std::string getColumn() const;
+  int getRow() const;
+
+  bool isRowFixed() const;
+  bool isColumnFixed() const;
+
+
+  // Get components as integer indices in range 0..
+  int getColumnNumber() const;
+  int getRowNumber() const;
+
+
+  bool operator== (const CellName&amp; r) const
+     &#x22ee;
+private:
+     &#x22ee;
+</code></pre></div></div><p>Arguably, the diagram presents much  the same information as the code</p>
+    <a id="exampleabook"/><h3 id="example-a-book">2.1.4 Example: A Book</h3><p>If we were to try to capture our book abstraction (concentrating on the metadata), we might come up with something like:</p>
+    <div class="details"><span class="summary"><a href="bookAbstraction0.h" target="listing">bookAbstraction0.h</a></span> <input id="but_details_d6e440" onclick="toggleDisplay('_details_d6e440')" type="button" value="+"/><div class="detailPart" id="_details_d6e440"><pre><code id="_details_d6e440_code">
+class Book {
+public:
+  Book (Author)                 // for books with single authors
+  Book (Author[], int nAuthors) // for books with multiple authors
+
+  std::string getTitle() const;
+  void putTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getIsBN() const;
+  void putISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void putPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin();
+  AuthorPosition end();
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+  &#x22ee;
+};
+</code></pre></div></div><ul>
+  <li>What are <code>Author</code> and <code>Publisher</code> in this  interface?
+    <ul>
+      <li>They are simply other ADTs in this library world, and will  need to have designed interfaces of their own.</li>
+    </ul>
+  </li>
+</ul><a id="examplepositionswithinacontainer"/><h3 id="example-positions-within-a-container">2.1.5 Example: Positions within a Container</h3><p>Coming up with a good interface for our position abstraction is a problem  that has challenged many an ADT designer. </p>
+    <ul>
+  <li>A look at our <code>Book</code> interface may suggest why.</li>
+</ul><div class="details"><span class="summary"><a href="bookNumericPositions.h" target="listing">bookNumericPositions.h</a></span> <input id="but_details_d6e467" onclick="toggleDisplay('_details_d6e467')" type="button" value="+"/><div class="detailPart" id="_details_d6e467"><pre><code id="_details_d6e467_code">class Book {
+public:
+  Book (Author)                 // for books with single authors
+  Book (Author[], int nAuthors) // for books with multiple authors
+
+  std::string getTitle() const;
+  void putTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getIsBN() const;
+  void putISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void putPublisher(const Publisher&amp; publ);
+
+  typedef int AuthorPosition;
+  &lt;+1&gt;Author getAuthor (AuthorPosition authorNum) const;  &lt;-1&gt;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+  &#x22ee;
+};
+</code></pre></div></div><ul>
+  <li>One intuitive idea might be to simply number the authors and treat  the number as a position indicator, as shown here.</li>
+</ul><hr/><p><strong>Iterators</strong></p>
+    <p>The solution adapted by the C++ community is to have every ADT  that is a “container” of sequences of other data to provide  a special type for positions within that sequence. </p>
+    <ul>
+  <li>The container itself provides functions to return
+    <ul>
+      <li>the beginning position in the sequence and</li>
+      <li>the position just <span class="emph">after</span> the last data item in the</li>
+    </ul> (these are typically called <code>begin()</code> and <code>end()</code>
+  </li>
+</ul><hr/><ul>
+  <li>The position ADT must provide, at a minimum:
+    <ul>
+      <li>
+      <p>A function to fetch the data item at the given  position.</p>
+    </li>
+      <li>
+      <p>A function to advance from the current position to the next  position in the sequence.</p>
+    </li>
+      <li>
+      <p>A function to compare two positions to see if they are the  same.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>A Possible Position Interface</strong></p>
+    <p>In theory, we could satisfy this requirement with an  ADT like this:</p>
+    <div class="details"><span class="summary"><a href="authorPosition0.h" target="listing">authorPosition0.h</a></span> <input id="but_details_d6e523" onclick="toggleDisplay('_details_d6e523')" type="button" value="+"/><div class="detailPart" id="_details_d6e523"><pre><code id="_details_d6e523_code">
+class AuthorPosition {
+public:
+   AuthorPosition();
+
+   // get data at this position
+   Author getData() const;
+
+   // get the position just after this one
+   AuthorPosition next() const;
+
+   // Is this the same position as pos?
+   bool operator== (const AuthorPosition&amp; pos) const;
+   bool operator!= (const AuthorPosition&amp; pos) const;
+
+};
+</code></pre></div></div><p>which in turn would allow us to access authors like this:</p>
+    <pre><code class="cpp">void listAllAuthors(Book&amp; b)
+{
+   for (AuthorPosition p = b.begin(); p != b.end(); 
+        p = p.next())
+     cout &lt;&lt; "author: " &lt;&lt; p.getData() &lt;&lt; endl;
+}
+
+</code></pre><hr/><p><strong>The Iterator ADT</strong></p>
+    <p>For historical reasons (and brevity), however, C++ programmers use  overloaded operators for the <code>getData()</code> and  <code>next()</code> operations:</p>
+    <div class="details"><span class="summary"><a href="authorPosition1.h" target="listing">authorPosition1.h</a></span> <input id="but_details_d6e538" onclick="toggleDisplay('_details_d6e538')" type="button" value="+"/><div class="detailPart" id="_details_d6e538"><pre><code id="_details_d6e538_code">
+class AuthorPosition {
+public:
+   AuthorPosition();
+
+   // get data at this position
+   Author operator*() const;
+
+   // get a data/function member at this position
+   Author* operator-&gt;() const;
+
+   // move forward to the position just after this one
+   AuthorPosition operator++();
+
+   // Is this the same position as pos?
+   bool operator== (const AuthorPosition&amp; pos) const;
+   bool operator!= (const AuthorPosition&amp; pos) const;
+
+};
+</code></pre></div></div><p>so that code to access authors would look like this:</p>
+    <pre><code class="cpp">void listAllAuthors(Book&amp; b)
+{
+   for (AuthorPosition p = b.begin(); p != b.end(); 
+        ++p)
+     cout &lt;&lt; "author: " &lt;&lt; *p &lt;&lt; endl;
+}
+
+</code></pre><p>This ADT for positions is called an  <span class="firstterm">iterator</span> (because it lets us iterate over a  collection of data).</p>
+    <a id="designpatterns"/><h2 id="design-patterns">2.2 Design Patterns</h2><hr/><p><strong>Iterator as a Design Pattern</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="iteratorPattern.png" style="float: left; max-width: 50%;"/> The idea of an iterator is an instance of what  we call a <span class="firstterm">design pattern</span>: </p>
+    <ul>
+  <li>a reusable concept that is not so much a piece of code as it is  a design idea.</li>
+</ul><hr/><p><strong>Pattern, not ADT</strong></p>
+    <p>In C++, our application code does not actually work with an actual  ADT named “Iterator”.</p>
+    <ul>
+  <li>
+  <p>Instead, we typically have a lot of different ADTs, all of which  share the common <span class="emph">pattern</span> of supporting an  operator <code>++</code> to move forward, an operator <code>*</code> for fetching a value at the position, etc.</p>
+    </li>
+  <li>
+    <p>Each of these iterator ADTs is related to some kind of collection of data. </p>
+    
+    <ul>
+      <li>These collections have nothing to do with one another except that they share the common idea of supplying <code>begin()</code> and <code>end()</code> functions to provide the beginning and ending position within that collection.</li>
+    </ul>
+  </li>
+</ul><p/>
+    <hr/><p><strong>Realizing a Design Pattern</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="iteratorPattern.png" style="float: left; max-width: 60%;"/></p>
+    <ul>
+  <li>
+  <p><span class="type">Iterator</span> and <span class="type">Collection</span> are general patterns for interfaces.</p>
+    </li>
+  <li>
+    <p>We will have many actual classes  that are unrelated to one another but  that <span class="firstterm">implement</span> or <span class="firstterm">realize</span> those  patterns.</p>
+    
+    <ul>
+      <li>Such classes are called <span class="firstterm">concrete</span> realizations of the general patterns.</li>
+      <li>It’s these concrete classes that our application actually works with.  </li>
+    </ul>
+  </li>
+</ul><a id="adtsascontracts"/><h1 id="adts-as-contracts">3 ADTs as contracts</h1><hr/><p><strong>ADTs as contracts</strong></p>
+    <p>An ADT represents a <a href="#adtContract">contract</a> between the ADT developer and the users  (application programmers).</p>
+    <blockquote>
+  <p><strong>The Contract</strong></p>
+    
+  <ul>
+    <li>
+    <p>Application writers (the “users” of the ADT) are expected to alter/examine values of this type only  via the operations and members provided.</p>
+    </li>
+    <li>
+    <p>The creator of the ADT promises to leave the operation  specifications unchanged.</p>
+    </li>
+    <li>
+    <p>The creator of the ADT is allowed to change the code of the  operations at any time, as long as it continues to satisfy the  specifications.</p>
+    </li>
+    <li>
+    <p>The creator of the ADT is also allowed to change the data  structure actually used to implement the type.</p>
+    </li>
+  </ul>
+</blockquote><hr/><p><strong>Why the Contract</strong></p>
+    <p>What do we gain by holding ourselves to this contract?</p>
+    <ul>
+  <li>Application programmers can be designing and even implementing  the application before the details of the ADT implementation have  been worked out. This helps in
+    <ul>
+      <li>top-down design</li>
+      <li>development by teams</li>
+    </ul>
+  </li>
+  <li>The ADT implementors knows exactly what they must provide and  what they are allowed to change.</li>
+  <li>ADTs designed in this manner are often re-usable. By reusing  code, we save time in
+    <ul>
+      <li>implementation</li>
+      <li>debugging</li>
+    </ul>
+  </li>
+  <li>We gain the flexibility to try/substitute different data  structures to actually implement the ADT,  <span class="emph">without needing to alter the application code.</span></li>
+  <li>By encouraging modularity, application code becomes more  readable.</li>
+</ul><a id="informationhiding"/><h2 id="information-hiding">3.1 Information Hiding</h2><hr/><p><strong>Information Hiding</strong></p>
+    <p>Every design can be viewed as a collection of “design  decisions”.</p>
+    <ul>
+  <li>
+  <p>David Parnas formulated the principle: “Every module  [procedure] should be designed so as to hide one design decision  from the rest of the program.”</p>
+    </li>
+  <li>
+  <p>He argued that such information hiding made future  changes more economical.</p>
+    </li>
+</ul><hr/><p><strong>Encapsulation</strong></p>
+    <p>Although ADTs can be designed without language support, they rely  on programmers’ self-discipline for enforcement of information  hiding.</p>
+    <p><span class="firstterm">Encapsulation</span> is the enforcement of  information hiding by programming language constructs. </p>
+    <a id="adtimplementations"/><h1 id="adt-implementations">4 ADT Implementations</h1><hr/><p><strong>ADT Implementations</strong></p>
+    <p>An <a href="#adtimpl">ADT</a> is <span class="firstterm">implemented</span> by supplying</p>
+    <ul>
+  <li>
+  <p>a <span class="emph">data structure</span> for the type  name.</p>
+    </li>
+  <li>
+  <p>coded <span class="emph">algorithms</span> for the  operations.</p>
+    </li>
+</ul><p>We sometimes refer to the ADT itself as the <span class="firstterm">ADT  specification</span> or the <span class="firstterm">ADT interface</span>, to  distinguish it from the code of the <span class="firstterm">ADT  implementation</span>.</p>
+    <p>In C++, implementation is generally done using a C++  <code>class</code>. </p>
+    <ul>
+  <li>Uses public/private to enforce the ADT contract</li>
+</ul><h2 id="examples">4.1 Examples</h2><a id="calendardayimplementations"/><h2 id="calendar-day-implementations">4.2 Calendar Day Implementations</h2><p>As ADT designer, I might consider two possible data structures:</p>
+    <ul>
+  <li>store the month, day, &amp; year as integers:</li>
+</ul><div class="details"><span class="summary"><a href="v1-day.h" target="listing">v1-day.h</a></span> <input id="but_details_d6e799" onclick="toggleDisplay('_details_d6e799')" type="button" value="+"/><div class="detailPart" id="_details_d6e799"><pre><code id="_details_d6e799_code">class Day
+{
+   /**
+      Represents a day with a given year, month, and day
+      of the Gregorian calendar. The Gregorian calendar
+      replaced the Julian calendar beginning on
+      October 15, 1582
+   */
+
+public:
+
+  Day(int aYear, int aMonth, int aDate);
+
+
+   /**
+      Returns the year of this day
+      @return the year
+   */
+  int getYear() const;
+
+
+  /**
+     Returns the month of this day
+     @return the month
+  */
+  int getMonth() const;
+
+  /**
+     Returns the day of the month of this day
+     @return the day of the month
+  */
+  int getDate() const;
+
+
+  /**
+     Returns a day that is a certain number of days away from
+     this day
+     @param n the number of days, can be negative
+     @return a day that is n days away from this one
+  */
+  Day addDays(int n) const;
+
+
+  /**
+     Returns the number of days between this day and another
+     day
+     @param other the other day
+     @return the number of days that this day is away from 
+     the other (&gt;0 if this day comes later)
+  */
+  int daysFrom(Day other) const;
+
+
+  enum Months {JANUARY = 1,
+	       FEBRUARY = 2,
+	       MARCH = 3,
+	       APRIL = 4,
+	       MAY = 5,
+	       JUNE = 6,
+	       JULY = 7,
+	       AUGUST = 8,
+	       SEPTEMBER = 9,
+	       OCTOBER = 10,
+	       NOVEMBER = 11,
+	       DECEMBER = 12};
+
+private:
+
+  /**
+     Compares this day with another day.
+     @param other the other day
+     @return a positive number if this day comes after the
+     other day, a negative number if this day comes before
+     the other day, and zero if the days are the same
+  */
+  int compareTo(Day other) const;
+
+  
+  /**
+     Computes the next day.
+     @return the day following this day
+  */
+  Day nextDay() const;
+
+  /**
+     Computes the previous day.
+     @return the day preceding this day
+  */
+  Day previousDay() const;
+
+  /**
+     Gets the days in a given month
+     @param y the year
+     @param m the month
+     @return the last day in the given month
+   */
+  static int daysPerMonth(int y, int m);
+
+  /**
+     Tests if a year is a leap year
+     @param y the year
+     @return true if y is a leap year
+  */
+  static bool isLeapYear(int y);
+  
+  int year;
+  int month;
+  int date;
+
+  static const int DAYS_PER_MONTH [12];
+  // = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+  static const int GREGORIAN_START_YEAR = 1582;
+  static const int GREGORIAN_START_MONTH = 10;
+  static const int GREGORIAN_START_DAY = 15;
+  static const int JULIAN_END_DAY = 4;
+  
+};
+
+
+
+
+
+</code></pre></div></div><div class="details"><span class="summary"><a href="v1-day.cpp" target="listing">v1-day.cpp</a></span> <input id="but_details_d6e801" onclick="toggleDisplay('_details_d6e801')" type="button" value="+"/><div class="detailPart" id="_details_d6e801"><pre><code id="_details_d6e801_code">/**
+   Day class
+
+   copyright Steven J Zeil, 2003, based upon
+     Day.java from Cay Horstmann's "Object-Oriented Design &amp; Patterns"
+**/
+
+#include "day.h"
+
+using namespace std;
+
+
+
+ const int Day::DAYS_PER_MONTH [12]
+  = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+
+
+
+/**
+   Constructs a day with a given year, month, and day
+   of the Julian/Gregorian calendar. The Julian calendar
+   is used for all days before October 15, 1582
+   @param aYear a year != 0
+   @param aMonth a month between 1 and 12
+   @param aDate a date between 1 and 31
+*/
+
+
+Day::Day(int aYear, int aMonth, int aDate)
+{
+  year = aYear;
+  month = aMonth;
+  date = aDate;
+}
+
+/**
+   Returns the year of this day
+   @return the year
+*/
+int Day::getYear() const
+{
+  return year;
+}
+
+/**
+   Returns the month of this day
+   @return the month
+*/
+int Day::getMonth() const
+{
+  return month;
+}
+
+/**
+   Returns the day of the month of this day
+   @return the day of the month
+*/
+int Day::getDate() const
+{
+  return date;
+}
+
+/**
+   Returns a day that is a certain number of days away from
+   this day
+   @param n the number of days, can be negative
+   @return a day that is n days away from this one
+*/
+Day Day::addDays(int n) const
+{
+  Day result = *this;
+  while (n &gt; 0)
+    {
+      result = result.nextDay();
+      n--;
+    }
+  while (n &lt; 0)
+    {
+      result = result.previousDay();
+      n++;
+    }
+  return result;
+}
+
+/**
+   Returns the number of days between this day and another
+   day
+   @param other the other day
+   @return the number of days that this day is away from 
+   the other (&gt;0 if this day comes later)
+*/
+int Day::daysFrom(Day other) const
+{
+  int n = 0;
+  Day d = *this;
+  while (d.compareTo(other) &gt; 0)
+    {
+      d = d.previousDay();
+      n++;
+    }
+  while (d.compareTo(other) &lt; 0)
+    {
+      d = d.nextDay();
+      n--;
+    }
+  return n;
+}
+
+
+/**
+   Compares this day with another day.
+   @param other the other day
+   @return a positive number if this day comes after the
+   other day, a negative number if this day comes before
+   the other day, and zero if the days are the same
+*/
+int Day::compareTo(Day other) const
+{
+  if (year &gt; other.year) return 1;
+  if (year &lt; other.year) return -1;
+  if (month &gt; other.month) return 1;
+  if (month &lt; other.month) return -1;
+  return date - other.date;
+}
+
+/**
+   Computes the next day.
+   @return the day following this day
+*/
+Day Day::nextDay() const
+{
+  int y = year;
+  int m = month;
+  int d = date;
+  
+  if (y == GREGORIAN_START_YEAR
+      &amp;&amp; m == GREGORIAN_START_MONTH
+      &amp;&amp; d == JULIAN_END_DAY)
+    d = GREGORIAN_START_DAY;
+  else if (d &lt; daysPerMonth(y, m))
+    d++;
+  else
+    {
+      d = 1;
+      m++;
+      if (m &gt; DECEMBER) 
+	{ 
+	  m = JANUARY; 
+	  y++; 
+	  if (y == 0) y++;
+	}
+    }
+  return Day(y, m, d);
+}
+
+/**
+   Computes the previous day.
+   @return the day preceding this day
+*/
+Day Day::previousDay() const
+{
+  int y = year;
+  int m = month;
+  int d = date;
+  
+  if (y == GREGORIAN_START_YEAR
+      &amp;&amp; m == GREGORIAN_START_MONTH
+      &amp;&amp; d == GREGORIAN_START_DAY)
+    d = JULIAN_END_DAY;
+  else if (d &gt; 1)
+    d--;
+  else
+    {	
+      m--;
+      if (m &lt; JANUARY) 
+	{             
+	  m = DECEMBER; 
+	  y--; 
+	  if (y == 0) y--;
+	}
+      d = daysPerMonth(y, m);
+    }
+  return Day(y, m, d);
+}
+
+/**
+   Gets the days in a given month
+   @param y the year
+   @param m the month
+   @return the last day in the given month
+*/
+int Day::daysPerMonth(int y, int m)
+{
+  int days = DAYS_PER_MONTH[m - 1];
+  if (m == FEBRUARY &amp;&amp; isLeapYear(y)) 
+    days++;
+  return days;
+}
+
+/**
+   Tests if a year is a leap year
+   @param y the year
+   @return true if y is a leap year
+*/
+bool Day::isLeapYear(int y)
+{
+  if (y % 4 != 0) return false;
+  if (y &lt; GREGORIAN_START_YEAR) return true;
+  return (y % 100 != 0) || (y % 400 == 0);
+}
+
+
+
+
+
+
+</code></pre></div></div><ul>
+  <li>store a single integer, indicating # of days since some fixed date</li>
+</ul><div class="details"><span class="summary"><a href="v2-day.h" target="listing">v2-day.h</a></span> <input id="but_details_d6e807" onclick="toggleDisplay('_details_d6e807')" type="button" value="+"/><div class="detailPart" id="_details_d6e807"><pre><code id="_details_d6e807_code">/**
+   Day class
+
+   copyright Steven J Zeil, 2003, based upon
+     Day.java from Cay Horstmann's "Object-Oriented Design &amp; Patterns"
+**/
+
+class Day
+{
+   /**
+      Constructs a day with a given year, month, and day
+      of the Julian/Gregorian calendar. The Julian calendar
+      is used for all days before October 15, 1582
+      @param aYear a year != 0
+      @param aMonth a month between 1 and 12
+      @param aDate a date between 1 and 31
+   */
+
+public:
+
+  Day(int aYear, int aMonth, int aDate);
+
+
+   /**
+      Returns the year of this day
+      @return the year
+   */
+  int getYear() const;
+
+
+  /**
+     Returns the month of this day
+     @return the month
+  */
+  int getMonth() const;
+
+  /**
+     Returns the day of the month of this day
+     @return the day of the month
+  */
+  int getDate() const;
+
+
+  /**
+     Returns a day that is a certain number of days away from
+     this day
+     @param n the number of days, can be negative
+     @return a day that is n days away from this one
+  */
+  Day addDays(int n) const;
+
+
+  /**
+     Returns the number of days between this day and another
+     day
+     @param other the other day
+     @return the number of days that this day is away from 
+     the other (&gt;0 if this day comes later)
+  */
+  int daysFrom(Day other) const;
+
+
+  enum Months {JANUARY = 1,
+	       FEBRUARY = 2,
+	       MARCH = 3,
+	       APRIL = 4,
+	       MAY = 5,
+	       JUNE = 6,
+	       JULY = 7,
+	       AUGUST = 8,
+	       SEPTEMBER = 9,
+	       OCTOBER = 10,
+	       NOVEMBER = 11,
+	       DECEMBER = 12};
+
+private:
+
+  /**
+     Computes the Julian day number of the given day.
+     @param year a year
+     @param month a month
+     @param date a date
+     @return The Julian day number that begins at noon of 
+     the given day
+     Positive year signifies CE, negative year BCE. 
+     Remember that the year after 1 BCE was 1 CE.
+  */
+  static int getJulian(int year, int month, int date);
+
+
+  struct CalDate {
+    int year;
+    int month;
+    int date;
+  };
+
+  /**
+     Converts a Julian day number to a calendar date.
+     
+     @param j  the Julian day number
+     @return a structure containing the year, month,
+       and day of the month.
+  */
+  static CalDate fromJulian(int j);
+
+  Day (int julianDate);
+
+  
+  int julian;
+  
+};
+
+
+
+
+
+</code></pre></div></div><div class="details"><span class="summary"><a href="v2-day.cpp" target="listing">v2-day.cpp</a></span> <input id="but_details_d6e809" onclick="toggleDisplay('_details_d6e809')" type="button" value="+"/><div class="detailPart" id="_details_d6e809"><pre><code id="_details_d6e809_code">/**
+   Day class
+
+   copyright Steven J Zeil, 2003, based upon
+     Day.java from Cay Horstmann's "Object-Oriented Design &amp; Patterns"
+**/
+
+#include "day.h"
+
+using namespace std;
+
+
+
+
+/**
+   Constructs a day with a given year, month, and day
+   of the Julian/Gregorian calendar. The Julian calendar
+   is used for all days before October 15, 1582
+   @param aYear a year != 0
+   @param aMonth a month between 1 and 12
+   @param aDate a date between 1 and 31
+*/
+
+
+Day::Day(int aYear, int aMonth, int aDate)
+{
+  julian = toJulian(aYear, aMonth, aDate); 
+}
+
+
+/**
+   Constructs a day with a Julian date.
+   @param julianDate a valid Julian date
+*/
+Day::Day(int julianDate)
+  : julian(julianDate)
+{
+}
+
+
+/**
+   Returns the year of this day
+   @return the year
+*/
+int Day::getYear() const
+{
+  return fromJulian(julian).year;
+}
+
+/**
+   Returns the month of this day
+   @return the month
+*/
+int Day::getMonth() const
+{
+  return fromJulian(julian).month;
+}
+
+/**
+   Returns the day of the month of this day
+   @return the day of the month
+*/
+int Day::getDate() const
+{
+  return fromJulian(julian).date;
+}
+
+/**
+   Returns a day that is a certain number of days away from
+   this day
+   @param n the number of days, can be negative
+   @return a day that is n days away from this one
+*/
+Day Day::addDays(int n) const
+{
+  return Day(julian + n);
+}
+
+/**
+   Returns the number of days between this day and another
+   day
+   @param other the other day
+   @return the number of days that this day is away from 
+   the other (&gt;0 if this day comes later)
+*/
+int Day::daysFrom(Day other) const
+{
+  return julian - other.julian;
+}
+
+
+
+
+
+/**
+   Computes the Julian day number of the given day.
+   @param year a year
+   @param month a month
+   @param date a date
+   @return The Julian day number that begins at noon of 
+   the given day
+   Positive year signifies CE, negative year BCE. 
+   Remember that the year after 1 BCE was 1 CE.
+   
+   A convenient reference point is that May 23, 1968 noon
+   is Julian day number 2440000.
+   
+   Julian day number 0 is a Monday.
+   
+   This algorithm is from Press et al., Numerical Recipes
+   in C, 2nd ed., Cambridge University Press 1992
+*/
+int Day::toJulian(int year, int month, int date)
+{  
+  int jy = year;
+  if (year &lt; 0) jy++;
+  int jm = month;
+  if (month &gt; 2) jm++;
+  else
+    {  
+      jy--;
+      jm += 13;
+    }
+  int jul = (int) (int(365.25 * jy) 
+		   + int(30.6001*jm) + date + 1720995.0);
+  
+  int IGREG = 15 + 31*(10+12*1582);
+  // Gregorian Calendar adopted Oct. 15, 1582
+  
+  if (date + 31 * (month + 12 * year) &gt;= IGREG)
+    // change over to Gregorian calendar
+    {  
+      int ja = (int)(0.01 * jy);
+      jul += 2 - ja + (int)(0.25 * ja);
+    }
+  return jul;
+}
+
+
+/**
+   Converts a Julian day number to a calendar date.
+   
+   This algorithm is from Press et al., Numerical Recipes
+   in C, 2nd ed., Cambridge University Press 1992
+   
+   @param j  the Julian day number
+   @return an array whose 0 entry is the year, 1 the month,
+   and 2 the day of the month.
+*/
+Day::CalDate Day::fromJulian(int j)
+{  
+  int ja = j;
+  
+  int JGREG = 2299161;
+  /* the Julian day number of the adoption of the Gregorian
+     calendar    
+  */   
+  
+  if (j &gt;= JGREG)
+    /* cross-over to Gregorian Calendar produces this 
+       correction
+    */   
+    {  
+      int jalpha = (int)(((float)(j - 1867216) - 0.25) 
+			 / 36524.25);
+      ja += 1 + jalpha - (int)(0.25 * jalpha);
+    }
+  int jb = ja + 1524;
+  int jc = (int)(6680.0 + ((float)(jb-2439870) - 122.1)
+		 /365.25);
+  int jd = (int)(365 * jc + (0.25 * jc));
+  int je = (int)((jb - jd)/30.6001);
+  int date = jb - jd - (int)(30.6001 * je);
+  int month = je - 1;
+  if (month &gt; 12) month -= 12;
+  int year = jc - 4715;
+  if (month &gt; 2) --year;
+  if (year &lt;= 0) --year;
+  return (CalDate) { year, month, date };
+}
+
+
+
+
+
+</code></pre></div></div><p>Each approach has pros and cons.</p>
+    <a id="cellnameimplementation"/><h2 id="cellname-implementation">4.3 CellName Implementation</h2><div class="details"><span class="summary"><a href="cellnameImpl.cpp" target="listing">cellnameImpl.cpp</a></span> <input id="but_details_d6e814" onclick="toggleDisplay('_details_d6e814')" type="button" value="+"/><div class="detailPart" id="_details_d6e814"><pre><code id="_details_d6e814_code">
+class CellName
+{
+public:
+  CellName (std::string column, int row,
+            bool fixTheColumn = false,
+            bool fixTheRow=false);
+  //pre: column.size() &gt; 0 &amp;&amp; all characters in column are alphabetic
+  //     row &gt; 0
+
+  CellName (std::string cellname);
+  //pre: exists j, 0&lt;=j&lt;cellname.size()-1, 
+  //        cellname.substr(0,j) is all alphabetic (except for a
+  //             possible cellname[0]=='$')
+  //        &amp;&amp; cellname.substr(j) is all numeric (except for a
+  //             possible cellname[j]=='$') with at least one non-zero
+  //             digit
+
+  CellName (unsigned columnNumber = 0, unsigned rowNumber = 0,
+            bool fixTheColumn = false,
+            bool fixTheRow=false);
+
+  std::string toString() const;
+  // render the entire CellName as a string
+
+  // Get components in spreadsheet notation
+  std::string getColumn() const;
+  int getRow() const;
+
+  bool isRowFixed() const;
+  bool isColumnFixed() const;
+
+
+  // Get components as integer indices in range 0..
+  int getColumnNumber() const;
+  int getRowNumber() const;
+
+
+  bool operator== (const CellName&amp; r) const
+    {return (columnNumber == r.columnNumber &amp;&amp;
+             rowNumber == r.rowNumber &amp;&amp;
+             theColIsFixed == r.theColIsFixed &amp;&amp;
+             theRowIsFixed == r.theRowIsFixed);}
+
+private:
+  &#x22ee;
+  int rowNumber;
+  bool theRowIsFixed;
+  bool theColIsFixed;
+
+  int CellName::alphaToInt (std::string columnIndicator) const;
+  std::string CellName::intToAlpha (int columnIndex) const;
+
+};
+
+
+inline
+bool CellName::isRowFixed() const {return theRowIsFixed;}
+
+inline
+bool CellName::isColumnFixed() const {return theColIsFixed;}
+
+
+
+#endif
+</code></pre></div></div><p>There are some options here the have not been explored:</p>
+    <ul>
+  <li>Do we want the column info stored as a number, a string, or  both?</li>
+</ul><a id="bookimplementation"/><h2 id="book-implementation">4.4 Book Implementation</h2><p>We can implement Book in <code>book.h</code>:</p>
+    <div class="details"><span class="summary"><a href="book1.h" target="listing">book1.h</a></span> <input id="but_details_d6e828" onclick="toggleDisplay('_details_d6e828')" type="button" value="+"/><div class="detailPart" id="_details_d6e828"><pre><code id="_details_d6e828_code">#ifndef BOOK_H
+#include "author.h"
+#include "publisher.h"
+
+
+class Book {
+public:
+  typedef const Author* AuthorPosition;
+
+  Book (Author);                       // for books with single authors
+  Book (const Author[], int nAuthors); // for books with multiple authors
+
+
+  std::string getTitle() const;
+  void setTitle(std::string theTitle);
+
+  int getNumberOfAuthors() const;
+
+  std::string getISBN() const;
+  void setISBN(std::string id);
+
+  Publisher getPublisher() const;
+  void setPublisher(const Publisher&amp; publ);
+
+  AuthorPosition begin() const;
+  AuthorPosition end() const;
+
+  void addAuthor (AuthorPosition at, const Author&amp; author);
+  void removeAuthor (AuthorPosition at);
+
+private:
+
+  std::string title;
+  int numAuthors;
+  std::string isbn;
+  Publisher publisher;
+
+  static const int MAXAUTHORS = 12;
+  Author authors[MAXAUTHORS];
+
+};
+
+#endif
+</code></pre></div></div><p>and in <code>book.cpp</code>:</p>
+    <div class="details"><span class="summary"><a href="book1.cpp" target="listing">book1.cpp</a></span> <input id="but_details_d6e834" onclick="toggleDisplay('_details_d6e834')" type="button" value="+"/><div class="detailPart" id="_details_d6e834"><pre><code id="_details_d6e834_code">#include "book1.h"
+
+  // for books with single authors
+Book::Book (Author a)
+{
+  numAuthors = 1;
+  authors[0] = a;
+}
+
+// for books with multiple authors
+Book::Book (const Author au[], int nAuthors)
+{
+  numAuthors = nAuthors;
+  for (int i = 0; i &lt; nAuthors; ++i)
+    {
+      authors[i] = au[i];
+    }
+}
+
+std::string Book::getTitle() const
+{
+  return title;
+}
+
+void Book::setTitle(std::string theTitle)
+{
+  title = theTitle;
+}
+
+int Book::getNumberOfAuthors() const
+{
+  return numAuthors;
+}
+
+std::string Book::getISBN() const
+{
+  return isbn;
+}
+
+void Book::setISBN(std::string id)
+{
+  isbn = id;
+}
+
+Publisher Book::getPublisher() const
+{
+  return publisher;
+}
+
+void Book::setPublisher(const Publisher&amp; publ)
+{
+  publisher = publ;
+}
+
+Book::AuthorPosition Book::begin() const
+{
+  return authors;
+}
+
+Book::AuthorPosition Book::end() const
+{
+  return authors+numAuthors;
+}
+
+
+void Book::addAuthor (Book::AuthorPosition at, const Author&amp; author)
+{
+  int i = numAuthors;
+  int atk = at - authors;
+  while (i &gt;= atk) 
+    {
+      authors[i+1] = authors[i];
+      i--;
+    }
+  authors[atk] = author;
+  ++numAuthors;
+}
+
+
+void Book::removeAuthor (Book::AuthorPosition at)
+{
+  int atk = at - authors;
+  while (atk + 1 &lt; numAuthors)
+    {
+      authors[atk] = authors[atk + 1];
+      ++atk;
+    }
+  --numAuthors;
+}
+
+
+</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20ADTs"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

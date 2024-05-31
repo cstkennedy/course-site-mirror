@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Example: Class Diagrams (Domain Model)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Class%20Diagrams%20%28Domain%20Model%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Example: Class Diagrams (Domain Model)</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Feb 21, 2019</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#continuing-with-our-domain-model">1 Continuing with our Domain Model</a></div><div class="toc-h1"><a href="#what-isnt-captured-in-our-crc-cards-">2 What Isn’t Captured in Our CRC Cards?</a></div><div class="toc-h2"><a href="#different-kinds-of-assessment">2.1 Different Kinds of Assessment</a></div><div class="toc-h2"><a href="#different-kinds-of-question">2.2 Different Kinds of Question</a></div><div class="toc-h2"><a href="#documents-involved-in-grading">2.3 Documents Involved in Grading</a></div></div><p><strong>Recording</strong></p>
+    <p>These slides accompany a recorded video: <a href="https://www.youtube.com/watch?v=SYCypgmEK8I">Play Video</a></p>
+    <a id="continuingwithourdomainmodel"/><h1 id="continuing-with-our-domain-model">1 Continuing with our Domain Model</h1><p>First, a quick recap:</p>
+    <hr/><p><strong>Problem Statement</strong></p>
+    <p>ODU offers a number of courses via the internet. A common  requirement among these courses is for a system of online assessment. An  assessment is any form of graded question-and-answer activity. Examples  include exams, quizzes, exercises, and self-assessments. In preparation  for automating such a system, our group has undertaken a study of  assessment techniques in traditional classrooms.</p>
+    <p>An assessment can contain a number of questions. Questions come in  many forms, including true/false, single-choice from among multiple  alternatives, multiple choices, fill-in-the-blank, and essay. There may be  other forms as well.</p>
+    <p>Students take assessments that are administered by instructors. The  students’ responses to each question are collected by the instructor, who  grades them by comparison to a rubric for each question. The instructor  may also elect to provide feedback (written comments), particularly about  incorrect responses.</p>
+    <p>A total score for the assessment is computed by the instructor. If  this is a self-assessment, the score is for informational purposes only.  For other kinds of assessments, the instructor records the score in  his/her grade book.</p>
+    <p>Information is returned to the student about their performance. At a  minimum, the student would learn of their score and any  instructor-provided feedback. Depending upon the instructor, students may  also receive the questions, a copy of their own responses, and the  instructor’s correct answer.</p>
+    <a id="whatisntcapturedinourcrccards"/><h1 id="what-isnt-captured-in-our-crc-cards-">2 What Isn’t Captured in Our CRC Cards?</h1><p>Let’s look for things that we learned but that the CRC cards don’t really capture.</p>
+    <a id="differentkindsofassessment"/><h2 id="different-kinds-of-assessment">2.1 Different Kinds of Assessment</h2><blockquote>
+  <p>ODU offers a number of courses via the internet. A common  requirement among these courses is for a system of online assessment.  <strong>An assessment is any form of graded question-and-answer  activity. Examples include exams, quizzes, exercises, and  self-assessments</strong>. In preparation for automating such a  system, our group has undertaken a study of assessment techniques in  traditional classrooms.</p>
+    
+</blockquote><p>Suggests a generalization relationship.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="assessmentGen.png" style="max-width: 80%;"/></div>
+    </p>
+    <a id="differentkindsofquestion"/><h2 id="different-kinds-of-question">2.2 Different Kinds of Question</h2><blockquote>
+  <p>An assessment can contain a number of questions.  <strong>Questions come in many forms, including true/false,  single-choice from among multiple alternatives, multiple choices,  fill-in-the-blank, and essay.</strong> There may be other forms as  well.</p>
+    
+</blockquote><p>Suggests another generalization relationship.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="questionGen.png" style="max-width: 70%;"/></div>
+    </p>
+    <a id="documentsinvolvedingrading"/><h2 id="documents-involved-in-grading">2.3 Documents Involved in Grading</h2><blockquote>
+  <p>Students take assessments that are administered by instructors.  The students’ responses to each question are collected by the  instructor, who grades them by comparison to a rubric for each  question. The instructor may also elect to provide feedback (written  comments), particularly about incorrect responses.</p>
+    
+</blockquote><p>One thing not well captured in our CRC cards is the relation among  the documents and the items that make up each document.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="gradingDocuments.png" style="max-width: 80%;"/></div>
+    </p>
+    <hr/><p><strong>Documents Involved in Grading (2)</strong></p>
+    <p>Or, we could even say a little more explicitly how student  responses are related to assessments.</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="gradingDocuments2.png" style="max-width: 80%;"/></div>
+    </p>
+    <p>This diagram, on the other hand, captures the essential parallelism in the document structures.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Example%3A%20Class%20Diagrams%20%28Domain%20Model%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Web Analysis - A Little More than Pseudocode</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20A%20Little%20More%20than%20Pseudocode"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Web Analysis - A Little More than Pseudocode</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#websitebuilder-htmldocumentbuilder">2 WebsiteBuilder &amp; HTMLDocumentBuilder</a></div><div class="toc-h2"><a href="#websitebuilder">2.1 WebsiteBuilder</a></div><div class="toc-h2"><a href="#htmldocumentbuilder">2.2 HTMLDocumentBuilder</a></div><div class="toc-h2"><a href="#resourcebuilder-">2.3 ResourceBuilder?</a></div><div class="toc-h1"><a href="#reportmanager">3 ReportManager</a></div></div><h1 id="overview">1 Overview</h1><p>Let us start with the <code>main</code> function. We know from the rules of <em>Top-Down Design</em> that the</p>
+    <blockquote>
+  <p><em>main function should do no work</em></p>
+    
+</blockquote><p>However, there is a bit of a corollary…</p>
+    <blockquote>
+  <p><em>…other than calling functions and maintaining a few variables…</em></p>
+    
+</blockquote><p>And a bit more…</p>
+    <blockquote>
+  <p><em>and maybe some basic command line argument validation</em></p>
+    
+</blockquote><pre><code class="java">public class Driver
+{
+    public static void main(String[] args)
+    {
+        // Handle user arguments
+        String websitePath = args[0];
+
+        // Grab the remaining arguments using a Java Stream
+        // (for some functional style programming)
+        List&lt;String&gt; urls = Arrays.stream(args)
+            .skip(1)
+            .collect()
+            .toList();
+
+        Website site = new WebsiteBuilder()
+            .withPath(websitePath)
+            .withURLs(urls)
+            .build();
+
+        ReportManager manager = new ReportManager();
+        manager.setSourceData(site);
+
+        // We want to control when this happens... since time does not pause.
+        manager.determineBaseFilename();
+
+        // Write the reports before writing the filenames.
+        // If something goes wrong... we do not want to
+        // output the filename for a report that was not generated
+        manager.writeAll();
+
+        BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(System.out)
+        );
+        manager.writeReportNames(writer);
+    }
+}
+</code></pre><p>Did you notice how our design takes care of the main function? Of course… there is some exception handling left to add. I will leave that as an exercise to the reader (you and your team).</p>
+    <a id="websitebuilderhtmldocumentbuilder"/><h1 id="websitebuilder-htmldocumentbuilder">2 WebsiteBuilder &amp; HTMLDocumentBuilder</h1><p>There is quite a bit in <code>WebsiteBuilder</code> and <code>HTMLDocumentBuilder</code>. However, our focus is on the extraction logic. You will find a few new helper methods (and maybe utility functions/classes).</p>
+    <h2 id="websitebuilder">2.1 WebsiteBuilder</h2><pre><code class="java">public class WebsiteBuilder
+{
+    private Path path;
+    private List&lt;URL&gt; urls;
+
+    public WebsiteBuilder()
+    {
+        //...
+    }
+
+    //...
+    // Implement the various "with" methods
+    //...
+
+    //...
+    // Implement walkDirectory
+    //...
+
+    //...
+    // Implement removeNonHTMLFiles
+    //...
+
+    public Website build()
+        throws /*Various Exceptions*/
+    {
+        List&lt;Path&gt; files = walkDirectory();
+        List&lt;Path&gt; prunedFiles = pruneNonHTMLFiles(files);
+
+
+        List&lt;HTMLDocument&gt; parsedDocuments = new ArrayList&lt;&gt;();
+        for (Path htmlFile : prunedFiles) {
+            BufferedReader buffer = new BufferedReader(/*...htmlFile...*/);
+
+            HTMLDocument doc = new HTMLDocumentBuilder()
+                .withContentFrom(buffer)
+                .withWebsiteBaseDir(this.path)  // needed for path normalization
+                .withWebsiteURLs(this.urls)  // needed for internal/external classification
+                .extractContent()  // exceptions can be thrown by this function
+                .build();
+
+            parsedDocuments.add(doc);
+        }
+
+        Website site = new Website(this.path, this.urls, parsedDocuments);
+
+        return website;
+    }
+
+}
+</code></pre><p>Take note of what the <em>Builder Pattern</em> gives us. It guarantees that when we create a <code>Website</code> object, we already have all the data (particularly <code>HTMLDocument</code> objects) ready to go.</p>
+    <h2 id="htmldocumentbuilder">2.2 HTMLDocumentBuilder</h2><p>To implement <code>HTMLDocumentBuilder</code>, I will assume that <a href="https://github.com/cstkennedy/cs350-examples/tree/master/Office-Hours/OfficeHours-JSoup"><code>SimpleHTMLParser</code></a> is utilized for all HTML tag extraction operations.</p>
+    <pre><code class="java">public class HTMLDocumentBuilder
+{
+    private List&lt;Resource&gt; anchors;
+    private List&lt;Resource&gt; images;
+    private List&lt;Resource&gt; scripts;
+    private List&lt;Resource&gt; stylesheets;
+
+    private List&lt;URL&gt; baseUrls;
+    private Path baseDirectory;
+
+    private BufferedReader readBuffer;
+
+    public HTMLDocumentBuilder()
+    {
+        this.anchors = new ArrayList&lt;&gt;();
+        this.images = new ArrayList&lt;&gt;();
+        this.scripts = new ArrayList&lt;&gt;();
+        this.stylesheets = new ArrayList&lt;&gt;();
+
+        //...
+        //...
+        //...
+    }
+
+    //...
+    // Implement withContentFrom (both variants)
+    //...
+
+    //...
+    // Implement withBaseDirectory
+    //...
+
+    //...
+    // Implement withBaseURLs
+    //...
+
+    List&lt;Resource&gt; extractAnchors()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("a", "href");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        //...
+
+        this.anchors = &#x22ee;
+
+        return this.anchors;
+    }
+
+    List&lt;Resource&gt; extractImages()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("img", "src");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        //...
+
+        this.images = &#x22ee;
+
+        return this.images;
+    }
+
+    List&lt;Resource&gt; extractScripts()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("script", "src");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        //...
+
+        this.scripts = &#x22ee;
+
+        return this.scripts;
+    }
+
+    List&lt;Resource&gt; extractStyleSheets()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("link", "href");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        //...
+
+        this.stylesheets = &#x22ee;
+
+        return this.stylesheets;
+    }
+
+    public void extractContent()
+        throws IOException, FileNotFoundException
+    {
+        this.extractAnchors();
+        this.extractImages();
+        this.extractScripts();
+        this.extractStyleSheets();
+    }
+
+    //...
+    // Implement build
+    //...
+</code></pre><p>The various <code>extract</code> methods are similar to each other. Barring the <em>intrapage</em> classification for anchors and the different tag attribute combinations… the four functions implement the same foundational logic.</p>
+    <p>Let us look at <code>extractImages</code> again.</p>
+    <pre><code class="java">    List&lt;Resource&gt; extractImages()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("img", "src");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        //...
+
+        this.images = &#x22ee;
+
+        return this.images;
+    }
+</code></pre><p>We need logic to determine if the URI is</p>
+    <ol>
+  <li>a <code>Path</code> or a <code>URL</code></li>
+  <li>internal or external</li>
+</ol><p>This would also be the time to think about computing file size, considering path/URL normalization, and handling boundary checks for relative paths.</p>
+    <p>Let us start by adding a little more detail to <code>extractImages</code>…</p>
+    <pre><code class="java">    List&lt;Resource&gt; extractImages()
+        throws IOException, FileNotFoundException
+    {
+        SimpleHTMLParser parser = new SimpleHTMLParser("img", "src");
+        List&lt;String&gt; extractedStrings = parser.extractAllURIs(this.readBuffer);
+
+        // The URIs (URLs and Paths) are currently in string form.
+        // As part of the analysis, they need to be converted to Resource objects
+
+        for (String uriAsString : extractedStrings) {
+            ResourceKind type = ResourceKind.IMAGE; 
+
+            Locality location = this.determineLocality(uriAsString, this.baseSiteURLs);
+
+            Resource image = new Image();
+
+            // Setting the ResourceKind should be handled automatically by
+            // the Image Constructors
+            image.setKind(type);
+            image.setLocation(location);
+
+            // We know that the only two cases are "internal" and "external"
+            if (location == Locality.EXTERNAL) {
+                image.setURL(/*converted uriAsString*/);
+                image.setPath(null);
+            }
+            else {
+                image.setURL(null);
+
+                String pathAsString = this.convertURLToPath(uriAsString, this.baseSiteURLs);
+                image.setPath(/*converted pathAsString*/);
+
+                long fileSizeInKiB = this.determineFileSize(uriAsString);
+                image.setSize(fileSizeInKiB);
+            }
+            this.images.add(image);
+        }
+
+        return this.images;
+    }
+</code></pre><p>There is quite a bit happening here. We introduced:</p>
+    <ul>
+  <li><code>determineFileSize</code></li>
+  <li><code>determineLocality</code></li>
+  <li><code>convertURLToPath</code></li>
+  <li>various <code>Resource</code> setters</li>
+</ul><p>Since this is <em>Java</em> and not Rust… I would probably introduce a <code>ResourceBuilder</code> (with a little <code>ResourceFactory</code> logic).</p>
+    <p>A lot of my design takes inspiration from functional programmming (specifically the notion of pure functions). You can see a lot of that with the design we have discussed, e.g., differing creation of an object until we have every piece of data <strong>and</strong> have handled all exceptions.</p>
+    <p>Now… the <code>Resource</code> setters are not too interesting. Note how for:</p>
+    <ul>
+  <li>internal images <code>setURL</code> uses <code>null</code> as the argument</li>
+  <li>external images <code>setPath</code> uses <code>null</code> as the argument</li>
+</ul><p>If the image is internal… we only care about the path. The reverse is true for external images (where the notion of a Path does not make sense).</p>
+    <p>The three new functions (methods in this case)</p>
+    <ul>
+  <li><code>determineFileSize</code></li>
+  <li><code>determineLocality</code></li>
+  <li><code>convertURLToPath</code></li>
+</ul><p>should really (in my opinion) be part of a <code>ResourceBuilder</code> class.</p>
+    <a id="resourcebuilder"/><h2 id="resourcebuilder-">2.3 ResourceBuilder?</h2><p>Take a moment to revisit the <code>extractImage</code> loop…</p>
+    <p>What would happen if we introduced <code>ResourceBuilder</code>?</p>
+    <pre><code class="java">        for (String uriAsString : extractedStrings) {
+            Resource image = new ResourceBuilder()
+                .withType(ResourceKind.IMAGE)
+                .withURI(/*uriAsString*/)
+                .usingURLContext(this.baseSiteURLs)
+                .usingSiteRootContext(this.baseSiteDirectory)
+                .determineLocality() // uriAsString was already supplied
+                .determineFileSizeIfLocal()
+                .normalizePathAndURL() // baseSiteDirectory was already supplied
+                .build();
+
+            this.images.add(image);
+        }
+</code></pre><p>All the analysis logic for a <code>Resource</code> is now wrapped up in a neat package. I could justify either approach. However, the Builder Pattern does result in more readable (and testable) code.</p>
+    <h1 id="reportmanager">3 ReportManager</h1><p>The <code>ReportManager</code> is primarily a convenience class. It creates all three <code>ReportWriter</code>s, handles passing them the data, and then forwards any <code>Exception</code>s to the calling code (<code>main</code> in our case).</p>
+    <pre><code class="java">public class ReportManager
+{
+    private String baseFilename;
+    private Website site;
+    
+    public ReportManager()
+    {
+        this.baseFilename = null;
+        this.site = null;
+    }
+
+    public setSourceData(Website sourceData)
+    {
+        this.site = sourceData;
+    }
+
+    public void determineBaseFileName()
+    {
+        // Datetime logic...
+
+        this.baseFileName = /*Set based on datetime logic*/;
+    }
+
+    public void writeReportNames(BufferedWriter nameWriter)
+        throws IOException
+    {
+        String reportName = String.format("%s.txt", this.baseFilename);
+        nameWriter.write(reportName);
+
+        reportName = String.format("%s.json", this.baseFilename);
+        nameWriter.write(reportName);
+
+        reportName = String.format("%s.xlsx", this.baseFilename);
+        nameWriter.write(reportName);
+
+        nameWriter.flush();
+    }
+
+    public void writeAll()
+        throws /*Various Exceptions*/
+    {
+        ReportWriter writer = null;
+        
+        writer = new TextReportWriter();
+        writer.setSourceData(this.site);
+        writer.setBaseName(this.baseFilename);
+        writer.write();
+
+        writer = new JSONReportWriter();
+        writer.setSourceData(this.site);
+        writer.setBaseName(this.baseFilename);
+        writer.write();
+
+        writer = new ExcelReportWriter();
+        writer.setSourceData(this.site);
+        writer.setBaseName(this.baseFilename);
+        writer.write();
+    }
+</code></pre><p>I will leave the actual <code>ReportWriter</code> classes up to you.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20A%20Little%20More%20than%20Pseudocode"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

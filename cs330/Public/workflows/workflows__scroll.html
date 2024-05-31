@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Workflows</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Workflows"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Workflows</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#what-happens-in-each-workflow-">1 What Happens In Each Workflow?</a></div><div class="toc-h1"><a href="#iterative-application-of-the-workflows">2 Iterative Application of the Workflows</a></div><div class="toc-h1"><a href="#examples">3 Examples</a></div><div class="toc-h2"><a href="#example-class-discovery">3.1 Example: Class Discovery</a></div><div class="toc-h2"><a href="#example-adt-interface">3.2 Example: ADT Interface</a></div><div class="toc-h2"><a href="#example-test-design">3.3 Example: Test Design</a></div><div class="toc-h2"><a href="#example-adt-implementation">3.4 Example: ADT Implementation</a></div><div class="toc-h2"><a href="#example-training-manuals">3.5 Example: Training Manuals</a></div></div><p>Certain activities seem to occur almost continuously. The  <span class="firstterm">workflows</span> describe the “daily work” of a  software designer. The four workflows are </p>
+    <ul>
+  <li>
+  <p>Analysis</p>
+    </li>
+  <li>
+  <p>Design</p>
+    </li>
+  <li>
+  <p>Implementation</p>
+    </li>
+  <li>
+  <p>Validation</p>
+    </li>
+</ul><a id="whathappensineachworkflow"/><h1 id="what-happens-in-each-workflow-">1 What Happens In Each Workflow?</h1><hr/><p><strong>The Topic of Interest</strong></p>
+    <p>The <span class="firstterm">topic of interest</span> (TOI) is the part of the system that you are working with at the moment.</p>
+    <ul>
+  <li>
+  <p>might be the entire system or a single ADT or even a single function</p>
+    </li>
+  <li>
+  <p>depending upon where you are in the overall process  </p>
+    </li>
+</ul><p>All the workflows have to be viewed in terms of the TOI.</p>
+    <hr/><p><strong>What Happens in Each Workflow?</strong></p>
+    <ul>
+  <li>
+    <p><span class="firstterm">Analysis</span> seeks to describe  <span class="emph">what</span> is (or should be) going on in the topic of  interest.</p>
+    
+    <p>In analysis, we consider the “world” surrounding the TOI and try  to learn how the TOI must interact with that world.</p>
+    
+    <p>The focus of analysis is external, and there is an emphasis on  interfaces.</p>
+    
+  </li>
+  <li>
+    <p><span class="firstterm">Design</span> considers the questions of <span class="emph">how</span> our TOI will accomplish the goals established in the most recent round of analysis.</p>
+    
+    <p>The focus of design spans the external and the internal.</p>
+    
+  </li>
+  <li>
+    <p><span class="firstterm">Implementation</span> is the rendering of the  design decisions into a final form.</p>
+    
+    <p>“Final” in this case refers only to this round of work on the  TOI.</p>
+    
+  </li>
+  <li>
+    <p><span class="firstterm">Validation</span> consists of any activities we  employ to determine whether the implementation is acceptable and  whether it is time to move on to a different TOI.</p>
+    
+    <p>Validation can take many forms, including testing, reviews with  other team members or with the domain experts, and checks for  completeness and internal consistency.</p>
+    
+  </li>
+</ul><a id="iterativeapplicationoftheworkflows"/><h1 id="iterative-application-of-the-workflows">2 Iterative Application of the Workflows</h1><ul>
+  <li>
+  <p>At the low level, a continuous cycle through the four workflows</p>
+    </li>
+  <li>
+  <p>The TOI changes, but the daily activities represented by the 4 workflows remains the same.</p>
+    </li>
+</ul><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="spirals.png" style="max-width: 95%;"/></div>
+    </p>
+    <h1 id="examples">3 Examples</h1><a id="exampleclassdiscovery"/><h2 id="example-class-discovery">3.1 Example: Class Discovery</h2><p><strong>Topic of interest:</strong></p>
+    <p>What are the  basic characteristics of a book in the library?</p>
+    <hr/><p><strong>Analysis:</strong></p>
+    <ul>
+  <li>
+  <p>Many of the  characteristics are quite obvious. Books have titles, authors (possibly  multiple), publishers, ISBN numbers, etc.</p>
+    </li>
+  <li>
+    <p>However, someone looking through the library’s card catalog notes  that many of the books are labeled “copy 1”, “copy 2”, etc. </p>
+    
+    <ul>
+      <li>Based on  this observation, the team got into a discussion of whether the term  “book” actually refers to the thing on the shelf or to something more  abstract. Is “War and Peace” a book even if the library does not own a  copy? If the library has two copies, what do we call the common “thing”  that these are copies of?</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Design:</strong></p>
+    <ul>
+  <li>
+  <p>The team proposed that  the term “book” be used for the abstract idea of the thing that an  author writes.</p>
+    </li>
+  <li>
+  <p>The term “copy” or perhaps “bookcopy” will be used for a  physical copy of a book. </p>
+    </li>
+  <li>
+  <p>Books have all the attributes previously  described. </p>
+    </li>
+  <li>
+  <p>Book copies have attributes of location, copy number, and, of  course, the book that they are a copy of.</p>
+    </li>
+</ul><hr/><p><strong>Implementation:</strong></p>
+    <p>The team draws a  simple UML class relationship diagram (these diagrams are introduced in  a later lesson) describing the Book, BookCopy, and Author  classes:</p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="bookAndCopy.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Validation:</strong></p>
+    <ul>
+  <li>
+  <p>The team discusses  with a librarian their decision about proper terminology and about the  key attributes.</p>
+    </li>
+  <li>
+  <p>The librarian suggests that the distinction between  “book” and “copy of a book” is technically correct, but often muddled in  common use. </p>
+    </li>
+  <li>
+  <p>The librarian notes that books have other important  attributes, including date of publication and subject area. Finally, the  librarian suggests that the focus on books may be too narrow, as the  library actually houses many different kinds of publications.</p>
+    </li>
+</ul><a id="exampleadtinterface"/><h2 id="example-adt-interface">3.2 Example: ADT Interface</h2><p><strong>Topic of interest:</strong> Developing the  ADT interface for a <code>Book</code>.</p>
+    <hr/><p><strong>Analysis:</strong></p>
+    <p>The developer looks at the previous diagram and notes that each book  can have multiple authors, so the interface must provide some way to  access an unknown number of author objects.</p>
+    <hr/><p><strong>Design:</strong></p>
+    <p>The developer suggests using an iterator for this purpose, knowing this to be a common idiom in C++ for accessing an unknown number of “contained” objects.</p>
+    <hr/><p><strong>Implementation:</strong></p>
+    <p>The developer adds the lines </p>
+    <pre><code class="cpp">typedef ... AuthorIterator;
+</code></pre><p>and </p>
+    <pre><code class="cpp">AuthorIterator begin() const;
+AuthorIterator end() const;
+</code></pre><p>to the class declaration for <code>Book</code>.</p>
+    <hr/><p><strong>Validation:</strong></p>
+    <p>The developer looks at some of the proposed algorithms that will work with books and authors, checking to see if those algorithms could be coded using an iterator style.</p>
+    <p>Satisfied that it will do so, the developer distributes the new class declaration to the rest of the development team for their approval.</p>
+    <a id="exampletestdesign"/><h2 id="example-test-design">3.3 Example: Test Design</h2><p><strong>Topic of interest:</strong></p>
+    <p>Developing a unit test for the Book ADT</p>
+    <hr/><p><strong>Analysis:</strong></p>
+    <p>The tester reviews the required attributes and behaviors of the book class and concludes that it is reasonably self-contained and should be testable using a self-checking test.</p>
+    <hr/><p><strong>Design:</strong></p>
+    <p>The tester examines the Book interface and divides the member  functions into</p>
+    <ul>
+  <li>
+  <p>mutators: functions that change the state of the book</p>
+    </li>
+  <li>
+  <p>accessors: functions that examine/retrieve the state of the Book</p>
+    </li>
+</ul><p>The tester writes a test driver that</p>
+    <ul>
+  <li>applies each mutator to a starting <code>Book</code> value, and
+    <ul>
+      <li>applies each accessor to the changed book and prints the return value</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Implementation:</strong></p>
+    <p>The tester codes the unit test driver, using the team’s chosen test framework.</p>
+    <p><strong>Validation:</strong></p>
+    <p>The tester checks the unit test code against the Book interface to verify that each Book function is being invoked during the test.</p>
+    <a id="exampleadtimplementation"/><h2 id="example-adt-implementation">3.4 Example: ADT Implementation</h2><p><strong>Topic of interest:</strong></p>
+    <p>Implementing the Book ADT</p>
+    <hr/><p><strong>Analysis:</strong></p>
+    <ul>
+  <li>
+  <p>The programmer reviews  the required attributes and behaviors of the book class and concludes  that it is pretty straightforward, except for the question of how to  store the authors.</p>
+    </li>
+  <li>
+    <p>Reviewing the various application algorithms that manipulate books  and authors, the programmer notes that adding and removing authors is  fairly uncommon. </p>
+    
+    <ul>
+      <li>The programmer also notes that there are no instances  of needing “random access” to the authors. The only algorithms that  access the authors will process each author in turn.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Design:</strong></p>
+    <p>The programmer decides that the <code>std::list</code> would provide appropriate performance and would make for a simple implementation as well.</p>
+    <hr/><p><strong>Implementation:</strong></p>
+    <p>The programmer writes the std list into the private section of the <a href="book4.h.html">class declaration</a> and codes the accompanying <a href="book4.cpp.html">function bodies</a>.</p>
+    <hr/><p><strong>Validation:</strong></p>
+    <p>The programmer runs the previously developed unit test on the new  <code>Book</code> implementation.</p>
+    <a id="exampletrainingmanuals"/><h2 id="example-training-manuals">3.5 Example: Training Manuals</h2><p><strong>Topic of interest:</strong></p>
+    <p>Preparing training documents for the new automated check-in system</p>
+    <hr/><p><strong>Analysis:</strong></p>
+    <ul>
+  <li>
+  <p>The author reviews the  (use-cases) scenarios for interactions between library staff, patrons,  and the other library objects relating to check-in (return) of copies.</p>
+    </li>
+  <li>
+  <p>The author makes a list of those that will require explanation to the  library staff.</p>
+    </li>
+</ul><hr/><p><strong>Design:</strong></p>
+    <p>The author decides which scenario variants and interactions are important and common enough to be needed in the initial training, and which can be relegated to reference documentation.</p>
+    <ul>
+  <li>The common and important items are arranged into related groups,  and the author creates an overall outline that encompasses those groups  as chapters/sections of the training manual.</li>
+</ul><hr/><p><strong>Implementation:</strong></p>
+    <p>The author writes the relevant chapters and sections.</p>
+    <hr/><p><strong>Validation:</strong></p>
+    <p>The sections are submitted to one of the system designers to be  checked for accuracy and to one or more domain experts to be checked  for understandability.</p>
+    <p>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Workflows"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

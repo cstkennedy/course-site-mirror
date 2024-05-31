@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Functors - Objects That Act Like Functions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Functors%20-%20Objects%20That%20Act%20Like%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Functors - Objects That Act Like Functions</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#functors-in-java">1 Functors in Java</a></div><div class="toc-h2"><a href="#functors">1.1 Functors</a></div><div class="toc-h2"><a href="#immediate-classes">1.2 Immediate Classes</a></div><div class="toc-h1"><a href="#functors-and-guis">2 Functors and GUIs</a></div><div class="toc-h2"><a href="#java-event-listeners">2.1 Java Event Listeners</a></div><div class="toc-h1"><a href="#functors-in-c-">3 Functors in C++</a></div><div class="toc-h2"><a href="#operator-">3.1 operator()</a></div><div class="toc-h2"><a href="#operator-and-templates">3.2 operator() and templates</a></div></div><a id="functorsinjava"/><h1 id="functors-in-java">1 Functors in Java</h1><hr/><p><strong>Example: Sorting Reprise</strong></p>
+    <ul>
+  <li>
+  <p>We want to provide a general-purpose sorting routine.</p>
+    </li>
+  <li>
+  <p>Previously, we used an interface to put a comparison  function inside the classes to be sorted</p>
+    </li>
+</ul><hr/><p><strong>Things to Sort</strong></p>
+    <pre><code class="java"> class Student implements Comparable&lt;Student&gt;
+ {
+   String name;
+   double gpa;
+     &#x22ee;
+   int compareTo(Student s)
+   {
+     if (gpa &lt; s.gpa)
+       return -1;
+     else if (gpa == s.gpa)
+       return 0;
+     else
+       return 1;
+   }
+ }
+
+</code></pre><ul>
+  <li>What if, in the same program, we want to sort students by <code>name</code>?
+    <ul>
+      <li>We obviously can’t have two functions <span class="function">compareTo</span> in the same <span class="type">Student</span> class.  </li>
+    </ul>
+  </li>
+</ul><h2 id="functors">1.1 Functors</h2><ul>
+  <li>
+  <p>A <span class="firstterm">functor</span> is an object that simulates a  function.</p>
+    </li>
+  <li>
+  <p>Provides an elegant solution to the dual-sorting-order problem</p>
+    </li>
+  <li>
+  <p>The sort routine would expect a functor to compare two  objects</p>
+    </li>
+  <li>
+  <p>The application code would define functor classes that  compare students by name and by gpa.</p>
+    </li>
+</ul><hr/><p><strong>A Comparable Functor Spec.</strong></p>
+    <pre><code class="java"> package java.util;
+ public interface Comparator&lt;T extends object&gt; {
+   public int compare (T left, T right);
+   public boolean equals (Object obj);
+ }
+
+</code></pre><p>Not the same as <span class="type">Comparable</span>: </p>
+    <pre><code class="java"> public
+ interface Comparable&lt;T extends Object&gt; {
+   public boolean comesBefore (T t);
+ }
+</code></pre><ul>
+  <li>
+  <p><span class="type">Comparable</span> is something that a type  <span class="type">T</span> implements from so that an object of that type can  compare <span class="emph">itself</span> to other objects.</p>
+    </li>
+  <li>
+  <p><span class="type">Comparator</span> is something that you construct  instances of so that <span class="emph">application code</span> can compare <span class="emph">pairs</span> of  objects to each other.</p>
+    </li>
+</ul><hr/><p><strong>Comparator versus Comparable</strong></p>
+    <ul>
+  <li>
+    <p><span class="type">Comparable</span> goes “inside” the class being compared</p>
+    
+    <ul>
+      <li>This means that <span class="type">Comparable</span> is most often used  for comparison activities that are “natural” or common to all uses  of a class.</li>
+    </ul>
+  </li>
+  <li>
+    <p><span class="type">Comparator</span> is “outside” the class being compared</p>
+    
+    <ul>
+      <li><span class="type">Comparator</span>s are often more useful for  comparison activities that arise from a  specific <span class="emph">application</span> that  uses the class.  </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Sorting With Comparable</strong></p>
+    <div class="details"><span class="summary"><a href="insertionSortC.java" target="listing">insertionSortC.java</a></span> <input id="but_details_d6e153" onclick="toggleDisplay('_details_d6e153')" type="button" value="+"/><div class="detailPart" id="_details_d6e153"><pre><code id="_details_d6e153_code">  public static void
+      insertionSort (<span class='hli'>Comparable</span>[] array)
+   {
+     for (int i = 1; i &lt; array.length; ++i) {
+        <span class='hli'>Comparable</span> temp = array[i];
+        int p = i;
+        while ((p &gt; 0)
+          &amp;&amp; <span class='hli'>temp.compareTo(array[p-1])</span> &lt; 0) {
+           array[p] = array[p-1];
+           p--;
+        }
+        array[p] = temp;
+     }
+   }
+</code></pre></div></div><hr/><p><strong>Sorting With Functors</strong></p>
+    <div class="details"><span class="summary"><a href="insertionSort.java" target="listing">insertionSort.java</a></span> <input id="but_details_d6e159" onclick="toggleDisplay('_details_d6e159')" type="button" value="+"/><div class="detailPart" id="_details_d6e159"><pre><code id="_details_d6e159_code">   public static &lt;T&gt; void insertionSort
+     (T[] array, <span class='hli'>Comparator&lt;T&gt; compare</span>)
+   {
+     for (int i = 1; i &lt; array.length; ++i) {
+        T temp = array[i];
+        int p = i;
+        while ((i &gt; 0)
+          &amp;&amp; <span class='hli'>compare.compare(temp, array[p-1])</span> &lt; 0) {
+           array[p] = array[p-1];
+           p--;
+        }
+        array[p] = temp;
+     }
+   }
+</code></pre></div></div><hr/><p><strong>The Sorting Application</strong></p>
+    <pre><code class="java"> myListOfStudents = . . .;
+ Sorting.insertionSort(myListOfStudents,
+                       numStudents,
+                       compareByName);
+ printStudentDirectory (myListOfStudents);
+ 
+ Sorting.insertionSort(myListOfStudents,
+                       numStudents,
+                       compareByGPA);
+ printHonorsReport (myListOfStudents);
+</code></pre><ul>
+  <li>Notice how <span class="function">compareByName</span> and <span class="function">compareByGPA</span>  control the sorting order.</li>
+</ul><hr/><p><strong>compareByName</strong></p>
+    <pre><code class="java"> class CompareByName implements Comparator&lt;Student&gt;
+ {
+   public int compare(Student left,
+                      Student right)
+   {
+     return left.name.compareTo(right.name);
+   }
+ }
+</code></pre><hr/><p><strong>Compare By GPA</strong></p>
+    <pre><code class="java"> class CompareByGPA implements Comparator&lt;Student&gt;
+ {
+   public int compare(Student left,
+                      Student right)
+   {
+     if (left.gpa  &lt; right.gpa)
+       return -1;
+     else if (left.gpa  == right.gpa)
+       return 0;
+     else
+       return 1;
+   }
+ }
+</code></pre><hr/><p><strong>Back to the Application</strong></p>
+    <div class="details"><span class="summary"><a href="sortingApp.java" target="listing">sortingApp.java</a></span> <input id="but_details_d6e194" onclick="toggleDisplay('_details_d6e194')" type="button" value="+"/><div class="detailPart" id="_details_d6e194"><pre><code id="_details_d6e194_code"> myListOfStudents = ...;
+ 
+ <span class='hli'>CompareByName compareByName = new CompareByName();</span>
+ Sorting.insertionSort(myListOfStudents,
+      numStudents, <span class='hlii'>compareByName</span>);
+ printStudentDirectory (myListOfStudents);
+ 
+ <span class='hli'>CompareByGPA compareByGPA = new CompareByGPA();</span>
+ Sorting.insertionSort(myListOfStudents,
+      numStudents, <span class='hlii'>compareByGPA</span>);
+ printHonorsReport (myListOfStudents);
+</code></pre></div></div><ul>
+  <li>The application simply <span class="hli">creates</span> the appropriate functor objects and then <span class="hlii">passes</span> them to the sort function.</li>
+</ul><hr/><p><strong>Functors versus Members</strong></p>
+    <ul>
+  <li>
+    <p>The Compare functors are not members of the Student class</p>
+    
+    <ul>
+      <li>
+      <p>do not affect its inheritance hierarchy</p>
+    </li>
+      <li>
+      <p>not really a part of the Student processing</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>but a part of the application algorithm</p>
+    </li>
+</ul><a id="immediateclasses"/><h2 id="immediate-classes">1.2 Immediate Classes</h2><hr/><p><strong>Functors may be Throw-Away</strong></p>
+    <ul>
+  <li>We don’t really need those functors once we have passed them to the sort function
+    <ul>
+      <li>So actually inventing variables to hold them is a bit of a waste</li>
+      <li>Contributes to “namespace pollution”,
+        <ul>
+          <li>falsely suggests to readers that they need to remember a name in case it gets used again later</li>
+          <li>Can also lead to conflicts later in the code if we mistakenly reuse the name for a different purpose</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Replacing Variables by Temporary Values</strong></p>
+    <div class="details"><span class="summary"><a href="sortingApp2.java" target="listing">sortingApp2.java</a></span> <input id="but_details_d6e261" onclick="toggleDisplay('_details_d6e261')" type="button" value="+"/><div class="detailPart" id="_details_d6e261"><pre><code id="_details_d6e261_code">myListOfStudents = ...;
+ 
+ Sorting.insertionSort(myListOfStudents,
+                       numStudents,
+                       <span class='hli'>new CompareByName()</span>);
+ printStudentDirectory (myListOfStudents);
+ 
+ Sorting.insertionSort(myListOfStudents,
+                       numStudents,
+                       <span class='hli'>new CompareByGPA()</span>);
+ printHonorsReport (myListOfStudents);
+</code></pre></div></div><hr/><p><strong>“Immediate” Classes in Java</strong></p>
+    <p>Java even allows us to take that principle a step further.</p>
+    <ul>
+  <li>
+  <p>If we will never use a <span class="emph">class</span> after we have created a single  instance of it, we can write the whole class declaration inside  an algorithm.</p>
+    </li>
+  <li>
+  <p>The syntax: </p>
+    </li>
+</ul><pre><code>    new <i>ClassName</i> (<i>params</i>) { <i>members</i> }
+</code></pre><ul>
+  <li>
+    <p>declares a new, anonymous, subclass of <span class="replaceable">ClassName</span>, in which</p>
+    
+    <ul>
+      <li>certain <span class="replaceable">members</span>s are declared/overridden, and</li>
+    </ul>
+  </li>
+  <li>
+  <p>allocates a single object of this new type</p>
+    </li>
+</ul><hr/><p><strong>Sorting With Immediate Classes</strong></p>
+    <pre><code class="java"> myListOfStudents =  ...;
+ Sorting.insertionSort
+   (myListOfStudents, numStudents,
+     new Comparator&lt;Student&gt;() {
+        public int compare(Student left,
+                           Student right)
+        {
+         return left.name.compareTo(right.name);
+        }
+     });
+ printStudentDirectory (myListOfStudents);
+ 
+ Sorting.insertionSort
+   (myListOfStudents, numStudents,
+     new Comparator&lt;Student&gt;() {
+        public int compare(Student left,
+                           Student right)
+        {
+         if (left.gpa  &lt; right.gpa)
+           return -1;
+         else if (left.gpa  == right.gpa)
+           return 0;
+         else
+           return 1;
+        }
+     });
+ printHonorsReport (myListOfStudents);
+
+</code></pre><hr/><p><strong>Is This Really an Improvement?</strong></p>
+    <ul>
+  <li>
+  <p>Immediate classes can make the code very hard to read.</p>
+    </li>
+  <li>
+  <p>But can improve “locality” by keeping one-shot code blocks closer to the context in which they will actually be employed.  </p>
+    </li>
+</ul><p>Most commonly used in GUI programming, where, as we will</p>
+    <ul>
+  <li>
+    <p>we commonly have many one-shot classes</p>
+    
+    <ul>
+      <li>one or more per button or control in a GUI screen</li>
+    </ul>
+  </li>
+  <li>
+    <p>and each such class provides one member function</p>
+    
+    <ul>
+      <li>which often has only a single line of code in its body</li>
+    </ul>
+  </li>
+</ul><a id="functorsandguis"/><h1 id="functors-and-guis">2 Functors and GUIs</h1><p>Because functors are objects, they can be stored in data structures.</p>
+    <ul>
+  <li>
+  <p>Thus we can have data structures that collect “operations” to be  performed at different times.</p>
+    </li>
+  <li>
+  <p>This idea lies at the heart of the Java GUI model</p>
+    </li>
+</ul><hr/><p><strong>Observing GUI Elements</strong></p>
+    <p>A complete GUI may contain many elements: </p>
+    <ul>
+  <li>
+  <p>windows</p>
+    </li>
+  <li>
+  <p>menu bars and menus</p>
+    </li>
+  <li>
+  <p>buttons, text entry boxes</p>
+    </li>
+  <li>
+  <p>scroll bars, window resize controls, etc</p>
+    </li>
+</ul><hr/><p><strong>GUI Elements &amp; Input Events</strong></p>
+    <p>These elements may be targeted by various input <span class="firstterm">events</span>: </p>
+    <ul>
+  <li>
+  <p>mouse clicks, drags, etc.</p>
+    </li>
+  <li>
+  <p>keys pressed</p>
+    </li>
+  <li>
+  <p>element selected/activated</p>
+    </li>
+</ul><hr/><p><strong>pre-OO Event Handling</strong></p>
+    <p>Input events in C/Windows programming: </p>
+    <pre><code class="cpp"> while (event_available(process_id)) {
+    e = next_event(process_id);
+    switch (e.eventKind) {
+      case MOUSECLICKED:
+        if (e.target == MyButton1)
+           b1Clicked();
+        else if (e.target == MyButton2)
+           b2Clicked();
+        break;
+      case WINDOWCLOSED:
+        &#x22ee;
+</code></pre><hr/><p><strong>pre-OO Event Handling (cont.)</strong></p>
+    <p>Unix/X let programmers register “callback functions” to be invoked  when an event took place: </p>
+    <pre><code class="cpp"> void b1Clicked(Event e) {. . .}
+ myButton1 = new_Button_Widget("Click Me");
+ register (myButton1, b1Clicked);
+</code></pre><ul>
+  <li>
+  <p>No explicit event-handling loop was written by the  programmer.</p>
+    </li>
+  <li>
+  <p>When input event occurs, X calls the registered  callback for that event kind and GUI element</p>
+    </li>
+</ul><hr/><p><strong>OO Event Handling</strong></p>
+    <p>The X model is more elegant and leads to much simpler code.</p>
+    <ul>
+  <li>
+  <p>But unsuitable for languages where functions can’t be passed  as parameters</p>
+    </li>
+  <li>
+  <p>Also hard to pass additional, application-specific  information to the callback function.</p>
+    </li>
+</ul><p>Functors overcome these limitations very nicely.</p>
+    <a id="javaeventlisteners"/><h2 id="java-event-listeners">2.1 Java Event Listeners</h2><ul>
+  <li>
+  <p>Each GUI element is subject to certain kinds of input  events.</p>
+    </li>
+  <li>
+  <p>Each GUI element keeps a list of Listeners to be notified  when an input event occurs. </p>
+    </li>
+  <li>
+  <p>An instance of the Observer pattern</p>
+    </li>
+</ul><p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="observer.png" style="max-width: 50%;"/></div>
+    </p>
+    <hr/><p><strong>Observing Events: Closing a Window</strong></p>
+    <p>As an example of the java approach to listening for events, consider the problem of responding to a window being closed.</p>
+    <ul>
+  <li>
+    <p>This is the Java API for a class that listens for window events:</p>
+    
+    <div class="details"><span class="summary"><a href="WindowListener.java" target="listing">WindowListener.java</a></span> <input id="but_details_d6e480" onclick="toggleDisplay('_details_d6e480')" type="button" value="+"/><div class="detailPart" id="_details_d6e480"><pre><code id="_details_d6e480_code">/*
+ * @(#)WindowListener.java	1.6 96/12/17
+ * 
+ * Copyright (c) 1995, 1996 Sun Microsystems, Inc. All Rights Reserved.
+ * 
+ * This software is the confidential and proprietary information of Sun
+ * Microsystems, Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Sun.
+ * 
+ * SUN MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ * SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE, OR NON-INFRINGEMENT. SUN SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ * THIS SOFTWARE OR ITS DERIVATIVES.
+ * 
+ * CopyrightVersion 1.1_beta
+ * 
+ */
+
+package java.awt.event;
+
+import java.util.EventListener;
+
+/**
+ * The listener interface for receiving window events.
+ *
+ * @version 1.6 12/17/96
+ * @author Carl Quinn
+ */
+public interface WindowListener extends EventListener {
+    /**
+     * Invoked when a window has been opened.
+     */
+    public void windowOpened(WindowEvent e);
+
+    /**
+     * Invoked when a window is in the process of being closed.
+     * The close operation can be overridden at this point.
+     */
+    public void windowClosing(WindowEvent e);
+
+    /**
+     * Invoked when a window has been closed.
+     */
+    public void windowClosed(WindowEvent e);
+
+    /**
+     * Invoked when a window is iconified.
+     */
+    public void windowIconified(WindowEvent e);
+
+    /**
+     * Invoked when a window is de-iconified.
+     */
+    public void windowDeiconified(WindowEvent e);
+
+    /**
+     * Invoked when a window is activated.
+     */
+    public void windowActivated(WindowEvent e);
+
+    /**
+     * Invoked when a window is de-activated.
+     */
+    public void windowDeactivated(WindowEvent e);
+}
+</code></pre></div></div>
+
+  </li>
+  <li>
+    <p>An example of its use, <span class="hli">declaring</span> a listener and  <span class="hlii">registering it</span> as an observer of the window.</p>
+    
+    <div class="details"><span class="summary"><a href="MainWindow0.java" target="listing">MainWindow0.java</a></span> <input id="but_details_d6e495" onclick="toggleDisplay('_details_d6e495')" type="button" value="+"/><div class="detailPart" id="_details_d6e495"><pre><code id="_details_d6e495_code">package SpreadSheetJ.ViewCon;
+
+import SpreadSheetJ.Model.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import java.io.*;
+
+// Thw window used to present the spreadsheet, including menu bar and
+// formula bar.
+
+public class MainWindow extends java.awt.Frame {
+
+    private SSView ssview;
+    private Formula formula;
+    private TextField statusLine;
+    private SpreadSheet sheet;
+    private Clipboard clipboard;
+
+    <span class='hli'>class WindowCloser implements WindowListener
+    {
+      public void windowClosing(WindowEvent e) {
+        System.exit (0);
+      }
+      public void windowOpened(WindowEvent e) {}
+      public void windowActivated(WindowEvent e) {}
+        &#x22ee;
+    }</span>
+
+
+    public MainWindow (SpreadSheet s)
+    {
+        sheet = s;
+        clipboard = new Clipboard();
+          &#x22ee;
+        <span class='hlii'>addWindowListener(new WindowCloser());</span>
+
+        setTitle ("SpreadSheet");
+        buildMenu();
+        pack();
+        show();
+    }
+
+</code></pre></div></div>
+
+    <ul>
+      <li>The same, but using an immediate subclass <div class="details"><span class="summary"><a href="MainWindow1.java" target="listing">MainWindow1.java</a></span> <input id="but_details_d6e502" onclick="toggleDisplay('_details_d6e502')" type="button" value="+"/><div class="detailPart" id="_details_d6e502"><pre><code id="_details_d6e502_code">package SpreadSheetJ.ViewCon;
+
+import SpreadSheetJ.Model.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import java.io.*;
+
+// Thw window used to present the spreadsheet, including menu bar and
+// formula bar.
+
+public class MainWindow extends java.awt.Frame {
+
+    private SSView ssview;
+    private Formula formula;
+    private TextField statusLine;
+    private SpreadSheet sheet;
+    private Clipboard clipboard;
+
+
+    public MainWindow (SpreadSheet s)
+    {
+        sheet = s;
+        clipboard = new Clipboard();
+         //...
+
+        addWindowListener(new WindowListener() {
+           public void windowClosing(WindowEvent e) {
+              System.exit (0);
+             }
+           public void windowOpened(WindowEvent e) {}
+           public void windowActivated(WindowEvent e) {}
+                //... 
+          });
+
+        setTitle ("SpreadSheet");
+        buildMenu();
+        pack();
+        show();
+    }
+
+</code></pre></div></div>
+</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Listeners &amp; Adapters</strong></p>
+    <p>Interfaces with multiple member functions are somewhat awkward here because </p>
+    <ul>
+  <li>
+  <p>you must implement ALL functions in the interface</p>
+    </li>
+  <li>
+  <p>the interface cannot supply a default</p>
+    </li>
+  <li>
+  <p>but for GUIs, a “do-nothing” default would be quite  handy</p>
+    </li>
+</ul><p>“Adapter” Classes provide that default</p>
+    <hr/><p><strong>WindowAdapter</strong></p>
+    <ul>
+  <li>
+    <p>The WindowAdapter class</p>
+    
+    <div class="details"><span class="summary"><a href="WindowAdapter.java" target="listing">WindowAdapter.java</a></span> <input id="but_details_d6e537" onclick="toggleDisplay('_details_d6e537')" type="button" value="+"/><div class="detailPart" id="_details_d6e537"><pre><code id="_details_d6e537_code">/*
+ * @(#)WindowAdapter.java	1.7 97/01/03
+ * 
+ * Copyright (c) 1995, 1996 Sun Microsystems, Inc. All Rights Reserved.
+ * 
+ * This software is the confidential and proprietary information of Sun
+ * Microsystems, Inc. ("Confidential Information").  You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Sun.
+ * 
+ * SUN MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ * SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE, OR NON-INFRINGEMENT. SUN SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ * THIS SOFTWARE OR ITS DERIVATIVES.
+ * 
+ * CopyrightVersion 1.1_beta
+ * 
+ */
+
+package java.awt.event;
+
+/**
+ * The adapter which receives window events.
+ * The methods in this class are empty;  this class is provided as a
+ * convenience for easily creating listeners by extending this class
+ * and overriding only the methods of interest.
+ *
+ * @version 1.7 01/03/97
+ * @author Carl Quinn
+ * @author Amy Fowler
+ */
+public abstract class WindowAdapter implements WindowListener {
+    public void windowOpened(WindowEvent e) {}
+    public void windowClosing(WindowEvent e) {}
+    public void windowClosed(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {}
+}
+</code></pre></div></div>
+
+  </li>
+  <li>
+    <p>An example of its use</p>
+    
+    <div class="details"><span class="summary"><a href="MainWindow2.java" target="listing">MainWindow2.java</a></span> <input id="but_details_d6e545" onclick="toggleDisplay('_details_d6e545')" type="button" value="+"/><div class="detailPart" id="_details_d6e545"><pre><code id="_details_d6e545_code">package SpreadSheetJ.ViewCon;
+
+import SpreadSheetJ.Model.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import java.io.*;
+
+// Thw window used to present the spreadsheet, including menu bar and
+// formula bar.
+
+public class MainWindow extends java.awt.Frame {
+
+    private SSView ssview;
+    private Formula formula;
+    private TextField statusLine;
+    private SpreadSheet sheet;
+    private Clipboard clipboard;
+
+
+    public MainWindow (SpreadSheet s)
+    {
+        sheet = s;
+        clipboard = new Clipboard();
+	  //...
+        <span class='hli'>addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                        System.exit (0);
+                }
+            });</span>
+
+        setTitle ("SpreadSheet");
+        buildMenu();
+        pack();
+        show();
+    }
+
+</code></pre></div></div>
+
+    <ul>
+      <li>Not much different from what we had before, but we no longer need to  explicitly provide empty operations for many events.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Building a Menu</strong></p>
+    <p>As another example of listening for GUI events, consider setting up menus for an application.</p>
+    <ul>
+  <li>
+  <p>A Window may have a MenuBar</p>
+    </li>
+  <li>
+  <p>A MenuBar may have any number of Menus </p>
+    </li>
+  <li>
+  <p>Each Menu may have any number of MenuItems</p>
+    </li>
+</ul><hr/><p><strong>Menu Events</strong></p>
+    <ul>
+  <li>
+    <p>MenuItems receive an ActionEvent when they are selected.</p>
+    
+    <pre><code>&lt;cwm tag='longlisting' file='ActionListener.java'/&gt;Loading code from ActionListener.java&lt;cwm tag='/longlisting'/&gt; 
+</code></pre>
+  </li>
+  <li>
+    <p>An example of building a menu</p>
+    
+    <pre><code>&lt;cwm tag='longlisting' file='buildMenu.java'/&gt;Loading code from buildMenu.java&lt;cwm tag='/longlisting'/&gt;
+</code></pre>
+  </li>
+  <li>
+  <p><span>➀</span> Create a menu bar</p>
+    </li>
+  <li><span>➁</span> Create a menu. Eventually we will have three menus in the bar: “File”, “Edit”, and “Help”</li>
+  <li><span>➂</span> Create a menu item</li>
+  <li><span>➃</span> Add it to the menu</li>
+  <li><span>➄</span> Register a listener that will call a function (<code>loadFile()</code>) when someone selects the menu item.
+    <ul>
+      <li>(No adapter required because ActionListener has  only a single member function)</li>
+    </ul>
+  </li>
+  <li>
+  <p>Steps <span>➂</span> … <span>➄</span> then get repeated over and over until we have all the items we want.</p>
+    </li>
+  <li><span>➅</span> Repeat <span>➁</span> … <span>➄</span> for the Edit and Help menus</li>
+  <li><span>➆</span> Add all the menus to the menu bar</li>
+  <li><span>➇</span> Attach the menu bar to the window</li>
+</ul><a id="functorsinc"/><h1 id="functors-in-c-">3 Functors in C++</h1><p>Do we need functors in a language where we can pass functions as  parameters?</p>
+    <ul>
+  <li>
+  <p>Functors can do things normally reserved to objects</p>
+    </li>
+  <li>
+  <p>maintain state information</p>
+    </li>
+  <li>
+  <p>initialization &amp; finalization</p>
+    </li>
+</ul><hr/><p><strong>Example: Selecting Students by GPA</strong></p>
+    <ul>
+  <li>Old-style: passing functions directly</li>
+</ul><pre><code class="cpp"> typedef bool *Selector(const Student&amp;);
+ 
+ void listSelectedStudents(Student[] students,
+                           int nStudents,
+                           Selector selector)
+ {
+   for (int i = 0; i &lt; nStudents; ++i)
+      if (selector(students[i]))
+         cout &lt;&lt; students[i] &lt;&lt; endl;
+ }
+</code></pre><hr/><p><strong>Application of listSelectedStudents</strong></p>
+    <pre><code class="cpp"> bool selectFailures (const Student&amp; s)
+ {  return s.gpa &lt; 1.0; }
+ 
+ bool selectHighAvg (const Student&amp; s)
+ {  return s.gpa &gt; 3.5; }
+ 
+ cout &lt;&lt; "\fProbation List\n";
+ listSelectedStudents (allStudents, nStudents,
+                       selectFailures);
+ cout &lt;&lt; "\fDean's List\n";
+ listSelectedStudents (allStudents, nStudents,
+                       selectHighAvg);
+</code></pre><hr/><p><strong>Application of listSelectedStudents</strong></p>
+    <ul>
+  <li>New-style (C++11): creating one-shot functions as lambda expressions</li>
+</ul><pre><code class="cpp"> cout &lt;&lt; "\fProbation List\n";
+ listSelectedStudents (allStudents, nStudents,
+      [] (const Student&amp; s) { return s.gpa &lt; 1.0; } );
+ cout &lt;&lt; "\fDean's List\n";
+ listSelectedStudents (allStudents, nStudents,
+      [] (const Student&amp; s) { return s.gpa &gt; 3.5; } );
+</code></pre><ul>
+  <li>Basic syntax – a lambda expression is a function definition  with an implicit return type and <code>[ ]</code> in place of a function name</li>
+</ul><hr/><p><strong>Another Application</strong></p>
+    <p>Suppose we want to be able to determine the range of desired GPA’s  dynamically: </p>
+    <pre><code class="cpp"> cout &lt;&lt; "Low GPA? " &lt;&lt; flush;
+ cin &gt;&gt; lowGPA;
+ cout &lt;&lt; "\nHigh GPA? " &lt;&lt; flush;
+ cin &gt;&gt; highGPA;
+ listSelectedStudents (allStudents, nStudents,
+                       selectRange);
+</code></pre><ul>
+  <li>How can we write <code>selectRange</code>?</li>
+</ul><hr/><p><strong>Using a Function Style</strong></p>
+    <ul>
+  <li>Make lowGPA and highGPA global variables:</li>
+</ul><pre><code class="cpp"> double lowGPA, highGPA;
+ 
+ bool selectRange (const Student&amp; s)
+ {
+   return s.gpa &gt;= lowGPA &amp;&amp;
+          s.gpa &lt;= highGPA;
+ }
+</code></pre><ul>
+  <li>But I really <span class="emph">hate</span> global  variables.</li>
+</ul><hr/><p><strong>Using a Functor Style</strong></p>
+    <div class="details"><span class="summary"><a href="app2.cpp" target="listing">app2.cpp</a></span> <input id="but_details_d6e736" onclick="toggleDisplay('_details_d6e736')" type="button" value="+"/><div class="detailPart" id="_details_d6e736"><pre><code id="_details_d6e736_code"> class StudentSelectors {
+ public:
+    bool test(const Student&amp;) const =0;
+ };
+ 
+ void listSelectedStudents
+       (Student[] students,
+        int nStudents,
+        StudentSelectors selector)
+ {
+   for (int i = 0; i &lt; nStudents; ++i)
+      if (<span class='hli'>selector.test</span>(students[i]))
+         cout &lt;&lt; students[i] &lt;&lt; endl;
+ }
+</code></pre></div></div><hr/><p><strong>Application 1 with Functors</strong></p>
+    <p>We can rewrite the first application with functors: </p>
+    <pre><code class="cpp"> class SelectFailures: public StudentSelectors
+ {
+    bool test (const Student&amp; s) {return s.gpa &lt; 1.0;}
+ };
+ 
+ class SelectHigh: public StudentSelectors
+ {
+    bool test (const Student&amp; s) {return s.gpa &gt; 3.5; }
+ };
+ 
+ cout &lt;&lt; "\fProbation List\n";
+ SelectFailures selectFailures;
+ listSelectedStudents (allStudents, nStudents,
+                       selectFailures);
+ cout &lt;&lt; "\fDean's List\n";
+ listSelectedStudents (allStudents, nStudents,
+                       SelectHigh());
+</code></pre><p>The application code itself is largely unchanged.</p>
+    <hr/><p><strong>Application 2 With Functors</strong></p>
+    <p>The second application is cleaner (no globals) with functors: </p>
+    <pre><code class="cpp"> class SelectRange: public StudentSelectors
+ {
+   double lowGPA, highGPA;
+ public:
+   SelectRange (double low, double high)
+      : lowGPA(low), highGPA(high) { }
+ 
+   bool test (const Student&amp; s) const
+   {
+     return s.gpa &gt;= lowGPA &amp;&amp;
+            s.gpa &lt;= highGPA;
+   }
+ };
+</code></pre><hr/><p><strong>Application 2 With Functors (cont.)</strong></p>
+    <pre><code class="cpp"> {
+   double lowGPA, highGPA;
+   cout &lt;&lt; "Low GPA? " &lt;&lt; flush;
+   cin &gt;&gt; lowGPA;
+   cout &lt;&lt; "\nHigh GPA? " &lt;&lt; flush;
+   cin &gt;&gt; highGPA;
+   listSelectedStudents
+     (allStudents, nStudents,
+      SelectRange(lowGPA, highGPA));
+ }
+</code></pre><hr/><p><strong>Application 2 With Lambdas</strong></p>
+    <ul>
+  <li>Lambdas can “capture” variables from the surrounding code.
+    <ul>
+      <li>Listed inside the <code>[ ]</code></li>
+    </ul>
+  </li>
+</ul><pre><code class="cpp"> {
+   double lowGPA, highGPA;
+   cout &lt;&lt; "Low GPA? " &lt;&lt; flush;
+   cin &gt;&gt; lowGPA;
+   cout &lt;&lt; "\nHigh GPA? " &lt;&lt; flush;
+   cin &gt;&gt; highGPA;
+   listSelectedStudents
+     (allStudents, nStudents,
+	  [lowGPA, highGPA] (const Student&amp; s)
+	  { return s.gpa &gt;= lowGPA &amp;&amp;
+	           s.gpa &lt;= highGPA; } );
+ }
+</code></pre><p><strong>Application 2 With Lambdas (cont.)</strong></p>
+    <ul>
+  <li>If that’s getting too messy, we can save the lambda  in a variable.</li>
+</ul><pre><code class="cpp"> {
+   double lowGPA, highGPA;
+   cout &lt;&lt; "Low GPA? " &lt;&lt; flush;
+   cin &gt;&gt; lowGPA;
+   cout &lt;&lt; "\nHigh GPA? " &lt;&lt; flush;
+   cin &gt;&gt; highGPA;
+   auto selector =
+	  [lowGPA, highGPA] (const Student&amp; s)
+	  { return s.gpa &gt;= lowGPA &amp;&amp;
+	           s.gpa &lt;= highGPA; } );
+   listSelectedStudents
+     (allStudents, nStudents, selector);
+ }
+</code></pre><p><strong>Lambda Expressions versus Functors</strong></p>
+    <p>Lambda expressions are new enough that it’s far from clear if they will supplant functors in typical C++ coding.</p>
+    <a id="operator"/><h2 id="operator-">3.1 operator()</h2><p><strong>Making Functors Pretty</strong></p>
+    <ul>
+  <li>
+  <p>C++ does not have immediate subclasses as in Java</p>
+    </li>
+  <li>
+  <p>But it does offer a special syntax designed to emphasize the  function-like behavior or functor objects.</p>
+    </li>
+</ul><hr/><p><strong>What is f(x)?</strong></p>
+    <p>Suppose you are reading some C++ code and encounter the  expression: <code>f(x)</code></p>
+    <ul>
+  <li>What is it?
+    <ul>
+      <li>
+      <p>Obvious choice: <code>f</code> is a function and we are  calling it with an actual parameter <code>x</code>.</p>
+    </li>
+      <li>
+      <p>Less obvious: <code>f</code> could be a macro and we are calling  it with an actual parameter <code>x</code>.</p>
+    </li>
+      <li>
+      <p>OO idiom: <code>f</code>is a functor and we are calling its member function <code>operator()</code> with an actual parameter <code>x</code>.  </p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>operator()</strong></p>
+    <p>A special operator just for functors.</p>
+    <ul>
+  <li>
+  <p>Can be declared to take arbitrary parameters</p>
+    </li>
+  <li>
+    <p>The shorthand for the call <code>x.operator()(y,z)</code> is  <code>x(y,z)</code>.</p>
+    
+    <ul>
+      <li>Deliberately makes objects look like functions</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Student Listing Revisited</strong></p>
+    <div class="details"><span class="summary"><a href="listStudentsFunctors.cpp" target="listing">listStudentsFunctors.cpp</a></span> <input id="but_details_d6e877" onclick="toggleDisplay('_details_d6e877')" type="button" value="+"/><div class="detailPart" id="_details_d6e877"><pre><code id="_details_d6e877_code"> class StudentSelectors {
+ public:
+    bool <span class='hli'>operator()</span> (const Student&amp;) const =0;
+ };
+ 
+ void listSelectedStudents
+       (Student[] students,
+        int nStudents,
+        StudentSelectors selector)
+ {
+   for (int i = 0; i &lt; nStudents; ++i)
+      if (<span class='hli'>selector(</span>students[i]<span class='hli'>)</span>)
+         cout &lt;&lt; students[i] &lt;&lt; endl;
+ }
+</code></pre></div></div><hr/><p><strong>Application 1 with operator()</strong></p>
+    <pre><code class="cpp"> class SelectFailures: public StudentSelectors
+ {
+    bool operator() (const Student&amp; s)
+       {return s.gpa &lt; 1.0;}
+ };
+ class SelectHigh: public StudentSelectors
+ {
+    bool operator() (const Student&amp; s)
+      {return s.gpa &gt; 3.5; }
+ };
+ 
+ cout &lt;&lt; "\fProbation List\n";
+ listSelectedStudents (allStudents, nStudents,
+                       SelectFailures());
+ cout &lt;&lt; "\fDean's List\n";
+ listSelectedStudents (allStudents, nStudents,
+                       SelectHigh());
+</code></pre><hr/><p><strong>SelectRange With operator()</strong></p>
+    <pre><code class="cpp"> class SelectRange: public StudentSelectors
+ {
+   double lowGPA, highGPA;
+ public:
+   SelectRange (double low, double high)
+      : lowGPA(low), highGPA(high) { }
+ 
+   bool operator() (const Student&amp; s) const
+   {
+     return s.gpa &gt;= lowGPA &amp;&amp;
+            s.gpa &lt;= highGPA;
+   }
+ };
+</code></pre><hr/><p><strong>Application 2 With operator()</strong></p>
+    <pre><code class="cpp"> {
+   double lowGPA, highGPA;
+   cout &lt;&lt; "Low GPA? " &lt;&lt; flush;
+   cin &gt;&gt; lowGPA;
+   cout &lt;&lt; "\nHigh GPA? " &lt;&lt; flush;
+   cin &gt;&gt; highGPA;
+   listSelectedStudents
+     (allStudents, nStudents,
+      SelectRange(lowGPA, highGPA));
+ }
+</code></pre><a id="operatorandtemplates"/><h2 id="operator-and-templates">3.2 operator() and templates</h2><ul>
+  <li>
+  <p>operator() makes calls on functors look like calls on functions</p>
+    </li>
+  <li>
+  <p>C++ templates allow us to write code in which type names are replaced by parameters to be filled in <span class="emph">at compile time</span>.</p>
+    </li>
+  <li>
+  <p>This combination allows us to write code that can be used with either functors or “true” functions</p>
+    </li>
+</ul><hr/><p><strong>std Function Templates</strong></p>
+    <ul>
+  <li>The C++ std library is packed with lots of small “algorithm  fragments”
+    <ul>
+      <li>
+      <p>presented as function templates.</p>
+    </li>
+    </ul>
+  </li>
+</ul><p>e.g.,</p>
+    <pre><code class="cpp"> swap(x, y);
+ int smaller = min(0, 23);
+ string larger = max(string("Zeil"),
+                     string("Adams"));
+ copy (v.begin(), v.end(), back_inserter(list));
+
+</code></pre><hr/><p><strong>std Templates &amp; Functors</strong></p>
+    <p>A number of the more interesting std template functions take  function parameters. E.g.,</p>
+    <pre><code class="cpp"> void printName (const Student&amp; s)
+ {
+   cout &lt;&lt; s.name &lt;&lt; endl;
+ }
+ 
+ for_each (students, students+nStudents,
+           printName);
+
+</code></pre><ul>
+  <li>Applies <code>printName</code> to each element in <code>students</code>.</li>
+</ul><hr/><p><strong>for_each</strong></p>
+    <p>Here’s the code for <code>for_each</code>:</p>
+    <pre><code class="cpp"> template &lt;class I, class Function&gt;
+ void for_each (I start, I stop, Function f) {
+    for (; start != stop; ++start) {
+       f(*start);
+ }
+</code></pre><ul>
+  <li>Again, what is <code>f(x)</code>?
+    <ul>
+      <li>
+      <p>Could be a function or a functor</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Function and Functor are Interchangable</strong></p>
+    <pre><code class="cpp"> void printName (const Student&amp; s)
+ {
+   cout &lt;&lt; s.name &lt;&lt; endl;
+ }
+ 
+ class PrintGPA {
+    void operator() (const Student&amp; s) const
+    { cout &lt;&lt; s.gpa &lt;&lt; endl; }
+ };
+ 
+ for_each (students, students+nStudents,
+           printName); // function
+ for_each (students, students+nStudents,
+           PrintGPA()); // functor
+
+</code></pre><hr/><p><strong>Functors Add Flexibility</strong></p>
+    <p>Functors often let us do things that simple functions would find awkward.</p>
+    <p>Hearkening back to our earlier example of the <span class="type">SelectRange</span> functor: </p>
+    <pre><code class="cpp"> Student* firstFailure =
+    find_if(students, student+nStudents,
+            SelectRange(0.0,0.999));
+ Student* firstPass =
+    find_if(students, student+nStudents,
+            SelectRange(1.0,4.0));
+
+</code></pre><p>or</p>
+    <pre><code class="cpp"> int numHonors = 0;
+ count(students, students+nStudents,
+       SelectRange(3.5, 4.0), numHonors);
+</code></pre></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Functors%20-%20Objects%20That%20Act%20Like%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

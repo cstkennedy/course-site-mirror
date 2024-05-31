@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>A C++ Class Designer's Checklist</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20C%2B%2B%20Class%20Designer%27s%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">A C++ Class Designer's Checklist</h1><h2 class="author">Steven J. Zeil</h2><div class="date">Last modified: Nov 17, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-checklist">1 The Checklist</a></div><div class="toc-h1"><a href="#discussion-and-explanation">2 Discussion and Explanation</a></div><div class="toc-h2"><a href="#is-the-interface-complete-">2.1 Is the interface complete?</a></div><div class="toc-h2"><a href="#are-there-redundant-functions-or-functions-that-can-be-generalized-">2.2 Are there redundant functions or functions that can be generalized?</a></div><div class="toc-h2"><a href="#have-you-used-names-that-are-meaningful-in-the-application-domain-">2.3 Have you used names that are meaningful in the application domain?</a></div><div class="toc-h2"><a href="#preconditions-and-assertions">2.4 Preconditions and Assertions</a></div><div class="toc-h2"><a href="#are-the-data-members-private-">2.5 Are the data members private?</a></div><div class="toc-h2"><a href="#does-every-constructor-initialize-every-data-member-">2.6 Does every constructor initialize every data member?</a></div><div class="toc-h2"><a href="#have-you-appropriately-treated-the-default-constructor-">2.7 Have you appropriately treated the default constructor?</a></div><div class="toc-h2"><a href="#have-you-appropriately-treated-the-big-3-">2.8 Have you appropriately treated the “Big 3”?</a></div><div class="toc-h2"><a href="#does-your-assignment-operator-handle-self-assignment-">2.9 Does your assignment operator handle self-assignment?</a></div><div class="toc-h2"><a href="#does-your-class-provide-and-operators-">2.10 Does your class provide <code>==</code> and <code>&lt;</code> operators?</a></div><div class="toc-h2"><a href="#does-your-class-provide-an-output-routine-">2.11 Does your class provide an output routine?</a></div><div class="toc-h2"><a href="#is-your-class-const-correct-">2.12 Is your class const-correct?</a></div><div class="toc-h1"><a href="#summary">3 Summary</a></div></div><p><strong>Video Recording</strong></p>
+    <p>These slides (slightly reformatted) accompany a <a href="https://www.youtube.com/watch?v=IVq3I3mE2HU">recorded video lecture</a>.</p>
+    <a id="thechecklist"/><h1 id="the-checklist">1 The Checklist</h1><ol>
+  <li>
+  <p>Is the interface complete?</p>
+    </li>
+  <li>
+  <p>Are there redundant functions in the interface that could be removed? Are there functions that could be generalized?</p>
+    </li>
+  <li>
+  <p>Have you used names that are meaningful in the application area?</p>
+    </li>
+  <li>
+  <p>Are pre-conditions and assumptions well documented?  Have you used <code>assert</code> to “guard” the inputs?</p>
+    </li>
+  <li>
+  <p>Are the data members private?</p>
+    </li>
+  <li>
+  <p>Does every constructor initialize every data member?</p>
+    </li>
+  <li>
+  <p>Have you appropriately treated the default constructor?</p>
+    </li>
+  <li>
+  <p>Have you appropriately treated the “big 3” (copy constructor, assignment operator, and destructor)?</p>
+    </li>
+  <li>
+  <p>Does your assignment operator handle self-assignment?</p>
+    </li>
+  <li>
+  <p>Does your class provide <code>==</code> and <code>&lt;{</code>} operators?</p>
+    </li>
+  <li>
+  <p>Does your class provide an output routine? </p>
+    </li>
+  <li>
+  <p>Is your class const-correct?</p>
+    </li>
+</ol><hr/><p><strong>Purpose</strong></p>
+    <p>This is a <span class="emph">checklist</span></p>
+    <ul>
+  <li>
+  <p>Use it whenever you have the responsibility of designing an ADT interface</p>
+    </li>
+  <li>
+    <p>These are not absolute rules, but are things that you need to think about</p>
+    
+    <ul>
+      <li>Violate them if necessary, but only after careful consideration</li>
+    </ul>
+  </li>
+</ul><a id="discussionandexplanation"/><h1 id="discussion-and-explanation">2 Discussion and Explanation</h1><a id="istheinterfacecomplete"/><h2 id="is-the-interface-complete-">2.1 Is the interface complete?</h2><p>An ADT interface is <span class="firstterm">complete</span> if it contains all the operations required to implement the application at hand (and/or reasonably probable applications in the near future).</p>
+    <p>The best way to determine this is to look to the requirements of the application.</p>
+    <hr/><p><strong>Is Day complete?</strong></p>
+    <div class="details"><span class="summary"><a href="day.h" target="listing">day.h</a></span> <input id="but_details_d6e108" onclick="toggleDisplay('_details_d6e108')" type="button" value="+"/><div class="detailPart" id="_details_d6e108"><pre><code id="_details_d6e108_code">
+class Day
+{
+   /**
+      Represents a day with a given year, month, and day
+      of the Gregorian calendar. The Gregorian calendar
+      replaced the Julian calendar beginning on
+      October 15, 1582
+   */
+
+public:
+
+  Day(int aYear, int aMonth, int aDate);
+
+   /**
+      Returns the year of this day
+      @return the year
+   */
+  int getYear() const;
+
+
+  /**
+     Returns the month of this day
+     @return the month
+  */
+  int getMonth() const;
+
+  /**
+     Returns the day of the month of this day
+     @return the day of the month
+  */
+  int getDate() const;
+
+
+  /**
+     Returns a day that is a certain number of days away from
+     this day
+     @param n the number of days, can be negative
+     @return a day that is n days away from this one
+  */
+  Day addDays(int n) const;
+
+
+  /**
+     Returns the number of days between this day and another
+     day
+     @param other the other day
+     @return the number of days that this day is away from 
+     the other (&gt;0 if this day comes later)
+  */
+  int daysFrom(Day other) const;
+
+  bool comesBefore (Day other) const;
+  bool sameDay (Day other) const;
+
+private:
+  int daysSinceStart;  // start is 10/15/1582
+
+  /* alternate implem:
+  int theYear;
+  int theMonth;
+  int theDate;
+  */
+};
+</code></pre></div></div><p>For example, if we were to look through proposed applications of the <code>Day</code> class and find designs with pseudocode like:</p>
+    <pre><code class="cpp">if (d is last day in its month)
+   payday = d;
+
+</code></pre><p>we would be happy with the ability of our <code>Day</code> interface to support this.</p>
+    <hr/><p><strong>Is Day complete? (2)</strong></p>
+    <p>On the other hand, if we encountered a design like this:</p>
+    <pre><code class="cpp">while (payday falls on the weekend)
+   move payday back one day
+end while
+
+</code></pre><p>we might want to consider adding a function to the <code>Day</code> class to get the day of the week.</p>
+    <a id="arethereredundantfunctionsorfunctionsthatcanbegeneralized"/><h2 id="are-there-redundant-functions-or-functions-that-can-be-generalized-">2.2 Are there redundant functions or functions that can be generalized?</h2><ul>
+  <li>
+  <p>Avoid unneded redundancies that make your class larger and provide additional code to maintain.</p>
+    </li>
+  <li>
+  <p>Generalize when possible to provide more options to the application.</p>
+    </li>
+</ul><hr/><p><strong>Example: Day output</strong></p>
+    <pre><code class="cpp">class Day
+{
+public:
+  &#x22ee;
+  void print() const;
+private:
+  &#x22ee;
+};
+
+</code></pre><p>Future applications may need to send their output to different places. So, it makes sense to make the print destination a parameter:</p>
+    <pre><code class="cpp">void print (std::ostream&amp; out);
+</code></pre><hr/><p><strong>Day output op</strong></p>
+    <p>Of course, most C++ programmers are used to doing output this way:</p>
+    <pre><code class="cpp">cout &lt;&lt; variable;
+</code></pre><p>rather than</p>
+    <pre><code class="cpp">variable.print (cout);
+</code></pre><p>So we would do better to add the operator … </p>
+    <hr/><p><strong>Day output op</strong></p>
+    <div class="details"><span class="summary"><a href="dayoutput.h" target="listing">dayoutput.h</a></span> <input id="but_details_d6e171" onclick="toggleDisplay('_details_d6e171')" type="button" value="+"/><div class="detailPart" id="_details_d6e171"><pre><code id="_details_d6e171_code">class Day
+{
+public:
+  &#x22ee;
+  void print(std::ostream out) const;
+private:
+  &#x22ee;
+};
+
+<span class='hli'>inline
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, Day day)
+{
+  dat.print (out);
+  return out;
+}</span>
+</code></pre></div></div><a id="haveyouusednamesthataremeaningfulintheapplicationdomain"/><h2 id="have-you-used-names-that-are-meaningful-in-the-application-domain-">2.3 Have you used names that are meaningful in the application domain?</h2><p>An important part of this question is the “<span class="emph">in the application domain</span>”. </p>
+    <ul>
+  <li>
+  <p>Good variable names should make sense to anyone who understands the application domain,</p>
+    </li>
+  <li>
+  <p>even if they don’t understand (yet) how your program works.</p>
+    </li>
+</ul><hr/><p><strong>Example: Book identifiers</strong></p>
+    <ul>
+  <li>
+  <p><code>getTitle</code>, <code>putTitle</code>, or  <code>getNumberOfAuthors</code> are all fine.</p>
+    </li>
+  <li>
+  <p>Not everyone who has worked with books would understand  <code>getIdentifier</code> </p>
+    </li>
+  <li>
+  <p>Better would be to recognize that suitable unique identifiers already exist </p>
+    </li>
+</ul><p>\loadList{bookisbn.h}</p>
+    <pre><code>*  the ISBN appears on the copyright page of every published book.
+</code></pre><a id="preconditionsandassertions"/><h2 id="preconditions-and-assertions">2.4 Preconditions and Assertions</h2><hr/><p><strong>Are pre-conditions and assumptions well documented?</strong></p>
+    <p>A <span class="firstterm">pre-condition</span> is a condition that the person calling a function must be sure is true, before the call, if he/she expects the function to do anything reasonable.</p>
+    <ul>
+  <li>Pre-conditions must be documented because they are an obligation upon the caller
+    <ul>
+      <li>And callers can’t fulfill that obligation if they don’t know about it</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Day Constructor</strong></p>
+    <div class="details"><span class="summary"><a href="day.h" target="listing">day.h</a></span> <input id="but_details_d6e244" onclick="toggleDisplay('_details_d6e244')" type="button" value="+"/><div class="detailPart" id="_details_d6e244"><pre><code id="_details_d6e244_code">
+class Day
+{
+   /**
+      Represents a day with a given year, month, and day
+      of the Gregorian calendar. The Gregorian calendar
+      replaced the Julian calendar beginning on
+      October 15, 1582
+   */
+
+public:
+
+  Day(int aYear, int aMonth, int aDate);
+
+   /**
+      Returns the year of this day
+      @return the year
+   */
+  int getYear() const;
+
+
+  /**
+     Returns the month of this day
+     @return the month
+  */
+  int getMonth() const;
+
+  /**
+     Returns the day of the month of this day
+     @return the day of the month
+  */
+  int getDate() const;
+
+
+  /**
+     Returns a day that is a certain number of days away from
+     this day
+     @param n the number of days, can be negative
+     @return a day that is n days away from this one
+  */
+  Day addDays(int n) const;
+
+
+  /**
+     Returns the number of days between this day and another
+     day
+     @param other the other day
+     @return the number of days that this day is away from 
+     the other (&gt;0 if this day comes later)
+  */
+  int daysFrom(Day other) const;
+
+  bool comesBefore (Day other) const;
+  bool sameDay (Day other) const;
+
+private:
+  int daysSinceStart;  // start is 10/15/1582
+
+  /* alternate implem:
+  int theYear;
+  int theMonth;
+  int theDate;
+  */
+};
+</code></pre></div></div><p>What pre-condition would you impose upon the <span class="type">Day</span> constructor?</p>
+    <ul>
+  <li>A fairly obvious requirement is for the month and day to be valid.</li>
+</ul><pre><code class="cpp">  Day(int aYear, int aMonth, int aDate);
+  //pre: (aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12)
+  //  &amp;&amp; (aDate &gt; 0 &amp;&amp; aDate &lt;= daysInMonth(aMonth,aYear))
+
+</code></pre><ul>
+  <li>
+  <p>All pre-conditions are, by definition, boolean expressions</p>
+    </li>
+  <li>
+  <p>As we will see shortly, there’s a significant advantage to  writing them as proper C++ expressions  </p>
+    </li>
+</ul><hr/><p><strong>Example: Day Constructor (cont.)</strong></p>
+    <p>This comment </p>
+    <pre><code class="cpp">class Day
+{
+   /**
+      Represents a day with a given year, month, and day
+      of the Gregorian calendar. The Gregorian calendar
+      replaced the Julian calendar beginning on
+      October 15, 1582
+   */
+   &#x22ee;
+
+</code></pre><p>suggests a more rigorous pre-condition</p>
+    <pre><code class="cpp">  Day(int aYear, int aMonth, int aDate);
+  //pre: (aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12)
+  //  &amp;&amp; (aDate &gt; 0 &amp;&amp; aDate &lt;= daysInMonth(aMonth,aYear))
+  //  &amp;&amp; (aYear &gt; 1582 || (aYear == 1582 &amp;&amp; aMonth &gt; 10)
+  //      || (aYear == 1582 &amp;&amp; aMonth == 10 &amp;&amp; aDate &gt;= 15)
+
+</code></pre><hr/><p><strong>Example: MailingList getContact</strong></p>
+    <div class="details"><span class="summary"><a href="mailinglist.h" target="listing">mailinglist.h</a></span> <input id="but_details_d6e283" onclick="toggleDisplay('_details_d6e283')" type="button" value="+"/><div class="detailPart" id="_details_d6e283"><pre><code id="_details_d6e283_code">#ifndef MAILINGLIST_H
+#define MAILINGLIST_H
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include "contact.h"
+
+/**
+   A collection of names and addresses
+*/
+class MailingList
+{
+public:
+  MailingList();
+  MailingList(const MailingList&amp;);
+  ~MailingList();
+
+  const MailingList&amp; operator= (const MailingList&amp;);
+
+  // Add a new contact to the list
+  void addContact (const Contact&amp; contact);
+
+  // Remove one matching contact
+  void removeContact (const Contact&amp;);
+  void removeContact (const Name&amp;);
+
+  // Find and retrieve contacts
+  bool contains (const Name&amp; name) const;
+  Contact&amp; getContact (const Name&amp; name) const;
+
+
+  // combine two mailing lists
+  void merge (const MailingList&amp; otherList);
+
+  // How many contacts in list?
+  int size() const;
+
+
+  bool operator== (const MailingList&amp; right) const;
+  bool operator&lt; (const MailingList&amp; right) const;
+
+private:
+
+  struct ML_Node {
+    Contact contact;
+    ML_Node* next;
+
+    ML_Node (const Contact&amp; c, ML_Node* nxt)
+      : contact(c), next(nxt)
+    {}
+  };
+
+  int theSize;
+  ML_Node* first;
+  ML_Node* last;
+
+  // helper functions
+  void clear();
+  void remove (ML_Node* previous, ML_Node* current);
+
+  friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const MailingList&amp; addr);
+};
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const MailingList&amp; list);
+
+
+#endif
+</code></pre></div></div><p>What pre-condition, if any, would  you write for the  <code>getContact</code> function? </p>
+    <hr/><p><strong>Have you used <code>assert</code> to “guard” the inputs?</strong></p>
+    <p>An <code>assert</code> statement takes a single argument, </p>
+    <ul>
+  <li>
+  <p>a boolean condition that we believe should be true unless someone somewhere has made a programming  mistake.</p>
+    </li>
+  <li>
+    <p>It aborts program execution if that condition evaluates as false. </p>
+    
+    <ul>
+      <li>Can be “turned off” in release versions by a simple compiler switch
+        <ul>
+          <li>Though that might not be a good thing …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: Guarding the Day Constructor</strong></p>
+    <pre><code class="cpp">#include "day.h"
+#include &lt;cassert&gt;
+
+using namespace std;
+
+Day::Day(int aYear, int aMonth, int aDate)
+//pre: (aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12)
+//  &amp;&amp; (aDate &gt; 0 &amp;&amp; aDate &lt;= daysInMonth(aMonth,aYear))
+//  &amp;&amp; (aYear &gt; 1582 || (aYear == 1582 &amp;&amp; aMonth &gt; 10)
+//      || (aYear == 1582 &amp;&amp; aMonth == 10 &amp;&amp; aDate &gt;= 15)
+{
+  assert (aMonth &gt; 0 &amp;&amp; aMonth &lt;= 12); 
+  assert (aDate &gt; 0 &amp;&amp; aDate &lt;= 31);
+  assert (aYear &gt; 1582 || (aYear == 1582 &amp;&amp; aMonth &gt; 10)
+          || (aYear == 1582 &amp;&amp; aMonth == 10 &amp;&amp; aDate &gt;= 15));
+  daysSinceStart = ...
+}
+
+</code></pre><hr/><p><strong>Example: guarding getContact</strong></p>
+    <div class="details"><span class="summary"><a href="guardGetContact.cpp" target="listing">guardGetContact.cpp</a></span> <input id="but_details_d6e331" onclick="toggleDisplay('_details_d6e331')" type="button" value="+"/><div class="detailPart" id="_details_d6e331"><pre><code id="_details_d6e331_code">#include "mailinglist.h"
+#include &lt;cassert&gt;
+
+using namespace std;
+
+
+Contact&amp; MailingList::getContact (const Name&amp; name) const
+{
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  <span class='hli'>assert (current != NULL 
+		&amp;&amp; name == current-&gt;contact.getName());</span>
+  return current-&gt;contact;
+}
+   &#x22ee;
+</code></pre></div></div><hr/><p><strong>Do Assertions Reduce Robustness?</strong></p>
+    <p>Why do</p>
+    <pre><code class="cpp">assert (current != NULL 
+        &amp;&amp; name == current-&gt;contact.getName());
+
+</code></pre><p>instead of making the code take corrective action? E.g.,</p>
+    <pre><code class="cpp">if (current != NULL 
+    &amp;&amp; name == current-&gt;contact.getName())
+   return current-&gt;contact;
+else
+   return Contact();
+
+</code></pre><hr/><p><strong>Do Assertions Reduce Robustness?</strong></p>
+    <ul>
+  <li>
+    <p>Many people argue in favor of making code “tolerate” errors.</p>
+    
+    <ul>
+      <li>The ability to recover from errors is called <span class="firstterm">robustness</span>.</li>
+      <li>Robust handling of human interface errors is a good thing</li>
+    </ul>
+  </li>
+  <li>
+    <p>However, tolerance of pre-conditions is reckless.</p>
+    
+    <ul>
+      <li>A pre-condition violation is evidence of a bug in the <span class="emph">application</span>.</li>
+      <li>If the application is under test, it’s self-defeating to hide mistakes.</li>
+      <li>If application has been released, hiding bugs can lead to plusible but incorrect output, corrupted files &amp; databases, etc.  </li>
+    </ul>
+  </li>
+</ul><a id="arethedatamembersprivate"/><h2 id="are-the-data-members-private-">2.5 Are the data members private?</h2><p>As discussed earlier, we strongly favor the use of encapsulated <code>private</code> data to provide information hiding in ADT implementations.</p>
+    <ul>
+  <li>E.g., permitting alternate implementations of the <span class="type">Day</span> class</li>
+</ul><hr/><p><strong>Providing Access to Attributes</strong></p>
+    <p>Two common styles in C++:</p>
+    <div class="details"><span class="summary"><a href="attributes.cpp" target="listing">attributes.cpp</a></span> <input id="but_details_d6e402" onclick="toggleDisplay('_details_d6e402')" type="button" value="+"/><div class="detailPart" id="_details_d6e402"><pre><code id="_details_d6e402_code">class Contact {
+public:
+  Contact (Name nm, Address addr);
+
+  <span class='hlii'>const Name&amp; name() const {return theName;}
+  Name&amp;       name()       {return theName;}</span>
+
+  <span class='hli'>const Address&amp; getAddress() const {return theAddress;}
+  Address&amp;       getAddress()       {return theAddress;}</span>
+     &#x22ee;
+</code></pre></div></div><ul>
+  <li>
+  <p><code>getAttr</code>, <code>setAttr</code> as used for the <span class="hli">Address</span> attribute</p>
+    </li>
+  <li>
+  <p>Attribute <span class="hlii">reference functions</span> </p>
+    </li>
+</ul><hr/><p><strong>Attribute Reference Functions</strong></p>
+    <pre><code class="cpp">class Contact {
+    &#x22ee;
+  const Address&amp; getAddress() const {return theAddress;}
+  Address&amp;       getAddress()       {return theAddress;}
+
+</code></pre><p>Attribute reference functions can be used to both access and assign to attributes</p>
+    <pre><code class="cpp">void foo (Contact&amp; c1, const Contact&amp; c2)
+{
+  c1.name() = c2.name();
+}
+
+</code></pre><p>but may offer less flexibility to the ADT implementor.</p>
+    <ul>
+  <li>Consequently, not used as often as get/set</li>
+</ul><a id="doeseveryconstructorinitializeeverydatamember"/><h2 id="does-every-constructor-initialize-every-data-member-">2.6 Does every constructor initialize every data member?</h2><p>Simple enough to check, but can prevent some very difficult-to-catch errors.</p>
+    <hr/><p><strong>Example: MailingList</strong></p>
+    <p>Check this … </p>
+    <pre><code class="cpp">class MailingList
+{
+   &#x22ee;
+private:
+
+  struct ML_Node {
+    Contact contact;
+    ML_Node* next;
+
+    ML_Node (const Contact&amp; c, ML_Node* nxt)
+      : contact(c), next(nxt)
+    {}
+  };
+
+  int theSize;
+  ML_Node* first;
+  ML_Node* last;
+};
+
+</code></pre><p>against this:</p>
+    <div class="details"><span class="summary"><a href="mailinglist.cpp" target="listing">mailinglist.cpp</a></span> <input id="but_details_d6e453" onclick="toggleDisplay('_details_d6e453')" type="button" value="+"/><div class="detailPart" id="_details_d6e453"><pre><code id="_details_d6e453_code">#include &lt;cassert&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+
+#include "mailinglist.h"
+
+
+using namespace std;
+using namespace rel_ops;
+
+
+
+MailingList::MailingList()
+  : first(NULL), last(NULL), theSize(0)
+{}
+
+MailingList::MailingList(const MailingList&amp; ml)
+  : first(NULL), last(NULL), theSize(0)
+{
+  for (ML_Node* current = ml.first; current != NULL;
+       current = current-&gt;next)
+    addContact(current-&gt;contact);
+}
+
+
+MailingList::~MailingList()
+{
+  clear();
+}
+
+const MailingList&amp; MailingList::operator= (const MailingList&amp; ml)
+{
+  if (this != &amp;ml)
+    {
+      clear();
+      for (ML_Node* current = ml.first; current != NULL;
+	   current = current-&gt;next)
+	addContact(current-&gt;contact);
+    }
+  return *this;
+}
+
+
+// Add a new contact to the list
+void MailingList::addContact (const Contact&amp; contact)
+{
+  if (first == NULL) 
+    { // add to empty list
+      first = last = new ML_Node(contact, NULL);
+      theSize = 1;
+    }
+  else if (contact &gt; last-&gt;contact)
+    { // add to end of non-empty list
+      last-&gt;next = new ML_Node(contact, NULL);
+      last = last-&gt;next;
+      ++theSize;
+    }
+  else if (contact &lt; first-&gt;contact)
+    { // add to front of non-empty list
+      first = new ML_Node(contact, first);
+      ++theSize;
+    }
+  else
+    { // search for place to insert
+      ML_Node* previous = first;
+      ML_Node* current = first-&gt;next;
+      assert (current != NULL);
+      while (contact &lt; current-&gt;contact)
+	{
+	  previous = current;
+	  current = current-&gt;next;
+	  assert (current != NULL);
+	}
+      previous-&gt;next = new ML_Node(contact, current);
+      ++theSize;
+    }
+}
+
+
+// Remove one matching contact
+void MailingList::removeContact (const Contact&amp; contact)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL &amp;&amp; contact &gt; current-&gt;contact)
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL &amp;&amp; contact == current-&gt;contact)
+    remove (previous, current);
+}
+
+
+void MailingList::removeContact (const Name&amp; name)
+{
+  ML_Node* previous = NULL;
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+	 &amp;&amp; name == current-&gt;contact.getName())
+    remove (previous, current);
+}
+
+
+
+// Find and retrieve contacts
+bool MailingList::contains (const Name&amp; name) const 
+{
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  return (current != NULL 
+	  &amp;&amp; name == current-&gt;contact.getName());
+}
+
+
+Contact MailingList::getContact (const Name&amp; name) const
+{
+  ML_Node* current = first;
+  while (current != NULL
+	 &amp;&amp; name &gt; current-&gt;contact.getName())
+    {
+      previous = current;
+      current = current-&gt;next;
+    }
+  if (current != NULL 
+	  &amp;&amp; name == current-&gt;contact.getName())
+    return current-&gt;contact;
+  else
+    return Contact();
+}
+
+
+
+
+
+// combine two mailing lists
+void MailingList::merge (const MailingList&amp; anotherList)
+{
+  // For a quick merge, we will loop around, checking the 
+  // first item in each list, and always copying the smaller
+  // of the two items into result
+  MailingList result;
+  ML_Node* thisList = first;
+  const ML_Node* otherList = anotherList.first;
+  while (thisList != NULL and otherList != NULL)
+    {
+      if (thisList-&gt;contact &lt; otherList-&gt;contact)
+	{
+	  result.addContact(thisList-&gt;contact);
+	  thisList = thisList-&gt;next;
+	}
+      else
+	{
+	  result.addContact(otherList-&gt;contact);
+	  otherList = otherList-&gt;next;
+	}
+    }
+  // Now, one of the two lists has been entirely copied. 
+  // The other might still have stuff to copy. So we just copy
+  // any remaining items from the two lists. Note that one of these
+  // two loops will execute zero times.
+  while (thisList != NULL)
+    {
+      result.addContact(thisList-&gt;contact);
+      thisList = thisList-&gt;next;
+    }
+  while (otherList != NULL)
+    {
+      result.addContact(otherList-&gt;contact);
+      otherList = otherList-&gt;next;
+    }
+  // Now result contains the merged list. Transfer that into this list.
+  clear();
+  first = result.first;
+  last = result.last;
+  theSize = result.theSize;
+  result.first = result.last = NULL;
+  result.theSize = 0;
+}
+
+// How many contacts in list?
+int MailingList::size() const
+{
+  return theSize;
+}
+
+
+bool MailingList::operator== (const MailingList&amp; right) const
+{
+  if (theSize != right.theSize) // (easy test first!)
+    return false;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+	{
+	  if (thisList-&gt;contact != otherList-&gt;contact)
+	    return false;
+	  thisList = thisList-&gt;next;
+	  otherList = otherList-&gt;next;
+	}
+      return true;
+    }
+}
+
+
+bool MailingList::operator&lt; (const MailingList&amp; right) const
+{
+  if (theSize &lt; right.theSize)
+    return true;
+  else
+    {
+      const ML_Node* thisList = first;
+      const ML_Node* otherList = right.first;
+      while (thisList != NULL)
+	{
+	  if (thisList-&gt;contact &lt; otherList-&gt;contact)
+	    return true;
+	  else if (thisList-&gt;contact &gt; otherList-&gt;contact)
+	    return false;
+	  thisList = thisList-&gt;next;
+	  otherList = otherList-&gt;next;
+	}
+      return false;
+    }
+}
+
+
+// helper functions
+void MailingList::clear()
+{
+  ML_Node* current = first;
+  while (current != NULL)
+    {
+      ML_Node* next = current-&gt;next;
+      delete current;
+      current = next;
+    }
+  first = last = NULL;
+  theSize = 0;
+}
+
+
+void MailingList::remove (MailingList::ML_Node* previous,
+			  MailingList::ML_Node* current)
+{
+  if (previous == NULL)
+    { // remove front of list
+      first = current-&gt;next;
+      if (last == current)
+	last = NULL;
+      delete current;
+    }
+  else if (current == last)
+    { // remove end of list
+      last = previous;
+      last-&gt;next = NULL;
+      delete current;
+    }
+  else
+    { // remove interior node
+      previous-&gt;next = current-&gt;next;
+      delete current;
+    }
+  --theSize;
+}
+
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const MailingList&amp; list)
+{
+  MailingList::ML_Node* current = list.first;
+  while (current != NULL)
+    {
+      out &lt;&lt; current-&gt;contact &lt;&lt; "\n";
+      current = current-&gt;next;
+    }
+  out &lt;&lt; flush;
+  return out;
+}
+
+
+book1.setTitle(''bogus title'');
+assert (book1.getTitle() == ''bogus title'');
+
+book2 = book1;
+assert (book1 == book2);
+book1.setTitle(''bogus title 2'');
+assert (! (book1  == book2));
+
+
+
+catalog.add(book1);
+assert (catalog.firstBook() == book1);&gt;
+
+
+
+string s1, s2;
+cin &gt;&gt; s1 &gt;&gt; s2;
+if (s1 &lt; s2)       ''abc'' &lt; ''def''
+                       ''abc'' &lt; ''abcd''
+
+    x y
+
+Exactly one of the following is true for any x and y
+    x == y
+    x &lt; y
+    y &lt; x
+
+ namespace std{
+
+   namespace relops {
+template &lt;class T&gt;
+bool operator!= (T left, T right)
+{
+  return !(left == right);
+}
+
+
+template &lt;class T&gt;
+bool operator&gt; (T left, T right)
+{
+  return (right &lt; left);
+}
+
+
+
+     using namespace std::relops;
+</code></pre></div></div><a id="haveyouappropriatelytreatedthedefaultconstructor"/><h2 id="have-you-appropriately-treated-the-default-constructor-">2.7 Have you appropriately treated the default constructor?</h2><p>Remember that the default constructor is a constructor that can be called with no arguments. </p>
+    <p>Your options are:</p>
+    <p>1.The compiler-generated version is acceptable. 2. Write your own 3. No default constructor is appropriate 4. (very rare) If you don’t want to allow other code to construct objects of your ADT type at all, declare a constructor and make it <code>private</code>. </p>
+    <a id="haveyouappropriatelytreatedthebig3"/><h2 id="have-you-appropriately-treated-the-big-3-">2.8 Have you appropriately treated the “Big 3”?</h2><ul>
+  <li>
+    <p>Recall that the Big 3 in C++ class design are the copy constructor, the assignment operator, the destructor.</p>
+    
+    <ul>
+      <li>
+      <p>For each of these, if you do not provide them, the compiler generates a version for you.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>The <span class="firstterm">Rule of the Big 3</span> states that, </p>
+    </li>
+</ul><blockquote>
+  <span class="emph">if you provide your own version of any one of the big 3, you should provide your own version of all 3.</span>
+</blockquote><hr/><p><strong>Handling the Big 3</strong></p>
+    <p>So your choices as a class designer come down to:</p>
+    <ol>
+  <li>
+  <p>The compiler-generated version is acceptable for all three.</p>
+    </li>
+  <li>
+  <p>You have provided your own version of all three.</p>
+    </li>
+  <li>
+  <p>You don’t want to allow copying of this ADT’s objects</p>
+    </li>
+  <li>
+  <p>Provide private versions of the copy constructor and  assignment operator so the compiler won’t provide public ones, but  no one can use them.</p>
+    </li>
+</ol><hr/><p><strong>The Compiler-Generated Versions are wrong when…</strong></p>
+    <dl>
+  <dt>Copy constructor</dt>
+  <dd>Shallow-copy is inappropriate for your ADT</dd>
+  <dt>Assignment operator</dt>
+  <dd>Shallow-copy is inappropriate for your ADT</dd>
+  <dt>Destructor</dt>
+  <dd>Your ADT holds resources that need to be released when no longer needed</dd>
+</dl><hr/><p><strong>The Compiler-Generated Versions are wrong when… (2)</strong></p>
+    <p>Generally this occurs when</p>
+    <ul>
+  <li>
+  <p>Your ADT has pointers among its data members, and</p>
+    </li>
+  <li>
+  <p>You don’t want to share the objects being pointed to.</p>
+    </li>
+</ul><hr/><p><strong>The Rule of the Big 3</strong></p>
+    <p>The <span class="firstterm">Rule of the Big 3</span> states that, </p>
+    <blockquote>
+  <span class="emph">if you provide your own version of any one of the big 3, you should provide your own version of all 3.</span>
+</blockquote><p>Why? Because we don’t trust the compiler-generated … </p>
+    <dl>
+  <dt>… copy constructor
+  </dt>
+  <dd>if our data members include pointers to data we don’t share</dd>
+</dl><dl>
+  <dt>… assignment operator
+  </dt>
+  <dd>if our data members include pointers to data we don’t share</dd>
+</dl><dl>
+  <dt>…</dt>
+  <dd>destructor if our data members include pointers to data we don’t share</dd>
+</dl><p>So if we don’t trust one, we don’t trust any of them.</p>
+    <a id="doesyourassignmentoperatorhandleselfassignment"/><h2 id="does-your-assignment-operator-handle-self-assignment-">2.9 Does your assignment operator handle self-assignment?</h2><p>If we assign something to itself:</p>
+    <pre><code class="cpp">x = x;
+</code></pre><p>we normally expect that nothing really happens.</p>
+    <p>But when we are writing our own assignment operators, that’s not always the case. </p>
+    <p>Sometimes assignment of an object to itself is a nasty special case that breaks thing badly.</p>
+    <a id="doesyourclassprovideandoperators"/><h2 id="does-your-class-provide-and-operators-">2.10 Does your class provide <code>==</code> and <code>&lt;</code> operators?</h2><ul>
+  <li>
+  <p><span class="emph">The compiler never generates these implicitly</span>, so if we want them, we have to supply them.</p>
+    </li>
+  <li>
+    <p>The <code>==</code> and <code>&lt;</code> are often required if you want to put your objects inside other data structures.</p>
+    
+    <ul>
+      <li>That’s enough reason to provide them whenever practical.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Also heavily used in test drivers </p>
+    </li>
+</ul><a id="doesyourclassprovideanoutputroutine"/><h2 id="does-your-class-provide-an-output-routine-">2.11 Does your class provide an output routine?</h2><ul>
+  <li>Even if not required by the application, useful (essential?) in testing and debugging.
+    <ul>
+      <li>Again, that’s enough reason to always provide one if at all practical to do so</li>
+    </ul>
+  </li>
+</ul><a id="isyourclassconstcorrect"/><h2 id="is-your-class-const-correct-">2.12 Is your class const-correct?</h2><p>In C++, we use the keyword <code>const</code> to declare constants. But it also has two other important uses:</p>
+    <ol>
+  <li>
+  <p>indicating what formal parameters a function will look at, but promises not to change</p>
+    </li>
+  <li>
+  <p>indicating which member functions don’t change the object they are applied to</p>
+    </li>
+</ol><p>These last two uses are important for a number of reasons</p>
+    <ul>
+  <li>
+  <p>This information often helps make it easier for programmers to understand the expected behavior of a function.</p>
+    </li>
+  <li>
+  <p>The compiler may be able to use this information to generate more efficient code.</p>
+    </li>
+  <li>
+  <p>This information allows the compiler to detect many potential programming mistakes.</p>
+    </li>
+</ul><hr/><p><strong>Const Correctness</strong></p>
+    <p>A class is <span class="firstterm">const-correct</span> if </p>
+    <ol>
+  <li>
+  <p>Any formal function parameter that will not be changed by the function is passed by copy  or as a const reference (<code>const &amp;</code>).</p>
+    </li>
+  <li>
+  <p>Every member function that does not alter the object it’s applied to is declared as a const member.</p>
+    </li>
+</ol><hr/><p><strong>Example: Contact</strong></p>
+    <p>Passed <span class="hli">by copy</span>, passed <span class="hlii">by const ref</span>, &amp; <span class="hliii">const member functions</span> </p>
+    <div class="details"><span class="summary"><a href="contactcc.h" target="listing">contactcc.h</a></span> <input id="but_details_d6e704" onclick="toggleDisplay('_details_d6e704')" type="button" value="+"/><div class="detailPart" id="_details_d6e704"><pre><code id="_details_d6e704_code">#ifndef CONTACT_H
+#define CONTACT_H
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include "name.h"
+#include "address.h"
+
+class Contact {
+  Name theName;
+  Address theAddress;
+
+public:
+  Contact (<span class='hli'>Name</span> nm, <span class='hli'>Address</span> addr)
+    : theName(nm), theAddress(addr)
+  {}
+
+
+  Name getName() <span class='hliii'>const</span>   {return theName;}
+  void setName (<span class='hli'>Name</span> nm) {theName= nm;}
+
+  Address getAddress() <span class='hliii'>const</span>     {return theAddress;}
+  void setAddress (<span class='hli'>Address</span> addr) {theAddress = addr;}
+
+  bool operator== (<span class='hlii'>const Contact&amp;</span> right) <span class='hliii'>const</span>
+  {
+    return theName == right.theName
+      &amp;&amp; theAddress == right.theAddress;
+  }
+
+  bool operator&lt; (<span class='hlii'>const Contact&amp;</span> right) <span class='hliii'>const</span>
+  {
+    return (theName &lt; right.theName)
+      || (theName == right.theName
+	  &amp;&amp; theAddress &lt; right.theAddress);
+  }
+};
+
+inline
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class='hlii'>const Contact&amp;</span> c)
+{
+  out &lt;&lt; c.getName() &lt;&lt; " @ " &lt;&lt; c.getAddress();
+  return out;
+}
+
+
+#endif
+</code></pre></div></div><hr/><p><strong>Const Correctness Prevents Errors</strong></p>
+    <ul>
+  <li>This code will not compile:</li>
+</ul><pre><code class="cpp">void foo (Contact&amp; conOut, const Contact&amp; conIn)
+{
+  conIn = conOut;
+}
+
+</code></pre><ul>
+  <li>nor will this:</li>
+</ul><pre><code class="cpp">void bar (Contact&amp; conOut, const Contact&amp; conIn)
+{
+  conIn.setName (conOut.getName());;
+}
+
+</code></pre><ul>
+  <li>The error messages aren’t always easy to understand (“discards qualifier”, “no match for … ”)
+    <ul>
+      <li>Resist the temptation to strip away the “const”s or use type-casting to bypass the errors.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: MailingList</strong></p>
+    <p>Passed <span class="hli">by copy</span>, passed <span class="hlii">by const ref</span>, &amp; <span class="hliii">const member functions</span> </p>
+    <div class="details"><span class="summary"><a href="mailinglistcc.h" target="listing">mailinglistcc.h</a></span> <input id="but_details_d6e748" onclick="toggleDisplay('_details_d6e748')" type="button" value="+"/><div class="detailPart" id="_details_d6e748"><pre><code id="_details_d6e748_code">#ifndef MAILINGLIST_H
+#define MAILINGLIST_H
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+#include "contact.h"
+
+/**
+   A collection of names and addresses
+*/
+class MailingList
+{
+public:
+  MailingList();
+  MailingList(<span class='hlii'>const MailingList&amp;</span>);
+  ~MailingList();
+
+  const MailingList&amp; operator= (<span class='hlii'>const MailingList&amp;</span>);
+
+  // Add a new contact to the list
+  void addContact (<span class='hlii'>const Contact&amp;</span> contact);
+
+  // Remove one matching contact
+  void removeContact (<span class='hlii'>const Contact&amp;</span>);
+  void removeContact (<span class='hlii'>const Name&amp;</span>);
+
+  // Find and retrieve contacts
+  bool contains (<span class='hlii'>const Name&amp;</span> name) <span class='hliii'>const</span>;
+  Contact getContact (<span class='hlii'>const Name&amp;</span> name) <span class='hliii'>const</span>;
+
+
+  // combine two mailing lists
+  void merge (<span class='hlii'>const MailingList&amp;</span> otherList);
+
+  // How many contacts in list?
+  int size() <span class='hliii'>const</span>;
+
+
+  bool operator== (<span class='hlii'>const MailingList&amp;</span> right) <span class='hliii'>const</span>;
+  bool operator&lt; (<span class='hlii'>const MailingList&amp;</span> right) <span class='hliii'>const</span>;
+
+private:
+
+  struct ML_Node {
+    Contact contact;
+    ML_Node* next;
+
+    ML_Node (<span class='hlii'>const Contact&amp;</span> c, <span class='hli'>ML_Node*</span> nxt)
+      : contact(c), next(nxt)
+    {}
+  };
+
+  int theSize;
+  ML_Node* first;
+  ML_Node* last;
+
+  // helper functions
+  void clear();
+  void remove (<span class='hli'>ML_Node*</span> previous, <span class='hli'>ML_Node*</span> current);
+
+  friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class='hlii'>const MailingList&amp;</span> addr);
+};
+
+// print list, sorted by Contact
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, <span class='hlii'>const MailingList&amp;</span> list);
+
+
+#endif
+</code></pre></div></div><h1 id="summary">3 Summary</h1><p>This is a <span class="emph">checklist</span></p>
+    <ul>
+  <li>
+  <p>Use it whenever you have the responsibility of designing an ADT interface</p>
+    </li>
+  <li>
+    <p>These are not absolute rules, but are things that you need to think about</p>
+    
+    <ul>
+      <li>Violate them if necessary, but only after careful consideration</li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20A%20C%2B%2B%20Class%20Designer%27s%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

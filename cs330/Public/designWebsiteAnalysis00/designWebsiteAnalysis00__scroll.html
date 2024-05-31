@@ -1,0 +1,1177 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Web Analysis - Brainstorming</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Brainstorming"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Web Analysis - Brainstorming</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#domain-models">2 Domain Models</a></div><div class="toc-h2"><a href="#initial-diagram">2.1 Initial Diagram</a></div><div class="toc-h2"><a href="#adding-some-detail">2.2 Adding Some Detail</a></div><div class="toc-h2"><a href="#representing-types">2.3 Representing Types</a></div><div class="toc-h2"><a href="#dealing-with-duplication">2.4 Dealing with Duplication</a></div><div class="toc-h2"><a href="#introducing-resourcekind">2.5 Introducing ResourceKind</a></div><div class="toc-h2"><a href="#done-for-now">2.6 Done for Now</a></div><div class="toc-h1"><a href="#handling-analysis-details">3 Handling Analysis Details</a></div><div class="toc-h2"><a href="#meet-in-the-middle">3.1 Meet in the Middle</a></div><div class="toc-h2"><a href="#refining-the-report-interface">3.2 Refining the Report Interface</a></div><div class="toc-h2"><a href="#inspiration-from-the-c-std-ostream-java-bufferedwriter-python-textio">3.3 Inspiration from the C++ std::ostream, Java BufferedWriter &amp; Python TextIO</a></div><div class="toc-h2"><a href="#something-does-not-fit">3.4 Something Does Not Fit</a></div><div class="toc-h2"><a href="#where-is-the-actual-analysis-">3.5 Where is the Actual Analysis?</a></div><div class="toc-h2"><a href="#adding-a-few-extraction-methods">3.6 Adding a Few Extraction Methods</a></div><div class="toc-h1"><a href="#closing-remarks">4 Closing Remarks</a></div></div><style>
+img {
+  max-width: 100%;
+}
+</style><h1 id="overview">1 Overview</h1><p><strong>This lecture sequence is based on the <em>Website Analysis Semester Project</em> that I tend to use when I teach CS 350 during a <em>Summer Semester</em>.</strong></p>
+    <p>This lecture is discussion of how I would approach identifying classes for the <a class="doc" href="../../Public/designWebsiteAnalysis00/websiteAnalysis.mmd.html" target="CS330_Public">Web Analysis Project</a>. The discussion will start with a sequence of Domain Models to capture the structure of a website.</p>
+    <a id="domainmodels"/><h1 id="domain-models">2 Domain Models</h1><p>Let us start with a set of classes to capture the basic pieces of a website. For each diagram the PlantUML markup will be listed followed by the resulting diagram.</p>
+    <p><strong>Our focus is on how to store the data.</strong> The analysis and computation come later in the process.</p>
+    <a id="initialdiagram"/><h2 id="initial-diagram">2.1 Initial Diagram</h2><div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e25" onclick="toggleDisplay('_details_d6e25')" type="button" value="+"/><div class="detailsBody" id="_details_d6e25" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/domain_01
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Anchor {
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+Website o-- HTMLDocument
+HTMLDocument o-- Image
+HTMLDocument o-- Script
+HTMLDocument o-- StyleSheet
+HTMLDocument o-- Anchor
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/domain_01.svg"/></p>
+    <p>Take note of the first two classes:</p>
+    <ul>
+  <li><code>Website</code> - the website as a whole</li>
+  <li><code>HTMLDocument</code> - a single HTML page (i.e., a single page within a site).</li>
+</ul><p>After the first two classes we have a class for each type of resource:</p>
+    <ul>
+  <li>Image</li>
+  <li>Anchor</li>
+  <li>Script</li>
+  <li>StyleSheet</li>
+</ul><p><strong>Note that while we need to represent collections of data… we are not interested in a specific data structure.</strong> The <code>Collection</code> is a placeholder for any data structure that can hold multiple items and be iterated over (e.g., <code>List</code> or <code>Vector</code>).</p>
+    <a id="addingsomedetail"/><h2 id="adding-some-detail">2.2 Adding Some Detail</h2><p>Let us explore what each class needs to store.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e67" onclick="toggleDisplay('_details_d6e67')" type="button" value="+"/><div class="detailsBody" id="_details_d6e67" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/domain_02.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Anchor {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+}
+
+class Image {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+}
+
+class Script {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+}
+
+class StyleSheet {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+}
+
+Website o-- HTMLDocument
+HTMLDocument o-- Image
+HTMLDocument o-- Script
+HTMLDocument o-- StyleSheet
+HTMLDocument o-- Anchor
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/domain_02.svg"/></p>
+    <a id="representingtypes"/><h2 id="representing-types">2.3 Representing Types</h2><p>Now we need a way to represent the notion of:</p>
+    <ul>
+  <li>Internal</li>
+  <li>Intrapage</li>
+  <li>External</li>
+</ul><p>An Enumerated Type is perfect. An <code>enum</code> is similar to a <code>boolean</code> (<code>true</code> or <code>false</code>). While a <code>boolean</code> is restricted to yes (<code>true</code>) or no (<code>false</code>)… an <code>enum</code> is restricted to programmer-specified categories.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e105" onclick="toggleDisplay('_details_d6e105')" type="button" value="+"/><div class="detailsBody" id="_details_d6e105" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/domain_03.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Anchor {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+}
+
+class Image {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+}
+
+class Script {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+}
+
+class StyleSheet {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+Website o-- HTMLDocument
+HTMLDocument o-- Image
+HTMLDocument o-- Script
+HTMLDocument o-- StyleSheet
+HTMLDocument o-- Anchor
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/domain_03.svg"/></p>
+    <p>Take note of the new <code>Locality</code> box and additions to each of the resource classes.</p>
+    <a id="dealingwithduplication"/><h2 id="dealing-with-duplication">2.4 Dealing with Duplication</h2><p>The <code>Resource</code> classes are (at the moment) identical. Let us define a <code>Resource</code> base class.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e124" onclick="toggleDisplay('_details_d6e124')" type="button" value="+"/><div class="detailsBody" id="_details_d6e124" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/domain_04.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/domain_04.svg"/></p>
+    <p>Now that we have factored out the common data members… it is tempting to remove <code>Anchor</code>, <code>Image</code>, <code>Script</code>, and <code>Stylesheet</code>. However, I am not comfortable doing so just yet. I have a few concerns, including</p>
+    <ol>
+  <li>Are there behaviors (e.g., member functions) that need to be captured?</li>
+  <li>Will <code>abstract</code> methods or <em>dynamic binding</em> be useful during analysis?</li>
+  <li>Will class-specific <code>static</code> constants be used?</li>
+</ol><p>Let us leave the classes for now. We can always remove them later.</p>
+    <a id="introducingresourcekind"/><h2 id="introducing-resourcekind">2.5 Introducing ResourceKind</h2><p>Have you noticed that files are not represented in our current model? We could introduce an “other” type. However, I think using <code>Resource</code> and adding another <code>enum</code> is a better choice.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e167" onclick="toggleDisplay('_details_d6e167')" type="button" value="+"/><div class="detailsBody" id="_details_d6e167" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/domain_05.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/domain_05.svg"/></p>
+    <p><em>I will leave adding all options to <code>ResouceKind</code> up to you and your team.</em></p>
+    <p>Take note of the two new fields in <code>Resource</code>:</p>
+    <ul>
+  <li><code>typeOfResource: ResourceKind</code> - used to capture the type of file/resource</li>
+  <li><code>sizeOfFile: long</code> - used to capture the file size (whether this in stored in KiB or MiB is an implementation detail)</li>
+</ul><a id="donefornow"/><h2 id="done-for-now">2.6 Done for Now</h2><p>Based on the Website Analysis Requirements Definition it appears that we have captured the structure of a website. It is safe to move on to capturing analysis, exceptions, and report generation.</p>
+    <a id="handlinganalysisdetails"/><h1 id="handling-analysis-details">3 Handling Analysis Details</h1><p>Before starting this part of the lecture… I would like to discuss:</p>
+    <ul>
+  <li>lazy evaluation</li>
+  <li>the Factory Pattern</li>
+  <li>the Builder Pattern</li>
+</ul><a id="meetinthemiddle"/><h2 id="meet-in-the-middle">3.1 Meet in the Middle</h2><p>There is quite a bit of logic to implement. However, we are interested in:</p>
+    <ol>
+  <li>identifying the types of analysis that occur</li>
+  <li>determining where each piece of analysis will occur</li>
+  <li>splitting the analysis into manageable pieces/phases</li>
+</ol><p>To that end let us take a <em>meet-in-the-middle</em> approach to design. We already have the structure of a website (i.e., where we will store the data generated during analysis). Let us explore how to represent the various reports.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e223" onclick="toggleDisplay('_details_d6e223')" type="button" value="+"/><div class="detailsBody" id="_details_d6e223" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_01.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class Report {
+    website: Website
+
+    set(site: Website)
+}
+
+class ReportConsole {
+
+}
+
+class ReportText {
+
+}
+
+class ReportJSON {
+
+}
+
+class ReportExcel {
+
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+Report &lt;|-- ReportConsole
+Report &lt;|-- ReportText
+Report &lt;|-- ReportJSON
+Report &lt;|-- ReportExcel
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_01.svg"/></p>
+    <p>The reports will only examine the pieces of data that they need (and format that data for output). The actual extraction, parsing, and analysis operations (i.e., heavy lifting) should absolutely happen elsewhere in the software.</p>
+    <p>Take note of the <code>Report.set</code> method. I believe that a common report interface (via inheritance) is appropriate here.</p>
+    <a id="refiningthereportinterface"/><h2 id="refining-the-report-interface">3.2 Refining the Report Interface</h2><p>Let us add a few methods to the <code>Report</code> interface.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e242" onclick="toggleDisplay('_details_d6e242')" type="button" value="+"/><div class="detailsBody" id="_details_d6e242" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_02.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class Report {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class ReportConsole {
+
+}
+
+class ReportText {
+
+}
+
+class ReportJSON {
+
+}
+
+class ReportExcel {
+
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+Report &lt;|-- ReportConsole
+Report &lt;|-- ReportText
+Report &lt;|-- ReportJSON
+Report &lt;|-- ReportExcel
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_02.svg"/></p>
+    <p>Take note of the three methods in <code>Report</code>:</p>
+    <ul>
+  <li><code>setSourceData(site: Website)</code> - renamed <code>Report.set</code> for clarity</li>
+  <li><code>setBaseName(baseFileName: String)</code> - used to set the base report filename (e.g., <code>2023-06-23-165640</code>)</li>
+  <li><code>write()</code> - used to generate and output the report</li>
+</ul><p>Note that <code>write</code> is intended a common <code>public</code> function that each report derived class will implement. The actual logic to generate a given report should happen before <code>write</code> is called, e.g., in a <code>prepare</code> method.</p>
+    <a id="inspirationfromthecstdostreamjavabufferedwriterpythontextio"/><h2 id="inspiration-from-the-c-std-ostream-java-bufferedwriter-python-textio">3.3 Inspiration from the C++ std::ostream, Java BufferedWriter &amp; Python TextIO</h2><p>I do not like the names of the <code>Report</code> classes. I would argue that these classes do not represent the reports being generated, but the person who would create these reports in a manual process.</p>
+    <p>Let us rename</p>
+    <ul>
+  <li><code>Report</code> to <code>ReportWriter</code></li>
+  <li><code>ReportConsole</code> to <code>ConsoleReportWriter</code></li>
+  <li><code>ReportText</code> to <code>TextReportWriter</code></li>
+  <li><code>ReportJSON</code> to <code>JSONReportWriter</code></li>
+  <li><code>ReportExcel</code> to <code>ExcelReportWriter</code></li>
+</ul><div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e315" onclick="toggleDisplay('_details_d6e315')" type="button" value="+"/><div class="detailsBody" id="_details_d6e315" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_03.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class ReportWriter {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class ConsoleReportWriter {
+
+}
+
+class TextReportWriter {
+
+}
+
+class JSONReportWriter {
+
+}
+
+class ExcelReportWriter {
+
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+ReportWriter &lt;|-- ConsoleReportWriter
+ReportWriter &lt;|-- TextReportWriter
+ReportWriter &lt;|-- JSONReportWriter
+ReportWriter &lt;|-- ExcelReportWriter
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_03.svg"/></p>
+    <a id="somethingdoesnotfit"/><h2 id="something-does-not-fit">3.4 Something Does Not Fit</h2><p>Have you been wondering abour <code>ConsoleReportWriter</code>? It is different from the other reports:</p>
+    <ol>
+  <li>It does <strong>not</strong> examine the <code>Website</code> data.</li>
+  <li>It does not have a filename.</li>
+</ol><p>Perhaps it should really be a <code>ReportManager</code> class. A class that handles the:</p>
+    <ul>
+  <li>
+  <p><a href="https://www.w3schools.com/java/java_date.asp">Date and Time</a> logic needed to set the basename for each report.</p>
+    </li>
+  <li>
+  <p>Coordination of sending all reports the same data, calling the <code>prepare</code> and <code>write</code> methods.</p>
+    </li>
+</ul><div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e362" onclick="toggleDisplay('_details_d6e362')" type="button" value="+"/><div class="detailsBody" id="_details_d6e362" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_04.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class ReportManager {
+    setSourceData(site: Website)
+    determineBaseFilename()
+    writeReportNames(outs: BufferedWriter)
+
+    writeAll()
+}
+
+class ReportWriter {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class TextReportWriter {
+
+}
+
+class JSONReportWriter {
+
+}
+
+class ExcelReportWriter {
+
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+ReportWriter &lt;|-- TextReportWriter
+ReportWriter &lt;|-- JSONReportWriter
+ReportWriter &lt;|-- ExcelReportWriter
+
+ReportManager --&gt; "3" ReportWriter: "creates and manages"
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_04.svg"/></p>
+    <p>I am much happier with that. Note the four functions in <code>ReportManager</code></p>
+    <ul>
+  <li><code>setSourceData(site: Website)</code> - same is in the <code>Report</code> interface</li>
+  <li><code>determineBaseFilename()</code> - take the current date and time and format it accordingly</li>
+  <li>
+  <p><code>writeReportNames(outs: BufferedWriter)</code> - output the filename for each file report. Note that the <code>BufferedWriter</code> is not necessary, but it will make development, testing, and debugging tremendously less frustrating. <a href="https://www.youtube.com/watch?v=I1rCEL9uGwk"><em>Trust me Bro</em></a>. <em>Yes, that is a WAN Show reference.</em></p>
+    </li>
+  <li>
+  <p><code>writeAll()</code> - Handle calling each of the <code>ReportWriter</code> derived classes’ <code>write</code> methods.</p>
+    </li>
+</ul><a id="whereistheactualanalysis"/><h2 id="where-is-the-actual-analysis-">3.5 Where is the Actual Analysis?</h2><p>This is where the <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-14-Python-Builder-Pattern/Example-3">Builder Pattern</a> will come into play. Let us start by adding two classes:</p>
+    <ol>
+  <li><code>WebsiteBuilder</code></li>
+  <li><code>HTMLDocumentBuilder</code></li>
+</ol><p><em>Note: Let us stick with “Builder” even though “Parser” might be a more “intuitive” name.</em></p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e424" onclick="toggleDisplay('_details_d6e424')" type="button" value="+"/><div class="detailsBody" id="_details_d6e424" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_05.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class ReportManager {
+    setSourceData(site: Website)
+    determineBaseFilename()
+    writeReportNames(outs: BufferedWriter)
+
+    writeAll()
+}
+
+class ReportWriter {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class TextReportWriter {
+
+}
+
+class JSONReportWriter {
+
+}
+
+class ExcelReportWriter {
+
+}
+
+class WebsiteBuilder {
+
+}
+
+class HTMLDocumentBuilder {
+
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+ReportWriter &lt;|-- TextReportWriter
+ReportWriter &lt;|-- JSONReportWriter
+ReportWriter &lt;|-- ExcelReportWriter
+
+ReportManager --&gt; "3" ReportWriter: "creates and manages"
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_05.svg"/></p>
+    <p>But… where do <code>WebsiteBuilder</code> and <code>HTMLDocumentBuilder</code> <em>fit</em>?</p>
+    <ol>
+  <li>
+    <p><code>WebsiteBuilder</code> will be responsible for collecting all information needed to create a <code>Website</code> object:</p>
+    
+    <ol>
+      <li>one local directory path</li>
+      <li>one <em>or more</em> URLs</li>
+    </ol>
+  </li>
+  <li>
+  <p><code>HTMLDocumentBuilder</code> will be responsible for extracting all tags from a  <em>single</em> file containing HTML content. This is where our HTML parsing  logic will exist.</p>
+    </li>
+</ol><div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e468" onclick="toggleDisplay('_details_d6e468')" type="button" value="+"/><div class="detailsBody" id="_details_d6e468" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_06.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class ReportManager {
+    setSourceData(site: Website)
+    determineBaseFilename()
+    writeReportNames(outs: BufferedWriter)
+
+    writeAll()
+}
+
+class ReportWriter {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class TextReportWriter {
+
+}
+
+class JSONReportWriter {
+
+}
+
+class ExcelReportWriter {
+
+}
+
+class WebsiteBuilder {
+    withPath(path: Path)
+    withURL(url: URL)
+    withURLs(urls: Collection&lt;URL&gt;)
+    
+    build() -&gt; Website
+}
+
+class HTMLDocumentBuilder {
+    withContentFrom(reader: BufferedReader)
+    withContentFrom(file: File)
+
+    build() -&gt; HTMLDocument
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+ReportWriter &lt;|-- TextReportWriter
+ReportWriter &lt;|-- JSONReportWriter
+ReportWriter &lt;|-- ExcelReportWriter
+
+ReportManager --&gt; "3" ReportWriter: "creates and manages"
+
+WebsiteBuilder --&gt; Website: "constructs"
+WebsiteBuilder ..&gt; HTMLDocumentBuilder
+HTMLDocumentBuilder --&gt; HTMLDocument: "constructs"
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_06.svg"/></p>
+    <p>Take note of how <code>WebsiteBuilder</code> depends on <code>HTMLDocumentBuilder</code>. While the former may identify files to examine… the latter handles the actual parsing.</p>
+    <p>You will also notice a few <code>with</code> methods. This convention is used to supply <em>arguments</em> or <em>values</em> needed to create a non-trivial object (e.g., one that requires File IO). In general… complicated initialization (e.g. random number generation, file IO, nested object initialization) should <strong>not</strong> be done in a constructor. <em>This is where the builder pattern can be particularly useful.</em></p>
+    <p>The actual object creation does not occur until <code>build</code> is called.</p>
+    <a id="addingafewextractionmethods"/><h2 id="adding-a-few-extraction-methods">3.6 Adding a Few Extraction Methods</h2><p>Let us add the resource extraction methods.</p>
+    <div class="details"><span class="summary">PlantUML Markup</span> <input id="but_details_d6e500" onclick="toggleDisplay('_details_d6e500')" type="button" value="+"/><div class="detailsBody" id="_details_d6e500" style="display: none;">
+<pre><code>@startuml diagrams_uml_class/analysis_07.svg
+hide empty members
+
+class Website {
+    localDirectory: Path
+    urls: Collection&lt;URL&gt;
+}
+
+class HTMLDocument {
+    scripts: Collection&lt;Script&gt;
+    stylesheets: Collection&lt;StyleSheet&gt;
+    images: Collection&lt;Image&gt;
+    anchors: Collection&lt;Anchor&gt;
+}
+
+class Resource {
+    path: Path
+    url: URL
+    foundOn: Collection&lt;HTMLDocument&gt;
+    location: Locality
+    typeOfResource: ResourceKind
+    sizeOfFile: long
+}
+
+class Anchor {
+
+}
+
+class Image {
+}
+
+class Script {
+}
+
+class StyleSheet {
+}
+
+enum Locality &lt;&lt;Enum&gt;&gt; {
+    INTERNAL
+    INTRAPAGE
+    EXTERNAL
+}
+
+enum ResourceKind &lt;&lt;Enum&gt;&gt; {
+    IMAGE
+    STYLESHEET
+    SCRIPT
+    ANCHOR
+    VIDEO
+    AUDIO
+    ARCHIVE
+    OTHER
+}
+
+class ReportManager {
+    setSourceData(site: Website)
+    determineBaseFilename()
+    writeReportNames(outs: BufferedWriter)
+
+    writeAll()
+}
+
+class ReportWriter {
+    website: Website
+
+    setSourceData(site: Website)
+    setBaseName(baseFileName: String)
+
+    write()
+}
+
+class TextReportWriter {
+
+}
+
+class JSONReportWriter {
+
+}
+
+class ExcelReportWriter {
+
+}
+
+class WebsiteBuilder {
+    withPath(path: Path)
+    withURL(url: URL)
+    withURLs(urls: Collection&lt;URL&gt;)
+    
+    build() -&gt; Website
+}
+
+class HTMLDocumentBuilder {
+    withContentFrom(reader: BufferedReader)
+    withContentFrom(file: File)
+    withBaseDirectory(siteRoot: Path)
+    withBaseURLs(urls: Collection&lt;URL&gt;)
+
+    extractAnchors() -&gt; Collection&lt;Resource&gt;
+    extractImages() -&gt; Collection&lt;Resource&gt;
+    extractScripts() -&gt; Collection&lt;Resource&gt;
+    extractStyleSheets() -&gt; Collection&lt;Resource&gt;
+
+    build() -&gt; HTMLDocument
+}
+
+Resource &lt;|-- Image
+Resource &lt;|-- Script
+Resource &lt;|-- StyleSheet
+Resource &lt;|-- Anchor
+
+Website o-- HTMLDocument
+HTMLDocument o-- Resource
+
+ReportWriter &lt;|-- TextReportWriter
+ReportWriter &lt;|-- JSONReportWriter
+ReportWriter &lt;|-- ExcelReportWriter
+
+ReportManager --&gt; "3" ReportWriter: "creates and manages"
+
+WebsiteBuilder --&gt; Website: "constructs"
+WebsiteBuilder ..&gt; HTMLDocumentBuilder
+HTMLDocumentBuilder --&gt; HTMLDocument: "constructs"
+
+@enduml
+</code></pre>
+</div></div><p><img src="diagrams_uml_class/analysis_07.svg"/></p>
+    <p>We have quite a few additions. The first two methods pass in the two pieces of data we need for path normalization and resouce classification:</p>
+    <ul>
+  <li><code>withBaseDirectory(siteRoot: Path)</code></li>
+  <li><code>withBaseURLs(urls: Collection&lt;URL&gt;)</code></li>
+</ul><p>The remaining four (4) methods handle extracting one type of <code>Resource</code>. While we might be able to factor out some common logic (and add a few utility functions)… these four public methods will simplify testing and debugging.</p>
+    <pre><code class="java">    extractAnchors() -&gt; Collection&lt;Resource&gt;
+    extractImages() -&gt; Collection&lt;Resource&gt;
+    extractScripts() -&gt; Collection&lt;Resource&gt;
+    extractStyleSheets() -&gt; Collection&lt;Resource&gt;
+</code></pre><p>Take note of how each method returns a <code>Collection</code> of <code>Resource</code> objects. I will write these functions so that they both:</p>
+    <ol>
+  <li>Store the <code>Resource</code> collection as an attribute (private data member).</li>
+  <li>Return a reference to the collection for testing and debugging purposes.</li>
+</ol><a id="closingremarks"/><h1 id="closing-remarks">4 Closing Remarks</h1><ol>
+  <li>
+    <p>Use <code>BufferedReader</code> for input and <code>BufferedWriter</code> for output. This will  make testing a lot easier.</p>
+    
+    <p>For example… <code>BufferedReader</code> can use either  a <code>File</code> or a <code>String</code> as a data source. This allows us to</p>
+    
+    <ul>
+      <li>
+      <p>read a file in production code.</p>
+    </li>
+      <li>
+      <p>read a short piece of data from a hardcoded string in a unit test.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>There are quite a few missing methods. However, the only classes we need  to add are <code>Exception</code>s, utility classes (e.g., for path normalization),  and a driver class to wrap:</p>
+    
+    <p><code>java
+ public static void main(String... args)
+</code></p>
+    
+  </li>
+  <li>
+  <p>We could simplify the <code>Resource</code> handling by removing <code>Anchor</code> and its  sibling classes (and ~20% of teams in previous Summer Semesters have taken  this approach). However, my approach would introduce a <code>ResourceFactory</code> to  simplify the creation logic.</p>
+    </li>
+  <li>
+  <p>We still need to make sure that each class follows the <a href="https://cs.odu.edu/~tkennedy/cs330/latest/Public/classChecklistCrossLanguage">Java Class  Checklist</a>,  including accessors and mutators.</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Web%20Analysis%20-%20Brainstorming"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

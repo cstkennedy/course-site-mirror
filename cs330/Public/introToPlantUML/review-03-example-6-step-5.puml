@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+class LinkedList {
+    LinkedList.Node head
+    LinkedList.Node tail
+
+    Iterator iterator()
+
+    int size()
+}
+
+class LinkedList.Node {
+    Room data
+    LinkedList.Node currentPosition
+}
+
+class House {
+    Collection rooms
+
+    House()
+    House(String name)
+
+    void addRoom(Room toAdd)
+
+    Iterator iterator()
+
+    int size()
+
+    String toString()
+    boolean equals(Object rhs)
+    int hashCode()
+}
+
+LinkedList *--- LinkedList.Node
+House ----> "collection" LinkedList
+
+@enduml

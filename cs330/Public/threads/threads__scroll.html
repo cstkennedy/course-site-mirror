@@ -1,0 +1,2187 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Multi-Threading : Doing Things in Parallel</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Multi-Threading%20%3A%20Doing%20Things%20in%20Parallel"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Multi-Threading : Doing Things in Parallel</h1><h2 class="author">Steven Zeil</h2><div class="date">Last modified: Dec 29, 2023</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h2"><a href="#fundamental-ideas">1.1 Fundamental Ideas</a></div><div class="toc-h2"><a href="#parallel-versus-concurrent">1.2 Parallel versus Concurrent</a></div><div class="toc-h1"><a href="#spawning-processes">2 Spawning Processes</a></div><div class="toc-h2"><a href="#processes-in-unix-fork">2.1 Processes in Unix - Fork</a></div><div class="toc-h2"><a href="#heavy-light-weight-processes">2.2 Heavy &amp; Light Weight Processes</a></div><div class="toc-h1"><a href="#java-threads">3 Java Threads</a></div><div class="toc-h2"><a href="#taking-the-cheap-way-out">3.1 Taking the Cheap Way Out</a></div><div class="toc-h2"><a href="#working-with-threads">3.2 Working with Threads</a></div><div class="toc-h1"><a href="#interleaving-synchronization">4 Interleaving &amp; Synchronization</a></div><div class="toc-h2"><a href="#safety-and-parallel-programs">4.1 Safety and Parallel Programs</a></div><div class="toc-h2"><a href="#synchronization">4.2 Synchronization</a></div><div class="toc-h1"><a href="#liveness-properties">5 Liveness Properties</a></div><div class="toc-h2"><a href="#deadlock">5.1 Deadlock</a></div><div class="toc-h2"><a href="#livelock">5.2 Livelock</a></div><div class="toc-h2"><a href="#fairness">5.3 Fairness</a></div><div class="toc-h1"><a href="#safety">6 Safety</a></div><div class="toc-h2"><a href="#mutual-exclusion-mechanisms">6.1 Mutual Exclusion Mechanisms</a></div><div class="toc-h1"><a href="#direct-control-of-thread-state">7 Direct Control of Thread State</a></div><div class="toc-h1"><a href="#summing-up">8 Summing Up</a></div></div><p><strong>Parallelism - Motivation</strong></p>
+    <ul>
+  <li>
+  <p>Speed</p>
+    </li>
+  <li>
+  <p>Responsiveness</p>
+    </li>
+  <li>
+  <p>Clean design</p>
+    </li>
+</ul><h1 id="overview">1 Overview</h1><hr/><p><strong>Concurrency</strong></p>
+    <ul>
+  <li>Concurrency refers to the ability of a program to perform  operations in parallel.
+    <ul>
+      <li>
+      <p>Faster on hardware with multiple CPU’s, or CPU’s with  parallel capability</p>
+    </li>
+      <li>
+      <p>Cleaner designs (sometimes) even when only a single CPU  available</p>
+    </li>
+      <li>
+      <p>Allows useful work when waiting for I/O</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="fundamentalideas"/><h2 id="fundamental-ideas">1.1 Fundamental Ideas</h2><hr/><p><strong>Definitions</strong></p>
+    <p/>
+    <ul>
+  <li>
+    <p>Operations are <span class="firstterm">concurrent</span> if they could  be executed in parallel.</p>
+    
+    <ul>
+      <li>
+      <p>Whether they are or not depends on hardware, compiler,  etc.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Operations that must occur in a fixed sequence are  <span class="firstterm">sequential</span>.</p>
+    </li>
+  <li>
+  <p>A <span class="firstterm">process</span> is a sequential  calculation.</p>
+    </li>
+  <li>
+    <p>Implemented in op sys as a separate execution state</p>
+    
+    <ul>
+      <li>
+      <p>execution counter &amp; other registers</p>
+    </li>
+      <li>
+      <p>activation stack</p>
+    </li>
+      <li>
+      <p>possibly other data</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Scheduler</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="processStates.png" style="float: right; max-width: 65%;"/></p>
+    <p>A <span class="firstterm">scheduler</span> is</p>
+    <ul>
+  <li>
+    <p>responsible for deciding</p>
+    
+    <ul>
+      <li>
+      <p>which process gets the CPU,</p>
+    </li>
+      <li>
+      <p>and for how long</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Selection is made from among <span class="emph">ready</span> processes</p>
+    </li>
+</ul><hr/><p><strong>Running Processes</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="processStates.png" style="float: left; max-width: 65%;"/>  A process that is <span class="firstterm">running</span> may </p>
+    <ul>
+  <li>
+    <p>finish its computation</p>
+    
+    <ul>
+      <li>
+      <p><span>⇒</span> <code>terminated</code></p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>lose the CPU when its time slice runs out </p>
+    
+    <ul>
+      <li>
+      <p><span>⇒</span> <code>ready</code></p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>request a slow or unavailable resource </p>
+    
+    <ul>
+      <li>
+      <p><span>⇒</span> <code>blocked</code></p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Blocked Processes</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="processStates.png" style="float: left; max-width: 65%;"/>  A process that is <span class="firstterm">blocked</span> on  some resource </p>
+    <ul>
+  <li>
+  <p>becomes <code>ready</code> when the resource is available</p>
+    </li>
+  <li>
+  <p>still must wait for the scheduler to select it from among  all the ready processes</p>
+    </li>
+</ul><hr/><p><strong>Processes can Interact</strong></p>
+    <p>Communication between process may be via</p>
+    <ul>
+  <li>
+  <p>messages</p>
+    </li>
+  <li>
+    <p>shared variables</p>
+    
+    <ul>
+      <li>
+      <p>“shared” means visible to code of both processes</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Synchronization</strong></p>
+    <span class="firstterm">Synchronization</span><ul>
+  <li>
+  <p>relates two or more threads</p>
+    </li>
+  <li>
+  <p>restricts the order in which the collection of 2 or more  processes can perform events</p>
+    </li>
+  <li>
+  <p>Critical to making concurrent software safe</p>
+    </li>
+</ul><a id="parallelversusconcurrent"/><h2 id="parallel-versus-concurrent">1.2 Parallel versus Concurrent</h2><p>Concurrent software can run in many hardware configurations.  </p>
+    <ul>
+  <li>
+  <p>single processor</p>
+    </li>
+  <li>
+  <p>multi-processor</p>
+    </li>
+  <li>
+  <p>distributed</p>
+    </li>
+</ul><hr/><p><strong>Single Processor</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="single.png" style="float: right; max-width: 30%;"/></p>
+    <ul>
+  <li>
+  <p>one process can run while another is waiting for  I/O</p>
+    </li>
+  <li>
+  <p>time slicing</p>
+    </li>
+  <li>
+    <p>reactive systems </p>
+    
+    <ul>
+      <li>
+      <p>e.g., user manipulates a windowed view of a lengthy  calculation while that calculation is still in  progress</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Multi-Processor</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="multi.png" style="float: right; max-width: 40%;"/></p>
+    <ul>
+  <li>
+    <p>CPU’s may</p>
+    
+    <ul>
+      <li>
+      <p>work on distinct tasks,</p>
+    </li>
+      <li>
+      <p>or cooperate on a common goal</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Any single-CPU software designs can be mapped here</p>
+    </li>
+</ul><hr/><p><strong>Distributed Processors</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="distrib.png" style="float: right; max-width: 60%;"/></p>
+    <ul>
+  <li>
+  <p>“shared” data must be replicated</p>
+    </li>
+  <li>
+    <p>much harder to control</p>
+    
+    <ul>
+      <li>
+      <p>in many cases, the cheapest hardware solution</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>e.g. off-the-shelf workstations connected via a  network</p>
+    </li>
+</ul><hr/><p><strong>Looking Ahead</strong></p>
+    <ul>
+  <li>We’ll concentrate on the shared memory models (single and  multi-processors).</li>
+</ul><a id="spawningprocesses"/><h1 id="spawning-processes">2 Spawning Processes</h1><p>How do we get multiple processes in one program?</p>
+    <ul>
+  <li>
+  <p>Start with one, launch others</p>
+    </li>
+  <li>
+  <p>May eventually need to assemble info from each spawned process  into overall solution</p>
+    </li>
+</ul><a id="processesinunixfork"/><h2 id="processes-in-unix-fork">2.1 Processes in Unix - Fork</h2><ul>
+  <li>
+  <p>Usually, each time you type a command into the shell, a new  process is launched to handle that command.</p>
+    </li>
+  <li>
+  <p>Can also write programs that split into multiple  processes</p>
+    </li>
+</ul><hr/><p><strong>Concurrency in C++/Unix</strong></p>
+    <p>Languages like C and C++ lack built-in support for concurrency.</p>
+    <ul>
+  <li>
+  <p>can sometimes do concurrent programming through special  libraries</p>
+    </li>
+  <li>
+  <p>tend to be OS and compiler-specific</p>
+    </li>
+</ul><hr/><p><strong>Unix Model</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="distrib.png" style="float: right; max-width: 60%;"/> Unix employs a distributed process model.</p>
+    <ul>
+  <li>processes do not share memory but communicate via  messages.</li>
+</ul><hr/><p><strong>Process Control</strong></p>
+    <p>Basic operations:</p>
+    <ul>
+  <li>
+    <p><code>fork()</code> creates a copy of the current process,  identical down to every byte in memory, except that </p>
+    
+    <ul>
+      <li>
+      <p>the <code>fork()</code>call returns 0 to the new copy  (“child”) and</p>
+    </li>
+      <li>
+      <p>it returns the non-zero <span class="firstterm">process ID</span> of the child process to the original “parent”</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p><code>wait(int*)</code> suspends the process until some  child process completes.</p>
+    </li>
+</ul><hr/><p><strong>Example: Forking a Process</strong></p>
+    <pre><code class="cpp"> int status;
+ if (fork() == 0) {
+    /* child 1 */
+     execl("./prog1", "prog1", 0);
+ } else if (fork() == 0) {
+    /* child 2 */
+    execl("./prog2", "prog2", 0);
+ } else {
+    /* parent */
+    wait(&amp;status);
+    wait(&amp;status);
+ }
+</code></pre><hr/><p><strong>Process Communication</strong></p>
+    <p>Unix processes can communicate via a <span class="firstterm">pipe</span>, a communication path that appears to the program as a pair of files, one for input, the other for output.</p>
+    <p>Reading from an empty pipe will block a process until data is available (written into the pipe by another process).</p>
+    <hr/><p><strong>Example of a Pipe</strong></p>
+    <pre><code class="cpp"> char str[6];
+ int mypipe[2];
+ int status;
+ pipe (mypipe); /* establishes a pipe.         */
+                /* We read from mypipe[0] and  */
+                /* write to mypipe[1]          */
+ 
+ if (fork() == 0) {     /* child */
+    read(mypipe[0], str, 6);
+    printf (str);
+ } else { /* parent */
+    write (mypipe[1], "Hello", 6);
+    wait (&amp;status);
+ }
+ close mypipe[0];
+ close mypipe[1];
+
+</code></pre><hr/><p><strong>Overall</strong></p>
+    <p>This approach to process communication is</p>
+    <ul>
+  <li>
+  <p>relatively simple</p>
+    </li>
+  <li>
+    <p>relatively safe - lack of shared memory reduces the  possibilities for processes to interfere with one another</p>
+    
+    <ul>
+      <li>
+      <p>still possible though (e.g., files)</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>awkward for programs that need to pass complex data</p>
+    </li>
+  <li>
+  <p>“heavy weight” - each process is relatively expensive</p>
+    </li>
+</ul><hr/><p><strong>Library vs. Language</strong></p>
+    <p>Library-based concurrency tends to be non-portable.</p>
+    <ul>
+  <li>
+    <p>A big advantage to having concurrency built in as part of  a language standard</p>
+    
+    <ul>
+      <li>
+      <p>But may lead to bad matches with some hardware  configurations</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Only two such languages in common use: Ada and Java</p>
+    </li>
+</ul><a id="heavylightweightprocesses"/><h2 id="heavy-light-weight-processes">2.2 Heavy &amp; Light Weight Processes</h2><p>A Unix process includes its entire memory image</p>
+    <ul>
+  <li>
+  <p>Such <span class="firstterm">heavy-weight</span> processes may consume  a lot of system resource and be slow to start up</p>
+    </li>
+  <li>
+  <p>Discourages programs from spawning large numbers of child  processes</p>
+    </li>
+</ul><hr/><p><strong>Threads</strong></p>
+    <p>A <span class="firstterm">thread</span> is a <span class="firstterm">light-weight</span> process that</p>
+    <ul>
+  <li>
+  <p>Has its own execution location and activation stack</p>
+    </li>
+  <li>
+  <p>Typically shares heap and static memory with its  parent</p>
+    </li>
+</ul><p>Some OS’s support this directly</p>
+    <ul>
+  <li>Otherwise the Java runtime system implements multiple  threads within a single heavy-weight OS process</li>
+</ul><a id="javathreads"/><h1 id="java-threads">3 Java Threads</h1><ul>
+  <li>
+  <p>Java has built-in support for threads</p>
+    </li>
+  <li>
+    <p>In fact, Java programs with GUIs already have 2 or more threads</p>
+    
+    <ul>
+      <li>
+        <p>The <span class="firstterm">initial thread</span> starts in <span class="function">main()</span>.</p>
+    
+        <ul>
+          <li>It usually builds the GUI and signals when it is to be displayed.</li>
+        </ul>
+      </li>
+      <li>
+        <p>The <span class="firstterm">event handler</span> thread waits for input events and invokes the appropriate listeners when the events are detected.</p>
+    
+        <ul>
+          <li><span class="function">repaint()</span> calls are (usually?) handled as a simulated input event: queued up and eventually resulting in a <span class="function">paint()</span>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Example: ThreadArt</strong></p>
+    <ul>
+  <li>
+  <p>As an example of the use of threads in a Java GUI, let’s add some dynamic behavior to the <span class="type">StringArt</span> program of the earlier lesson on Java GUIs</p>
+    </li>
+  <li>
+    <p>The thread will</p>
+    
+    <ul>
+      <li>Increment a counter that ranges from 0 to 99 and then back to zero</li>
+      <li>Schedule a <span class="function">repaint()</span> for each value of the counter</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Using the counter to affect the drawing</strong></p>
+    <pre><code class="cpp"><br/><br/><br/>** Missing file: drawLines.java **
+
+
+
+</code></pre><ul>
+  <li>The <span class="hli">counter</span> is used to
+    <ul>
+      <li>Compute an angle offset
+        <ul>
+          <li>Which is added to the angles at which all points a computed</li>
+        </ul>
+      </li>
+      <li>Interpolate between two colors</li>
+    </ul>
+  </li>
+</ul><a id="takingthecheapwayout"/><h2 id="taking-the-cheap-way-out">3.1 Taking the Cheap Way Out</h2><p>The easiest way to animate this code is to</p>
+    <ul>
+  <li>
+    <p>Add a <span class="hli"><span class="type">Timer</span></span> to the program</p>
+    
+    <ul>
+      <li>Adds an action event to the queue every 50 milliseconds</li>
+    </ul>
+  </li>
+  <li>
+    <p>An <span class="hlii">action listener</span> then can increment the counter</p>
+    
+    <ul>
+      <li>and request a repaint</li>
+    </ul>
+  </li>
+</ul><div class="details"><span class="summary"><a href="ThreadArtByTimer.java" target="listing">ThreadArtByTimer.java</a></span> <input id="but_details_d6e734" onclick="toggleDisplay('_details_d6e734')" type="button" value="+"/><div class="detailPart" id="_details_d6e734"><pre><code id="_details_d6e734_code">import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+
+
+/**
+ * A simple example of GUI event handling in a Java application.
+ * 
+ * This can be run as a main program or as an applet.
+ * 
+ * @author zeil
+ *
+ */
+
+
+public class ThreadArtByTimer extends JApplet {
+
+    private boolean startedInAnApplet;
+
+    // The Model
+    private Color[] colors;
+    private int stepSize = 5;
+
+    private int cycleLength;
+    private int cycleCounter;
+
+    // The View &amp; Controls
+    private JFrame window;
+    private JPanel canvas;
+    private JButton colorChooser1;
+    private JButton colorChooser2;
+    private JTextField stepSizeIn;
+    
+    <span class='hli'>private Timer timer;</span>
+
+
+    private class ColorChooser implements ActionListener {
+        private JButton button;
+        private int colorNum;
+
+        public ColorChooser (JButton button, int colorNum) {
+            this.button = button;
+            this.colorNum = colorNum;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            Color chosen = JColorChooser.showDialog(window, "Choose a color", colors[colorNum]);
+            if (chosen != null) {
+                colors[colorNum] = chosen;
+                setColor (button, chosen);
+                canvas.repaint();
+            }
+        }
+    };
+
+
+    /**
+     * Action that slowly changes the color of the drawing 
+     *
+     */
+    <span class='hlii'>public class ColorChanger implements ActionListener {
+
+        public ColorChanger()
+        {
+        }
+        
+        
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            cycleCounter = (cycleCounter + 1) % cycleLength;
+            canvas.repaint();
+        }
+        
+    }</span>
+
+
+
+
+    public ThreadArtByTimer()
+    {
+        startedInAnApplet = false;
+        window = null;
+        colors = new Color[2];
+        colors[0] = Color.red;
+        colors[1] = Color.blue;
+        cycleLength = 100;
+        cycleCounter = 0;
+    }
+
+
+    public static void main (String[] args)
+    {
+        ThreadArtByTimer instance = new ThreadArtByTimer();
+        instance.createAndShowGUI();  
+    }
+
+    public void createAndShowGUI() {
+        window = new JFrame();
+        // set up the components
+        window.getContentPane().setLayout (new BorderLayout());
+
+        canvas = new JPanel () {
+            public void paint (Graphics g) {
+                super.paint(g);
+                drawLines (g, getSize());
+            }
+        };
+        canvas.setBackground(Color.white);
+        window.getContentPane().add (canvas, BorderLayout.CENTER);
+        canvas.setPreferredSize(new Dimension(400, 400));
+
+        JPanel controls = new JPanel();
+
+        colorChooser1 = new JButton("Color 1");
+        controls.add (colorChooser1);
+        setColor(colorChooser1, colors[0]);
+        colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+
+        colorChooser2 = new JButton("Color 2");
+        controls.add (colorChooser2);
+        setColor(colorChooser2, colors[1]);
+        colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+
+        stepSizeIn = new JTextField (""+stepSize, 5);
+        controls.add (stepSizeIn);
+        stepSizeIn.addActionListener (new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Integer newSize = new Integer(stepSizeIn.getText());
+                    stepSize = newSize.intValue();
+                    canvas.repaint();
+                } catch (Exception ex) {};
+            }
+        });
+
+        window.getContentPane().add (controls, BorderLayout.SOUTH);
+
+        window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+
+
+        <span class='hli'>timer = new Timer(50, new ColorChanger());
+        timer.start();</span>
+
+        window.pack();
+        window.setVisible(true);
+    }
+
+    /**
+     * Sets the background color of a button to the indicated color.
+     * Changes the foreground to wither black or white, depending on
+     * which will give more contrast agasint the new background.
+     * 
+     * @param button
+     * @param color
+     */
+    private void setColor(JButton button, Color color) {
+        button.setBackground(color);
+        int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+        if (brightness &gt; 3*255/2) {
+            // This is a fairly bright color. Use black lettering
+            button.setForeground (Color.black);
+        } else {
+            // This is a fairly dark color. Use white lettering
+            button.setForeground (Color.white);
+        }
+    }
+
+    // Applet functions
+
+    public void init() {
+        startedInAnApplet = true;
+    }
+
+    public void start() {
+        if (window == null)
+            createAndShowGUI();
+    }
+
+    public void stop() {
+    }
+
+    public void destroy() {
+    }
+
+
+
+
+    int interpolate (int x, int y, int i, int steps)
+    {
+        return (i * x + (steps-i)*y) / steps;
+    }
+
+
+    Color interpolate(Color c1, Color c2, int i, int steps)
+    {
+        return new Color (interpolate(c1.getRed(), c2.getRed(), i, steps),
+                interpolate(c1.getGreen(), c2.getGreen(), i, steps),
+                interpolate(c1.getBlue(), c2.getBlue(), i, steps));
+    }
+
+
+    class Point {
+        double x;
+        double y;
+    }
+
+    Point ptOnCircle (int degrees, int radius, Point center) 
+    {
+        Point p = new Point();
+        double theta = Math.toRadians((double)degrees);
+        p.x = center.x + (double)radius * Math.cos(theta);
+        p.y = center.y + (double)radius * Math.sin(theta);
+        return p;
+    }
+
+    public void drawLines(Graphics g, Dimension d)
+    {
+        int dmin = (d.width &lt; d.height) ? d.width : d.height;
+
+        if (stepSize &lt; 1)
+            stepSize = 1;
+
+        Point center = new Point();
+        center.x = (double)d.width/2.0;
+        center.y = (double)d.height/2.0;
+
+        int k = Math.abs(cycleCounter - cycleLength/2);
+        int theta = 60 * cycleCounter / cycleLength; 
+        
+        for (int i = 0; i &lt; 60; ++i) {
+            int radius = dmin/2; //interpolate(dmin/4, dmin/2, k, cycleLength/2);
+            Point origin = ptOnCircle(6*i+theta, radius, center);
+            int j = i + stepSize;
+            while (j &gt;= 60)
+                j -= 60;
+            while (i != j) {
+                Point destination = ptOnCircle(6*j+theta, radius, center);
+                Color c = interpolate(colors[0], colors[1], k, cycleLength/2);
+                g.setColor(c);
+                g.drawLine ((int)origin.x, (int)origin.y,
+                        (int)destination.x, (int)destination.y);
+                j += stepSize;
+                while (j &gt;= 60)
+                    j -= 60;
+            }
+        }
+    }
+
+
+}
+</code></pre></div></div><hr/><p><strong>Let’s Pretend That Never Happened</strong></p>
+    <ul>
+  <li>
+    <p>Timers are easy to work with, but not always powerful enough</p>
+    
+    <ul>
+      <li>Not good if the recurring event may sometimes take a long time
+        <ul>
+          <li>Because it runs in the event handler thread, a time-  consuming listener would “lock up” the GUI</li>
+        </ul>
+      </li>
+      <li>Does not offer very flexible control options</li>
+    </ul>
+  </li>
+  <li>
+    <p>For educational purposes, therefore, let’s look at how we might move that timed action into a separate thread </p>
+    
+    <ul>
+      <li><span class="emph">not</span> the event handler thread</li>
+    </ul>
+  </li>
+</ul><a id="workingwiththreads"/><h2 id="working-with-threads">3.2 Working with Threads</h2><hr/><p><strong>The Java Thread class</strong></p>
+    <ul>
+  <li>
+    <p>Any subclasses of the system class <span class="type">Thread</span> can  have a function member <span class="function">run()</span> that executes as a  distinct process (per object).</p>
+    
+    <ul>
+      <li><span class="emph">Never</span> call <span class="function">run()</span> directory.</li>
+    </ul>
+  </li>
+  <li>
+    <p>A <span class="type">Thread</span> object is not actually a new thread (process)  unless we <span class="function">start()</span> it</p>
+    
+    <ul>
+      <li>
+        <p>The <span class="function">start</span> function</p>
+    
+        <ul>
+          <li>creates a new thread with its own activation stack, but  sharing heap memory with the other threads</li>
+          <li>Starts that thread runnign with a call to the  object’s <span class="function">run()</span> function.</li>
+        </ul>
+      </li>
+      <li>
+      <p>The thread terminates when control returns from <span class="function">run()</span>.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>ThreadArt</strong></p>
+    <div class="details"><span class="summary"><a href="ThreadArt.java" target="listing">ThreadArt.java</a></span> <input id="but_details_d6e849" onclick="toggleDisplay('_details_d6e849')" type="button" value="+"/><div class="detailPart" id="_details_d6e849"><pre><code id="_details_d6e849_code">import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+/**
+ * A simple example of GUI event handling in a Java application.
+ * 
+ * This can be run as a main program or as an applet.
+ * 
+ * @author zeil
+ *
+ */
+
+
+public class ThreadArt extends JApplet {
+
+    private boolean startedInAnApplet;
+
+    // The Model
+    private Color[] colors;
+    private int stepSize = 5;
+
+    private int cycleLength;
+    private int cycleCounter;
+    private boolean running;
+
+    // The View &amp; Controls
+    private JFrame window;
+    private JPanel canvas;
+    private JButton colorChooser1;
+    private JButton colorChooser2;
+    private JTextField stepSizeIn;
+    
+    private Animator colorChanger;
+
+
+    private class ColorChooser implements ActionListener {
+        private JButton button;
+        private int colorNum;
+
+        public ColorChooser (JButton button, int colorNum) {
+            this.button = button;
+            this.colorNum = colorNum;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            Color chosen = JColorChooser.showDialog(window, "Choose a color", colors[colorNum]);
+            if (chosen != null) {
+                colors[colorNum] = chosen;
+                setColor (button, chosen);
+                canvas.repaint();
+            }
+        }
+    };
+
+
+    /**
+     * Thread that slowly changes the color of the drawing 
+     *
+     */
+    public class Animator extends Thread {  &#x2780;
+
+        public Animator()
+        {
+        }
+        
+        
+        public void run()                  &#x2781;
+        {
+            running = true;
+            while (running) {              &#x2782;
+                try {
+                    sleep(50);             &#x2783;
+                } catch (InterruptedException e) {
+                  break;
+                }
+                cycleCounter = (cycleCounter + 1) % cycleLength; &#x2784;
+                canvas.repaint();
+            }
+        }
+        
+    }
+
+
+
+
+    public ThreadArt()
+    {
+        startedInAnApplet = false;
+        window = null;
+        colors = new Color[2];
+        colors[0] = Color.red;
+        colors[1] = Color.blue;
+        cycleLength = 100;
+        cycleCounter = 0;
+        running = false;
+    }
+
+
+    public static void main (String[] args)
+    {
+        ThreadArt instance = new ThreadArt();
+        instance.createAndShowGUI();  
+    }
+
+    public void createAndShowGUI() {
+        window = new JFrame();
+        // set up the components
+        window.getContentPane().setLayout (new BorderLayout());
+
+        canvas = new JPanel () {
+            public void paint (Graphics g) {
+                super.paint(g);
+                drawLines (g, getSize());
+            }
+        };
+        canvas.setBackground(Color.white);
+        window.getContentPane().add (canvas, BorderLayout.CENTER);
+        canvas.setPreferredSize(new Dimension(400, 400));
+
+        JPanel controls = new JPanel();
+
+        colorChooser1 = new JButton("Color 1");
+        controls.add (colorChooser1);
+        setColor(colorChooser1, colors[0]);
+        colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+
+        colorChooser2 = new JButton("Color 2");
+        controls.add (colorChooser2);
+        setColor(colorChooser2, colors[1]);
+        colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+
+        stepSizeIn = new JTextField (""+stepSize, 5);
+        controls.add (stepSizeIn);
+        stepSizeIn.addActionListener (new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Integer newSize = new Integer(stepSizeIn.getText());
+                    stepSize = newSize.intValue();
+                    canvas.repaint();
+                } catch (Exception ex) {};
+            }
+        });
+
+        window.getContentPane().add (controls, BorderLayout.SOUTH);
+
+        window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+
+
+        colorChanger = new Animator();   &#x2785;
+        colorChanger.start();
+
+        window.pack();
+        window.setVisible(true);
+    }
+
+    /**
+     * Sets the background color of a button to the indicated color.
+     * Changes the foreground to wither black or white, depending on
+     * which will give more contrast agasint the new background.
+     * 
+     * @param button
+     * @param color
+     */
+    private void setColor(JButton button, Color color) {
+        button.setBackground(color);
+        int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+        if (brightness &gt; 3*255/2) {
+            // This is a fairly bright color. Use black lettering
+            button.setForeground (Color.black);
+        } else {
+            // This is a fairly dark color. Use white lettering
+            button.setForeground (Color.white);
+        }
+    }
+
+    // Applet functions
+
+    public void init() {
+        startedInAnApplet = true;
+    }
+
+    public void start() {
+        if (window == null)
+            createAndShowGUI();
+    }
+
+    public void stop() {
+    }
+
+    public void destroy() {
+    }
+
+
+
+
+    int interpolate (int x, int y, int i, int steps)
+    {
+        return (i * x + (steps-i)*y) / steps;
+    }
+
+
+    Color interpolate(Color c1, Color c2, int i, int steps)
+    {
+        return new Color (interpolate(c1.getRed(), c2.getRed(), i, steps),
+                interpolate(c1.getGreen(), c2.getGreen(), i, steps),
+                interpolate(c1.getBlue(), c2.getBlue(), i, steps));
+    }
+
+
+    class Point {
+        double x;
+        double y;
+    }
+
+    Point ptOnCircle (int degrees, int radius, Point center) 
+    {
+        Point p = new Point();
+        double theta = Math.toRadians((double)degrees);
+        p.x = center.x + (double)radius * Math.cos(theta);
+        p.y = center.y + (double)radius * Math.sin(theta);
+        return p;
+    }
+
+    public void drawLines(Graphics g, Dimension d)
+    {
+        int dmin = (d.width &lt; d.height) ? d.width : d.height;
+
+        if (stepSize &lt; 1)
+            stepSize = 1;
+
+        Point center = new Point();
+        center.x = (double)d.width/2.0;
+        center.y = (double)d.height/2.0;
+
+        int k = Math.abs(cycleCounter - cycleLength/2);
+        int theta = 60 * cycleCounter / cycleLength; 
+        
+        for (int i = 0; i &lt; 60; ++i) {
+            int radius = dmin/2;
+            Point origin = ptOnCircle(6*i+theta, radius, center);
+            int j = i + stepSize;
+            while (j &gt;= 60)
+                j -= 60;
+            while (i != j) {
+                Point destination = ptOnCircle(6*j+theta, radius, center);
+                Color c = interpolate(colors[0], colors[1], k, cycleLength/2);
+                g.setColor(c);
+                g.drawLine ((int)origin.x, (int)origin.y,
+                        (int)destination.x, (int)destination.y);
+                j += stepSize;
+                while (j &gt;= 60)
+                    j -= 60;
+            }
+        }
+    }
+
+
+}
+</code></pre></div></div><ul>
+  <li>
+  <p><span>➀</span> Here we declare a <span class="type">Thread</span> subclass</p>
+    </li>
+  <li>
+  <p><span>➁</span> … and override the <span class="function">run()</span> function to manage our counter</p>
+    </li>
+  <li>
+  <p><span>➂</span> Loop almost forever</p>
+    </li>
+  <li>
+  <p><span>➃</span> The <span class="function">sleep</span> function blocks the thread for at the indicated number of milliseconds</p>
+    </li>
+  <li>
+    <p><span>➄</span> This is what we came here to do.</p>
+    
+    <p>The <code>repaint()</code> will cause a near-future redraw of the canvas, which will use our new value of <span class="varname">cycleCounter</span></p>
+    
+  </li>
+  <li>
+  <p><span>➅</span> Once the GUI has been set up, we create the new thread object  and <span class="function">start()</span> it.</p>
+    </li>
+</ul><a id="interleavingsynchronization"/><h1 id="interleaving-synchronization">4 Interleaving &amp; Synchronization</h1><ul>
+  <li>
+  <p>In what order do calculations take place?</p>
+    </li>
+  <li>
+  <p>How Does Order Affect Correctness?</p>
+    </li>
+</ul><hr/><p><strong>Interleavings</strong></p>
+    <p>Given 2 processes whose code looks like:</p>
+    <table>
+  <thead>
+    <tr>
+      <th>process 1 </th>
+      <th>process 2 </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>a; </td>
+      <td>x; </td>
+    </tr>
+    <tr>
+      <td>b; </td>
+      <td>y; </td>
+    </tr>
+    <tr>
+      <td>c; </td>
+      <td>z; </td>
+    </tr>
+  </tbody>
+</table><hr/><p><strong>Possible Orderings</strong></p>
+    <p>First statement must be either <code>a</code> or <code>x</code>.</p>
+    <ul>
+  <li>
+  <p>If it’s <code>a</code>, then the 2nd statement executed must  be either <code>b</code> or <code>x</code></p>
+    </li>
+  <li>
+  <p>If it’s <code>x</code>, then the 2nd statement executed must  be either <code>a</code> or <code>y</code></p>
+    </li>
+</ul><hr/><p><strong>Possible Orderings (cont.)</strong></p>
+    <p>Expanding that:</p>
+    <p>First statement must be either <code>a</code> or <code>x</code>.</p>
+    <ul>
+  <li>
+    <p>If it’s <code>a</code>, then the 2nd statement executed must be either <code>b</code> or <code>x</code></p>
+    
+    <ul>
+      <li>
+      <p>If it’s <code>b</code>, then the 3rd must be either <code>c</code> or <code>x</code>.</p>
+    </li>
+      <li>
+      <p>If it’s <code>x</code>, then the 3rd must be either <code>b</code> or <code>y</code>.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>If it’s <code>x</code>, then the 2nd statement executed must be either <code>a</code> or <code>y</code></p>
+    </li>
+</ul><hr/><p><strong>and so on</strong></p>
+    <blockquote>
+  <p><strong>Possible Orderings</strong></p>
+    
+  <p>abcxyz, abxcyz, abxycz,  abxyzc, axbcyz, axbycz, axbyzc, axybcz, axybzc, axyzbc, xabcyz,  xabycz, xabyzc, xaybcz, xaybzc, xayzbc, xyabcz, xyabzc, xyazbc,  xyzabc</p>
+    
+</blockquote><p>Although there are many possibilities, b never precedes a, c never precedes a or b, etc.</p>
+    <hr/><p><strong>Interleavings</strong></p>
+    <p>An <span class="firstterm">interleaving</span> of two sequences <code>s</code> and <code>t</code> is any sequence <code>u</code></p>
+    <ul>
+  <li>formed from the events of <code>s</code> and <code>t</code> such that
+    <ul>
+      <li>
+      <p>the events of <code>s</code> retain their position  relative to one another and</p>
+    </li>
+      <li>
+      <p>the events of <code>t</code> do likewise.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Describing Process Execution</strong></p>
+    <ul>
+  <li>
+    <p>Describe each process as a sequence of “atomic” actions.</p>
+    
+    <ul>
+      <li>
+      <p>What constitutes “atomic” depends on hardware,  compiler, etc.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+    <p>Each interleave of the two processes is a possible execution  order for the program as a whole.</p>
+    
+    <ul>
+      <li>
+      <p>(assuming no synchronization takes place)</p>
+    </li>
+    </ul>
+  </li>
+</ul><a id="safetyandparallelprograms"/><h2 id="safety-and-parallel-programs">4.1 Safety and Parallel Programs</h2><p><strong>Shared Resoruces</strong></p>
+    <p>Processes often compete for shared resources.</p>
+    <ul>
+  <li>
+  <p>I/O devices</p>
+    </li>
+  <li>
+  <p>shared variables</p>
+    </li>
+  <li>
+  <p>files</p>
+    </li>
+</ul><p>In these cases, some interleaves are dangerous.</p>
+    <hr/><p><strong>Safety</strong></p>
+    <p>We say that a nondeterministic program is <span class="firstterm">safe</span> if all of the answers it provides for any input are acceptable.</p>
+    <hr/><p><strong>Example</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+  </tbody>
+</table><p>Assuming that x starts with a value of -1 before the two processes are started, what will the value of x be after both have finished?</p>
+    <hr/><p><strong>We could get: 1</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>
+  <p>process 1 fetches <code>x</code> (-1)</p>
+    </li>
+  <li>
+  <p>process 1 adds 1 to <code>x</code> and stores it (<code>x</code> == 0)</p>
+    </li>
+  <li>
+  <p>process 2 fetches <code>x</code> (0)</p>
+    </li>
+  <li>
+  <p>process 2 adds 1 to <code>x</code> and stores it (<code>x</code> == 1)</p>
+    </li>
+</ul><hr/><p><strong>We could get: 0</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>
+  <p>process 1 fetches <code>x</code> (-1)</p>
+    </li>
+  <li>
+  <p>process 2 fetches <code>x</code> (-1)</p>
+    </li>
+  <li>
+  <p>process 1 adds 1 to (it’s copy of) <code>x</code> and stores it (<code>x</code> == 0)</p>
+    </li>
+  <li>
+  <p>process 2 adds 1 to (it’s copy of) <code>x</code> and stores it (<code>x</code> == 0)</p>
+    </li>
+</ul><hr/><p><strong>Nondeterminism</strong></p>
+    <ul>
+  <li>
+  <p>Now these two alternatives might or might not be bad.</p>
+    </li>
+  <li>
+    <p>Some concurrent programs are specifically designed for a  limited amount of <span class="firstterm">nondeterminism</span>:</p>
+    
+    <ul>
+      <li>The property of having multiple possible answers for the same input</li>
+    </ul>
+  </li>
+  <li>
+  <p>But there are other possibilities as well.  </p>
+    </li>
+</ul><hr/><p><strong>We could get: 65536</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>
+  <p>process 1 fetches <code>x</code> (-1)</p>
+    </li>
+  <li>
+  <p>process 1 adds 1 to (it’s copy of) <code>x</code></p>
+    </li>
+  <li>
+  <p>process 1 begins storing <code>x</code>. Stores the higher two bytes (<code>x</code> == 0000FFFFH)</p>
+    </li>
+  <li>
+  <p>process 2 fetches <code>x</code> (65535)</p>
+    </li>
+  <li>
+  <p>process 1 stores remaining 2 bytes of <code>x</code> (<code>x == 0</code>)</p>
+    </li>
+  <li>
+  <p>process 2 adds 1 to (it’s copy of) <code>x</code> and stores it (<code>x</code>== 65536)</p>
+    </li>
+</ul><hr/><p><strong>65536 : Really?</strong></p>
+    <ul>
+  <li>
+  <p>Admittedly, this requires a different level of atomicity than we  might have expected, but this is not at all impossible in a distributed  system.</p>
+    </li>
+  <li>
+    <p>And it’s a pretty good bet that we would not consider this an  acceptable output of these two processes.</p>
+    
+    <ul>
+      <li>Which implies that this code is <span class="emph">unsafe</span>.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Simultaneous Access to Compound Data</strong></p>
+    <p>More realistically, any kind of compound data structure is likely to be sensitive to simultaneous update by different processes.</p>
+    <p>More specifically,</p>
+    <ul>
+  <li>
+  <p>Simultaneous read-only access is probably safe.</p>
+    </li>
+  <li>
+  <p>Simultaneous updates are likely to be a problem.</p>
+    </li>
+  <li>
+  <p>Simultaneous reading and updating are often a problem as well.</p>
+    </li>
+</ul><hr/><p><strong>Example: Simultaneous Access to a Queue</strong></p>
+    <p>Suppose that we have a queue of customer records,</p>
+    <ul>
+  <li>
+  <p>implemented as a linked list</p>
+    </li>
+  <li>
+  <p>currently holding one record<br/> </p>
+    </li>
+</ul><p><div class="noFloat"> </div>
+    <img src="q1.png" style="float: left; max-width:  50%;"/> Here we show the data and possible implementations of the functions to add to the end and remove from the front.</p>
+    <ul>
+  <li>Verify for yourself that, if either function runs without interruption, this code would work
+    <ul>
+      <li>No matter which of the two runs first.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Queues Interrupted</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="q1.png" style="float: left; max-width:  50%;"/> Now suppose that one process tries to simultaneously add a record to the end, and another one tries to remove a record from the front.</p>
+    <p><div class="noFloat"> </div>
+    <img src="q2.png" style="float: right; max-width:  50%;"/> Assume that the <span class="function">remove()</span> call gets the CPU first.</p>
+    <p><div class="noFloat"> </div>
+    <img src="q3.png" style="float: left; max-width:  50%;"/> And then the <span class="function">add()</span> gets to run for a little while … </p>
+    <p><div class="noFloat"> </div>
+    <img src="q4.png" style="float: right; max-width:  50%;"/> and then control switches back to the <span class="function">remove()</span> call, which runs to the end.</p>
+    <p><div class="noFloat"> </div>
+    <img src="q5.png" style="float: left; max-width:  50%;"/> And finally the <span class="function">add()</span> is allowed to complete.</p>
+    <p>Our queue is now badly mangled.</p>
+    <h2 id="synchronization">4.2 Synchronization</h2><p><span class="firstterm">Synchronization</span> is a restriction of the  possible interleavings of a set of processes.  </p>
+    <ul>
+  <li>(to protect against interleaves that produce undesirable  results.)</li>
+</ul><hr/><p><strong>Synch &amp; Shared Resources</strong></p>
+    <p>Synchronization often takes the form of protecting a shared  resource:</p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>seize(x);</code> </td>
+      <td><code>seize(x);</code> </td>
+    </tr>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+    <tr>
+      <td><code>release(x);</code> </td>
+      <td><code>release(x);</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>Intended meaning of <code>seize</code>:
+    <ul>
+      <li>
+      <p>once a seize of some resource has begun, no other process can begin to seize the same resource until it has been released.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Synchronization Narrows the Options</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th colspan="2">Processes with Shared Variable </th>
+    </tr>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>seize(x);</code> </td>
+      <td><code>seize(x);</code> </td>
+    </tr>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+    <tr>
+      <td><code>release(x);</code> </td>
+      <td><code>release(x);</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>Now only two possible traces:
+    <ul>
+      <li>
+      <p><code>abcxyz</code> and <code>xyzabc</code></p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>A Bullet, but not a Silver One</strong></p>
+    <ul>
+  <li>
+  <p>Synchronization takes different forms</p>
+    </li>
+  <li>
+    <p>It can relieve dangers of shared access</p>
+    
+    <ul>
+      <li>Thereby promoting safety</li>
+    </ul>
+  </li>
+  <li>
+    <p>But it introduces new problems</p>
+    
+    <ul>
+      <li>New kinds of programming errors (e.g., forgetting to  release a seized resource), and</li>
+      <li>Liveness problems</li>
+    </ul>
+  </li>
+</ul><a id="livenessproperties"/><h1 id="liveness-properties">5 Liveness Properties</h1><ul>
+  <li>
+  <p>Synchronization promotes <span class="firstterm">safety</span>: do we  get a “correct” answer?</p>
+    </li>
+  <li>
+  <p>But it may adversely affect <span class="firstterm">liveness</span>: the  rate of progress toward an answer</p>
+    </li>
+</ul><h2 id="deadlock">5.1 Deadlock</h2><p>In <span class="firstterm">deadlock</span>, all processes are waiting on some shared resources, with none of them able to proceed.</p>
+    <hr/><p><strong>Example: The Dining Philosophers</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="philosophers.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li><code>N</code> philosophers sitting at a round table with <code>N</code> plates of spaghetti and <code>N</code> forks, one between each pair of philosophers.
+    <ul>
+      <li>Each philosopher alternately thinks and eats.</li>
+      <li>Each needs two forks to eat.</li>
+      <li>They put down their forks when thinking.</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Simulating the Philosphers</strong></p>
+    <p>Represent each philosopher as an independent process:</p>
+    <pre><code class="cpp"> loop
+    pick up left fork;
+    pick up right fork;
+    eat;
+    release forks;
+    think
+ end loop;
+</code></pre><ul>
+  <li>If all the philosophers are holding the left fork, the  system deadlocks.
+    <ul>
+      <li>And the world has a few less philosophers in it!</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Demo</strong></p>
+    <p>Try running <a href="http://www.cs.odu.edu/~zeil/cs330/DiningPhilosophers/">Sun’s Demo</a> of the dining philosophers.</p>
+    <hr/><p><strong>Avoiding Deadlock</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="orderedphil.png" style="float: right; max-width:  50%;"/></p>
+    <ul>
+  <li>One way to avoid deadlock is a policy of “ordered resource allocation”.
+    <ul>
+      <li>Number all the forks.</li>
+      <li>Require all the philosophers to pick up the  lower-numbered of the two adjacent forks first.  </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>In general…</strong></p>
+    <p>This works very nicely in this specialized case, but there is no general technique for avoiding deadlock in arbitrary situations.</p>
+    <ul>
+  <li>You usually have to rely on careful analysis by the program  designers.</li>
+</ul><h2 id="livelock">5.2 Livelock</h2><p>A system is in <span class="firstterm">livelock</span> if at least one process is not waiting, but the system makes no progress.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<pre><code class="cpp"> loop
+    pick up left fork;
+    seize right fork
+       if available;
+    if seized then
+      eat;
+      release forks;
+    else
+      release left fork;
+    end if;
+    think;
+  end loop;
+</code></pre>
+</div><div class="rightColumn">
+<p>This can get into livelock as each philosopher gets locked into a cycle of: </p>
+    
+<pre><code class="cpp"> pick up left fork;
+ release left fork;
+ pick up left fork;
+ release left fork;
+ pick up left fork;
+ release left fork;
+    &#x22ee;
+
+</code></pre>
+</div></div><h2 id="fairness">5.3 Fairness</h2><p>When multiple processes are waiting for a shared resource, and  that resource becomes available, a <span class="firstterm">scheduler</span> must  decide which of the waiting processes gets the resource.</p>
+    <ul>
+  <li>A scheduler is <span class="firstterm">unfair</span> if it  consistently ignores certain processes.</li>
+</ul><hr/><p><strong>What’s Fair?</strong></p>
+    <p>Precise definition of fairness is difficult. Some possibilities:</p>
+    <ul>
+  <li>
+  <p>Any process that wants to run will be able to do so within a  finite amount of time.  (“<span class="firstterm">finite-progress</span>”)</p>
+    </li>
+  <li>
+    <p>All processes awaiting a now-available resource have an  equal chance of getting it.</p>
+    
+    <ul>
+      <li>
+      <p>Implies that it is possible for some processes to wait  an arbitrarily long time.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Selfish Threads</strong></p>
+    <p>Threads can contribute to unfairness by being “selfish”:</p>
+    <pre><code class="java"> class MyThread extends Thread {
+   &#x22ee;
+   public void run()
+   {
+    while (true)
+      ++counter;
+   }
+ }
+</code></pre><p>Unless the run-time system preempts this thread, it will hog the CPU.</p>
+    <hr/><p><strong>Yielding</strong></p>
+    <pre><code class="cpp"> class MyThread extends Thread {
+   &#x22ee;
+   public void run()
+   {
+    while (true) {
+      ++counter;
+      <span class='hli'>Thread.yield();</span>
+    }
+   }
+ }
+
+</code></pre><p>Java allows threads to signal that they don’t mind losing the CPU by <code>yield</code>ing to other threads.</p>
+    <hr/><p><strong>Thread Priority</strong></p>
+    <p>Java also allows programs to set relative priorities for different threads:</p>
+    <pre><code class="java">Thread cpuHog = new Thread() {
+    &#x22ee;
+};
+cpuHog.setPriority(Thread.MIN_PRIORITY);
+cpuHog.start();
+
+</code></pre><h1 id="safety">6 Safety</h1><p>Concurrent programs are often non-deterministic.</p>
+    <ul>
+  <li>
+  <p>A <span class="firstterm">critical section</span> in a process is a  section of code that must be treated as an atomic action if the  program is to be correct.</p>
+    </li>
+  <li>
+    <p>A concurrent program is safe if its  processes are <span class="firstterm">mutually excluded</span> from being in  two or more critical sections at the same time.</p>
+    
+    <ul>
+      <li>
+        <p>A fairly broad statement. Sometimes we can be more discerning by identifying groups of critical sections that can interfere with one another.</p>
+    
+        <ul>
+          <li>E.g., ones that work on a common shared resource</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><a id="mutualexclusionmechanisms"/><h2 id="mutual-exclusion-mechanisms">6.1 Mutual Exclusion Mechanisms</h2><h3 id="semaphores">6.1.1 Semaphores</h3><p>A <span class="firstterm">semaphore</span> is an ADT with two atomic operations, <code>seize</code> and <code>release</code>, and a hidden integer value.</p>
+    <hr/><p><strong>seize()</strong></p>
+    <ul>
+  <li>
+  <p>If the semaphore value is positive, it is decremented. The  calling process continues.</p>
+    </li>
+  <li>
+  <p>If the semaphore value is zero or negative, the calling  process is blocked and must wait until the value becomes  positive.</p>
+    </li>
+</ul><hr/><p><strong>release()</strong></p>
+    <ul>
+  <li>The semaphore value is incremented. The calling process  continues.
+    <ul>
+      <li>
+      <p>In practice, the scheduler often selects a process blocked on this semaphore to be allowed to immediately attempt to seize it.</p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>General Semaphores</strong></p>
+    <ul>
+  <li>
+    <p>In its most general form, a semaphore can be initialized to any value <code>k</code>, thereby allowing up to <code>k</code> processes to seize it simultaneously.</p>
+    
+    <ul>
+      <li>
+      <p>Usually, we use <span class="firstterm">binary semaphores</span>, which are initialized to 1.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Historically, the <code>seize</code> and <code>release</code> operations were originally  called <code>p</code> and <code>v</code>.</p>
+    </li>
+</ul><hr/><p><strong>Yep, those were semaphores</strong></p>
+    <table>
+  <thead>
+    <tr>
+      <th><strong>process 1</strong> </th>
+      <th><strong>process 2</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>seize(x);</code> </td>
+      <td><code>seize(x);</code> </td>
+    </tr>
+    <tr>
+      <td><code>x = x + 1;</code> </td>
+      <td><code>x = x + 1;</code> </td>
+    </tr>
+    <tr>
+      <td><code>release(x);</code> </td>
+      <td><code>release(x);</code> </td>
+    </tr>
+  </tbody>
+</table><ul>
+  <li>assuming that the semaphore is not “x” itself but is something associated with or labeled as “x”.</li>
+</ul><hr/><p><strong>Dining Philosophers with Semaphores</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="orderedphil.png" style="float: right; max-width:  50%;"/></p>
+    <pre><code class="cpp"> Semaphore fork[N];
+ Philosopher(i):
+ loop
+   int first = min(i, i+1%N);
+   int second = max(i, i+1%N);
+   fork[first].seize();
+   fork[second].seize();
+   eat;
+   fork[first].release();
+   fork[second].release();
+   think;
+ end loop;
+
+</code></pre><hr/><p><strong>Recap</strong></p>
+    <p>Semaphores are relatively low-level approach to synchronization</p>
+    <ul>
+  <li>
+  <p>Although available in Java, should not be used often</p>
+    </li>
+  <li>
+  <p>Monitors and synchronized sections are more elegant</p>
+    </li>
+</ul><h3 id="monitors">6.1.2 Monitors</h3><hr/><p><strong>Monitors</strong></p>
+    <p>A <span class="firstterm">monitor</span> is an ADT in which only one  process at a time can execute any of its member functions.  </p>
+    <ul>
+  <li>Thus all the ADT function bodies are treated as critical  sections.</li>
+</ul><hr/><p><strong>A Common Pattern</strong></p>
+    <ul>
+  <li>
+    <p>A program processes data from an input source that supplies data at a highly variable rate</p>
+    
+    <ul>
+      <li>Sometimes slower than the program processes data</li>
+      <li>Sometimes faster, often in bursts</li>
+    </ul>
+  </li>
+  <li>
+    <p>The program should not “freeze up” when data is unavailable</p>
+    
+    <ul>
+      <li>may have a GUI</li>
+    </ul>
+  </li>
+  <li>
+  <p>The data source must be checked often enough that inputs are  not lost/ignored </p>
+    </li>
+</ul><hr/><p><strong>The Consumer-Producer Pattern</strong></p>
+    <p><div class="noFloat"> </div>
+    <div style="text-align: center'"><img align="center" src="consumerProducer.png" style="max-width: 50%;"/></div>
+    </p>
+    <ul>
+  <li>
+  <p>Producer adds data to a queue</p>
+    </li>
+  <li>
+  <p>Consumer removes data from a queue</p>
+    </li>
+  <li>
+  <p>Each runs as a separate thread</p>
+    </li>
+</ul><p>What could go wrong?</p>
+    <hr/><p><strong>Synchronizing the Queue</strong></p>
+    <p>We have seen earlier that queues are likely unsafe for simultaneous access.</p>
+    <p>We avoid these simultaneous update problems by making the queue synchronized.</p>
+    <hr/><p><strong>Monitored Queue</strong></p>
+    <pre><code class="java"> class MonitoredQueue {
+    private &lt;: ... :&gt;
+    public synchronized
+       void enter(Object) { ... }
+    public synchronized
+      Object front() { ... }
+    public synchronized
+      void leave() { ... }
+    public synchronized
+      boolean empty() { ... }
+    public
+       int maxSize() { ... }
+  }
+
+</code></pre><p>No two threads are allowed to be simultaneously in <code>synchronized</code> member functions of the <span class="emph">same</span> object.</p>
+    <hr/><p><strong>Java Monitors</strong></p>
+    <p>Monitors are the preferred synchronization technique in Java, where they are created by marking functions as “synchronized”.</p>
+    <ul>
+  <li>Each object of type <code>MonitoredQueue</code> is separately  monitored.</li>
+</ul><pre><code class="java">      MonitoredQueue q1 = new MonitoredQueue();
+      MonitoredQueue q2 = new MonitoredQueue();
+</code></pre><ul>
+  <li>
+  <p>If process <code>P1</code> calls <code>q1.enter(x);</code>, then another process <code>P2</code> attempting to obtain <code>q1.front()</code> will be blocked until <code>P1</code>’s call to <code>enter</code> has completed.</p>
+    </li>
+  <li>
+    <p>On the other hand, if process <code>P1</code> calls <code>q1.enter(x)</code></p>
+    
+    <ul>
+      <li>
+      <p>Process <code>P2</code> can simultaneously execute <code>q1.maxSize();</code></p>
+    </li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Monitored Statement Blocks</strong></p>
+    <p>The <code>synchronized</code> member function declaration is a special case of synchronized statement blocks </p>
+    <ul>
+  <li>Suppose we had only a regular queue and were not willing/able to  change its interface.
+    <p>We could still achieve a safe solution by marking the critical  statements in the code as <code>synchronized</code>:</p>
+    
+  </li>
+</ul><div class="details"><span class="summary"><a href="syncblocks.java" target="listing">syncblocks.java</a></span> <input id="but_details_d6e2334" onclick="toggleDisplay('_details_d6e2334')" type="button" value="+"/><div class="detailPart" id="_details_d6e2334"><pre><code id="_details_d6e2334_code"> class Consumer extends Thread {
+    private Queue q;
+ 
+   public void run() {
+      while (true) {
+          <span class='hli'>synchronized (q) {</span>
+            Customer c = q.front();
+            q.leave();
+          };
+          ... process customer ...
+        }
+      }
+   }
+ }
+
+ class Producer extends Thread {
+    private Queue q;
+ 
+   public void run() {
+      while (true) {
+        Customer c = fetchData();
+        <span class='hli'>synchronized (line1) {</span>
+           q.enter(c);
+        }
+     }
+ }
+</code></pre></div></div><hr/><p><strong>Synchronization on Objects</strong></p>
+    <ul>
+  <li>
+    <p>When we mark statements as <code>synchronized</code>, we have to  state explicitly what object we are synchronizing <strong>on</strong>.</p>
+    
+    <ul>
+      <li>
+      <p>When we mark member functions as <code>synchronized</code>, we don’t need  to do so because, implicitly, the object being synchronized on  is <code>this</code>.</p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p><strong>Important:</strong> To actually get synchronization, blocks of  statements must synchronize on the <span class="emph">same</span> object.</p>
+    </li>
+</ul><a id="directcontrolofthreadstate"/><h1 id="direct-control-of-thread-state">7 Direct Control of Thread State</h1><p><strong>Waiting…</strong></p>
+    <p>We often want to make a thread inactive until certain conditions are met.</p>
+    <hr/><p><strong>Busy Wait</strong></p>
+    <p>This is the <span class="emph">bad</span> way to do it:</p>
+    <pre><code class="java">public void run() {
+   while (true) {
+      if (conditionIsMet()) {
+         doSomethingUseful();
+      }
+   }
+}
+
+</code></pre><p>This is a <span class="firstterm">busy wait</span></p>
+    <ul>
+  <li>We continuously burn CPU cycles testing the condition until it becomes true
+    <ul>
+      <li>Makes machine very sluggish</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>Son of Busy Wait</strong></p>
+    <p>Only marginally better:</p>
+    <pre><code class="java">public void run() {
+   while (true) {
+      if (conditionIsMet()) {
+         doSomethingUseful();
+      } else {
+        sleep(100); // wait 0.1 seconds
+      }
+   }
+}
+
+</code></pre><ul>
+  <li>
+  <p>still a busy wait</p>
+    </li>
+  <li>
+  <p>still a bad idea</p>
+    </li>
+</ul><hr/><p><strong>Controlling the Process State</strong></p>
+    <p><div class="noFloat"> </div>
+    <img src="processStates.png" style="float: right; max-width: 65%;"/> A better idea is to</p>
+    <ul>
+  <li>
+  <p><span class="firstterm">block</span> the thread and then</p>
+    </li>
+  <li>
+    <p>make it <span class="firstterm">ready</span> when the condition is met.</p>
+    
+    <ul>
+      <li>(has to be done by some other thread)</li>
+    </ul>
+  </li>
+</ul><hr/><p><strong>wait()</strong></p>
+    <p>If we have a synchronized lock on some object <code>x</code>, then <code>x.wait()</code> will</p>
+    <ul>
+  <li>
+  <p>Put the thread on a “waiting for <code>x</code> queue”</p>
+    </li>
+  <li>
+  <p>Make the thread ineligible for any more CPU time  (<span class="emph">blocked</span>)</p>
+    </li>
+  <li>
+  <p>Release the lock on <code>x</code></p>
+    </li>
+</ul><hr/><p><strong>notifyAll()</strong></p>
+    <p>If we have a synchronized lock on some object <code>x</code>, then <code>x.notifyAll()</code> will</p>
+    <ul>
+  <li>Make all threads on the “waiting for <code>x</code> queue” eligible for CPU time (<span class="emph">ready</span>)</li>
+</ul><hr/><p><strong>Example: Adding a Pause Button to ThreadArt</strong></p>
+    <div class="details"><span class="summary"><a href="ThreadArt2.java" target="listing">ThreadArt2.java</a></span> <input id="but_details_d6e2507" onclick="toggleDisplay('_details_d6e2507')" type="button" value="+"/><div class="detailPart" id="_details_d6e2507"><pre><code id="_details_d6e2507_code">import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+/**
+ * A simple example of GUI event handling in a Java application.
+ * 
+ * This can be run as a main program or as an applet.
+ * 
+ * @author zeil
+ *
+ */
+
+
+public class ThreadArt2 extends JApplet {
+
+    private boolean startedInAnApplet;
+
+    // The Model
+    private Color[] colors;
+    private int stepSize = 5;
+
+    private int cycleLength;
+    private int cycleCounter;
+    private boolean running;
+    
+    // The View &amp; Controls
+    private JFrame window;
+    private JPanel canvas;
+    private JButton colorChooser1;
+    private JButton colorChooser2;
+    private JButton pause;
+    private JTextField stepSizeIn;
+    
+    private Animator colorChanger;
+
+
+    private class ColorChooser implements ActionListener {
+        private JButton button;
+        private int colorNum;
+
+        public ColorChooser (JButton button, int colorNum) {
+            this.button = button;
+            this.colorNum = colorNum;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            Color chosen = JColorChooser.showDialog(window, "Choose a color", colors[colorNum]);
+            if (chosen != null) {
+                colors[colorNum] = chosen;
+                setColor (button, chosen);
+                canvas.repaint();
+            }
+        }
+    };
+
+
+    /**
+     * Thread that slowly changes the color of the drawing 
+     *
+     */
+    public class Animator extends Thread {
+
+        public Animator()
+        {
+        }
+        
+        
+        public void run()
+        {
+            running = true;
+            while (true) {
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                  break;
+                }
+                synchronized (this) {
+                    while (!running) {
+                        try {
+                            wait();                           &#x2782;
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+                    }
+                }
+                cycleCounter = (cycleCounter + 1) % cycleLength;
+                canvas.repaint();
+            }
+        }
+        
+    }
+
+
+
+
+    public ThreadArt2()
+    {
+        startedInAnApplet = false;
+        window = null;
+        colors = new Color[2];
+        colors[0] = Color.red;
+        colors[1] = Color.blue;
+        cycleLength = 100;
+        cycleCounter = 0;
+        running = true;
+    }
+
+
+    public static void main (String[] args)
+    {
+        ThreadArt2 instance = new ThreadArt2();
+        instance.createAndShowGUI();  
+    }
+
+    public void createAndShowGUI() {
+        window = new JFrame();
+        // set up the components
+        window.getContentPane().setLayout (new BorderLayout());
+
+        canvas = new JPanel () {
+            public void paint (Graphics g) {
+                super.paint(g);
+                drawLines (g, getSize());
+            }
+        };
+        canvas.setBackground(Color.white);
+        window.getContentPane().add (canvas, BorderLayout.CENTER);
+        canvas.setPreferredSize(new Dimension(400, 400));
+
+        JPanel controls = new JPanel();
+
+        colorChooser1 = new JButton("Color 1");
+        controls.add (colorChooser1);
+        setColor(colorChooser1, colors[0]);
+        colorChooser1.addActionListener (new ColorChooser(colorChooser1, 0));
+
+        colorChooser2 = new JButton("Color 2");
+        controls.add (colorChooser2);
+        setColor(colorChooser2, colors[1]);
+        colorChooser2.addActionListener (new ColorChooser(colorChooser2, 1));
+
+        stepSizeIn = new JTextField (""+stepSize, 5);
+        controls.add (stepSizeIn);
+        stepSizeIn.addActionListener (new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Integer newSize = new Integer(stepSizeIn.getText());
+                    stepSize = newSize.intValue();
+                    canvas.repaint();
+                } catch (Exception ex) {};
+            }
+        });
+
+        pause = new JButton("Pause");             &#x2780;
+        controls.add (pause);
+        pause.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (running) {
+                    running = false;              &#x2781;
+                    pause.setText("Resume");
+                    pause.repaint();
+                } else {
+                    synchronized (colorChanger) {
+                        running = true;           &#x2783;
+                        pause.setText("Pause");
+                        pause.repaint();
+                        colorChanger.notifyAll();
+                    }
+                }
+            }
+        });
+        
+        
+        window.getContentPane().add (controls, BorderLayout.SOUTH);
+
+        window.setDefaultCloseOperation((startedInAnApplet) ? JFrame.DISPOSE_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+
+
+        colorChanger = new Animator();
+        colorChanger.start();
+
+        window.pack();
+        window.setVisible(true);
+    }
+
+    /**
+     * Sets the background color of a button to the indicated color.
+     * Changes the foreground to wither black or white, depending on
+     * which will give more contrast agasint the new background.
+     * 
+     * @param button
+     * @param color
+     */
+    private void setColor(JButton button, Color color) {
+        button.setBackground(color);
+        int brightness = color.getRed() + color.getGreen() + color.getBlue(); // max of 3*255
+        if (brightness &gt; 3*255/2) {
+            // This is a fairly bright color. Use black lettering
+            button.setForeground (Color.black);
+        } else {
+            // This is a fairly dark color. Use white lettering
+            button.setForeground (Color.white);
+        }
+    }
+
+    // Applet functions
+
+    public void init() {
+        startedInAnApplet = true;
+    }
+
+    public void start() {
+        if (window == null)
+            createAndShowGUI();
+    }
+
+    public void stop() {
+    }
+
+    public void destroy() {
+    }
+
+
+
+
+    int interpolate (int x, int y, int i, int steps)
+    {
+        return (i * x + (steps-i)*y) / steps;
+    }
+
+
+    Color interpolate(Color c1, Color c2, int i, int steps)
+    {
+        return new Color (interpolate(c1.getRed(), c2.getRed(), i, steps),
+                interpolate(c1.getGreen(), c2.getGreen(), i, steps),
+                interpolate(c1.getBlue(), c2.getBlue(), i, steps));
+    }
+
+
+    class Point {
+        double x;
+        double y;
+    }
+
+    Point ptOnCircle (int degrees, int radius, Point center) 
+    {
+        Point p = new Point();
+        double theta = Math.toRadians((double)degrees);
+        p.x = center.x + (double)radius * Math.cos(theta);
+        p.y = center.y + (double)radius * Math.sin(theta);
+        return p;
+    }
+
+    public void drawLines(Graphics g, Dimension d)
+    {
+        int dmin = (d.width &lt; d.height) ? d.width : d.height;
+
+        if (stepSize &lt; 1)
+            stepSize = 1;
+
+        Point center = new Point();
+        center.x = (double)d.width/2.0;
+        center.y = (double)d.height/2.0;
+
+        int k = Math.abs(cycleCounter - cycleLength/2);
+        int theta = 60 * cycleCounter / cycleLength; 
+        
+        for (int i = 0; i &lt; 60; ++i) {
+            int radius = dmin/2; //interpolate(dmin/4, dmin/2, k, cycleLength/2);
+            Point origin = ptOnCircle(6*i+theta, radius, center);
+            int j = i + stepSize;
+            while (j &gt;= 60)
+                j -= 60;
+            while (i != j) {
+                Point destination = ptOnCircle(6*j+theta, radius, center);
+                Color c = interpolate(colors[0], colors[1], k, cycleLength/2);
+                g.setColor(c);
+                g.drawLine ((int)origin.x, (int)origin.y,
+                        (int)destination.x, (int)destination.y);
+                j += stepSize;
+                while (j &gt;= 60)
+                    j -= 60;
+            }
+        }
+    }
+
+
+}
+</code></pre></div></div><ul>
+  <li>
+  <p><span>➀</span> A new button</p>
+    </li>
+  <li>
+  <p><span>➁</span> that sets <span class="varname">running</span> to <code>false</code></p>
+    </li>
+  <li>
+    <p><span>➂</span> which causes the animation thread to block itself, putting it a queue associated with the object <span class="varname">colorChanger</span></p>
+    
+    <p>How does the thread ever get awakened?</p>
+    
+  </li>
+  <li>
+  <p><span>➃</span> Next time we click the button, we set <span class="varname">running</span> to <code>true</code> and <span class="emph">notify</span> all threads (there should only be one) waiting on <span class="varname">colorChanger</span> to make themselves ready. </p>
+    </li>
+</ul><a id="summingup"/><h1 id="summing-up">8 Summing Up</h1><p><strong>Making Things Parallel</strong></p>
+    <ul>
+  <li>
+  <p>Divide the tasks into appropriate threads</p>
+    </li>
+  <li>
+    <p>Examine the threads for shared variables (and other resources)</p>
+    
+    <ul>
+      <li>Consider whether simultaneous access to any of these shared resources could be unsafe.</li>
+    </ul>
+  </li>
+  <li>
+  <p>Add synchronization to prevent unsafe simultaneous access</p>
+    </li>
+  <li>
+  <p>Analyze the synchronization for possible liveness problems</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Multi-Threading%20%3A%20Doing%20Things%20in%20Parallel"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

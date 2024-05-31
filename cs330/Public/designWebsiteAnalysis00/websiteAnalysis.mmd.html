@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Website Analysis - Requirements Definition</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Website%20Analysis%20-%20Requirements%20Definition"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Website Analysis - Requirements Definition</h1><h2 class="author">Thomas J Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#completely-offline-analysis">1 Completely Offline Analysis</a></div><div class="toc-h1"><a href="#overview">2 Overview</a></div><div class="toc-h1"><a href="#background">3 Background</a></div><div class="toc-h1"><a href="#requirements">4 Requirements</a></div><div class="toc-h2"><a href="#operation">4.1 Operation</a></div><div class="toc-h2"><a href="#url-to-path-mapping">4.2 URL to Path Mapping</a></div><div class="toc-h2"><a href="#relative-paths">4.3 Relative Paths</a></div><div class="toc-h2"><a href="#site-boundaries">4.4 Site Boundaries</a></div><div class="toc-h2"><a href="#link-extraction">4.5 Link Extraction</a></div><div class="toc-h2"><a href="#image-analysis">4.6 Image Analysis</a></div><div class="toc-h2"><a href="#javascript-and-css-analysis">4.7 JavaScript and CSS Analysis</a></div><div class="toc-h2"><a href="#output-summary">4.8 Output Summary</a></div><div class="toc-h1"><a href="#deployment">5 Deployment</a></div><div class="toc-h1"><a href="#additional-requirements">6 Additional Requirements</a></div></div><a id="completelyofflineanalysis"/><h1 id="completely-offline-analysis">1 Completely Offline Analysis</h1><p>In multiple places throughout this document I explicitly state that all analysis is to be performed offline (i.e., on a local website copy, on a local filesystem). You <strong>must not</strong> make any accesses to live webpages. Any requirements (Phase 1), user stories (Phase 2), and documentation or code (Phase 3, Phase 4, and Phase 5) that contradict or ignore this constraint will result in <strong>non-trivial</strong> grade penalties.</p>
+    <h1 id="overview">2 Overview</h1><p>A common problem in web development is the minimization of data transfer, historically images. In recent years, the focus has shifted to audio and video content–e.g., the H264 and H265 (HEVC) video codecs.</p>
+    <p>Our interest lies in static content, specifically:</p>
+    <ul>
+  <li>Images (e.g., JPEG, PNG, GIF, and SVG)</li>
+  <li>JavaScript</li>
+  <li>Cascading Style Sheets (CSS)</li>
+  <li>Hyperlinks</li>
+  <li>Data Files
+    <ul>
+      <li>Archives (e.g., .zip, .tar.gz, .tar, .7z)</li>
+      <li>Video (e.g., .mkv, .mp4)
+        <ul>
+          <li>These are based on containers not codecs (e.g., H264 or H265)</li>
+        </ul>
+      </li>
+      <li>Audio (e.g., .m4a, .mka, or .ogg)
+        <ul>
+          <li>These are based on containers not codecs (e.g., mp3 or vorbis)</li>
+        </ul>
+      </li>
+      <li>Other
+        <ul>
+          <li>This is anything that does not fall under another category (e.g.,  .deb, .exe, or .cpp)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul><p>The <a href="http://www.w3schools.com/tags/">W3C</a> provides a general overview of HTML tags. A previous working knowledge of HTML, while helpful, is not expected.</p>
+    <p>This document describes a project, <strong>WebsiteAnalysis</strong>, to an analyze the static content on each page within a <strong>local copy</strong> of a website. This includes an analysis of each page and the site as a whole.</p>
+    <h1 id="background">3 Background</h1><p>This project, <em>WebsiteAnalysis</em>, requires the analysis of HTML content. This project will require the analysis of</p>
+    <ul>
+  <li>Anchor tags, <code>&lt;a href = ...&gt; ... &lt;/a&gt;</code>, for hyperlinks</li>
+  <li>Image tags, <code>&lt;img src = ... /&gt;</code>, for images</li>
+  <li>Link tags, <code>&lt;link ...&gt;</code>, for Cascading Style Sheets (CSS)</li>
+  <li>Script tags, <code>&lt;script ...&gt;&lt;/script&gt;</code>, for JavaScript</li>
+</ul><p>The Wide Web Consortium (W3C) hosts both reference <a href="http://www.w3schools.com/">materials and tutorials</a> for web languages. Take a few minutes to briefly review the documentation for the HTML tags discussed above.</p>
+    <ul>
+  <li><a href="https://www.w3schools.com/html/html_links.asp">Anchor tags</a></li>
+  <li><a href="https://www.w3schools.com/html/html_images.asp">Image tags</a></li>
+  <li><a href="https://www.w3schools.com/html/html_css.asp">Link tags</a></li>
+  <li><a href="https://www.w3schools.com/html/html_scripts.asp">Script tags</a></li>
+</ul><h1 id="requirements">4 Requirements</h1><p>The <em>WebsiteAnalysis</em> system must be cable of classifying the links contained in a local copy of a website. <em>WebsiteAnalysis</em> must be capable of processing sites containing between 1 and 1000 pages. After identifying a set of HTML files, an error message must be output if fewer than 1 page or more than 1000 pages are present.</p>
+    <h2 id="operation">4.1 Operation</h2><p>The system will be operated from a command-line interface.</p>
+    <blockquote>
+  <p>A command-line interface (CLI) accepts all input as command line parameters. It is <em>not</em> an interactive interface that prints prompts to the user requesting the typing of specific information.</p>
+    
+</blockquote><p>The only parameters required at the interface will be the path to local copy of the site and one or more URLs that must–as part of the analysis–be translated–when encountered–to the local directory structure.</p>
+    <p>The system should present appropriate explanatory error messages when presented a path to a non-existent or unreadable directory, or when a URL is malformed.</p>
+    <p>If no command line arguments are provided, an appropriate usage message should be displayed.</p>
+    <blockquote>
+  <p><strong>All work must be done from the local website copy. There must be no accesses to live web content.</strong></p>
+    
+</blockquote><a id="urltopathmapping"/><h2 id="url-to-path-mapping">4.2 URL to Path Mapping</h2><p>The system will work with a local copy of a site. All resources must be <em>translated</em> to reflect this structure. Suppose the system were processing a copy of the course site in a folder</p>
+    <ul>
+  <li><code>/home/tkennedy/cs350/sum23/</code></li>
+</ul><p>with three supplied URLs</p>
+    <ul>
+  <li><code>https://www.cs.odu.edu/~tkennedy/cs350/sum23/</code></li>
+  <li><code>https://www.cs.odu.edu/~tkennedy/cs350/latest/</code></li>
+  <li><code>https://cstkennedy.com/cs350/latest/</code></li>
+</ul><p>The paths</p>
+    <ul>
+  <li><code>https://www.cs.odu.edu/~tkennedy/cs350/sum23/Directory/outline/index.html</code></li>
+  <li><code>https://www.cs.odu.edu/~tkennedy/cs350/latest/Directory/outline/index.html</code></li>
+  <li><code>https://cstkennedy.com/cs350/latest/Directory/outline/</code></li>
+</ul><p>would be translated to</p>
+    <p><code>/home/tkennedy/cs350/sum23/Directory/outline/index.html</code> </p>
+    <p>and then simplified to</p>
+    <p><code>Directory/outline/index.html</code></p>
+    <p>before further processing.</p>
+    <hr/><p>Note that the <em>site root</em> was stripped from both URLs. If the system were processing a directory–e.g.,</p>
+    <pre><code>/home/tkennedy/directory/that/does/not/exist/
+</code></pre><p>the path should be stripped from all processed links. Take as an example</p>
+    <pre><code>/home/tkennedy/directory/that/does/not/exist/
+</code></pre><p>A page within the directory, such as</p>
+    <pre><code>/home/tkennedy/directory/that/does/not/exist/something/page2.htm
+</code></pre><p>should yield the path with <em>site root</em> removed</p>
+    <pre><code>something/page2.htm
+</code></pre><a id="relativepaths"/><h2 id="relative-paths">4.3 Relative Paths</h2><p>It is not uncommon for sites to use relative links–e.g.,</p>
+    <ul>
+  <li><code>./index.html</code></li>
+  <li><code>../../Public/sshLab/</code></li>
+  <li><code>index.htm</code></li>
+</ul><p>Assuming these are referenced from within a document in <code>../../Public/sshLab/</code>, all three paths should evaluate to <code>Public/sshLab/index.htm</code>–assuming the root of the site contains the <code>Public</code> directory.</p>
+    <p>Review the <a href="https://www.cs.odu.edu/~zeil/cs252/latest/Public/basicCommands/index.html#absolute-and-relative-paths">following CS 252 notes</a></p>
+    <a id="siteboundaries"/><h2 id="site-boundaries">4.4 Site Boundaries</h2><p>The system must stop at site boundaries. For example, if the site were run on a directory,</p>
+    <blockquote>
+  <p><code>/home/tkennedy/not/a/directory</code></p>
+    
+</blockquote><p>it should not cross into</p>
+    <blockquote>
+  <p><code>/home/tkennedy/not/a/book</code></p>
+    
+</blockquote><p>The latter path should be considered external–i.e., part of another site. Relative links should be checked against site boundaries–i.e., this site boundary check should occur after a path, is expanded.</p>
+    <p>The system must traverse all static content within the supplied directory.</p>
+    <a id="htmlcontent"/><h3 id="html-content">4.4.1 HTML Content</h3><p>The system must handle any file that contains HTML content–html and htm. As the system must work with a local copy of a site, you will need to handle other extensions–e.g., php and cgi. The system should not assume that a document does–or does not–contain HTML content based on file extensions.</p>
+    <a id="httperrorpages"/><h3 id="http-error-pages">4.4.2 HTTP Error Pages</h3><p>When browsing the web it is possible for links to be invalid–i.e., broken. These include links that result in HTTP 404 errors. Web servers will sometimes return an HTML page containing this error. The system must recognize these pages and discard them during analysis.</p>
+    <blockquote>
+  <p>This analysis should only be performed for local links–i.e., links that reference other parts of the same site.</p>
+    
+</blockquote><a id="linkextraction"/><h2 id="link-extraction">4.5 Link Extraction</h2><div class="noFloat"> </div><div class="sidebar pct50">
+<p>You <del>should probably</del> must list these terms in your SRS</p>
+    
+</div><p>The system must be able to extract the links (anchor tags) from a page. Links should be classified as</p>
+    <ul>
+  <li>Intra-page</li>
+  <li>Intra-site</li>
+  <li>External</li>
+</ul><p>An <strong>intra-page</strong> link is any link that references a part of the current document. Consider the <a class="doc" href="../../Public/syllabus/index.html" target="CS330_Public">syllabus</a>. The table of contents–at the top of the page–is a collection of intra-page links.</p>
+    <p>An <strong>intra-site</strong> link is any link that references another part of the same site. Using the ssh keys lab as an example, the arrow is an example of such a link. It returns you to the course outline. The link from the course outline to the ssh keys lab is another intra-site link.</p>
+    <p>An <strong>external</strong> link is any link that references another site. For example, if I were on a Wikipedia page a link that leads to <code>https://www.google.com</code> would be an external link.</p>
+    <a id="linkanalysis"/><h3 id="link-analysis">4.5.1 Link Analysis</h3><p>As noted <a href="#linkextraction">above</a>, it is possible for multiple URLs–e.g., <code>a.htm</code> and <code>really/long/path/a.htm</code> to reference the same page. The system must recognize such references. All such pages must be processed exactly once. All references (paths and URLs) to the page must be treated as equivalent.</p>
+    <a id="imageanalysis"/><h2 id="image-analysis">4.6 Image Analysis</h2><p>The system must be able to extract the images (<code>&lt;img ...&gt;</code> tags) from a page. Images should be classified as <em>internal</em> or <em>external</em>.</p>
+    <p>For each internal image, the file size shall be recorded. For each page, the URI of each image should be recorded. For each image, the local pages on which it is referenced shall be recorded.</p>
+    <a id="javascriptandcssanalysis"/><h2 id="javascript-and-css-analysis">4.7 JavaScript and CSS Analysis</h2><p>The system must be able to examine CSS files and JavaScript files used in each internal page. Both should be classified as <em>internal</em> or <em>external</em>.</p>
+    <p>For each page, the URI of each script and stylesheet should be recorded. For each item, the local pages on which it is utilized shall be recorded.</p>
+    <p>Only CSS and JavaScript content stored located in separate files shall be analyzed. Inline CSS in the form</p>
+    <pre><code>    &lt;style&gt;
+
+    div.container {
+        width: 80%;
+        margin: 0 auto;
+    }
+    &lt;/style&gt;
+</code></pre><p>and scripts in the form</p>
+    <pre><code>    &lt;script&gt;
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+
+        if (month &gt;= 5 &amp;&amp; month &lt;= 11) {
+            document.write("Fall ");
+        }
+        else {
+            document.write("Spring ");
+        }
+
+        document.write(year);
+    &lt;/script&gt;
+</code></pre><p>should be ignored.</p>
+    <a id="outputsummary"/><h2 id="output-summary">4.8 Output Summary</h2><p>After performing an analysis of every page in the local website the WebAnalysis system should generate three files: </p>
+    <ul>
+  <li>a JSON file (json)</li>
+  <li>a text file (txt)</li>
+  <li>an Excel file (xlsx)</li>
+</ul><p>Each file will be named using the data and time the processing started. File names will take the form <code>YYYYMMDD-hhmmss-summary.{json,txt,xlsx}</code> where:</p>
+    <ul>
+  <li>YYYY is the 4-digit year - 20xx</li>
+  <li>MM is the 2-digit month (zero padded) - 01 to 12</li>
+  <li>DD is the 2-digit day (zero padded) - 01 to 31</li>
+  <li>hh is the 2-digit hour (zero padded) - 00 to 23</li>
+  <li>mm is the 2-digit minute (zero padded) - 00 to 59</li>
+  <li>ss is the 2-digit second (zero padded) - 00 to 59</li>
+</ul><a id="consoleterminalwindow"/><h3 id="console-terminal-window-">4.8.1 Console (Terminal Window)</h3><p>The names of all output files must be written (one per line) to standard out (i.e., the terminal). With the exception of error messages (written to standard error) and usage messages, there should be no other output written to the terminal.</p>
+    <a id="textfile"/><h3 id="text-file">4.8.2 Text File</h3><p>The text file must output all traversed local pages sorted lexicographically by directory-starting with the site root. Each line should take the form:</p>
+    <pre><code>size page
+</code></pre><p>where <code>size</code> is the cumulative size of all images (in MiB to 2 decimal places) on the page, and <code>page</code> is the local file path.</p>
+    <p>The last line of the file shall contain the total size (i.e., sum of all page sizes).</p>
+    <p>This format mirrors what is generated by the Linux <code>du</code> command. Using my CS 330 Review Example directory, I would run</p>
+    <pre><code>du -h --max-depth 1
+</code></pre><p>and receive, as output</p>
+    <pre><code>27M  Review-00-Foundational-Concepts
+6.3M Review-01-CPP-Linked-Lists
+3.6M Review-01-CPP-Templated-Linked-Lists
+3.1M Review-01-Python-Linked-Lists
+15M  Review-02-CPP-Well-Defined-Interfaces
+3.6M Review-02-Java-Well-Defined-Interfaces
+392K Review-02-Python-Well-Defined-Interfaces
+16M  Review-03-CPP-Separation-of-Concerns
+11M  Review-03-Java-Separation-of-Concerns
+392K Review-03-Python-Separation-of-Concerns
+41M  Review-03-Rust-Separation-of-Concerns
+12K  Review-04-Design-1
+80K  Review-04-Design-2
+12K  Review-04-Design-3
+8.0K Review-04-Design-4
+3.6M Review-04-Unit-Testing
+7.8M Review-05-Pointer-Mechanics
+35M  Review-06-CPP-Shapes
+15M  Review-06-Java-Shapes
+142M Review-06-Python-Shapes
+6.5M Review-07-Comparing-Languages
+11M  Review-10-GuiThread
+640K Review-11-Java-Threads
+36K  Review-11-Python-Threads
+68K  Review-12-Python-Patterns
+36K  Review-13-Python-Design-Discussion
+100K Review-14-Python-Builder-Pattern
+221M Review-14-Rust-Builder-Pattern
+680K Review-99-Lecture-Snippets
+</code></pre><p>This is similar to what we want in the summary text file</p>
+    <h3 id="json">4.8.3 JSON</h3><p>The JSON file should describe each page and resource in the site:</p>
+    <ul>
+  <li>One entry per page detailing:
+    <ul>
+      <li>Number of local images</li>
+      <li>Number of external images</li>
+      <li>Number of scripts referenced</li>
+      <li>Number of stylesheets utilized</li>
+      <li>Listing of images</li>
+      <li>Listing of scripts</li>
+      <li>Listing of stylesheets</li>
+      <li>Number of intra-page links</li>
+      <li>Number of inter-site links</li>
+      <li>Number of external links</li>
+    </ul>
+  </li>
+  <li>One entry per image detailing:
+    <ul>
+      <li>Number of pages on which it is displayed</li>
+      <li>Listing of pages on which it is displayed</li>
+    </ul>
+  </li>
+  <li>One entry per archive file detailing
+    <ul>
+      <li>File size</li>
+      <li>Path to resource (relative to local site root)</li>
+    </ul>
+  </li>
+  <li>One entry per video file detailing
+    <ul>
+      <li>File size</li>
+      <li>Path to resource (relative to local site root)</li>
+    </ul>
+  </li>
+  <li>One entry per audio file detailing
+    <ul>
+      <li>File size</li>
+      <li>Path to resource (relative to local site root)</li>
+    </ul>
+  </li>
+  <li>One entry per non-categorized file detailing
+    <ul>
+      <li>File size</li>
+      <li>Path to resource (relative to local site root)</li>
+    </ul>
+  </li>
+</ul><p>The JSON formatting details will be discussed under <em>Design Notes</em> beginning during Project Phase 2.</p>
+    <h3 id="excel">4.8.4 Excel</h3><p>The Excel document will consist of a single Excel workbook with a single sheet named <code>summary</code>. The document will take the form:</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="center"> </th>
+      <th align="center">A </th>
+      <th align="center">B </th>
+      <th align="center">C </th>
+      <th align="right">D </th>
+      <th align="right">E </th>
+      <th align="right">F </th>
+      <th align="right">G </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">1 </td>
+      <td align="center"><strong>Page</strong> </td>
+      <td align="center"><strong># Images</strong> </td>
+      <td align="center"><strong># CSS</strong> </td>
+      <td align="right"><strong>Scripts</strong> </td>
+      <td align="right"><strong># Links (Intra-Page)</strong> </td>
+      <td align="right"><strong># Links (Internal)</strong> </td>
+      <td align="right"><strong># Links (External)</strong> </td>
+    </tr>
+    <tr>
+      <td align="center">2 </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+    </tr>
+    <tr>
+      <td align="center">3 </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+    </tr>
+    <tr>
+      <td align="center">4 </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="center">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+      <td align="right">… </td>
+    </tr>
+  </tbody>
+</table><p>The first row consists of headings. Each reaming row (one per internal) pages lists the indicated counts.</p>
+    <h1 id="deployment">5 Deployment</h1><p><em>WebAnalysis</em> will be delivered as a <code>WebAnalysis.zip</code> archive containing</p>
+    <ul>
+  <li><code>WebAnalysis.jar</code> file containing the compiled code and libraries for the  system.</li>
+  <li>any third-party library jar files required for execution of the system</li>
+  <li>These may be included in WebsiteAnalysis.jar.</li>
+  <li><code>webanalysis.bat</code> file suitable for executing the system on Windows</li>
+  <li><code>webanalysis.sh</code> file containing a shell script suitable for executing the  system on Linux, OS/X, or the Windows Linux Bash Shell.</li>
+</ul><a id="additionalrequirements"/><h1 id="additional-requirements">6 Additional Requirements</h1><p>The system will be implemented in Java 11.</p>
+    <p>The system must run on Windows, Linux, and OS/X systems equipped with an appropriate Java JRE.</p>
+    <p>The system must be able to process sites containing anywhere from zero (0) pages up to ten thousand (1,000) pages.</p>
+    <ul>
+  <li>
+  <p>If a site contains zero pages… analysis should stop with an error message written to standard error and no further output.</p>
+    </li>
+  <li>
+  <p>If a site contains more than 1,000 pages… a warning should be output indicating that analysis is not recommended for “large” sites. Analysis should then continue normally.</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Website%20Analysis%20-%20Requirements%20Definition"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

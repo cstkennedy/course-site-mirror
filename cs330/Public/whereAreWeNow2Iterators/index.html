@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Iterators - The Journey So Far</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Iterators%20-%20The%20Journey%20So%20Far"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Iterators - The Journey So Far</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#beginning-the-journey">1 Beginning the Journey</a></div><div class="toc-h1"><a href="#iterators-in-the-wild">2 Iterators in the Wild</a></div><div class="toc-h2"><a href="#borrowing-existing-iterators">2.1 Borrowing Existing Iterators</a></div><div class="toc-h2"><a href="#running-out-of-luck">2.2 Running Out of Luck</a></div><div class="toc-h1"><a href="#iterators-and-the-big-3">3 Iterators AND The Big-3</a></div><div class="toc-h1"><a href="#moving-from-assignment-1-to-assignment-2">4 Moving from Assignment 1 to Assignment 2</a></div><div class="toc-h1"><a href="#tl-dr">5 TL;DR</a></div></div><a id="beginningthejourney"/><h1 id="beginning-the-journey">1 Beginning the Journey</h1><p>We started the semester with a review of the basics from CS 151 and CS 251 (i.e., everything up to Linked Lists). Review 01 started with:</p>
+    <ul>
+  <li>
+    <p><strong>Example 1</strong> was an implementation of Linked Lists similar to what one would see at the end of CS 251.</p>
+    
+    <ul>
+      <li>I briefly reviewed command line arguments during this example.</li>
+      <li>The Linked List destructor was introduced in this example.</li>
+    </ul>
+  </li>
+  <li>
+  <p><strong>Example 2</strong> was a similar implementation, but with the Node <code>class</code> moved within the scope of the <code>LinkedList</code> class.</p>
+    </li>
+</ul><p>The next example (Example 3) brought in a few best practices (with particular emphasis on <code>clone</code>). The notion of a dedicated inner <code>Iterator</code> class was introduced.</p>
+    <a id="iteratorsinthewild"/><h1 id="iterators-in-the-wild">2 Iterators in the Wild</h1><p>Review 02 &amp; Module 4 (Working with Iterators) were the beginning of the CS 330 level material (i.e., the first round of entirely new material). Review 02 focused on iterators.</p>
+    <p>In CS 151 and CS 251 when we needed to iterate over a collection of data, we needed to <a class="doc" href="../../Public/designDiscussionIterators/index.html#java-data-structure-specific-loops" target="CS330_Public">write data structure specific code</a>. We want to be able to write generic loops (i.e., loops that can be written once, with the details wrapped up in a convenient package). <a class="doc" href="../../Public/designDiscussionIterators/index.html#java-abstraction-iterators" target="CS330_Public">Iterators provide this package</a>.</p>
+    <a id="borrowingexistingiterators"/><h2 id="borrowing-existing-iterators">2.1 Borrowing Existing Iterators</h2><p>Review 2 started with the basics of Iterators. Before covering how to implement the <code>Iterable</code> and <code>Iterator</code> interfaces.</p>
+    <a id="runningoutofluck"/><h2 id="running-out-of-luck">2.2 Running Out of Luck</h2><p>Linked Lists required us to implement iterators from the ground up (i.e., write wrappers around the Linked List operations used in Review 01 and Assignment 1).</p>
+    <p>Every time we work with a data structure we end up with a combination of four operations:</p>
+    <ul>
+  <li>Initialization</li>
+  <li>End of Collection Check</li>
+  <li>Dereferece</li>
+  <li>Increment</li>
+</ul><table>
+  <thead>
+    <tr>
+      <th align="center">Interface </th>
+      <th align="center">Initialization </th>
+      <th align="center">End Of Collection Check </th>
+      <th align="center">Dereference </th>
+      <th align="center">Increment </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">Array </td>
+      <td align="center"><code>int i = 0</code> </td>
+      <td align="center"><code>i &lt; size</code> </td>
+      <td align="center"><code>someArray[i]</code> </td>
+      <td align="center"><code>i++</code> </td>
+    </tr>
+    <tr>
+      <td align="center">Linked List </td>
+      <td align="center"><code>Node it = head</code> </td>
+      <td align="center"><code>it != nullptr</code> </td>
+      <td align="center"><code>it.data</code> </td>
+      <td align="center"><code>it = it.next</code> </td>
+    </tr>
+    <tr>
+      <td align="center">Iterator </td>
+      <td align="center"><code>Iterator it = something.iterator()</code> </td>
+      <td align="center"><code>it.hasNext()</code> </td>
+      <td align="center"><code>it.next()</code> </td>
+      <td align="center"><code>it.next()</code> </td>
+    </tr>
+  </tbody>
+</table><p><strong>Iterators allow us to define a common interface and hide away the details.</strong></p>
+    <a id="iteratorsandthebig3"/><h1 id="iterators-and-the-big-3">3 Iterators AND The Big-3</h1><p>Review 03 combined Review 01 (Big-3) and Review 02 (Iterators).</p>
+    <ul>
+  <li>
+  <p><strong>Example 1</strong> and <strong>Example 2</strong> combine these discussion for Arrays and Linked Lists (i.e.., cover iterators, memory leaks, and the Big-3).</p>
+    </li>
+  <li>
+  <p><strong>Example 3</strong> is where we started to play with the Java <code>Stream</code> functions.</p>
+    </li>
+</ul><a id="movingfromassignment1toassignment2"/><h1 id="moving-from-assignment-1-to-assignment-2">4 Moving from Assignment 1 to Assignment 2</h1><p>If you understand the mechanics from Review 02 (i.e., how to use iterators), you have everything you need to complete Assignment 2.</p>
+    <p>The key difference between Assignment 1 and Assignment 2 is level of abstraction. In Assignment 1 you implemented the Linked List logic as part of the assignment. All other functions worked directly with the Linked List.</p>
+    <p>In Assignment 2, you need to rewrite those Linked List specific loops. Instead of working <code>Node</code>s, you are now working with Iterators (i.e., one level of abstraction above Assignment 1).</p>
+    <a id="tldr"/><h1 id="tl-dr">5 TL;DR</h1><p><strong>TL;DR</strong> - Iterators are our current Abstraction case study. They are new. This is the first time you are working with them.</p>
+    <ul>
+  <li>
+  <p>Reading examples and watching recordings gives us a baseline understanding.</p>
+    </li>
+  <li>
+  <p>You will not truly understand iterators until you have worked with them (i.e., written code that uses them) a few times.</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Iterators%20-%20The%20Journey%20So%20Far"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

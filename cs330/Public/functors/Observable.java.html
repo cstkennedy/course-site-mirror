@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Observable.java</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Observable.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Observable.java</h1></div><pre><code>package java.util;
+
+/**
+ * This class represents an observable object, or "data"
+ * in the model-view paradigm. 
+ *
+ * An observable object can have one or more observers. After an 
+ * observable instance changes, an application calling the 
+ * Observable's notifyObservers method  
+ * causes all of its observers to be notified of the change by a call 
+ * to their update method. 
+ */
+public class Observable {
+    //\\vdots 
+
+  public Observable() {/*{\ldots}*/}
+
+    /**
+     * Adds an observer to the set of observers for this object. 
+     */
+  public synchronized void addObserver(Observer o) {/*{\ldots}*/}
+
+    /**
+     * Deletes an observer from the set of observers of this object. 
+     */
+      public synchronized void deleteObserver(Observer o) {/*{\ldots}*/}
+
+    /**
+     * If this object has changed, as indicated by the 
+     * hasChanged method, then notify all of its observers 
+     * and then call the clearChanged method to 
+     * indicate that this object has no longer changed. 
+     */
+  public void notifyObservers() {/*{\ldots}*/}
+  public void notifyObservers(Object arg) {/*{\ldots}*/}
+
+    /**
+     * Clears the observer list so that this object no longer has any observers.
+     */
+  public synchronized void deleteObservers() {/*{\ldots}*/}
+
+    /**
+     * Indicates that this object has changed. 
+     */
+  protected synchronized void setChanged() {/*{\ldots}*/}
+
+    /**
+     * Indicates that this object has no longer changed, or that it has 
+     * already notified all of its observers of its most recent change. 
+     */
+  protected synchronized void clearChanged() {/*{\ldots}*/}
+
+    /**
+     * Tests if this object has changed. 
+     */
+  public synchronized boolean hasChanged() {/*{\ldots}*/}
+
+    /**
+     * Returns the number of observers of this object.
+     */
+  public synchronized int countObservers() {/*{\ldots}*/}
+}
+</code></pre><p><a href="Observable.java">unformatted source</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Observable.java"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

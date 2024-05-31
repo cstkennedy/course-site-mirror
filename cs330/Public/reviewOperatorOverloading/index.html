@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Review - Operator Overloading</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Review%20-%20Operator%20Overloading"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Review - Operator Overloading</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-big-picture">1 The Big Picture</a></div><div class="toc-h1"><a href="#an-example-class">2 An Example Class</a></div><div class="toc-h2"><a href="#the-stream-insertion-operator">2.1 The Stream Insertion Operator</a></div><div class="toc-h2"><a href="#the-logical-equivalence-operator">2.2 The Logical Equivalence Operator</a></div></div><a id="thebigpicture"/><h1 id="the-big-picture">1 The Big Picture</h1><p>Operator overloading refers to the process of defining what an operator means for a given ADT (in C++, a <code>class</code> or <code>struct</code>). If you look ahead to the <a class="doc" href="../../Public/reviewCPPChecklist/index.html" target="CS330_Public">C++ class checklist</a>… you will find that we usually focus on a few operators:</p>
+    <ul>
+  <li>Assignment operator (<code>operator=</code>) as part of the Big-3</li>
+  <li>Logical Equivalence operator (<code>operator==</code>)</li>
+  <li>“Less than” or “comes before” operator (<code>operator&lt;</code>)</li>
+  <li>Stream insertion or “output” or “<code>cout</code> operator” (<code>operator&lt;&lt;</code>)</li>
+</ul><p>However, there are far more operators that we can <strong>mechanically</strong> overload, including:</p>
+    <ul>
+  <li>
+    <p>Comparison operators</p>
+    
+    <ul>
+      <li><code>operator&lt;</code></li>
+      <li><code>operator&lt;=</code></li>
+      <li><code>operator==</code></li>
+      <li><code>operator!=</code></li>
+      <li><code>operator&gt;</code></li>
+      <li><code>operator&gt;=</code></li>
+      <li>C++20 adds the spaceship operator (<code>operator&lt;&gt;</code>)!</li>
+    </ul>
+  </li>
+  <li>
+    <p>Arithmetic operators</p>
+    
+    <ul>
+      <li><code>operator+</code></li>
+      <li><code>operator+=</code></li>
+      <li><code>operator-</code></li>
+      <li><code>operator-=</code></li>
+      <li><code>operator*</code></li>
+      <li><code>operator*=</code></li>
+      <li><code>operator/</code></li>
+      <li><code>operator/=</code></li>
+    </ul>
+  </li>
+  <li>
+    <p>Memory allocation</p>
+    
+    <ul>
+      <li><code>operator new</code></li>
+    </ul>
+  </li>
+</ul><p>There are a few more.. but we need only remember two things:</p>
+    <ol>
+  <li>
+  <p>Not all operators need to be defined for every ADT, nor does overloading  a given operator necessarily make sense.</p>
+    </li>
+  <li>
+  <p>For a few operators (namely the logical equivalence operators), the  compiler can build a few for us (e.g., using <code>std::rel_ops</code>).</p>
+    </li>
+</ol><a id="anexampleclass"/><h1 id="an-example-class">2 An Example Class</h1><p>Let us suppose that we are defining a new ADT using a class… an <code>IntegerList</code> ADT.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: IntegerList Header File (`IntegerList.h`)</div>
+<pre><code class="cpp">/**
+ * A container class for storing, accessing, and retrieving a sequence of
+ * integers.
+ */
+class IntegerList
+{
+    private:
+        /**
+         * The internal, encapsulated, data structure where numbers are
+         * actually stored. 
+         */
+        std::vector&lt;int&gt; theNumbers;
+
+    public:
+        /**
+         * This is the default constructor. Set up an empty list.
+         */
+        IntegerList();
+
+        /**
+         * This is the copy constructor. Set up a duplicate copy of an existing
+         * list.
+         *
+         * @param src existing IntegerList object to copy
+         */
+        IntegerList(const IntegerList&amp; src);
+
+        /**
+         * The Destructor can be generated automatically by the compiler in
+         * this case. However, modern best practice all-but-requires us to
+         * explicitly state our intentions.
+         *
+         * This only works when we know that we will not be working with
+         * pointers.
+         */
+        ~IntegerList() = default;
+
+        /**
+         * Add an integer to the list.
+         *
+         * @param aNewInt integer to add
+         */
+         void add(int aNewInt);
+
+        /**
+         * Compare two IntegerList objects for equivalance.
+         *
+         * @param rhs the righ-hand-side (lhs &lt; rhs) IntegerList
+         *
+         * @returns true if the two IntegerLists contain the same integers in
+         * the same order.
+         */
+         bool operator==(const IntegerList&amp; rhs) const;
+
+         /**
+          * This is a display helper function that will be called by the stream
+          *  insertion operator.
+          * 
+          * @param outs output desitation (e.g., `cout`)
+          */
+         void display(std::ostream&amp; outs) const;
+}
+
+/**
+ * Overloaded stream insertion operator. Output each number one per line.
+ *
+ * @param toPrint the IntegerList to print/display
+ */
+inline
+std::ostream operator&lt;&lt;(std::ostream&amp; outs, const IntegerList&amp; toPrint)
+{
+    toPrint.display(outs);
+
+    return outs;
+}
+</code></pre>
+</blockquote><p>Note that this class is not complete. It is missing a few items from the <a class="doc" href="../../Public/reviewCPPChecklist/index.html" target="CS330_Public">C++ Class Checklist</a> and <a class="doc" href="../../Public/classChecklistCrossLanguage/index.html" target="CS330_Public">general class checklist</a>. For now we will focus on two operators:</p>
+    <ul>
+  <li><code>operator==</code></li>
+  <li><code>operator&lt;&lt;</code></li>
+</ul><a id="thestreaminsertionoperator"/><h2 id="the-stream-insertion-operator">2.1 The Stream Insertion Operator</h2><p>Let us start with the stream insertion operator (<code>operator&lt;&lt;</code>).</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Stream Insertion Operator</div>
+<pre><code class="cpp">/**
+ * Overloaded stream insertion operator. Output each number one per line.
+ *
+ * @param toPrint the IntegerList to print/display
+ */
+inline
+std::ostream operator&lt;&lt;(std::ostream&amp; outs, const IntegerList&amp; toPrint)
+{
+    toPrint.display(outs);
+
+    return outs;
+}
+</code></pre>
+</blockquote><p>Take note of a few things:</p>
+    <ol>
+  <li>
+  <p>It is an <code>inline</code> function in a header file. Since it is little more than  a convenient wrapper for <code>display</code>… there is no need to place it in  <code>IntegerList.cpp</code>. However, IntegerList::display<code>'s definition will be
+ located in</code>IntegerList.cpp`</p>
+    </li>
+  <li>
+  <p><code>const</code> correctness - <code>toPrint</code> is passed by constant reference. This  allows direct read-only access to the IntegerList object <strong>and</strong>  guarantees that no changes are made to the list.</p>
+    </li>
+  <li>
+  <p><code>operator&lt;&lt;</code> is not implemented as a member function. This operator can  only be implemented as a wrapper function (as shown in this example) or as  a <code>friend</code> function. In general… <code>friend</code> functions should be avoided.</p>
+    </li>
+</ol><blockquote class="example" id="example3"><div class="exampleTitle">Example 3: display Definition (from IntegerList.cpp)</div>
+<pre><code class="cpp">//------------------------------------------------------------------------------
+void IntegerList::display(std::ostream&amp; outs) const
+{
+    const int numInts = theNumbers.size();
+
+    for (int i = 0; i &lt; numInts; i++) {
+        outs &lt;&lt; theNumbers[i] &lt;&lt; "\n";
+    }
+}
+</code></pre>
+</blockquote><p>Notice the trailing <code>const</code> after the definition. This “first” <code>const</code> forces this member function to be read-only. It can access the list, but not change any data (e.g., add or remove numbers). How surprised would you be if you output a list and a few numbers disappeared? </p>
+    <a id="thelogicalequivalenceoperator"/><h2 id="the-logical-equivalence-operator">2.2 The Logical Equivalence Operator</h2><blockquote class="example" id="example4"><div class="exampleTitle">Example 4: operator== Definition (from IntegerList.cpp)</div>
+<pre><code class="cpp">//------------------------------------------------------------------------------
+void IntegerList::operator==(const IntegerList&amp; rhs) const
+{
+    // If the two lists are not of the same length, they are guaranteed not to
+    // contain the same numbers..
+    if (this-&gt;theNumbers.size() != rhs.theNumbers.size()) {
+        return false;
+    }
+
+    // Use a reference variable for convenience and readability
+    const IntegerList&amp; lhs = *this; 
+
+    const int numInts = lhs.theNumbers.size();
+
+    for (int i = 0; i &lt; numInts; i++) {
+        if (lhs.theNumbers[i] != rhs.theNumbers[i]) {
+            return false;
+        }
+    }
+
+    // If this statement is reached, the two lists are identical.
+    return true;
+}
+</code></pre>
+</blockquote><p>Note how much more <strong>fun</strong> this operator is to implement! Take note of a few things:</p>
+    <ul>
+  <li>
+  <p><code>const</code> correctness - both <code>this</code> and <code>rhs</code> can only be read. They can not be changed.</p>
+    </li>
+  <li>
+    <p><code>const IntegerList&amp; lhs = *this;</code> - This line is quite convenient.</p>
+    
+    <ul>
+      <li>
+      <p>Reference variables allow more convenient names (and access) to existing  variables. In fact… these are what pass-by-reference uses!</p>
+    </li>
+      <li>
+      <p><code>this</code> is the self pointer. It is always a pointer to the current object.  Note that other languages (namely Python and Rust) use <code>self</code> instead  (which is a much better choice… in my opinion).</p>
+    </li>
+    </ul>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Review%20-%20Operator%20Overloading"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

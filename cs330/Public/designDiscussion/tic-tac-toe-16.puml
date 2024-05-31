@@ -1,0 +1,16 @@
+@startuml
+hide empty members
+
+class Player {
+    name
+    symbol
+
+    nextMove(theBoard : Board)
+    isHuman()
+    isComputer()
+}
+
+Player <|---- HumanPlayer
+Player <|---- ComputerPlayer
+
+@enduml

@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-slides.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-slides-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-slides.js" type="text/javascript"> </script><script src="../../styles/md-slides-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Language Checklists & UML Class Diagrams</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 11};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"><a class="slideshowcontrol" onclick="sshow2start(sshowControl0)" title="start"><img alt="first" src="../../graphics/first.png"/></a><span style="minWidth: 2ex;">  </span><a class="slideshowcontrol" onclick="sshowback(sshowControl0)" title="previous"><img alt="prev" src="../../graphics/prev.png"/></a></td><td class="slideshowcontrolMiddle"><span id="slideshowpositionA0">1 of 10</span>
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Language%20Checklists%20%26%20UML%20Class%20Diagrams"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="introToPlantUML__scroll.html"><img src="../../graphics/scroll.png" title="single-page HTML version"/></a></td><td class="slideshowcontrolRight"><a class="slideshowcontrol" onclick="sshowforward(sshowControl0)" title="next"><img alt="next" src="../../graphics/next.png"/></a><span style="minWidth: 2ex;">  </span><a class="slideshowcontrol" onclick="sshow2end(sshowControl0)" title="last"><img alt="last" src="../../graphics/last.png"/></a></td></tr></table></div><div class="page" id="slide-0-0"><div class="titleblock"><h1 class="title">Language Checklists &amp; UML Class Diagrams</h1><h2 class="author">Thomas Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#keeping-track-of-the-pieces">1 Keeping Track of the Pieces</a></div><div class="toc-h1"><a href="#drawing-uml-class-diagrams">2 Drawing UML Class Diagrams</a></div><div class="toc-h2"><a href="#an-old-example">2.1 An (old?) Example</a></div><div class="toc-h2"><a href="#refining-the-diagram">2.2 Refining the Diagram</a></div><div class="toc-h2"><a href="#the-pieces-remaining-coherent">2.3 The Pieces &amp; Remaining Coherent</a></div><div class="toc-h1"><a href="#let-us-stop-here">3 Let Us Stop Here</a></div></div></div><div class="page" id="slide-0-1" style="display: none;"><p>One of the most difficult aspects of discussing object oriented code is visualizing the pieces. To visualize classes and ADTs we can use UML Class diagrams.</p>
+    <p>We will revisit Review 03 (Example 6) and build UML Class diagrams with <a href="http://plantuml.com/class-diagram">PlantUML</a>.</p>
+    <p>The recorded discussion is available <a href="https://youtu.be/GybR1wL_zzQ">here</a>.</p>
+    </div><!--end page 1--><div class="page" id="slide-0-2" style="display: none;"><a id="keepingtrackofthepieces"/><h1 id="keeping-track-of-the-pieces">1 Keeping Track of the Pieces</h1><p>Take another look through:</p>
+    <ul>
+  <li><a href="https://github.com/cstkennedy/cs330-examples">Review 01, Review 02, and Review 03</a>.</li>
+  <li>Assignment 1</li>
+  <li>Assignment 2</li>
+</ul><p>The number of classes (ADTs) ranges from 1 to 5. Think back to when you started Assignment 1. After reading the prompt:</p>
+    <ol>
+  <li><em>What was your first step?</em></li>
+  <li>Where did you start?</li>
+  <li>Did you try to examine all the pieces… at once?</li>
+</ol><p>The title of CS 330 is <strong>Object Oriented</strong> Programming and <strong>Design</strong>. We need a way to illustrate classes and objects. Let us start with UML Class diagrams.</p>
+    </div><!--end page 2--><div class="page" id="slide-0-3" style="display: none;"><a id="drawingumlclassdiagrams"/><h1 id="drawing-uml-class-diagrams">2 Drawing UML Class Diagrams</h1><p>You might be familiar with <a href="http://dia-installer.de/">Dia</a> or <a href="https://www.draw.io/">Draw.io</a>. I quickly become frustrated by the amount of clicking required to create, or edit, even a basic UML Class diagram.</p>
+    <p>In class, and in the notes I reference Dia. As a Programmer–who likes vim and <a href="https://neovim.io/">neovim</a>–I like my keyboard, and dislike my mouse. For this discussion I will use <a href="http://plantuml.com/class-diagram">PlantUML</a> Class Diagram syntax. You can either:</p>
+    <ul>
+  <li>Set up <a href="http://plantuml.com/starting">PlantUML</a> on your own machine</li>
+  <li>Use <a href="https://www.planttext.com/">a web interface</a></li>
+</ul></div><!--end page 3--><div class="page" id="slide-0-4" style="display: none;"><a id="anoldexample"/><h2 id="an-old-example">2.1 An (old?) Example</h2><p>Let us revisit <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-03-Java-Separation-of-Concerns">Review 03 Example 2</a>. Let us start with some quick markup:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>This is the <strong>start</strong> of an initial diagram. It is woefully incomplete. We are left with quite a few questions:</p>
+    
+<ol>
+  <li>What is the purpose of each class?</li>
+  <li>How are the classes related?</li>
+  <li>What data does each class manage?</li>
+  <li>What are the operations (or behaviors) of each class?</li>
+</ol>
+</div><pre><code>@startuml
+hide empty members
+
+class LinkedList {
+
+}
+
+class LinkedList::Node {
+
+}
+
+class House {
+
+}
+
+class Room {
+
+}
+
+@enduml
+</code></pre><p>This markup will generate:</p>
+    <p><img src="review-03-example-6-step-1.svg"/></p>
+    </div><!--end page 4--><div class="page" id="slide-0-5" style="display: none;"><a id="refiningthediagram"/><h2 id="refining-the-diagram">2.2 Refining the Diagram</h2><p>If we think back to <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-03-Java-Separation-of-Concerns">Review 03 Example 2</a>, we will recall a number of connections between classes. Let us take a step back. We want to model the <em>Big Picture</em>.</p>
+    <p><img src="review-03-example-6-step-2.svg"/></p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>We have quite a few pieces of markup:</p>
+    
+<ul>
+  <li><code>@startuml</code> and <code>@enduml</code> denote the beginning and end, respectively.</li>
+  <li><code>left to right direction</code> forces PlantUML to draw everything horizontally (vs vertically).</li>
+  <li><code>hide empty members</code> hides the empty <em>attribute</em> and <em>behavior</em> sections of each class.</li>
+  <li><code>class ... { ... }</code> represents a class (ADT).</li>
+  <li><code>A *-------- B</code> represents a composition relationship between classes <code>A</code> and <code>B</code>.</li>
+  <li><code>A --------&gt; "desired role" B</code> represents a directed association between <code>A</code> and <code>B</code>. <code>B</code> has a named role.</li>
+</ul>
+</div><pre><code>@startuml
+left to right direction
+
+hide empty members
+
+class LinkedList {
+
+}
+
+class LinkedList::Node {
+
+}
+
+class House {
+
+}
+
+class Room {
+
+}
+
+LinkedList *----- LinkedList::Node
+House *----- Room
+House ------&gt; "container" LinkedList
+
+@enduml
+</code></pre><p>Are you surprised that I did not draw a connection between <code>Room</code> and <code>LinkedList::Node</code>? We want to capture the <em>Big Picture</em>. We do <strong>not</strong> want to capture everything, all at once, at the same time.</p>
+    <p>The <em>Big Picture</em> is not simply showing everything (or understanding every single piece). The <em>Big Picture</em> is understanding the high-level abstractions (ADTs). The low-level pieces (e.g., variables, algorithms) and implementation details should be examined <em>on-the-fly</em> as needed.</p>
+    </div><!--end page 5--><div class="page" id="slide-0-6" style="display: none;"><a id="thepiecesremainingcoherent"/><h2 id="the-pieces-remaining-coherent">2.3 The Pieces &amp; Remaining Coherent</h2><p>We do not want a single monolithic UML Class diagram. We want a set of UML Class diagrams that each focus on one aspect of the system. I see two perspectives that we want to capture:</p>
+    <ol>
+  <li>Domain Specific Constructs (e.g., House and Room)</li>
+  <li>Data Structures (e.g., House, LinkedList, and Node).</li>
+</ol><p>I think we should start with the first one. Let us take another look at <code>Room.h</code> from Review 03 Example 2:</p>
+    <div class="details"><span class="summary"><a href="Room.java" target="listing">Room.java</a></span> <input id="but_details_d8e202" onclick="toggleDisplay('_details_d8e202')" type="button" value="+"/><div class="detailPart" id="_details_d8e202"><pre><code id="_details_d8e202_code">package house;
+
+/**
+ * A Room Blueprint. This struct, defines
+ * a room. For the moment this is simply
+ * a grouping of attributes (variables)
+ * that describe a Room
+ */
+public class Room implements Cloneable {
+    /**
+     * Units of length--e.g., meters
+     */
+    public static final String UNITS = "ft";
+
+    /**
+     * Flooring Record for a Room. Note
+     * that this data-type is meaningless
+     * outside the context of of Room ADT
+     * for this scenario.
+     */
+    public class Flooring {
+        public String type;
+        public double unitCost;
+
+        /**
+         * Default Constructor
+         */
+        public Flooring()
+        {
+            this("Generic", 1.0);
+        }
+
+        /**
+         * Non-Default Constructor
+         */
+        public Flooring(String n, double c)
+        {
+            this.type = n;
+            this.unitCost = c;
+        }
+    }
+
+    /**
+     * Container for length and width.
+     * &lt;p&gt;
+     * This will allow us to reduce the impact
+     * of the addition of the height dimension in
+     * a later example.
+     * &lt;p&gt;
+     * For the sake of clarity, I titled this data-type
+     * DimensionSet, in practice, I would have more likely
+     * named it Dimensions.
+     * &lt;p&gt;
+     * Note that this is now a proper class.
+     */
+    public static class DimensionSet {
+        private double  length;
+        private double   width;
+
+        /**
+         * Default to dimensions of 1
+         */
+        public DimensionSet()
+        {
+            this(1, 1);
+        }
+
+        /**
+         * Set the length and width to user
+         * specified values
+         */
+        public DimensionSet(double l, double w)
+        {
+            this.length = l;
+            this.width = w;
+        }
+
+        /**
+         * Set the length
+         *
+         * @param v replacement value
+         */
+        public void setLength(double v)
+        {
+            this.length = v;
+        }
+
+        /**
+         * Retrieve the length
+         */
+        public double getLength()
+        {
+            return this.length;
+        }
+
+        /**
+         * Set the width
+         *
+         * @param v replacement value
+         */
+        public void setWidth(double v)
+        {
+            this.width = v;
+        }
+
+        /**
+         * Retrieve the width
+         */
+        public double getWidth()
+        {
+            return this.width;
+        }
+    }
+
+    /**
+     * This is the DimensionSet object--i.e, instance.
+     */
+    private DimensionSet dimensions;
+
+    /**
+     * This is the Flooring object--i.e., instance
+     */
+    private Flooring flooring;
+
+    /**
+     * This is the name of the room--i.e., a String object
+     */
+    private String  name;
+
+    /**
+     * Default Constructor
+     */
+    public Room()
+    {
+        this(1, 1, 1);
+    }
+
+    /**
+     * Second, Non-Default Constructor
+     *
+     * @param l length
+     * @param w width
+     * @param c cost for 1 sq unit of flooring
+     *
+     */
+    public Room(double l, double w, double c)
+    {
+        this("Generic", l, w, c);
+    }
+
+    /**
+     * Third, Non-Default constructor
+     *
+     * @param n name
+     * @param l length
+     * @param w width
+     * @param c cost for 1 sq unit of flooring
+     *
+     */
+    public Room(String n, double l, double w, double c)
+    {
+        this.name = n;
+        this.dimensions = new DimensionSet(l, w);
+        this.flooring = new Flooring();
+        this.flooring.unitCost = c;
+    }
+
+    /**
+     * Fourth, Non-Default constructor
+     *
+     * @param n name
+     * @param d dimensions
+     * @param c cost for 1 sq unit of flooring
+     * @param fn flooring type
+     *
+     */
+    public Room(String n, DimensionSet d, double c, String fn)
+    {
+        this.name = n;
+        this.dimensions = d;
+        this.flooring = new Flooring(fn, c);
+    }
+
+    /**
+     * Permit access to the DimensionSet object
+     * &lt;p&gt;
+     * We will explore this more in a later example.
+     * Our emphsis will be on the return type
+     */
+    public DimensionSet getDimensions()
+    {
+        return this.dimensions;
+    }
+
+    /**
+     * Allow the dimensions to be changed
+     *
+     * @param l new length
+     * @param w new width
+     */
+    public void setDimensions(double l, double w)
+    {
+        this.dimensions.setLength(l);
+        this.dimensions.setWidth(w);
+    }
+
+    /**
+     * Permit access to the Flooring object
+     * &lt;p&gt;
+     * We will explore this more in a later example.
+     * Our emphsis will be on the return type
+     */
+    public Flooring getFlooring()
+    {
+        return this.flooring;
+    }
+
+    /**
+     * Allow the flooring to be changed
+     *
+     * @param t flooring type
+     * @param c cost per unit
+     */
+    public void setFlooring(String t, double c)
+    {
+        this.flooring.type = t;
+        this.flooring.unitCost = c;
+    }
+
+    /**
+     * Set the name
+     *
+     * @param newName
+     */
+    public void setName(String newName)
+    {
+        this.name = newName;
+    }
+
+    /**
+     * Retrieve the name
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
+    /**
+     * Compute the area of this room
+     */
+    public double area()
+    {
+        return this.dimensions.getLength() * this.dimensions.getWidth();
+    }
+
+    /**
+     * Retrive cost of flooring for the entire room
+     */
+    public double flooringCost()
+    {
+        return this.area() * this.flooring.unitCost;
+    }
+
+    /**
+     * Generate and display a summary for a single (one) room
+     */
+    @Override
+    public String toString()
+    {
+        return String.format("Room (%s)%n", this.name)
+             + String.format("  Length: %.1f %s%n", this.dimensions.getLength(), Room.UNITS)
+             + String.format("  Width : %.1f %s%n", this.dimensions.getWidth(), Room.UNITS)
+             + String.format("  Area  : %.1f sq %s%n", this.area(), Room.UNITS)
+             + String.format("%n")
+             + String.format("  Flooring   : %s%n", this.flooring.type)
+             + String.format("  Unit Cost  : $ %8.2f%n", this.flooring.unitCost)
+             + String.format("  Total Cost : $ %8.2f%n", this.flooringCost());
+    }
+
+    /**
+     * Logical Equivalence Operator
+     * &lt;p&gt;
+     * This is the member function implementation.
+     * This operator can be implemented as a non-member function.
+     */
+    @Override
+    public boolean equals(Object rhs)
+    {
+        if (!(rhs instanceof Room)) {
+            return false;
+        }
+
+        Room rhsRoom = (Room) rhs;
+
+        return this.name.equals(rhsRoom.name)
+            &amp;&amp; this.area() == rhsRoom.area();
+    }
+
+    public Room clone()
+    {
+        Room cpy = new Room();
+        cpy.setName(this.name);
+        cpy.setDimensions(this.dimensions.getLength(), this.dimensions.getWidth());
+        cpy.setFlooring(this.flooring.type, this.flooring.unitCost);
+
+        return cpy;
+    }
+}
+
+/*
+//------------------------------------------------------------------------------
+inline
+std::istream&amp; operator&gt;&gt;(std::istream &amp;ins, Room&amp; rd)
+{
+    String name;
+    double      l, h;
+    double      cost;
+    String flooring;
+
+    ins &gt;&gt; std::ws;
+    getline(ins, name, ';');
+    ins &gt;&gt; l &gt;&gt; h &gt;&gt; cost;
+
+    ins &gt;&gt; std::ws;
+    getline(ins, flooring);
+    ins &gt;&gt; std::ws;
+
+    rd = Room(name, Room::DimensionSet(l, h), cost, flooring);
+
+    return ins;
+}
+*/
+</code></pre></div></div><p>This is an abbreviated listing (I removed many of the inline definitions). We see a few things missing, especially <code>Room::Flooring</code> and <code>Room::DimensionSet</code>. Let us update our diagram.</p>
+    <p><img src="review-03-example-6-step-3.svg"/></p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>For the moment, I will treat <em>structs</em> as proper ADTs.</p>
+    
+</div><div class="details"><span class="summary"><a href="review-03-example-6-step-3.puml" target="listing">review-03-example-6-step-3.puml</a></span> <input id="but_details_d8e219" onclick="toggleDisplay('_details_d8e219')" type="button" value="+"/><div class="detailPart" id="_details_d8e219"><pre><code id="_details_d8e219_code">@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+class House {
+
+}
+
+class Room {
+
+}
+
+class Room.Flooring {
+
+}
+
+class Room.DimensionSet {
+
+}
+
+House *----- Room
+Room  *----- Room.Flooring
+Room  *----- Room.DimensionSet
+
+@enduml
+</code></pre></div></div></div><!--end page 6--><div class="page" id="slide-0-7" style="display: none;"><a id="theroomclass"/><h3 id="the-room-class">2.3.1 The Room Class</h3><p>Now we need to add details:</p>
+    <ol>
+  <li>What are the attributes (data members)?</li>
+  <li>What are the behaviors (member functions)?</li>
+</ol><p><img src="review-03-example-6-step-4.svg"/></p>
+    <div class="details"><span class="summary"><a href="review-03-example-6-step-4.puml" target="listing">review-03-example-6-step-4.puml</a></span> <input id="but_details_d8e233" onclick="toggleDisplay('_details_d8e233')" type="button" value="+"/><div class="detailPart" id="_details_d8e233"><pre><code id="_details_d8e233_code">@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+
+class Room {
+    String name
+
+    Room()
+    Room(Dimension l, Dimension w, Cost c)
+    Room(String n, Dimension l, Dimension w, Cost c)
+    Room(String n, DimensionSet d, Cost c, String fn)
+
+    double area()
+    Cost flooringCost()
+    String toString()
+    boolean equals(Object rhs)
+    Room clone()
+}
+
+class Room.Flooring {
+    String type
+    Cost unitCost
+
+    Flooring()
+    Flooring(String n, Cost c)
+}
+
+class Room.DimensionSet {
+    Dimension length
+    Dimension width
+
+    DimensionSet()
+    DimensionSet(Dimension l, Dimension w)
+}
+
+Room  *----- Room.Flooring
+Room  *----- Room.DimensionSet
+
+@enduml
+</code></pre></div></div><p>I have added a lot of information, but you probably noticed missing pieces. What about:</p>
+    <ol>
+  <li>private vs public vs protected</li>
+  <li>const vs non-const (mutable vs immutable)?</li>
+  <li>getters?</li>
+  <li>setters?</li>
+  <li>missing private data members?</li>
+  <li><code>class House</code>?</li>
+</ol><p>We want to capture the structure of a Room and all of its components, at a <em>conceptual</em> level. In other words, we want a <em>high level view</em>, the big picture.</p>
+    <ol>
+  <li>We can assume appropriate getters and setters.</li>
+  <li>We will focus on the attributes relevant to the immediate discussion.</li>
+  <li>We will leave <code>class House</code> until the <em>data structure</em> diagram.</li>
+</ol></div><!--end page 7--><div class="page" id="slide-0-8" style="display: none;"><a id="thedatastructures"/><h3 id="the-data-structures">2.3.2 The Data Structures</h3><p>The data structure diagram is more <a href="https://www.merriam-webster.com/dictionary/nebulous">nebulous</a>. What do we want to capture? We probably want to capture:</p>
+    <ol>
+  <li>The <em>role</em> of the <code>LinkedList</code>.</li>
+  <li>The iterator interface.</li>
+  <li>The <em>lifetime</em> of <code>Node</code>s.</li>
+  <li>What a <code>Node</code> stores.</li>
+</ol><p><img src="review-03-example-6-step-5.svg"/></p>
+    <div class="details"><span class="summary"><a href="review-03-example-6-step-5.puml" target="listing">review-03-example-6-step-5.puml</a></span> <input id="but_details_d8e305" onclick="toggleDisplay('_details_d8e305')" type="button" value="+"/><div class="detailPart" id="_details_d8e305"><pre><code id="_details_d8e305_code">@startuml
+left to right direction
+
+hide empty members
+set separator none
+
+class LinkedList {
+    LinkedList.Node head
+    LinkedList.Node tail
+
+    Iterator iterator()
+
+    int size()
+}
+
+class LinkedList.Node {
+    Room data
+    LinkedList.Node currentPosition
+}
+
+class House {
+    Collection rooms
+
+    House()
+    House(String name)
+
+    void addRoom(Room toAdd)
+
+    Iterator iterator()
+
+    int size()
+
+    String toString()
+    boolean equals(Object rhs)
+    int hashCode()
+}
+
+LinkedList *--- LinkedList.Node
+House ----&gt; "collection" LinkedList
+
+@enduml
+</code></pre></div></div></div><!--end page 8--><div class="page" id="slide-0-9" style="display: none;"><a id="abonusdiagramiterators"/><h3 id="a-bonus-diagram-iterators-">2.3.3 A Bonus Diagram - Iterators!</h3><p>If we are looking at <em>data structures</em>, we should probably look at any <em>abstractions</em> used to traverse, examine, or manipulate those <em>data structures</em>. What about <strong>iterators</strong>?</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>There are more concepts involved in this diagram:</p>
+    
+<ol>
+  <li>Visibility (i.e., public, private, and protected)</li>
+  <li>Interfaces and Stereotypes</li>
+  <li>The realizes relationship</li>
+</ol>
+</div><p><img src="review-03-example-6-step-6.svg"/></p>
+    <div class="details"><span class="summary"><a href="review-03-example-6-step-6.puml" target="listing">review-03-example-6-step-6.puml</a></span> <input id="but_details_d8e335" onclick="toggleDisplay('_details_d8e335')" type="button" value="+"/><div class="detailPart" id="_details_d8e335"><pre><code id="_details_d8e335_code">@startuml
+
+skinparam classAttributeIconSize 0
+
+hide empty members
+set separator none
+
+class House {
+
+}
+
+interface java.util.Iterable &lt;&lt;interface&gt;&gt; {
+    +iterator(): Iterator
+}
+
+class House.Iterator {
+
+}
+
+interface java.util.Iterator &lt;&lt;interface&gt;&gt; {
+    +next(): T
+    +hasNext(): boolean
+}
+
+House ..|&gt; java.util.Iterable
+House -&gt; House.Iterator: provides
+House.Iterator ..|&gt; java.util.Iterator
+
+@enduml
+</code></pre></div></div></div><!--end page 9--><div class="page" id="slide-0-10" style="display: none;"><a id="letusstophere"/><h1 id="let-us-stop-here">3 Let Us Stop Here</h1><p>We are coming dangerously close to drifting from the purpose of this module, <strong>Object Oriented Design</strong>. We have covered the basics of UML Class diagrams–a whirlwind introduction, if you will.</p>
+    </div><!--end page 10--><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 11};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"><a class="slideshowcontrol" onclick="sshow2start(sshowControl0)" title="start"><img alt="first" src="../../graphics/first.png"/></a><span> </span><a class="slideshowcontrol" onclick="sshowback(sshowControl0)" title="previous"><img alt="prev" src="../../graphics/prev.png"/></a></td><td class="slideshowcontrolMiddle"><span id="slideshowposition0">1 of 10</span>
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Language%20Checklists%20%26%20UML%20Class%20Diagrams"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/>
+<a class="imgLink" href="introToPlantUML__scroll.html"><img src="../../graphics/scroll.png" title="single-page HTML version"/></a></td><td class="slideshowcontrolRight"><a class="slideshowcontrol" onclick="sshowforward(sshowControl0)" title="next"><img alt="next" src="../../graphics/next.png"/></a><span> </span><a class="slideshowcontrol" onclick="sshow2end(sshowControl0)" title="last"><img alt="last" src="../../graphics/last.png"/></a></td></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div><script>collectID('slide-0-1', 1);
+collectID('slide-0-2', 2);
+collectID('keeping-track-of-the-pieces', 2);
+collectID('slide-0-3', 3);
+collectID('drawing-uml-class-diagrams', 3);
+collectID('slide-0-4', 4);
+collectID('an-old-example', 4);
+collectID('slide-0-5', 5);
+collectID('refining-the-diagram', 5);
+collectID('slide-0-6', 6);
+collectID('the-pieces-remaining-coherent', 6);
+collectID('slide-0-7', 7);
+collectID('the-room-class', 7);
+collectID('slide-0-8', 8);
+collectID('the-data-structures', 8);
+collectID('slide-0-9', 9);
+collectID('a-bonus-diagram-iterators-', 9);
+collectID('slide-0-10', 10);
+collectID('let-us-stop-here', 10);
+</script></body></html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Reviewing S.O.L.I.D</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Reviewing%20S.O.L.I.D"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Reviewing S.O.L.I.D</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#where-we-started">1 Where We Started</a></div><div class="toc-h1"><a href="#what-about-the-l-i-d-">2 What About the L.I.D?</a></div><div class="toc-h1"><a href="#combining-everything">3 Combining Everything</a></div></div><a id="wherewestarted"/><h1 id="where-we-started">1 Where We Started</h1><p>During the first week of class under <a class="doc" href="../../Public/theBeginning/index.html" target="CS330_Public">The Beginning</a> in the orientation module we briefly discussed <em>S.O.L.I.D</em>. We split the acronym (i.e., <em>S.O.L.I.D.</em> into two parts).</p>
+    <blockquote>
+  <p>S.O.L.I.D = (S.O.) + (L.I.D.)</p>
+    
+</blockquote><p><em>S.O.</em> can be discussed using only the knowledge from CS 250. Any extra knowledge from CS 330 or CS 361 is a bonus.</p>
+    <p>What is <em>S.O.</em>? <em>No, it is not a sarcastic child.</em></p>
+    <ul>
+  <li>S - Single Responsibility Principle</li>
+  <li>O - Open/Closed Principle</li>
+</ul><p>These emerge naturally out of how we write code. We want to write reusable functions and classes. We want to be able to extend those functions and classes without modifying the underlying code. Think about:</p>
+    <ul>
+  <li><strong>C++</strong>
+    <ul>
+      <li><code>std::vector</code></li>
+      <li><code>std::list</code></li>
+      <li><code>std::unordered_map</code></li>
+      <li><code>std::iterator</code></li>
+    </ul>
+  </li>
+  <li><strong>Java</strong>
+    <ul>
+      <li><code>java.util.List</code></li>
+      <li><code>java.util.Map</code></li>
+      <li><code>java.util.Iterator</code></li>
+    </ul>
+  </li>
+</ul><p>We used these ADTs (in the case of Java) interfaces throughout our examples, discussions, and assignments.</p>
+    <a id="whataboutthelid"/><h1 id="what-about-the-l-i-d-">2 What About the L.I.D?</h1><p>What about the remaining three (3) letters?</p>
+    <ul>
+  <li>L - Liskov Substitution</li>
+  <li>I - Interface Segregation</li>
+  <li>D - Dependency Inversion</li>
+</ul><a id="combiningeverything"/><h1 id="combining-everything">3 Combining Everything</h1><p>Now that we have covered inheritance and subtyping, we can combine everything, including the <code>L</code>:</p>
+    <ul>
+  <li>
+    <p><strong>S - Single Responsibility Principle</strong></p>
+    
+    <p>Every class, module, or interface has one responsibility (i.e., purpose).</p>
+    
+  </li>
+  <li>
+    <p><strong>O - Open/Closed Principle</strong></p>
+    
+    <p>It should be possible to extend a class, module, or function without modifying the original code.</p>
+    
+  </li>
+  <li>
+    <p><strong>L - Liskov Substitution</strong></p>
+    
+    <p>If I write a function to work with an <code>class</code>, or <code>interface</code>, any object that provides or specializes that <code>class</code> or <code>interface</code> should work. Think about</p>
+    
+    <ul>
+      <li>Using <code>istream</code> instead of <code>ifstream</code> or <code>std::cin</code> in our C++ discussions.</li>
+      <li>Using <code>ostream</code> instead of <code>ofstream</code> or <code>std::cout</code> in our C++ discussions.</li>
+      <li>Replacing <code>ArrayList&lt;Shape&gt;</code> with <code>List&lt;Shape&gt;</code> in the Java Shapes Case Study.</li>
+      <li>Replacing <code>.stream()</code> with <code>.parallelStream()</code> in the Java Shapes Case Study.</li>
+      <li>The Java <code>Runnable</code> interface.</li>
+      <li>The Java <code>Listener</code> interface.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>I - Interface Segregation</strong></p>
+    
+    <p>Fight the urge to throw in the kitchen sink. Focus on creating problem specific interfaces, not monolithic kitchen-sink-interfaces. <em>This requires us to codify how to decompose a large problem (high-level design).</em></p>
+    
+  </li>
+  <li>
+    <p><strong>D - Dependency Inversion</strong></p>
+    
+    <p>Modules should not directly handle low-level calls and operations. Consider the C <code>FILE*</code> vs the C++ <code>ofstream</code> and <code>ifstream</code>.</p>
+    
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Reviewing%20S.O.L.I.D"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>
