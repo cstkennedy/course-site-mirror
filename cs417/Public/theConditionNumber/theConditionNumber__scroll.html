@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>The Condition Number</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20The%20Condition%20Number"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">The Condition Number</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#starting-with-relative-error">2 Starting With Relative Error</a></div><div class="toc-h1"><a href="#some-more-notation">3 Some More Notation</a></div><div class="toc-h1"><a href="#absolute-value-properties">4 Absolute Value Properties</a></div><div class="toc-h1"><a href="#some-limit-shenanigans">5 Some Limit Shenanigans</a></div></div><h1 id="overview">1 Overview</h1><p>We want to relate the error in representing $x$ to the output of a function $f$. Phrased more formally… we want to</p>
+    <ol>
+  <li>
+  <p>take $x$ and $x^{*}$</p>
+    </li>
+  <li>
+  <p>compare $f(x^{*})$ to the <em>correct</em> $f(x)$</p>
+    </li>
+</ol><p>To do this we will need the relative error for $x$ and the relative error for $f(x)$. </p>
+    <a id="startingwithrelativeerror"/><h1 id="starting-with-relative-error">2 Starting With Relative Error</h1><p>Let us start by writing the relative error for input…</p>
+    <p>$$ \left|  \frac{x - x^{*}}{x} \right| $$</p>
+    <p>and output…</p>
+    <p>$$ \left|  \frac{f(x) - f(x^{*})}{f(x)} \right| $$</p>
+    <p>We want to examine the ratio of <em>relative error for output</em> to <em>relative error for input</em>. That leads us to…</p>
+    <p>$$ \begin{eqnarray}  \left|  \frac{f(x) - f(x^{*})}{f(x)}  \right| \div  \left|  \frac{x - x^{*}}{x}  \right| \\  \left|  \frac{f(x) - f(x^{*})}{f(x)}  \right| \times  \left|  \frac{x}{x - x^{*}}  \right| \\ \end{eqnarray} $$</p>
+    <a id="somemorenotation"/><h1 id="some-more-notation">3 Some More Notation</h1><p>Let us rewrite $x - x^{*}$. We know that $x^{*}$ is $x$ plus/minus some difference (absolute error). Let us denote $|x - x^{*}| = |x^{*} - x|$ as $\Delta x$.</p>
+    <p>$$ \begin{align}  \left|  \frac{f(x) - f(x^{*})}{f(x)}  \right| \times  \left|  \frac{x}{x - x^{*}}  \right| \\  \left|  \frac{f(x) - f(x^{*})}{f(x)}  \right| \times  \left|  \frac{x}{\Delta x}  \right| \\ \end{align} $$</p>
+    <a id="absolutevalueproperties"/><h1 id="absolute-value-properties">4 Absolute Value Properties</h1><p>Now… let us recall the following absolute value properties:</p>
+    <ol>
+  <li>
+  <p>$\left|\frac{a}{b}\right| = \frac{|a|}{|b|}$</p>
+    </li>
+  <li>
+  <p>$|a||b| = |ab|$</p>
+    </li>
+  <li>
+  <p>$||a|| = |a|$</p>
+    </li>
+  <li>
+  <p>$|a| = a \text{ if } a \ge 0$</p>
+    </li>
+</ol><p>These properties allow some simplification.</p>
+    <p>$$ \begin{align}  \left|  \frac{f(x) - f(x^{*})}{f(x)}  \right| \times  \left|  \frac{x}{\Delta x}  \right| \\  \left|  \frac{f(x) - f(x^{*})}{\Delta x}  \right| \times  \left|  \frac{x}{f(x)}  \right| \\ \end{align} $$</p>
+    <a id="somelimitshenanigans"/><h1 id="some-limit-shenanigans">5 Some Limit Shenanigans</h1><p>We are interested in $\Delta x \to 0$ (i.e., $\Delta x$ close to zero).</p>
+    <p>$$ \begin{align} \lim_{\Delta x \to 0}  \left|  \frac{f(x) - f(x^{*})}{\Delta x}  \right| \times  \left|  \frac{x}{f(x)}  \right| \\ \end{align} $$</p>
+    <p>We know that $f(x^{*})$ can be written as $f(x + \Delta x)$.</p>
+    <p>$$ \begin{align} \lim_{\Delta x \to 0}  \left|  \frac{f(x) - f(x + \Delta x)}{\Delta x}  \right| \times  \left|  \frac{x}{f(x)}  \right| \\  \left|  \lim_{\Delta x \to 0}  \frac{f(x) - f(x + \Delta x)}{\Delta x}  \right| \times  \left|  \frac{x}{f(x)}  \right| \\ \end{align} $$</p>
+    <p>Do you recognize the first fraction? It is the limit definition of the derivative!</p>
+    <p>$$ \begin{align}  \left|  \lim_{\Delta x \to 0}  \frac{f(x) - f(x + \Delta x)}{\Delta x}  \right| \times  \left|  \frac{x}{f(x)}  \right| \\  \left|  f^{\prime}(x)  \right| \times  \left|  \frac{x}{f(x)}  \right| \\  \left|  \frac{xf^{\prime}(x)}{f(x)}  \right| \\ \end{align} $$</p>
+    <p>We now have the general form of the condition number…</p>
+    <p>$$ (\text{cond }f)(x) =  \left|  \frac{xf^{\prime}(x)}{f(x)}  \right| $$</p>
+    <p>Keep in mind that we have two invariants…</p>
+    <ol>
+  <li>
+  <p>$x \neq 0$</p>
+    </li>
+  <li>
+  <p>$f(x) \neq 0$</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20The%20Condition%20Number"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

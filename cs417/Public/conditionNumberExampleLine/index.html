@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number Example - A Line</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20A%20Line"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number Example - A Line</h1><h2 class="author">Thomas J. Kennedy</h2></div><p>Suppose we are interested in the condition number of a line, not just one line, but the general form of a line…</p>
+    <p>$$ f(x) = mx + b $$</p>
+    <p>We will assume the general form of the condition number, i.e., we will not address</p>
+    <ul>
+  <li>$x = 0$</li>
+  <li>$f(x) = 0$</li>
+</ul><hr/><p>First, we need the derivative of $f(x)$, i.e., $f^\prime(x)$.</p>
+    <p>$$ \begin{eqnarray} f^\prime  &amp;=&amp; \frac{d}{dx}\left(mx + b\right)\\  &amp;=&amp; \frac{d}{dx}(mx) + \frac{d}{dx}(b)\\  &amp;=&amp; m\\ \end{eqnarray} $$</p>
+    <hr/><p>$$ \begin{eqnarray} (cond\phantom{1}f)(x)  &amp;=&amp; \left| \frac{xf^\prime(x)}{f(x)} \right|\\  &amp;=&amp; \left| \frac{x*m}{mx + b}\right|\\  &amp;=&amp; \left| \frac{mx +(b - b)}{mx + b}\right|\\  &amp;=&amp; \left| \frac{(mx + b) - b}{mx + b}\right|\\  &amp;=&amp; \left| \frac{mx + b}{mx + b} - \frac{b}{mx + b}\right|\\ (cond\phantom{1}f)(x) &amp;=&amp; \left| 1 - \frac{b}{mx + b}\right|\\ \end{eqnarray} $$</p>
+    <hr/><p>Well… where do we go next? <strong>Identify the cases!</strong> We know (from the general form of the condition number) that…</p>
+    <ul>
+  <li>$x \ne 0$ and</li>
+  <li>$f(x) = mx + b \ne 0$</li>
+</ul><p>That removes two cases from consideration</p>
+    <ul>
+  <li>$\frac{1}{mx + b} = \frac{1}{0}$ - which would be undefined</li>
+  <li>$mx + b = b$ due to $x = 0$</li>
+</ul><p>That leaves us with two special cases. </p>
+    <ul>
+  <li>
+    <p>$m = 0$ <strong>and</strong> $b \ne 0$</p>
+    
+    <p>$$ \begin{eqnarray} (cond\phantom{1}f)(x)  &amp;=&amp; \left| 1 - \frac{b}{mx + b}\right|\\  &amp;=&amp; \left| 1 - \frac{b}{b}\right|\\  &amp;=&amp; 0\\ \end{eqnarray} $$</p>
+    
+    <p>A slope of zero indicates a horizontal line (i.e., $f(x) = b$). In such cases… $f(x)$ is independent of $x$</p>
+    
+  </li>
+  <li>
+    <p>$m \approx b$ and $x \ne 1$</p>
+    
+    <p>$$ \begin{eqnarray} (cond\phantom{1}f)(x)  &amp;=&amp; \left| 1 - \frac{b}{mx + b}\right|\\  &amp;\approx&amp; \left| 1 - \frac{b}{bx + b}\right|\\  &amp;\approx&amp; \left| 1 - \frac{1}{x + 1}\right|\\ \end{eqnarray} $$</p>
+    
+  </li>
+</ul><hr/><p>What about the general answer? In practice… we would probably continue the analysis by deriving an upper bound. However, we will leave the process of bounding condition numbers for a future lecture.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20A%20Line"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

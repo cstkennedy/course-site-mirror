@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Semester Project - Piecewise Linear Interpolation</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20Piecewise%20Linear%20Interpolation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Semester Project - Piecewise Linear Interpolation</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#prerequisites">1 Prerequisites</a></div><div class="toc-h1"><a href="#deliverables">2 Deliverables</a></div><div class="toc-h1"><a href="#first-steps">3 First Steps</a></div></div><h1 id="prerequisites">1 Prerequisites</h1><ol>
+  <li>
+  <p><strong>If you have not already done so…</strong>  <a class="doc" href="../../Assts/project-cpu-temps/index.html" target="CS417_Assts">read the Semester Project Description</a></p>
+    </li>
+  <li>
+  <p>Revisit the  <a class="doc" href="../../Public/approximationWhirlwindIntroduction/index.html" target="CS417_Public">Least Squares Approximation Introduction</a></p>
+    </li>
+</ol><h1 id="deliverables">2 Deliverables</h1><p>Submit a <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">single archive</a> that contains a/an:</p>
+    <ol>
+  <li>updated <code>README.md</code></li>
+  <li>input library in your selected language</li>
+  <li>Piecewise Linear Interpolation module</li>
+  <li>main driver</li>
+</ol><a id="firststeps"/><h1 id="first-steps">3 First Steps</h1><p>If you received any feedback on your previous Semester Project Milestone submission. Make the required changes before continuing.</p>
+    <p>You will need to take the interpolation formulas from <a class="doc" href="../../Public/approximationWhirlwindIntroduction/index.html" target="CS417_Public">Least Squares Approximation Introduction</a> and adapt them to our current notation.</p>
+    <p>Start with</p>
+    <p>$$ y = mx + b $$</p>
+    <p>and swap the linear and constant terms</p>
+    <p>$$ y = b + mx $$</p>
+    <p>We know that slope for two points is written as</p>
+    <p>$$ m = \frac{y_1 - y_0}{x_1 - x_0} $$</p>
+    <p>For piecewise linear interpolation we need to replace</p>
+    <ul>
+  <li>$0$ with $k$</li>
+  <li>$1$ with $k+1$</li>
+</ul><p>The index change leads to…</p>
+    <p>$$ m = \frac{y_{k+1} - y_{k}}{x_{k+1} - x_{k}} $$</p>
+    <p>The y-intercept (after similiar changes) becomes…</p>
+    <p>$$ b = y_{k} - m x_{k} $$</p>
+    <p>or</p>
+    <p>$$ b = y_{k+1} - m x_{k+1} $$</p>
+    <p>These <em>updated</em> formulae will allow us to compute a line for any pair of adjacent points.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20Piecewise%20Linear%20Interpolation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

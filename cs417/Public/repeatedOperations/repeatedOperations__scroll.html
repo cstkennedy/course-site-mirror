@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Repeated Arithmetic Operations</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Repeated%20Arithmetic%20Operations"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Repeated Arithmetic Operations</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#repeated-multiplication">1 Repeated Multiplication</a></div><div class="toc-h1"><a href="#repeated-division">2 Repeated Division</a></div></div><p>So far we have covered error propagation through simple arithmetic operations (e.g., a single addition or multiplication operation). What happens when we have:</p>
+    <ul>
+  <li>repeated addition?</li>
+  <li>repeated subtraction?</li>
+  <li>repeated multiplication?</li>
+  <li>repeated division?</li>
+</ul><p>We will work through the error analysis for repeated multiplication and division. I will leave addition and subtraction up to you (i.e., as <em>practice exercises</em>).</p>
+    <a id="repeatedmultiplication"/><h1 id="repeated-multiplication">1 Repeated Multiplication</h1><p>Suppose we have a repeated multiplication operation.</p>
+    <p>$$ x_0 * x_1 * x_2 * … * x_{n-2} * x_{n-1} $$</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>I am using $S_n$ instead of $P_n$ due how often I accidentally change $P$ to $9$ or $\alpha$ when I misread my own handwriting.</p>
+    
+</div><p>Let us denote this product as $S_n$ and rewrite it using product notation.</p>
+    <p>$$ \begin{eqnarray} S_n &amp;=&amp; x_0 * x_1 * x_2 * … * x_{n-2} * x_{n-1} \\  &amp;=&amp; \prod\limits_{i=0}^{n-1}x_i \\ \end{eqnarray} $$</p>
+    <p>$S_n$ represents infinite precision. That means we need to define $S_n^{*}$.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Note the use of the definition of $x_i^*$, i.e., $x_i^* = x_i *(1 + \epsilon_i)$</p>
+    
+</div><p>$$ \begin{eqnarray} S_n^{*} &amp;=&amp; x_0^* * x_1^* * x_2^* * … * x_{n-2}^* * x_{n-1}^* \\  &amp;=&amp; \prod\limits_{i=0}^{n-1}x_i^{*} \\  &amp;=&amp; \prod\limits_{i=0}^{n-1}x_i(1 + \epsilon_i) \\ \end{eqnarray} $$</p>
+    <p>We need the relative error… Let us do some quick algebra with our $S$ terms.</p>
+    <p>$$ \begin{eqnarray} relative\phantom{1}error &amp;=&amp; \Bigg|\frac{S_n^{*} - S_n}{S_n} \Bigg| \\  &amp;=&amp; \Bigg|\frac{S_n^{*}}{S_n} - 1 \Bigg| \\ \end{eqnarray} $$</p>
+    <p>If we focus on $\frac{S_n^*}{S_n}$…</p>
+    <p>$$ \begin{eqnarray} \frac{S_n^*}{S_n}  &amp;=&amp; \frac{\prod\limits_{i=0}^{n-1}x_i(1 + \epsilon_i)}{\prod\limits_{i=0}^{n-1}x_i} \\  &amp;=&amp; \prod\limits_{i=0}^{n-1}\frac{x_i(1 + \epsilon_i)}{x_i} \\  &amp;=&amp; \prod\limits_{i=0}^{n-1}(1 + \epsilon_i) \\ \end{eqnarray} $$</p>
+    <p>… we end up with a nice simplification! We can then plug that back into to original equation… and continue the evaluation.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>We know that all terms $\epsilon_j \epsilon_k$ are higher order epsilon terms, which means they can be treated as zero.</p>
+    
+</div><p>$$ \begin{eqnarray} relative\phantom{1}error &amp;=&amp; \Bigg|\frac{S_n^{*} - S_n}{S_n} \Bigg| \\  &amp;=&amp; \Bigg|\frac{S_n^{*}}{S_n} - 1 \Bigg| \\  &amp;=&amp; \Bigg| \prod\limits_{i=0}^{n-1}(1 + \epsilon_i) - 1 \Bigg| \\  &amp;=&amp; \Bigg| 1 + \sum\limits_{i=0}^{n-1}(\epsilon_i) - 1 \Bigg| \\  &amp;\approx&amp; \Bigg| \sum\limits_{i=0}^{n-1}(\epsilon_i) \Bigg| \end{eqnarray} $$</p>
+    <p>This is similar to our earlier result for $x^* * y^*$. The error in multiplication is <em>the sum of the errors of the terms being multiplied.</em></p>
+    <a id="repeateddivision"/><h1 id="repeated-division">2 Repeated Division</h1><p>Suppose we have a division operation.</p>
+    <p>$$ x_0 / x_1 / x_2 / … / x_{n-2} / x_{n-1} $$</p>
+    <p>… which we can rewrite as a repeated multiplication operation.</p>
+    <p>$$ x_0 * \frac{1}{x_1} * \frac{1}{x_2} * … * \frac{1}{x_{n-2}} * \frac{1}{x_{n-1}} $$</p>
+    <p>Let us rewrite that using product notation, and define it as $D_n$.</p>
+    <p>$$ \begin{eqnarray} D_n &amp;=&amp; x_0 * \frac{1}{x_1} * \frac{1}{x_2} * … * \frac{1}{x_{n-2}} * \frac{1}{x_{n-1}}\\  &amp;=&amp; x_0 \prod\limits_{i=1}^{n-1}\frac{1}{x_i} \end{eqnarray} $$</p>
+    <p>That leads to…</p>
+    <p>$$ \begin{eqnarray} D_n^{*} &amp;=&amp; x_0^* \prod\limits_{i=1}^{n-1}\frac{1}{x_i^*} \\  &amp;=&amp; x_{0}(1+\epsilon_0) \prod\limits_{i=1}^{n-1}\frac{1}{x_i(1+\epsilon_i)} \end{eqnarray} $$</p>
+    <p>We need the relative error… Let us do some quick algebra with our $D$ terms (using the same steps from the <em>repeated multiplication</em> problem).</p>
+    <p>$$ \begin{eqnarray} relative\phantom{1}error &amp;=&amp; \Bigg|\frac{D_n^{*} - D_n}{D_n} \Bigg| \\  &amp;=&amp; \Bigg|\frac{D_n^{*}}{D_n} - 1 \Bigg| \\ \end{eqnarray} $$</p>
+    <p>If we focus on $\frac{D_n^*}{D_n}$…</p>
+    <p>$$ \begin{eqnarray} \frac{D_n^*}{D_n}  &amp;=&amp; \frac{x_0(1 + \epsilon_0)\prod\limits_{i=1}^{n-1}\frac{1}{x_i(1 + \epsilon_i)}}{x_0\prod\limits_{i=1}^{n-1}\frac{1}{x_i}} \\  &amp;=&amp; \frac{x_0(1 + \epsilon_0)\prod\limits_{i=1}^{n-1}x_i} {x_0\prod\limits_{i=1}^{n-1}x_i(1 + \epsilon_i)}\\  &amp;=&amp; (1 + \epsilon_0)\prod\limits_{i=1}^{n-1}\frac{x_i} {x_i(1 + \epsilon_i)}\\  &amp;=&amp; (1 + \epsilon_0)\prod\limits_{i=1}^{n-1}\frac{1}{(1 + \epsilon_i)} \\ \end{eqnarray} $$</p>
+    <p>Let us plug that back into to original equation… and continue the evaluation.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>That “<code>-1</code>” is an issue. We need to create a single fraction…</p>
+    
+</div><p>$$ \begin{eqnarray} relative\phantom{1}error &amp;=&amp; \Bigg|\frac{D_n^{*} - D_n}{D_n} \Bigg| \\  &amp;=&amp; \Bigg|\frac{D_n^{*}}{D_n} - 1 \Bigg| \\  &amp;=&amp; \Bigg|(1 + \epsilon_0)\prod\limits_{i=1}^{n-1}\frac{1}{(1 + \epsilon_i)} - 1 \Bigg| \\  &amp;=&amp; \Bigg|(1 + \epsilon_0)\prod\limits_{i=1}^{n-1}\frac{1}{(1 + \epsilon_i)}  - \frac{\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)}  {\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)} \Bigg| \\  &amp;=&amp; \Bigg|\frac{(1 + \epsilon_0)}{\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)}  - \frac{\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)}  {\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)} \Bigg| \\  &amp;=&amp; \Bigg|\frac{(1 + \epsilon_0) - \prod\limits_{i=1}^{n-1}(1 + \epsilon_i)}  {\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)} \Bigg| \\ \end{eqnarray} $$</p>
+    <p>Now I can reuse the result from repeated multiplication!</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>We will need to multiply by a conjugate to go from step 3 to step 4.</p>
+    
+</div><p>$$ \begin{eqnarray} relative\phantom{1}error  &amp;=&amp; \Bigg|\frac{(1 + \epsilon_0) - \prod\limits_{i=1}^{n-1}(1 + \epsilon_i)}  {\prod\limits_{i=1}^{n-1}(1 + \epsilon_i)} \Bigg| \\  &amp;\approx&amp; \Bigg|\frac{(1 + \epsilon_0) - 1 - \sum\limits_{i=1}^{n-1}\epsilon_i}  {1 + \sum\limits_{i=1}^{n-1}\epsilon_i} \Bigg| \\  &amp;=&amp; \Bigg|\frac{\epsilon_0 - \sum\limits_{i=1}^{n-1}\epsilon_i}  {1 + \sum\limits_{i=1}^{n-1}\epsilon_i}  * \frac{1 - \sum\limits_{i=1}^{n-1}\epsilon_i}  {1 - \sum\limits_{i=1}^{n-1}\epsilon_i} \Bigg| \\ \end{eqnarray} $$</p>
+    <p>There is quite a bit of algebra in the next step. Let us start with the denominator.</p>
+    <p>$$ \begin{eqnarray} \big(1 + \sum\limits_{i=1}^{n-1}\epsilon_i \big)  * \big(1 - \sum\limits_{i=1}^{n-1}\epsilon_i \big) &amp;=&amp; 1 + \big(\sum\limits_{i=1}^{n-1}\epsilon_i \big)  - \big(\sum\limits_{i=1}^{n-1}\epsilon_i \big)  - \Big(\sum\limits_{i=1}^{n-1}\epsilon_i \Big)^2 \\ &amp;=&amp; 1 - \Big(\sum\limits_{i=1}^{n-1}\epsilon_i \Big)^2 \\ &amp;\approx&amp; 1 \end{eqnarray} $$</p>
+    <p>A denominator of $\approx 1$ simplifies things a little…</p>
+    <p>$$ \begin{eqnarray} relative\phantom{1}error  &amp;=&amp; \Bigg|\frac{\epsilon_0 - \sum\limits_{i=1}^{n-1}\epsilon_i}  {1 + \sum\limits_{i=1}^{n-1}\epsilon_i}  * \frac{1 - \sum\limits_{i=1}^{n-1}\epsilon_i}  {1 - \sum\limits_{i=1}^{n-1}\epsilon_i} \Bigg| \\  &amp;\approx&amp; \Bigg| \Big( \epsilon_0 - \sum\limits_{i=1}^{n-1}\epsilon_i \Big)  * \Big( 1 - \sum\limits_{i=1}^{n-1}\epsilon_i \Big) \Bigg| \\  &amp;=&amp; \Bigg| \epsilon_0 - \Big(\epsilon_0 \sum\limits_{i=1}^{n-1}\epsilon_i \Big)  - \Big(\sum\limits_{i=1}^{n-1}\epsilon_i \Big)  + \Big(\sum\limits_{i=1}^{n-1}\epsilon_i \Big)^2 \Bigg| \\  &amp;\approx&amp; \Bigg| \epsilon_0 - \sum\limits_{i=1}^{n-1}\epsilon_i \Bigg| \\ \end{eqnarray} $$</p>
+    <p>This result mirrors our <em>guess</em> based on the results of $\frac{x^*}{y^*}$.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Repeated%20Arithmetic%20Operations"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

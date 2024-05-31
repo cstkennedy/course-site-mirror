@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Arithmetic Error</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Arithmetic%20Error"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Arithmetic Error</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#multiplication">1 Multiplication</a></div><div class="toc-h1"><a href="#division">2 Division</a></div><div class="toc-h1"><a href="#addition">3 Addition</a></div><div class="toc-h1"><a href="#subtraction">4 Subtraction</a></div></div><p>How does finite precision impact arithmetic operations? For this discussion we will assume:</p>
+    <ul>
+  <li>error originates on the operands (i.e., numbers).</li>
+  <li>arithmetic operations introduce no additional error.</li>
+</ul><p>There are four (4) <em>basic</em> arithmetic operations:</p>
+    <ul>
+  <li>addition</li>
+  <li>subtraction</li>
+  <li>multiplication</li>
+  <li>division</li>
+</ul><p>As you work through these notes, think of $\epsilon$ as relative error, $\epsilon = \frac{|x - x^{*}|}{|x|}$.</p>
+    <p>Believe it or not, the errors for multiplication and division are less tedious to derive than the errors for addition and subtraction!</p>
+    <h1 id="multiplication">1 Multiplication</h1><p>Suppose we were multiplying two numbers:</p>
+    <p>$$ x * y = z $$</p>
+    <p>To denote finite precision, we need to use the <em>star/chop notation</em>:</p>
+    <p>$$ x^{*} * y^{*} = z^{*} $$</p>
+    <p>where</p>
+    <ul>
+  <li>$x^{*} = x(1 + \epsilon_{x})$</li>
+  <li>$y^{*} = y(1 + \epsilon_{y})$</li>
+  <li>$z^{*} = z(1 + \epsilon_{z})$</li>
+</ul><p>Let us start by expanding all the terms (and cleaning everything up).</p>
+    <p>\begin{array}{rl} z^{*} &amp;=&amp; x^{*} * y^{*} \\  &amp;=&amp; x^{*} y^{*} \\  &amp;=&amp; x (1 + \epsilon_{x}) y (1 + \epsilon_{y}) \\  &amp;=&amp; xy (1 + \epsilon_{x})(1 + \epsilon_{y}) \\  &amp;=&amp; xy (1 + \epsilon_{x} + \epsilon_{y} + \epsilon_{x}\epsilon_{y}) \\ \end{array}</p>
+    <p>We can drop the last epsilon term, i.e., $\epsilon_{x}\epsilon_{y}$. This is a higher order epsilon term. Any epsilon terms with a degree of two or higher (i.e., raised to a power of 2 or higher) are treated as zero. The same rule applies to products of epsilon terms.</p>
+    <p>After dropping that last epsilon term… </p>
+    <p>\begin{array}{rl} z^{*}  &amp;=&amp; xy (1 + \epsilon_{x} + \epsilon_{y} + \epsilon_{x}\epsilon_{y}) \\  &amp;\approx&amp; xy (1 + \epsilon_{x} + \epsilon_{y}) \\ \end{array}</p>
+    <p>We know how to compute the absolute error.</p>
+    <p>\begin{array}{rl} z^{*} - z  &amp;=&amp; | xy (1 + \epsilon_{x} + \epsilon_{y}) - xy | \\  &amp;=&amp; | xy + xy (\epsilon_{x} + \epsilon_{y}) - xy | \\  &amp;=&amp; | xy - xy + xy (\epsilon_{x} + \epsilon_{y}) | \\  &amp;=&amp; | xy (\epsilon_{x} + \epsilon_{y}) | \\ \end{array}</p>
+    <p>Of course, that only tells us part of the story. Think about the following three cases:</p>
+    <ul>
+  <li>You are off by 0.01 and your result is 100.</li>
+  <li>You are off by 0.01 and your result is 0.1.</li>
+  <li>You are off by 0.01 and your result is 0.01.</li>
+</ul><p>Which case (or cases) are acceptable? We need the full picture (i.e., relative error).</p>
+    <p>The numerator is, by definition, relative error (which lets us reuse our previous result).</p>
+    <p>\begin{array}{rl} |\frac{z^{*} - z}{z}|  &amp;=&amp; | \frac{xy (\epsilon_{x} + \epsilon_{y})}{xy} | \\  &amp;=&amp; | \epsilon_{x} + \epsilon_{y} | \\ \end{array}</p>
+    <p>The error for multiplication is dependent on the errors representing the numbers, not the numbers themselves.</p>
+    <p>Before moving on to the next section, think about repeated multiplication. Can you show that the error for repeated multiplication is $|\epsilon_{1} + \epsilon_{2} + \ldots + \epsilon_{n}|$?</p>
+    <h1 id="division">2 Division</h1><p>We can tackle division using the same tricks from the multiplication examples.</p>
+    <p>Let us start with absolute error.</p>
+    <p>\begin{array}{rl} \left| \frac{x^{*}}{y^{*}} - \frac{x}{y} \right|  &amp;=&amp; \left| \frac{x(1 + \epsilon_{x})}{y (1 + \epsilon_{y})} - \frac{x}{y} \right| \\  &amp;=&amp; \left| \frac{x}{y} \left( \frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} - 1 \right) \right| \end{array}</p>
+    <p>Relative error will end up in a much “nicer” form.</p>
+    <p>\begin{array}{rl} \left| \frac{\frac{x^{*}}{y^{*}} - \frac{x}{y}}{\frac{x}{y}} \right|  &amp;=&amp; \left| \left(\frac{x^{*}}{y^{*}} - \frac{x}{y} \right) \frac{y}{x} \right| \\  &amp;=&amp; \left| \frac{x}{y} \left( \frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} - 1 \right) \frac{y}{x} \right| \\  &amp;=&amp; \left| \frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} - 1 \right| \\ \end{array}</p>
+    <p>We are not quite done yet. Let us focus on  $\frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} $. We can use a standard math trick (i.e., multiply by the conjugate).</p>
+    <p>\begin{array}{rl} \frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} \frac{1 - \epsilon_{y}}{1 - \epsilon_{y}}  &amp;=&amp; \frac{(1 + \epsilon_{x} - \epsilon_{y} - \epsilon_{x}\epsilon_{y})}{(1 - \epsilon_{y}^{2})} \\  &amp;\approx&amp; \frac{(1 + \epsilon_{x} - \epsilon_{y})}{1} \\  &amp;\approx&amp; 1 + \epsilon_{x} - \epsilon_{y} \\ \end{array}</p>
+    <p>Now, we can continue the relative error derivation.</p>
+    <p>\begin{array}{rl} \left| \frac{\frac{x^{*}}{y^{*}} - \frac{x}{y}}{\frac{x}{y}} \right|  &amp;=&amp; \left| \frac{(1 + \epsilon_{x})}{(1 + \epsilon_{y})} - 1 \right| \\  &amp;\approx&amp; \left| 1 + \epsilon_{x} - \epsilon_{y} - 1 \right | \\  &amp;\approx&amp; \left| \epsilon_{x} - \epsilon_{y} \right | \\ \end{array}</p>
+    <p>The relative error is very similar to the relative error for multiplication.</p>
+    <p><em>How about repeated division?</em> Give it a try (as a practice problem).</p>
+    <h1 id="addition">3 Addition</h1><p>It feels odd to tackle addition <em>after multiplication</em>. Let us jump straight to relative error this time around.</p>
+    <p>\begin{array}{rl} \left| \frac{(x^{*} + y^{*}) - (x + y)}{(x+y)} \right|  &amp;=&amp; \left| \frac{(x(1 + \epsilon_{x}) + y (1 + \epsilon_{y}) - (x + y)}{(x+y)} \right| \\  &amp;\approx&amp; \left| \frac{(x + x\epsilon_{x} + y + y \epsilon_{y}) - (x + y)}{(x+y)} \right| \\  &amp;=&amp; \left| \frac{(x + y) + (x\epsilon_{x} + y \epsilon_{y}) - (x + y)}{(x+y)} \right| \\  &amp;=&amp; \left| \frac{ (x\epsilon_{x} + y \epsilon_{y})}{(x+y)} \right| \\  &amp;=&amp; \left| \frac{x}{x+y} \epsilon_{x} + \frac{y}{x+y} \epsilon_{y} \right| \\ \end{array}</p>
+    <p>The error is dependent on $x$ and $y$. <em>How would you continue this evaluation?</em></p>
+    <h1 id="subtraction">4 Subtraction</h1><p>Our subtraction derivation will mirror addition… with a few flipped signs.</p>
+    <p>\begin{array}{rl} \left| \frac{(x^{*} - y^{*}) - (x - y)}{(x-y)} \right|  &amp;=&amp; \left| \frac{(x(1 + \epsilon_{x}) - y (1 + \epsilon_{y}) - (x - y)}{(x-y)} \right| \\  &amp;\approx&amp; \left| \frac{(x + x\epsilon_{x} - y - y \epsilon_{y}) - (x - y)}{(x-y)} \right| \\  &amp;=&amp; \left| \frac{(x - y) + x\epsilon_{x} - y \epsilon_{y} - (x - y)}{(x-y)} \right| \\  &amp;=&amp; \left| \frac{(x - y) - (x - y) + x\epsilon_{x} - y \epsilon_{y}}{(x-y)} \right| \\  &amp;=&amp; \left| \frac{x\epsilon_{x} - y \epsilon_{y}}{(x-y)} \right| \\  &amp;=&amp; \left| \frac{x}{x+y} \epsilon_{x} - \frac{y}{x+y} \epsilon_{y} \right| \\ \end{array}</p>
+    <p>The error is dependent on $x$ and $y$. <em>How would you continue this evaluation?</em></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Arithmetic%20Error"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

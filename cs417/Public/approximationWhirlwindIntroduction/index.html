@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Least Squares - A Whirlwind Introduction</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20A%20Whirlwind%20Introduction"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Least Squares - A Whirlwind Introduction</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-line-connecting-two-points">1 A Line Connecting Two Points</a></div><div class="toc-h2"><a href="#trend-analysis">1.1 Trend Analysis</a></div><div class="toc-h2"><a href="#change-of-notation">1.2 Change of Notation</a></div><div class="toc-h1"><a href="#the-xtx-xty-method">2 The XTX|XTY Method</a></div></div><p>Go to Google (or another search engine) and look for <strong>Least Squares Approximation</strong>. You will find a number of pages on the topic (as expected). One of these is a Wikipedia Article, <a href="https://en.wikipedia.org/wiki/Least_squares">https://en.wikipedia.org/wiki/Least_squares</a>. Unless you are accustomed to a bunch of unfamiliar math terms presented all at-once, this page (and others like it) may seem overwhelming.</p>
+    <p>However, if we scroll through the page, we eventually find a link to <a href="https://en.wikipedia.org/wiki/Linear_least_squares">Linear Least Squares</a>. If we scroll through this next page, we will eventually find a somewhat approachable example. However, the notation is a bit unfamiliar.</p>
+    <p>Let us start our discussion by taking a few steps back…</p>
+    <a id="alineconnectingtwopoints"/><h1 id="a-line-connecting-two-points">1 A Line Connecting Two Points</h1><img align="right" src="graph.svg"/><p>Let us go back a few years… to the equation of a line:</p>
+    <p>\[ y = mx + b \]</p>
+    <p>From algebra, we know that:</p>
+    <ul>
+  <li><strong>m</strong> represents the slope (or rise over run)</li>
+  <li><strong>b</strong> represents the y-intercept</li>
+</ul><p>By definition, we can write m as</p>
+    <p>\[ m = \frac{y_1 - y_0}{x_1 - x_0} \]</p>
+    <p>These definitions allow us to write:</p>
+    <p>\[ y = \frac{y_1 - y_0}{x_1 - x_0} x + b \]</p>
+    <p>After a quick look at the provided diagram, we can write:</p>
+    <p>\[ \begin{align} b &amp; = y_0 - m x_0 \\  &amp; = y_0 - \frac{y_1 - y_0}{x_1 - x_0} x_0 \\ \end{align} \]</p>
+    <p>That leads us to</p>
+    <p>\[ \begin{align} y &amp; = \frac{y_1 - y_0}{x_1 - x_0}x + (y_0 - \frac{y_1 - y_0}{x_1 - x_0} x_0) \\  &amp; = \frac{y_1 - y_0}{x_1 - x_0}x - \frac{y_1 - y_0}{x_1 - x_0} x_0 + y_0) \\  &amp; = \frac{y_1 - y_0}{x_1 - x_0}(x-x_0) + y_0 \\ \end{align} \]</p>
+    <a id="trendanalysis"/><h2 id="trend-analysis">1.1 Trend Analysis</h2><p>We now have a reusable equation that allows us to draw a line between any arbitrary pair of unique points (excluding points that form vertical lines). However, data is not always so clean. When working with more than two points, it is very unlikely that a single line will pass through all input points.</p>
+    <p>This moves us towards approximation (and away from linear interpolation).</p>
+    <a id="changeofnotation"/><h2 id="change-of-notation">1.2 Change of Notation</h2><p>Before moving on, let us rewrite</p>
+    <p>\[ y = mx + b \]</p>
+    <p>as</p>
+    <p>\[ y = b + mx \]</p>
+    <p>and change to a more general notation</p>
+    <p>\[ \varphi = c_0 + c_1 x \]</p>
+    <p>This allows us to generalize our approximation function to</p>
+    <p>\[ \begin{align} \varphi &amp; = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + … + c_{n-2} x^{n-2} + c_{n-1} x^{n-1} + c_n x^n \\  &amp; = \sum_{i=0}^{n} c_i x^i \\ \end{align} \]</p>
+    <p>This allows us to work with polynomial approximation functions of any degree (i.e., this removes the line-only limit).</p>
+    <a id="thextxxtymethod"/><h1 id="the-xtx-xty-method">2 The XTX|XTY Method</h1><p>Later in this course we will discuss a more robust form of Least Squares Approximation. However, we will start with the XTX|XTY (Wikipedia) method based on:</p>
+    <ol>
+  <li>accessibility of web-based resources on the method.</li>
+  <li>availability of immediate application of the method.</li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20A%20Whirlwind%20Introduction"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

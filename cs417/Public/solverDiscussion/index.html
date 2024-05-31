@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Non-Linear Solvers</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Non-Linear%20Solvers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Non-Linear Solvers</h1></div><div class="toc">Contents:<div class="toc-h1"><a href="#newtons-method">1 Newton’s Method</a></div><div class="toc-h2"><a href="#refining-the-pseudocode">1.1 Refining the Pseudocode</a></div><div class="toc-h2"><a href="#where-is-the-code-">1.2 Where is the Code?</a></div><div class="toc-h2"><a href="#now-we-are-ready-">1.3 Now We are Ready!</a></div><div class="toc-h2"><a href="#cleaning-up-the-implementation">1.4 Cleaning Up The Implementation</a></div></div><a id="newtonsmethod"/><h1 id="newtons-method">1 Newton’s Method</h1><p>We are going to start with my favorite solver, <em>Newton’s Method</em>. Out of the four methods we will discuss, this one has the shortest pseudocode.</p>
+    <blockquote>
+  <p>Compute $x_{n+1} = x_n - \frac{f(x_n)}{df(x_n)}$ until $|x_{n+1} - x_n| \leq eps$</p>
+    
+</blockquote><div class="noFloat"> </div><div class="sidebar pct50">
+<p>One of my recurring sidebars this semester has been “<em>It is just notation.</em>” While there is a lot of notation here, it is all based on things we have seen before.</p>
+    
+</div><p>If we look at the pieces:</p>
+    <ul>
+  <li>$x_{n+1}$ - next guess for a solution</li>
+  <li>$x_n$ - current guess for a solution</li>
+  <li>$f$ - function for which a solution is desired</li>
+  <li>$df$ or $f’$ - derivative of $f$</li>
+  <li>$eps$ - tolerance</li>
+</ul><p>Notice the requirements?</p>
+    <ol>
+  <li>We must have both $f$ and its derivative $df$.</li>
+  <li>$df(x_n)$ must be non-zero.</li>
+</ol><a id="refiningthepseudocode"/><h2 id="refining-the-pseudocode">1.1 Refining the Pseudocode</h2><p>Our starting pseudocode was:</p>
+    <blockquote>
+  <p>Compute $x_{n+1} = x_n - \frac{f(x_n)}{df(x_n)}$ until $|x_{n+1} - x_n| \leq eps$</p>
+    
+</blockquote><p>While this code is complete, it is not something we can immediately start <em>coding</em>. Let us start by a slight change in notation.</p>
+    <blockquote>
+  <p><code>while</code> $|x_{n+1} - x_n| &gt; eps$:</p>
+    
+  <p>        $x_{n+1} = x_n - \frac{f(x_n)}{df(x_n)}$</p>
+    
+</blockquote><p>This needs to be something we can write in code. Mathematical notation is usually difficult to preserve in formal code. Let us preemptively adjust our notation.</p>
+    <pre><code>while abs(x_np1 - x_n) &gt; eps:
+    x_np1 = x_n - (f(x_n) / df(x_n))
+</code></pre><p>Let us clarify our inputs by making this a proper function.</p>
+    <pre><code>def newtons_method(f, df, eps):
+
+    while abs(x_np1 - x_n) &gt; eps:
+        x_np1 = x_n - (f(x_n) / df(x_n))
+</code></pre><p>It is now clear that $f$, $df$, and $eps$ are arguments passed in when <code>newtons_method</code> is invoked. Both x_n and x_np1 are function local variables. This also brings up an issue. <em>Where is our initial guess for</em> $x_n$ <em>?</em></p>
+    <pre><code>def newtons_method(f, df, x_n, eps):
+
+    while abs(x_np1 - x_n) &gt; eps:
+        x_np1 = x_n - (f(x_n) / df(x_n))
+</code></pre><p>That is much better.</p>
+    <a id="whereisthecode"/><h2 id="where-is-the-code-">1.2 Where is the Code?</h2><p>You are <del>probably</del> definitely surprised that I have not started writing C++, Python, or Rust code yet. <strong>Why am I not ready, yet?</strong></p>
+    <ol>
+  <li><code>x_np1</code> needs a better name.</li>
+  <li>What if $|x_n - x_{pn1}| &gt; eps$ is never false?</li>
+  <li>What if $df(x_n)$ is small?</li>
+  <li>$x_n$ needs to be updated.</li>
+</ol><p>These can all be addressed quickly. Let us start by addressing <code>1</code> and <code>4</code>:</p>
+    <pre><code>def newtons_method(f, df, x_n, eps):
+
+    while abs(x_np1 - x_n) &gt; eps:
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+        x_n = next_x_n
+</code></pre><p>We are now left with two problems:</p>
+    <ol>
+  <li><code>x_np1</code> <del>needs a better name.</del></li>
+  <li>What if $|x_n - x_{pn1}| &gt; eps$ is never false?</li>
+  <li>What if $df(x_n)$ is small?</li>
+  <li>$x_n$ <del>needs to be updated.</del></li>
+</ol><p>These two problems are both solved with a loop counter.</p>
+    <pre><code>MAX_ITERATIONS = 100
+
+def newtons_method(f, df, x_n, eps):
+
+    n = 0
+
+    while abs(x_np1 - x_n) &gt; eps:
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+        x_n = next_x_n
+        n = n + 1
+
+        if n &gt;= MAX_ITERATIONS:
+            break
+
+    return x_n
+</code></pre><p>Yes, I did silently add the missing return statement. Did you notice it was missing?</p>
+    <a id="nowweareready"/><h2 id="now-we-are-ready-">1.3 Now We are Ready!</h2><p>I am going to implement this code in Python 3 (3.7 to be exact). Let us make a quick draft.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_1.py" target="listing">newtons_method_1.py</a></span> <input id="but_details_d6e126" onclick="toggleDisplay('_details_d6e126')" type="button" value="+"/><div class="detailPart" id="_details_d6e126"><pre><code id="_details_d6e126_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable)
+import typing
+from fractions import (Fraction)
+
+
+EPSILON = 10e-6
+MAX_ITERATIONS = 100
+
+def newtons_method(f, df, x_n, eps=EPSILON):
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps:
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+        if n &gt;= MAX_ITERATIONS:
+            break
+
+        n += 1
+
+    return x_n
+
+
+def main():
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        print("x = {:.4f} | f(x) = {:.4f}".format(solution_newton, fx_newton))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>Notice how I used a direct translation of the pseudocode <code>newtons_method</code> function? Sometimes we can get away with a <em>transliteration</em>.</p>
+    <p>The tolerance, <code>eps</code> is now an argument to <code>newtons_method</code> (albeit one with a default argument value). This is something I usually define and use throughout a codebase.</p>
+    <p>Let us make some quick improvements.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_2.py" target="listing">newtons_method_2.py</a></span> <input id="but_details_d6e142" onclick="toggleDisplay('_details_d6e142')" type="button" value="+"/><div class="detailPart" id="_details_d6e142"><pre><code id="_details_d6e142_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable)
+import typing
+from fractions import (Fraction)
+
+
+EPSILON = 10e-6
+MAX_ITERATIONS = 100
+
+def newtons_method(f, df, x_n, eps=EPSILON):
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps and n &lt; MAX_ITERATIONS:
+        n += 1
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+    return n, x_n
+
+
+def main():
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {:.4f} | f(x) = {:.4f} | {} iterations"
+        print(output_str.format(solution_newton, fx_newton, num_iterations))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>I added the number of iterations as a return value. Python allows us to return multiple values as a tuple</p>
+    <pre><code class="python">    return n, x_n
+</code></pre><p>and unpack the result</p>
+    <pre><code class="python">        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+</code></pre><p>Now if I run the code with</p>
+    <pre><code>./newtons_method_2.py 2
+</code></pre><p>the output includes the number of iterations.</p>
+    <pre><code>x = 1.0000 | f(x) = 0.0000 | 5 iterations
+</code></pre><p>This is a reasonable implementation.</p>
+    <a id="cleaninguptheimplementation"/><h2 id="cleaning-up-the-implementation">1.4 Cleaning Up The Implementation</h2><p>It is now time to add <a href="https://www.python.org/dev/peps/pep-0484/">type hints</a>.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_3.py" target="listing">newtons_method_3.py</a></span> <input id="but_details_d6e167" onclick="toggleDisplay('_details_d6e167')" type="button" value="+"/><div class="detailPart" id="_details_d6e167"><pre><code id="_details_d6e167_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable, Tuple)
+import typing
+from fractions import (Fraction)
+
+
+EPSILON = 10e-6
+MAX_ITERATIONS = 100
+
+def newtons_method(f: Callable[[float], float],
+                   df: Callable[[float], float],
+                   x_n: float,
+                   eps: float = EPSILON) -&gt; Tuple[int, float]:
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps and n &lt; MAX_ITERATIONS:
+        n += 1
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+    return n, x_n
+
+
+def main():
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {:.4f} | f(x) = {:.4f} | {} iterations"
+        print(output_str.format(solution_newton, fx_newton, num_iterations))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>Let us add some docstrings in the <a href="https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings">Google/Sphinx style</a>.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_4.py" target="listing">newtons_method_4.py</a></span> <input id="but_details_d6e174" onclick="toggleDisplay('_details_d6e174')" type="button" value="+"/><div class="detailPart" id="_details_d6e174"><pre><code id="_details_d6e174_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable, Tuple)
+import typing
+from fractions import (Fraction)
+
+
+EPSILON = 10e-6
+MAX_ITERATIONS = 100
+
+def newtons_method(f: Callable[[float], float],
+                   df: Callable[[float], float],
+                   x_n: float,
+                   eps: float = EPSILON) -&gt; Tuple[int, float]:
+    """
+    Compute an approximate solution to f(x) = 0 using Newton's Method.
+
+    Args:
+        f: mathematical function
+        df: derivative of f
+        x_n: an initial guess (i.e., x_0)
+        eps: tolerance within which two guesses will be considered equal.
+
+    Returns:
+        A Tuple with the number of iterations and approximate solution.
+
+    """
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps and n &lt; MAX_ITERATIONS:
+        n += 1
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+    return n, x_n
+
+
+def main():
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {:.4f} | f(x) = {:.4f} | {} iterations"
+        print(output_str.format(solution_newton, fx_newton, num_iterations))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>If we run pylint using <code>python -m pylint newtons_method_4.py</code>, we receive a few warnings:</p>
+    <pre><code>************* Module newtons_method_4
+newtons_method_4.py:1:0: C0111: Missing module docstring (missing-docstring)
+newtons_method_4.py:13:0: C0103: Argument name "f" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:13:0: C0103: Argument name "df" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:31:4: C0103: Variable name "n" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:35:8: C0103: Variable name "n" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:43:0: C0111: Missing function docstring (missing-docstring)
+newtons_method_4.py:57:4: C0103: Function name "f" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:57:4: C0103: Argument name "x" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:60:4: C0103: Function name "df" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:60:4: C0103: Argument name "x" doesn't conform to snake_case naming style (invalid-name)
+newtons_method_4.py:6:0: W0611: Unused import typing (unused-import)
+newtons_method_4.py:7:0: W0611: Unused Fraction imported from fractions (unused-import)
+
+------------------------------------------------------------------
+Your code has been rated at 6.76/10 (previous run: 6.76/10, +0.00)
+</code></pre><p>In this case we can ignore the warnings dealing with <code>x</code>, <code>n</code>, <code>f</code>, and <code>df</code>. Why? We are sticking with the mathematical notation from the original pseudocode. That leaves us with:</p>
+    <pre><code>newtons_method_4.py:1:0: C0111: Missing module docstring (missing-docstring)
+newtons_method_4.py:43:0: C0111: Missing function docstring (missing-docstring)
+newtons_method_4.py:6:0: W0611: Unused import typing (unused-import)
+newtons_method_4.py:7:0: W0611: Unused Fraction imported from fractions (unused-import)
+</code></pre><p>Since this is a quick example, we can forgo a module docstring. That leaves us with a docstring for <code>main</code> and a few unused imports.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_5.py" target="listing">newtons_method_5.py</a></span> <input id="but_details_d6e199" onclick="toggleDisplay('_details_d6e199')" type="button" value="+"/><div class="detailPart" id="_details_d6e199"><pre><code id="_details_d6e199_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable, Tuple)
+from fractions import (Fraction)
+
+
+EPSILON = 10e-6
+MAX_ITERATIONS = 100
+
+def newtons_method(f: Callable[[float], float],
+                   df: Callable[[float], float],
+                   x_n: float,
+                   eps: float = EPSILON) -&gt; Tuple[int, float]:
+    """
+    Compute an approximate solution to f(x) = 0 using Newton's Method.
+
+    Args:
+        f: mathematical function
+        df: derivative of f
+        x_n: an intitial guess (i.e., x_0)
+        eps: tolerance within which two guesses will be considered equal.
+
+    Returns:
+        A Tuple with the number of iterations and approximate solution.
+
+    """
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps and n &lt; MAX_ITERATIONS:
+        n += 1
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+    return n, x_n
+
+
+def main():
+    """
+    This main function serves as the driver for the demo. Such functions
+    are not required in Python. However, we want to prevent unnecessary module
+    level (i.e., global) variables.
+    """
+
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {:.4f} | f(x) = {:.4f} | {} iterations"
+        print(output_str.format(solution_newton, fx_newton, num_iterations))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>We are left with one more warning:</p>
+    <pre><code>newtons_method_5.py:6:0: W0611: Unused Fraction imported from fractions (unused-import)
+</code></pre><p>So far we have been using the <code>float</code> data type (i.e., finite precision). Let us switch to the Python fractions library.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_6.py" target="listing">newtons_method_6.py</a></span> <input id="but_details_d6e208" onclick="toggleDisplay('_details_d6e208')" type="button" value="+"/><div class="detailPart" id="_details_d6e208"><pre><code id="_details_d6e208_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable, Tuple)
+from fractions import (Fraction)
+
+
+EPSILON = Fraction(1, 10**6)
+MAX_ITERATIONS = 100
+
+def newtons_method(f: Callable[[Fraction], Fraction],
+                   df: Callable[[Fraction], Fraction],
+                   x_n: Fraction,
+                   eps: Fraction = EPSILON) -&gt; Tuple[int, Fraction]:
+    """
+    Compute an approximate solution to f(x) = 0 using Newton's Method.
+
+    Args:
+        f: mathematical function
+        df: derivative of f
+        x_n: an intitial guess (i.e., x_0)
+        eps: tolerance within which two guesses will be considered equal.
+
+    Returns:
+        A Tuple with the number of iterations and approximate solution.
+
+    """
+
+    n = 0
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps and n &lt; MAX_ITERATIONS:
+        n += 1
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+    return n, x_n
+
+
+def main():
+    """
+    This main function serves as the driver for the demo. Such functions
+    are not required in Python. However, we want to prevent unnecessary module
+    level (i.e., global) variables.
+    """
+
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {} | f(x) = {} | {} iterations"
+        print(output_str.format(solution_newton,
+                                str(fx_newton),
+                                str(num_iterations)))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div><p>That leaves us with</p>
+    <pre><code>x = 1.0000000469590518 | f(x) = 9.391810573688986e-08 | 5 iterations
+</code></pre><p>That is worse than before! Since are using fractions, rounding error propagates differently. This can be solved by tweaking</p>
+    <pre><code>EPSILON = Fraction(1, 10**6)
+</code></pre><p>However, <code>9.391810573688986e-08</code> is probably close enough to zero.</p>
+    <hr/><p>The generator expression and S.O.L.I.D discussion code can be found below.</p>
+    <div class="details"><span class="summary"><a href="newtons_method_7.py" target="listing">newtons_method_7.py</a></span> <input id="but_details_d6e223" onclick="toggleDisplay('_details_d6e223')" type="button" value="+"/><div class="detailPart" id="_details_d6e223"><pre><code id="_details_d6e223_code">#! /usr/bin/env python3
+
+import sys
+
+from typing import (Callable, Tuple)
+from fractions import (Fraction)
+
+
+EPSILON = Fraction(1, 10**6)
+MAX_ITERATIONS = 100
+
+def newtons_method(f: Callable[[Fraction], Fraction],
+                   df: Callable[[Fraction], Fraction],
+                   x_0: Fraction,
+                   eps: Fraction = EPSILON) -&gt; Tuple[int, Fraction]:
+    """
+    Compute an approximate solution to f(x) = 0 using Newton's Method.
+
+    Args:
+        f: mathematical function
+        df: derivative of f
+        x_0: an initial guess (i.e., x_0)
+        eps: tolerance within which two guesses will be considered equal.
+
+    Returns:
+        A Tuple with the number of iterations and approximate solution.
+
+    """
+
+    for n, numerical_solution in enumerate(__inner_newtons_method(f, df, x_0, eps)):
+        if n &gt;= MAX_ITERATIONS:
+            break
+
+    return n, numerical_solution
+
+
+def __inner_newtons_method(f: Callable[[Fraction], Fraction],
+                   df: Callable[[Fraction], Fraction],
+                   x_n: Fraction,
+                   eps: Fraction = EPSILON) -&gt; Tuple[int, Fraction]:
+
+    next_x_n = x_n + 1000 * eps
+    while abs(x_n - next_x_n) &gt; eps:
+
+        x_n = next_x_n
+        next_x_n = x_n - (f(x_n) / df(x_n))
+
+        yield x_n
+
+    return x_n
+
+
+def main():
+    """
+    This main function serves as the driver for the demo. Such functions
+    are not required in Python. However, we want to prevent unnecessary module
+    level (i.e., global) variables.
+    """
+
+    try:
+        initial_guess = float(sys.argv[1])
+
+    except IndexError as error:
+        print("Usage: {0} initial_guess".format(*sys.argv))
+        sys.exit(1)
+
+    except ValueError as error:
+        print("ERROR: {1} is not a valid number".format(*sys.argv))
+        print("  " + str(error))
+        sys.exit(2)
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return (x ** 2) - 1
+
+    def df(x):
+        return 2 * x
+
+    try:
+        num_iterations, solution_newton = newtons_method(f, df, initial_guess)
+        fx_newton = f(solution_newton)
+
+        output_str = "x = {} | f(x) = {} | {} iterations"
+        print(output_str.format(solution_newton,
+                                str(fx_newton),
+                                str(num_iterations)))
+
+    except ZeroDivisionError as error:
+        print(str(error))
+
+
+if __name__ == "__main__":
+    main()
+</code></pre></div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Non-Linear%20Solvers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

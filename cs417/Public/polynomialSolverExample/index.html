@@ -1,0 +1,1506 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Polynomial Examples</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Polynomial%20Examples"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Polynomial Examples</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#example-1-2-2">1 Example 1 - [-2, 2]</a></div><div class="toc-h2"><a href="#bisection">1.1 Bisection</a></div><div class="toc-h2"><a href="#regula-falsi-false-position-">1.2 Regula Falsi (False Position)</a></div><div class="toc-h2"><a href="#secant">1.3 Secant</a></div><div class="toc-h2"><a href="#newton">1.4 Newton</a></div><div class="toc-h1"><a href="#example-2-100-100">2 Example 2 - [-100, 100]</a></div><div class="toc-h2"><a href="#bisection">2.1 Bisection</a></div><div class="toc-h2"><a href="#regula-falsi-false-position-">2.2 Regula Falsi (False Position)</a></div><div class="toc-h2"><a href="#secant">2.3 Secant</a></div><div class="toc-h2"><a href="#newton">2.4 Newton</a></div><div class="toc-h1"><a href="#example-3-2-0-333">3 Example 3 - [-2, 0.333…]</a></div><div class="toc-h2"><a href="#bisection">3.1 Bisection</a></div><div class="toc-h2"><a href="#regula-falsi-false-position-">3.2 Regula Falsi (False Position)</a></div><div class="toc-h2"><a href="#secant">3.3 Secant</a></div><div class="toc-h2"><a href="#newton">3.4 Newton</a></div></div><p>Let us examine the results of each solver for $f(x)=x^2 - 1$ with three different input domains.</p>
+    <a id="example122"/><h1 id="example-1-2-2">1 Example 1 - [-2, 2]</h1><p>$f(x)=x^2 - 1$ where $-2\leq x\leq 2$</p>
+    <h2 id="bisection">1.1 Bisection</h2><div class="details"><span class="summary">20 Steps</span> <input id="but_details_d6e8" onclick="toggleDisplay('_details_d6e8')" type="button" value="+"/><div class="detailsBody" id="_details_d6e8" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">$-2.000000$ </td>
+      <td align="right">$2.000000$ </td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$2.000000$ </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$\frac{1}{2}=0.500000$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{1}{2}=0.500000$ </td>
+      <td align="right">$\frac{-3}{4}=-0.750000$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$\frac{3}{4}=0.750000$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{3}{4}=0.750000$ </td>
+      <td align="right">$\frac{-7}{16}=-0.437500$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$\frac{7}{8}=0.875000$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{7}{8}=0.875000$ </td>
+      <td align="right">$\frac{-15}{64}=-0.234375$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$\frac{15}{16}=0.937500$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{15}{16}=0.937500$ </td>
+      <td align="right">$\frac{-31}{256}=-0.121094$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$\frac{31}{32}=0.968750$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{31}{32}=0.968750$ </td>
+      <td align="right">$\frac{-63}{1024}=-0.061523$ </td>
+    </tr>
+    <tr>
+      <td align="right">8 </td>
+      <td align="right">$\frac{63}{64}=0.984375$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{63}{64}=0.984375$ </td>
+      <td align="right">$\frac{-127}{4096}=-0.031006$ </td>
+    </tr>
+    <tr>
+      <td align="right">9 </td>
+      <td align="right">$\frac{127}{128}=0.992188$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{127}{128}=0.992188$ </td>
+      <td align="right">$\frac{-255}{16384}=-0.015564$ </td>
+    </tr>
+    <tr>
+      <td align="right">10 </td>
+      <td align="right">$\frac{255}{256}=0.996094$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{255}{256}=0.996094$ </td>
+      <td align="right">$\frac{-511}{65536}=-0.007797$ </td>
+    </tr>
+    <tr>
+      <td align="right">11 </td>
+      <td align="right">$\frac{511}{512}=0.998047$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{511}{512}=0.998047$ </td>
+      <td align="right">$\frac{-1023}{262144}=-0.003902$ </td>
+    </tr>
+    <tr>
+      <td align="right">12 </td>
+      <td align="right">$\frac{1023}{1024}=0.999023$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{1023}{1024}=0.999023$ </td>
+      <td align="right">$\frac{-2047}{1048576}=-0.001952$ </td>
+    </tr>
+    <tr>
+      <td align="right">13 </td>
+      <td align="right">$\frac{2047}{2048}=0.999512$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{2047}{2048}=0.999512$ </td>
+      <td align="right">$\frac{-4095}{4194304}=-0.000976$ </td>
+    </tr>
+    <tr>
+      <td align="right">14 </td>
+      <td align="right">$\frac{4095}{4096}=0.999756$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{4095}{4096}=0.999756$ </td>
+      <td align="right">$\frac{-8191}{16777216}=-0.000488$ </td>
+    </tr>
+    <tr>
+      <td align="right">15 </td>
+      <td align="right">$\frac{8191}{8192}=0.999878$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{8191}{8192}=0.999878$ </td>
+      <td align="right">$\frac{-16383}{67108864}=-0.000244$ </td>
+    </tr>
+    <tr>
+      <td align="right">16 </td>
+      <td align="right">$\frac{16383}{16384}=0.999939$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{16383}{16384}=0.999939$ </td>
+      <td align="right">$-0.000122$ </td>
+    </tr>
+    <tr>
+      <td align="right">17 </td>
+      <td align="right">$\frac{32767}{32768}=0.999969$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{32767}{32768}=0.999969$ </td>
+      <td align="right">$-0.000061$ </td>
+    </tr>
+    <tr>
+      <td align="right">18 </td>
+      <td align="right">$\frac{65535}{65536}=0.999985$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{65535}{65536}=0.999985$ </td>
+      <td align="right">$-0.000031$ </td>
+    </tr>
+    <tr>
+      <td align="right">19 </td>
+      <td align="right">$\frac{131071}{131072}=0.999992$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$\frac{131071}{131072}=0.999992$ </td>
+      <td align="right">$-0.000015$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=\frac{131071}{131072}=0.999992$</p>
+    <p>$f(x)=-0.000015$</p>
+    <a id="regulafalsifalseposition"/><h2 id="regula-falsi-false-position-">1.2 Regula Falsi (False Position)</h2><div class="details"><span class="summary">1 Step</span> <input id="but_details_d6e406" onclick="toggleDisplay('_details_d6e406')" type="button" value="+"/><div class="detailsBody" id="_details_d6e406" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0</td>
+      <td align="right">-2</td>
+      <td align="right">2</td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Method Fails</strong></p>
+    <p>$x_n=\frac{-2-2}{3-3}*3$ Division by Zero</p>
+    <h2 id="secant">1.3 Secant</h2><div class="details"><span class="summary">1 Step</span> <input id="but_details_d6e459" onclick="toggleDisplay('_details_d6e459')" type="button" value="+"/><div class="detailsBody" id="_details_d6e459" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$x_{n+1}$ </th>
+      <th align="right">$f(x_{n+1})$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1</td>
+      <td align="right">-2</td>
+      <td align="right">2</td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Method Fails</strong></p>
+    <p>$x_n=\frac{2- -2}{3 - 3} * 3$ Division by Zero</p>
+    <h2 id="newton">1.4 Newton</h2><div class="details"><span class="summary">6 Steps</span> <input id="but_details_d6e511" onclick="toggleDisplay('_details_d6e511')" type="button" value="+"/><div class="detailsBody" id="_details_d6e511" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$f(x_{n-1})$ </th>
+      <th align="right">$f’(x_{n-1})$ </th>
+      <th align="right">$x_{n+1}$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$-2.000000$ </td>
+      <td align="right">$3.000000$ </td>
+      <td align="right">$-4.000000$ </td>
+      <td align="right">$\frac{-5}{4}=-1.250000$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$\frac{-5}{4}=-1.250000$ </td>
+      <td align="right">$\frac{9}{16}=0.562500$ </td>
+      <td align="right">$\frac{-5}{2}=-2.500000$ </td>
+      <td align="right">$\frac{-41}{40}=-1.025000$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$\frac{-41}{40}=-1.025000$ </td>
+      <td align="right">$\frac{81}{1600}=0.050625$ </td>
+      <td align="right">$\frac{-41}{20}=-2.050000$ </td>
+      <td align="right">$\frac{-3281}{3280}=-1.000305$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$\frac{-3281}{3280}=-1.000305$ </td>
+      <td align="right">$\frac{6561}{10758400}=0.000610$ </td>
+      <td align="right">$\frac{-3281}{1640}=-2.000610$ </td>
+      <td align="right">$\frac{-21523361}{21523360}=-1.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$\frac{-21523361}{21523360}=-1.000000$ </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$\frac{-21523361}{10761680}=-2.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=\frac{-21523361}{21523360}=-1.000000$</p>
+    <p>$f(x)=0.000000$</p>
+    <hr/><a id="example2100100"/><h1 id="example-2-100-100">2 Example 2 - [-100, 100]</h1><p>$f(x)=x^2 - 1$ where $-100\leq x\leq 100$</p>
+    <h2 id="bisection">2.1 Bisection</h2><div class="details"><span class="summary">26 Steps</span> <input id="but_details_d6e641" onclick="toggleDisplay('_details_d6e641')" type="button" value="+"/><div class="detailsBody" id="_details_d6e641" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">$-100.000000$ </td>
+      <td align="right">$100.000000$ </td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$100.000000$ </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$50.000000$ </td>
+      <td align="right">$50.000000$ </td>
+      <td align="right">$2499.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$25.000000$ </td>
+      <td align="right">$25.000000$ </td>
+      <td align="right">$624.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$\frac{25}{2}=12.500000$ </td>
+      <td align="right">$\frac{25}{2}=12.500000$ </td>
+      <td align="right">$\frac{621}{4}=155.250000$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$\frac{25}{4}=6.250000$ </td>
+      <td align="right">$\frac{25}{4}=6.250000$ </td>
+      <td align="right">$\frac{609}{16}=38.062500$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$\frac{25}{8}=3.125000$ </td>
+      <td align="right">$\frac{25}{8}=3.125000$ </td>
+      <td align="right">$\frac{561}{64}=8.765625$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$\frac{25}{16}=1.562500$ </td>
+      <td align="right">$\frac{25}{16}=1.562500$ </td>
+      <td align="right">$\frac{369}{256}=1.441406$ </td>
+    </tr>
+    <tr>
+      <td align="right">8 </td>
+      <td align="right">$\frac{25}{32}=0.781250$ </td>
+      <td align="right">$\frac{25}{16}=1.562500$ </td>
+      <td align="right">$\frac{25}{32}=0.781250$ </td>
+      <td align="right">$\frac{-399}{1024}=-0.389648$ </td>
+    </tr>
+    <tr>
+      <td align="right">9 </td>
+      <td align="right">$\frac{25}{32}=0.781250$ </td>
+      <td align="right">$\frac{75}{64}=1.171875$ </td>
+      <td align="right">$\frac{75}{64}=1.171875$ </td>
+      <td align="right">$\frac{1529}{4096}=0.373291$ </td>
+    </tr>
+    <tr>
+      <td align="right">10 </td>
+      <td align="right">$\frac{125}{128}=0.976562$ </td>
+      <td align="right">$\frac{75}{64}=1.171875$ </td>
+      <td align="right">$\frac{125}{128}=0.976562$ </td>
+      <td align="right">$\frac{-759}{16384}=-0.046326$ </td>
+    </tr>
+    <tr>
+      <td align="right">11 </td>
+      <td align="right">$\frac{125}{128}=0.976562$ </td>
+      <td align="right">$\frac{275}{256}=1.074219$ </td>
+      <td align="right">$\frac{275}{256}=1.074219$ </td>
+      <td align="right">$\frac{10089}{65536}=0.153946$ </td>
+    </tr>
+    <tr>
+      <td align="right">12 </td>
+      <td align="right">$\frac{125}{128}=0.976562$ </td>
+      <td align="right">$\frac{525}{512}=1.025391$ </td>
+      <td align="right">$\frac{525}{512}=1.025391$ </td>
+      <td align="right">$\frac{13481}{262144}=0.051426$ </td>
+    </tr>
+    <tr>
+      <td align="right">13 </td>
+      <td align="right">$\frac{125}{128}=0.976562$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{2049}{1048576}=0.001954$ </td>
+    </tr>
+    <tr>
+      <td align="right">14 </td>
+      <td align="right">$\frac{2025}{2048}=0.988770$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{2025}{2048}=0.988770$ </td>
+      <td align="right">$\frac{-93679}{4194304}=-0.022335$ </td>
+    </tr>
+    <tr>
+      <td align="right">15 </td>
+      <td align="right">$\frac{4075}{4096}=0.994873$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{4075}{4096}=0.994873$ </td>
+      <td align="right">$\frac{-171591}{16777216}=-0.010228$ </td>
+    </tr>
+    <tr>
+      <td align="right">16 </td>
+      <td align="right">$\frac{8175}{8192}=0.997925$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{8175}{8192}=0.997925$ </td>
+      <td align="right">$\frac{-278239}{67108864}=-0.004146$ </td>
+    </tr>
+    <tr>
+      <td align="right">17 </td>
+      <td align="right">$\frac{16375}{16384}=0.999451$ </td>
+      <td align="right">$\frac{1025}{1024}=1.000977$ </td>
+      <td align="right">$\frac{16375}{16384}=0.999451$ </td>
+      <td align="right">$\frac{-294831}{268435456}=-0.001098$ </td>
+    </tr>
+    <tr>
+      <td align="right">18 </td>
+      <td align="right">$\frac{16375}{16384}=0.999451$ </td>
+      <td align="right">$\frac{32775}{32768}=1.000214$ </td>
+      <td align="right">$\frac{32775}{32768}=1.000214$ </td>
+      <td align="right">$\frac{458801}{1073741824}=0.000427$ </td>
+    </tr>
+    <tr>
+      <td align="right">19 </td>
+      <td align="right">$\frac{65525}{65536}=0.999832$ </td>
+      <td align="right">$\frac{32775}{32768}=1.000214$ </td>
+      <td align="right">$\frac{65525}{65536}=0.999832$ </td>
+      <td align="right">$\frac{-1441671}{4294967296}=-0.000336$ </td>
+    </tr>
+    <tr>
+      <td align="right">20 </td>
+      <td align="right">$\frac{65525}{65536}=0.999832$ </td>
+      <td align="right">$\frac{131075}{131072}=1.000023$ </td>
+      <td align="right">$\frac{131075}{131072}=1.000023$ </td>
+      <td align="right">$\frac{786441}{17179869184}=0.000046$ </td>
+    </tr>
+    <tr>
+      <td align="right">21 </td>
+      <td align="right">$\frac{262125}{262144}=0.999928$ </td>
+      <td align="right">$\frac{131075}{131072}=1.000023$ </td>
+      <td align="right">$\frac{262125}{262144}=0.999928$ </td>
+      <td align="right">$\frac{-9961111}{68719476736}=-0.000145$ </td>
+    </tr>
+    <tr>
+      <td align="right">22 </td>
+      <td align="right">$\frac{524275}{524288}=0.999975$ </td>
+      <td align="right">$\frac{131075}{131072}=1.000023$ </td>
+      <td align="right">$\frac{524275}{524288}=0.999975$ </td>
+      <td align="right">$-0.000050$ </td>
+    </tr>
+    <tr>
+      <td align="right">23 </td>
+      <td align="right">$\frac{1048575}{1048576}=0.999999$ </td>
+      <td align="right">$\frac{131075}{131072}=1.000023$ </td>
+      <td align="right">$\frac{1048575}{1048576}=0.999999$ </td>
+      <td align="right">$\frac{-2097151}{1099511627776}=-0.000002$ </td>
+    </tr>
+    <tr>
+      <td align="right">24 </td>
+      <td align="right">$\frac{1048575}{1048576}=0.999999$ </td>
+      <td align="right">$\frac{2097175}{2097152}=1.000011$ </td>
+      <td align="right">$\frac{2097175}{2097152}=1.000011$ </td>
+      <td align="right">$\frac{96469521}{4398046511104}=0.000022$ </td>
+    </tr>
+    <tr>
+      <td align="right">25 </td>
+      <td align="right">$\frac{1048575}{1048576}=0.999999$ </td>
+      <td align="right">$\frac{4194325}{4194304}=1.000005$ </td>
+      <td align="right">$\frac{4194325}{4194304}=1.000005$ </td>
+      <td align="right">$0.000010$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=\frac{4194325}{4194304}=1.000005$</p>
+    <p>$f(x)=0.000010$</p>
+    <a id="regulafalsifalseposition"/><h2 id="regula-falsi-false-position-">2.2 Regula Falsi (False Position)</h2><div class="details"><span class="summary">1 Step</span> <input id="but_details_d6e1148" onclick="toggleDisplay('_details_d6e1148')" type="button" value="+"/><div class="detailsBody" id="_details_d6e1148" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0</td>
+      <td align="right">-100</td>
+      <td align="right">100</td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Method Fails</strong></p>
+    <p>$x_n=\frac{-100-100}{9999-9999}*9999$ Division by Zero</p>
+    <h2 id="secant">2.3 Secant</h2><div class="details"><span class="summary">1 Step</span> <input id="but_details_d6e1201" onclick="toggleDisplay('_details_d6e1201')" type="button" value="+"/><div class="detailsBody" id="_details_d6e1201" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$x_{n+1}$ </th>
+      <th align="right">$f(x_{n+1})$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1</td>
+      <td align="right">-100</td>
+      <td align="right">100</td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Method Fails</strong></p>
+    <p>$x_n=\frac{100–100}{9999-9999}*9999$ Division by Zero</p>
+    <h2 id="newton">2.4 Newton</h2><div class="details"><span class="summary">11 Steps</span> <input id="but_details_d6e1253" onclick="toggleDisplay('_details_d6e1253')" type="button" value="+"/><div class="detailsBody" id="_details_d6e1253" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$f(x_{n-1})$ </th>
+      <th align="right">$f’(x_{n-1})$ </th>
+      <th align="right">$x_{n+1}$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$-100.000000$ </td>
+      <td align="right">$9999.000000$ </td>
+      <td align="right">$-200.000000$ </td>
+      <td align="right">$\frac{-10001}{200}=-50.005000$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$\frac{-10001}{200}=-50.005000$ </td>
+      <td align="right">$\frac{99980001}{40000}=2499.500025$ </td>
+      <td align="right">$\frac{-10001}{100}=-100.010000$ </td>
+      <td align="right">$-25.012499$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$-25.012499$ </td>
+      <td align="right">$624.625106$ </td>
+      <td align="right">$-50.024998$ </td>
+      <td align="right">$-12.526240$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$-12.526240$ </td>
+      <td align="right">$155.906676$ </td>
+      <td align="right">$-25.052479$ </td>
+      <td align="right">$-6.303036$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$-6.303036$ </td>
+      <td align="right">$38.728262$ </td>
+      <td align="right">$-12.606072$ </td>
+      <td align="right">$-3.230845$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$-3.230845$ </td>
+      <td align="right">$9.438358$ </td>
+      <td align="right">$-6.461690$ </td>
+      <td align="right">$-1.770181$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$-1.770181$ </td>
+      <td align="right">$2.133540$ </td>
+      <td align="right">$-3.540361$ </td>
+      <td align="right">$-1.167547$ </td>
+    </tr>
+    <tr>
+      <td align="right">8 </td>
+      <td align="right">$-1.167547$ </td>
+      <td align="right">$0.363167$ </td>
+      <td align="right">$-2.335095$ </td>
+      <td align="right">$-1.012022$ </td>
+    </tr>
+    <tr>
+      <td align="right">9 </td>
+      <td align="right">$-1.012022$ </td>
+      <td align="right">$0.024188$ </td>
+      <td align="right">$-2.024044$ </td>
+      <td align="right">$-1.000071$ </td>
+    </tr>
+    <tr>
+      <td align="right">10 </td>
+      <td align="right">$-1.000071$ </td>
+      <td align="right">$0.000143$ </td>
+      <td align="right">$-2.000143$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">11 </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$0.000000$ </td>
+      <td align="right">$-2.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=-1.000000$</p>
+    <p>$f(x)=0.000000$</p>
+    <hr/><a id="example320333"/><h1 id="example-3-2-0-333">3 Example 3 - [-2, 0.333…]</h1><p>$f(x)=x^2 - 1$ where $-2\leq x\leq \frac{1}{3}$</p>
+    <h2 id="bisection">3.1 Bisection</h2><div class="details"><span class="summary">1 Step</span> <input id="but_details_d6e1492" onclick="toggleDisplay('_details_d6e1492')" type="button" value="+"/><div class="detailsBody" id="_details_d6e1492" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{1}{3}=0.333333$ </td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><a id="methodfailed"/><h3 id="method-failed">3.1.1 Method Failed</h3><p>$f(b_0) &lt; 0$ - Invariant violated!</p>
+    <a id="regulafalsifalseposition"/><h2 id="regula-falsi-false-position-">3.2 Regula Falsi (False Position)</h2><div class="details"><span class="summary">100 Steps</span> <input id="but_details_d6e1544" onclick="toggleDisplay('_details_d6e1544')" type="button" value="+"/><div class="detailsBody" id="_details_d6e1544" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$a_n$ </th>
+      <th align="right">$b_n$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$f(x_n)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">-10 </td>
+      <td align="right">1/3 </td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{7}{29}=0.241379$ </td>
+      <td align="right">$\frac{7}{29}=0.241379$ </td>
+      <td align="right">$\frac{-792}{841}=-0.941736$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{41}{283}=0.144876$ </td>
+      <td align="right">$\frac{41}{283}=0.144876$ </td>
+      <td align="right">$\frac{-78408}{80089}=-0.979011$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{127}{2789}=0.045536$ </td>
+      <td align="right">$\frac{127}{2789}=0.045536$ </td>
+      <td align="right">$\frac{-7762392}{7778521}=-0.997926$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{-1519}{27763}=-0.054713$ </td>
+      <td align="right">$\frac{-1519}{27763}=-0.054713$ </td>
+      <td align="right">$-0.997006$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{-42953}{279149}=-0.153871$ </td>
+      <td align="right">$\frac{-42953}{279149}=-0.153871$ </td>
+      <td align="right">$-0.976324$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{-708679}{2834443}=-0.250024$ </td>
+      <td align="right">$\frac{-708679}{2834443}=-0.250024$ </td>
+      <td align="right">$-0.937488$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{-9921233}{29053109}=-0.341486$ </td>
+      <td align="right">$\frac{-9921233}{29053109}=-0.341486$ </td>
+      <td align="right">$-0.883387$ </td>
+    </tr>
+    <tr>
+      <td align="right">8 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.426908$ </td>
+      <td align="right">$-0.426908$ </td>
+      <td align="right">$-0.817750$ </td>
+    </tr>
+    <tr>
+      <td align="right">9 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.505335$ </td>
+      <td align="right">$-0.505335$ </td>
+      <td align="right">$-0.744637$ </td>
+    </tr>
+    <tr>
+      <td align="right">10 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.576216$ </td>
+      <td align="right">$-0.576216$ </td>
+      <td align="right">$-0.667975$ </td>
+    </tr>
+    <tr>
+      <td align="right">11 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.639375$ </td>
+      <td align="right">$-0.639375$ </td>
+      <td align="right">$-0.591200$ </td>
+    </tr>
+    <tr>
+      <td align="right">12 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.694942$ </td>
+      <td align="right">$-0.694942$ </td>
+      <td align="right">$-0.517056$ </td>
+    </tr>
+    <tr>
+      <td align="right">13 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.743288$ </td>
+      <td align="right">$-0.743288$ </td>
+      <td align="right">$-0.447523$ </td>
+    </tr>
+    <tr>
+      <td align="right">14 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.784944$ </td>
+      <td align="right">$-0.784944$ </td>
+      <td align="right">$-0.383863$ </td>
+    </tr>
+    <tr>
+      <td align="right">15 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.820536$ </td>
+      <td align="right">$-0.820536$ </td>
+      <td align="right">$-0.326720$ </td>
+    </tr>
+    <tr>
+      <td align="right">16 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.850731$ </td>
+      <td align="right">$-0.850731$ </td>
+      <td align="right">$-0.276257$ </td>
+    </tr>
+    <tr>
+      <td align="right">17 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.876191$ </td>
+      <td align="right">$-0.876191$ </td>
+      <td align="right">$-0.232290$ </td>
+    </tr>
+    <tr>
+      <td align="right">18 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.897548$ </td>
+      <td align="right">$-0.897548$ </td>
+      <td align="right">$-0.194407$ </td>
+    </tr>
+    <tr>
+      <td align="right">19 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.915388$ </td>
+      <td align="right">$-0.915388$ </td>
+      <td align="right">$-0.162065$ </td>
+    </tr>
+    <tr>
+      <td align="right">20 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.930235$ </td>
+      <td align="right">$-0.930235$ </td>
+      <td align="right">$-0.134663$ </td>
+    </tr>
+    <tr>
+      <td align="right">21 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.942555$ </td>
+      <td align="right">$-0.942555$ </td>
+      <td align="right">$-0.111589$ </td>
+    </tr>
+    <tr>
+      <td align="right">22 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.952753$ </td>
+      <td align="right">$-0.952753$ </td>
+      <td align="right">$-0.092262$ </td>
+    </tr>
+    <tr>
+      <td align="right">23 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.961177$ </td>
+      <td align="right">$-0.961177$ </td>
+      <td align="right">$-0.076139$ </td>
+    </tr>
+    <tr>
+      <td align="right">24 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.968123$ </td>
+      <td align="right">$-0.968123$ </td>
+      <td align="right">$-0.062738$ </td>
+    </tr>
+    <tr>
+      <td align="right">25 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.973843$ </td>
+      <td align="right">$-0.973843$ </td>
+      <td align="right">$-0.051630$ </td>
+    </tr>
+    <tr>
+      <td align="right">26 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.978548$ </td>
+      <td align="right">$-0.978548$ </td>
+      <td align="right">$-0.042444$ </td>
+    </tr>
+    <tr>
+      <td align="right">27 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.982414$ </td>
+      <td align="right">$-0.982414$ </td>
+      <td align="right">$-0.034863$ </td>
+    </tr>
+    <tr>
+      <td align="right">28 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.985588$ </td>
+      <td align="right">$-0.985588$ </td>
+      <td align="right">$-0.028616$ </td>
+    </tr>
+    <tr>
+      <td align="right">29 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.988193$ </td>
+      <td align="right">$-0.988193$ </td>
+      <td align="right">$-0.023474$ </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.990329$ </td>
+      <td align="right">$-0.990329$ </td>
+      <td align="right">$-0.019248$ </td>
+    </tr>
+    <tr>
+      <td align="right">31 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.992081$ </td>
+      <td align="right">$-0.992081$ </td>
+      <td align="right">$-0.015776$ </td>
+    </tr>
+    <tr>
+      <td align="right">32 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.993516$ </td>
+      <td align="right">$-0.993516$ </td>
+      <td align="right">$-0.012926$ </td>
+    </tr>
+    <tr>
+      <td align="right">33 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.994692$ </td>
+      <td align="right">$-0.994692$ </td>
+      <td align="right">$-0.010588$ </td>
+    </tr>
+    <tr>
+      <td align="right">34 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.995655$ </td>
+      <td align="right">$-0.995655$ </td>
+      <td align="right">$-0.008672$ </td>
+    </tr>
+    <tr>
+      <td align="right">35 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.996443$ </td>
+      <td align="right">$-0.996443$ </td>
+      <td align="right">$-0.007100$ </td>
+    </tr>
+    <tr>
+      <td align="right">36 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.997089$ </td>
+      <td align="right">$-0.997089$ </td>
+      <td align="right">$-0.005813$ </td>
+    </tr>
+    <tr>
+      <td align="right">37 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.997618$ </td>
+      <td align="right">$-0.997618$ </td>
+      <td align="right">$-0.004759$ </td>
+    </tr>
+    <tr>
+      <td align="right">38 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.998050$ </td>
+      <td align="right">$-0.998050$ </td>
+      <td align="right">$-0.003895$ </td>
+    </tr>
+    <tr>
+      <td align="right">39 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.998405$ </td>
+      <td align="right">$-0.998405$ </td>
+      <td align="right">$-0.003188$ </td>
+    </tr>
+    <tr>
+      <td align="right">40 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.998695$ </td>
+      <td align="right">$-0.998695$ </td>
+      <td align="right">$-0.002609$ </td>
+    </tr>
+    <tr>
+      <td align="right">41 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.998932$ </td>
+      <td align="right">$-0.998932$ </td>
+      <td align="right">$-0.002135$ </td>
+    </tr>
+    <tr>
+      <td align="right">42 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999126$ </td>
+      <td align="right">$-0.999126$ </td>
+      <td align="right">$-0.001747$ </td>
+    </tr>
+    <tr>
+      <td align="right">43 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999285$ </td>
+      <td align="right">$-0.999285$ </td>
+      <td align="right">$-0.001430$ </td>
+    </tr>
+    <tr>
+      <td align="right">44 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999415$ </td>
+      <td align="right">$-0.999415$ </td>
+      <td align="right">$-0.001170$ </td>
+    </tr>
+    <tr>
+      <td align="right">45 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999521$ </td>
+      <td align="right">$-0.999521$ </td>
+      <td align="right">$-0.000957$ </td>
+    </tr>
+    <tr>
+      <td align="right">46 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999608$ </td>
+      <td align="right">$-0.999608$ </td>
+      <td align="right">$-0.000783$ </td>
+    </tr>
+    <tr>
+      <td align="right">47 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999679$ </td>
+      <td align="right">$-0.999679$ </td>
+      <td align="right">$-0.000641$ </td>
+    </tr>
+    <tr>
+      <td align="right">48 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999738$ </td>
+      <td align="right">$-0.999738$ </td>
+      <td align="right">$-0.000525$ </td>
+    </tr>
+    <tr>
+      <td align="right">49 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999785$ </td>
+      <td align="right">$-0.999785$ </td>
+      <td align="right">$-0.000429$ </td>
+    </tr>
+    <tr>
+      <td align="right">50 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999824$ </td>
+      <td align="right">$-0.999824$ </td>
+      <td align="right">$-0.000351$ </td>
+    </tr>
+    <tr>
+      <td align="right">51 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999856$ </td>
+      <td align="right">$-0.999856$ </td>
+      <td align="right">$-0.000287$ </td>
+    </tr>
+    <tr>
+      <td align="right">52 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999882$ </td>
+      <td align="right">$-0.999882$ </td>
+      <td align="right">$-0.000235$ </td>
+    </tr>
+    <tr>
+      <td align="right">53 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999904$ </td>
+      <td align="right">$-0.999904$ </td>
+      <td align="right">$-0.000192$ </td>
+    </tr>
+    <tr>
+      <td align="right">54 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999921$ </td>
+      <td align="right">$-0.999921$ </td>
+      <td align="right">$-0.000157$ </td>
+    </tr>
+    <tr>
+      <td align="right">55 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999936$ </td>
+      <td align="right">$-0.999936$ </td>
+      <td align="right">$-0.000129$ </td>
+    </tr>
+    <tr>
+      <td align="right">56 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999947$ </td>
+      <td align="right">$-0.999947$ </td>
+      <td align="right">$-0.000105$ </td>
+    </tr>
+    <tr>
+      <td align="right">57 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999957$ </td>
+      <td align="right">$-0.999957$ </td>
+      <td align="right">$-0.000086$ </td>
+    </tr>
+    <tr>
+      <td align="right">58 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999965$ </td>
+      <td align="right">$-0.999965$ </td>
+      <td align="right">$-0.000071$ </td>
+    </tr>
+    <tr>
+      <td align="right">59 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999971$ </td>
+      <td align="right">$-0.999971$ </td>
+      <td align="right">$-0.000058$ </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999976$ </td>
+      <td align="right">$-0.999976$ </td>
+      <td align="right">$-0.000047$ </td>
+    </tr>
+    <tr>
+      <td align="right">61 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999981$ </td>
+      <td align="right">$-0.999981$ </td>
+      <td align="right">$-0.000039$ </td>
+    </tr>
+    <tr>
+      <td align="right">62 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999984$ </td>
+      <td align="right">$-0.999984$ </td>
+      <td align="right">$-0.000032$ </td>
+    </tr>
+    <tr>
+      <td align="right">63 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999987$ </td>
+      <td align="right">$-0.999987$ </td>
+      <td align="right">$-0.000026$ </td>
+    </tr>
+    <tr>
+      <td align="right">64 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999989$ </td>
+      <td align="right">$-0.999989$ </td>
+      <td align="right">$-0.000021$ </td>
+    </tr>
+    <tr>
+      <td align="right">65 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999991$ </td>
+      <td align="right">$-0.999991$ </td>
+      <td align="right">$-0.000017$ </td>
+    </tr>
+    <tr>
+      <td align="right">66 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999993$ </td>
+      <td align="right">$-0.999993$ </td>
+      <td align="right">$-0.000014$ </td>
+    </tr>
+    <tr>
+      <td align="right">67 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999994$ </td>
+      <td align="right">$-0.999994$ </td>
+      <td align="right">$-0.000012$ </td>
+    </tr>
+    <tr>
+      <td align="right">68 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999995$ </td>
+      <td align="right">$-0.999995$ </td>
+      <td align="right">$-0.000009$ </td>
+    </tr>
+    <tr>
+      <td align="right">69 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999996$ </td>
+      <td align="right">$-0.999996$ </td>
+      <td align="right">$-0.000008$ </td>
+    </tr>
+    <tr>
+      <td align="right">70 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999997$ </td>
+      <td align="right">$-0.999997$ </td>
+      <td align="right">$-0.000006$ </td>
+    </tr>
+    <tr>
+      <td align="right">71 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999997$ </td>
+      <td align="right">$-0.999997$ </td>
+      <td align="right">$-0.000005$ </td>
+    </tr>
+    <tr>
+      <td align="right">72 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999998$ </td>
+      <td align="right">$-0.999998$ </td>
+      <td align="right">$-0.000004$ </td>
+    </tr>
+    <tr>
+      <td align="right">73 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999998$ </td>
+      <td align="right">$-0.999998$ </td>
+      <td align="right">$-0.000003$ </td>
+    </tr>
+    <tr>
+      <td align="right">74 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000003$ </td>
+    </tr>
+    <tr>
+      <td align="right">75 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000002$ </td>
+    </tr>
+    <tr>
+      <td align="right">76 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000002$ </td>
+    </tr>
+    <tr>
+      <td align="right">77 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000002$ </td>
+    </tr>
+    <tr>
+      <td align="right">78 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000001$ </td>
+    </tr>
+    <tr>
+      <td align="right">79 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.999999$ </td>
+      <td align="right">$-0.000001$ </td>
+    </tr>
+    <tr>
+      <td align="right">80 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000001$ </td>
+    </tr>
+    <tr>
+      <td align="right">81 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000001$ </td>
+    </tr>
+    <tr>
+      <td align="right">82 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000001$ </td>
+    </tr>
+    <tr>
+      <td align="right">83 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">84 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">85 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">86 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">87 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">88 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">89 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">91 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">92 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">93 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">94 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">95 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">96 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">97 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">98 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">99 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=-1.000000$</p>
+    <p>$f(x)=-0.000000$</p>
+    <h2 id="secant">3.3 Secant</h2><div class="details"><span class="summary">10 Steps</span> <input id="but_details_d6e3396" onclick="toggleDisplay('_details_d6e3396')" type="button" value="+"/><div class="detailsBody" id="_details_d6e3396" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$x_n$ </th>
+      <th align="right">$x_{n+1}$ </th>
+      <th align="right">$f(x_{n+1})$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">-10 </td>
+      <td align="right">1/3 </td>
+      <td align="right"> </td>
+      <td align="right"> </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$\frac{1}{3}=0.333333$ </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$\frac{7}{29}=0.241379$ </td>
+      <td align="right">$\frac{-792}{841}=-0.941736$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$\frac{7}{29}=0.241379$ </td>
+      <td align="right">$\frac{1}{3}=0.333333$ </td>
+      <td align="right">$\frac{47}{25}=1.880000$ </td>
+      <td align="right">$\frac{1584}{625}=2.534400$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$\frac{47}{25}=1.880000$ </td>
+      <td align="right">$\frac{7}{29}=0.241379$ </td>
+      <td align="right">$\frac{527}{769}=0.685306$ </td>
+      <td align="right">$\frac{-313632}{591361}=-0.530356$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$\frac{527}{769}=0.685306$ </td>
+      <td align="right">$\frac{47}{25}=1.880000$ </td>
+      <td align="right">$\frac{21997}{24659}=0.892048$ </td>
+      <td align="right">$-0.204251$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$\frac{21997}{24659}=0.892048$ </td>
+      <td align="right">$\frac{527}{769}=0.685306$ </td>
+      <td align="right">$\frac{15277595}{14955493}=1.021537$ </td>
+      <td align="right">$0.043539$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$\frac{15277595}{14955493}=1.021537$ </td>
+      <td align="right">$\frac{21997}{24659}=0.892048$ </td>
+      <td align="right">$0.998785$ </td>
+      <td align="right">$-0.002429$ </td>
+    </tr>
+    <tr>
+      <td align="right">8 </td>
+      <td align="right">$0.998785$ </td>
+      <td align="right">$\frac{15277595}{14955493}=1.021537$ </td>
+      <td align="right">$0.999987$ </td>
+      <td align="right">$-0.000026$ </td>
+    </tr>
+    <tr>
+      <td align="right">9 </td>
+      <td align="right">$0.999987$ </td>
+      <td align="right">$0.998785$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$0.000000$ </td>
+    </tr>
+    <tr>
+      <td align="right">10 </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$0.999987$ </td>
+      <td align="right">$1.000000$ </td>
+      <td align="right">$-0.000000$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=1.000000$</p>
+    <p>$f(x)=-0.000000$</p>
+    <h2 id="newton">3.4 Newton</h2><div class="details"><span class="summary">7 Steps</span> <input id="but_details_d6e3612" onclick="toggleDisplay('_details_d6e3612')" type="button" value="+"/><div class="detailsBody" id="_details_d6e3612" style="display: none;">
+<table>
+  <thead>
+    <tr>
+      <th align="right">n </th>
+      <th align="right">$x_{n-1}$ </th>
+      <th align="right">$f(x_{n-1})$ </th>
+      <th align="right">$f’(x_{n-1})$ </th>
+      <th align="right">$x_{n+1}$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">$-10.000000$ </td>
+      <td align="right">$99.000000$ </td>
+      <td align="right">$-20.000000$ </td>
+      <td align="right">$\frac{-101}{20}=-5.050000$ </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">$\frac{-101}{20}=-5.050000$ </td>
+      <td align="right">$\frac{9801}{400}=24.502500$ </td>
+      <td align="right">$\frac{-101}{10}=-10.100000$ </td>
+      <td align="right">$\frac{-10601}{4040}=-2.624010$ </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">$\frac{-10601}{4040}=-2.624010$ </td>
+      <td align="right">$\frac{96059601}{16321600}=5.885428$ </td>
+      <td align="right">$\frac{-10601}{2020}=-5.248020$ </td>
+      <td align="right">$-1.502553$ </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="right">$-1.502553$ </td>
+      <td align="right">$1.257666$ </td>
+      <td align="right">$-3.005106$ </td>
+      <td align="right">$-1.084043$ </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="right">$-1.084043$ </td>
+      <td align="right">$0.175150$ </td>
+      <td align="right">$-2.168087$ </td>
+      <td align="right">$-1.003258$ </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="right">$-1.003258$ </td>
+      <td align="right">$0.006526$ </td>
+      <td align="right">$-2.006516$ </td>
+      <td align="right">$-1.000005$ </td>
+    </tr>
+    <tr>
+      <td align="right">7 </td>
+      <td align="right">$-1.000005$ </td>
+      <td align="right">$0.000011$ </td>
+      <td align="right">$-2.000011$ </td>
+      <td align="right">$-1.000000$ </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p><strong>Solution</strong></p>
+    <p>$x=-1.000005$</p>
+    <p>$f(x)=0.000011$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Polynomial%20Examples"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

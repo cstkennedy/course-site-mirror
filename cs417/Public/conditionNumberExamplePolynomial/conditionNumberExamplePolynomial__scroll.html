@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number Example - Polynomial</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Polynomial"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number Example - Polynomial</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-numerator">1 The Numerator</a></div><div class="toc-h1"><a href="#plugging-everything-in">2 Plugging Everything In</a></div><div class="toc-h1"><a href="#analyzing-behavior">3 Analyzing Behavior</a></div><div class="toc-h2"><a href="#large-values-of-x">3.1 Large Values of x</a></div><div class="toc-h2"><a href="#small-values-of-x">3.2 Small Values of x</a></div></div><p>Suppose we are interested in a general polynomial function.</p>
+    <p>$$ \begin{eqnarray} f(x)  &amp;=&amp; c_0 + c_1 x + c_2 x^2 + \cdots c_{n-1} x^{n-1} + c_n x^n \\  &amp;=&amp; c_0 x^{0} + c_1 x^{1} + c_2 x^2 + \cdots c_{n-1} x^{n-1} + c_n x^n \\  &amp;=&amp; \sum\limits_{i=0}^{n} c_{i} x^{i} \end{eqnarray} $$</p>
+    <p>Let us focus on the general case:</p>
+    <p>$$ (cond f)(x) = \left | \frac{x f^{\prime}(x)}{f(x)} \right | $$</p>
+    <p>This means that:</p>
+    <ol>
+  <li>$f(x) \neq 0$</li>
+  <li>$x \neq 0$</li>
+</ol><a id="thenumerator"/><h1 id="the-numerator">1 The Numerator</h1><p>Let us focus on $xf^{\prime}$. The first step is to compute $f^{\prime}(x)$.</p>
+    <p>$$ \begin{eqnarray} f^{\prime}(x)  &amp;=&amp; \frac{d}{dx}\left( \sum\limits_{i=0}^{n} c_{i} x^{i} \right) \\  &amp;=&amp; \frac{d}{dx}\left( c_{0} x^{0} + \sum\limits_{i=1}^{n} c_{i} x^{i} \right) \\  &amp;=&amp; \frac{d}{dx}\left( c_{0} x^{0} \right) + \frac{d}{dx}\left( \sum\limits_{i=1}^{n} c_{i} x^{i} \right) \\  &amp;=&amp; \frac{d}{dx}\left( c_{0} \right) + \frac{d}{dx}\left( \sum\limits_{i=1}^{n} c_{i} x^{i} \right) \\  &amp;=&amp; \frac{d}{dx}\left( \sum\limits_{i=1}^{n} c_{i} x^{i} \right) \\  &amp;=&amp; \sum\limits_{i=1}^{n} \frac{d}{dx}\left(c_{i} x^{i} \right) \\  &amp;=&amp; \sum\limits_{i=1}^{n} i c_{i} x^{i-1} \\ \end{eqnarray} $$</p>
+    <p>The rest of the numerator can be computed by multiplying through by $x$.</p>
+    <p>$$ \begin{eqnarray} xf^{\prime}(x)  &amp;=&amp; x\sum\limits_{i=1}^{n} i c_{i} x^{i-1} \\  &amp;=&amp; \sum\limits_{i=1}^{n} x^{1} i c_{i} x^{i-1} \\  &amp;=&amp; \sum\limits_{i=1}^{n} i c_{i} x^{i-1} x^{1} \\  &amp;=&amp; \sum\limits_{i=1}^{n} i c_{i} x^{i} \\ \end{eqnarray} $$</p>
+    <a id="pluggingeverythingin"/><h1 id="plugging-everything-in">2 Plugging Everything In</h1><p>$$ \begin{eqnarray} (cond f)(x)  &amp;=&amp; \left | \frac{x f^{\prime}(x)}{f(x)} \right | \\  &amp;=&amp; \left| \frac{\sum\limits_{i=1}^{n} i c_{i} x^{i} }  {\sum\limits_{i=0}^{n} c_{i} x^{i}} \right| \\  &amp;=&amp; \frac{\left|\sum\limits_{i=1}^{n} i c_{i} x^{i} \right|}  {\left| \sum\limits_{i=0}^{n} c_{i} x^{i}\right|} \\ \end{eqnarray} $$</p>
+    <p>Now… how should we continue? How about adjusting the absolute values?</p>
+    <p>$$ \begin{eqnarray} (cond f)(x)  &amp;=&amp; \frac{\left|\sum\limits_{i=1}^{n} i c_{i} x^{i} \right|}  {\left| \sum\limits_{i=0}^{n} c_{i} x^{i}\right|}  &amp;\to&amp; \frac{\sum\limits_{i=1}^{n} i \left|c_{i} x^{i} \right|}  { \sum\limits_{i=0}^{n} \left|c_{i} x^{i}\right|} \\ \end{eqnarray} $$</p>
+    <p>Both the numerateor and denominator have been replaced with upper bounds. We need to be able to argue that the <em>numerator and denominator were bounded by the “same amount” <strong>and</strong> that the expression has not been fundamentally changed.</em></p>
+    <ol>
+  <li>
+  <p>The primary difference between the numerator and the denominator is the  constant term. The denominator includes a $c_0$ term and the numerator  does not.</p>
+    </li>
+  <li>
+  <p>The condition number of a monomial (i.e. $\alpha x^n$) is the degree of  that monomial (i.e., $n$).</p>
+    </li>
+</ol><p>Let us continue with the condition number.</p>
+    <p>$$ \begin{eqnarray} (cond f)(x)  &amp;=&amp; \frac{\sum\limits_{i=1}^{n} i \left|c_{i} x^{i} \right|}  { \sum\limits_{i=0}^{n} \left|c_{i} x^{i}\right|} \\  &amp;=&amp; \frac{\sum\limits_{i=1}^{n} i \left|c_{i} x^{i} \right|}  { \left| c_{0} \right| + \sum\limits_{i=1}^{n} \left|c_{i} x^{i}\right|} \\ \end{eqnarray} $$</p>
+    <a id="analyzingbehavior"/><h1 id="analyzing-behavior">3 Analyzing Behavior</h1><p>Before analyzing the conditon number… let us expand the summations.</p>
+    <p>$$ \begin{eqnarray} (cond f)(x)  &amp;=&amp; \frac{\sum\limits_{i=1}^{n} i \left|c_{i} x^{i} \right|}  { \left| c_{0} \right| + \sum\limits_{i=1}^{n} \left|c_{i} x^{i}\right|} \\  &amp;=&amp; \frac{\left|c_{1} x \right| + 2\left|c_{2} x^2 \right| + 3\left|c_{3} x^3 \right| + \cdots  n\left|c_{n} x^n \right|}  {\left|c_{0}\right| + \left|c_{1} x \right| + \left|c_{2} x^2 \right| + \left|c_{3} x^3 \right| + \cdots  \left|c_{n} x^n \right|} \end{eqnarray} $$</p>
+    <a id="largevaluesofx"/><h2 id="large-values-of-x">3.1 Large Values of x</h2><p>Taking the limit as $x \to \infty$…</p>
+    <p>$$ \begin{eqnarray}  \lim_{x \to \infty} \frac{\left|c_{1} x \right| + 2\left|c_{2} x^2 \right| + 3\left|c_{3} x^3 \right| + \cdots  n\left|c_{n} x^n \right|}  {\left|c_{0}\right| + \left|c_{1} x \right| + \left|c_{2} x^2 \right| + \left|c_{3} x^3 \right| + \cdots  \left|c_{n} x^n \right|}  &amp;\to&amp;  \lim_{x \to \infty}  \frac{n\left|c_{n} x^n \right|}  {\left|c_{n} x^n \right|}  &amp;\to&amp; n \end{eqnarray} $$</p>
+    <p>For large values of x… the condition number is the degree of the largest term, i.e., $n$. <em>Note that the conditioning of a polynomial is the same for $x \to -\infty$.</em></p>
+    <a id="smallvaluesofx"/><h2 id="small-values-of-x">3.2 Small Values of x</h2><p>Taking the limit as $x \to 0$…</p>
+    <p>$$ \begin{eqnarray}  \lim_{x \to 0} \frac{\left|c_{1} x \right| + 2\left|c_{2} x^2 \right| + 3\left|c_{3} x^3 \right| + \cdots  n\left|c_{n} x^n \right|}  {\left|c_{0}\right| + \left|c_{1} x \right| + \left|c_{2} x^2 \right| + \left|c_{3} x^3 \right| + \cdots  \left|c_{n} x^n \right|}  &amp;\to&amp;  \lim_{x \to 0}  \frac{\left| c_1 x \right|}  {\left|c_{0} \right| + \left| c_1 x \right|}  &amp;&lt;&amp; 1 \end{eqnarray} $$</p>
+    <p><strong>Note:</strong> This result assumes that $|c_0| \geq |c_1 x|$.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Polynomial"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

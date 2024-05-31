@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Arithmetic Error Revisited</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Arithmetic%20Error%20Revisited"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Arithmetic Error Revisited</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#multiplication">1 Multiplication</a></div><div class="toc-h1"><a href="#other-operations">2 Other Operations</a></div></div><p>In an <a class="doc" href="../../Public/arithmeticError1/index.html" target="CS417_Public">earlier discussion</a>, we assumed</p>
+    <ul>
+  <li>error originates on the operands (i.e., numbers).</li>
+  <li>arithmetic operations introduce no additional error.</li>
+</ul><p>How would things change if arithmetic operations introduced additional error?</p>
+    <h1 id="multiplication">1 Multiplication</h1><p>Suppose we were multiplying two numbers:</p>
+    <p>$$ x * y = z $$</p>
+    <p>To denote finite precision, we need to use the <em>star/chop notation</em>:</p>
+    <p>$$ z^{*} = (x^{*} * y^{*})^* $$</p>
+    <p>where</p>
+    <ul>
+  <li>$x^{*} = x(1 + \epsilon_{x})$</li>
+  <li>$y^{*} = y(1 + \epsilon_{y})$</li>
+  <li>$z^{*} = z(1 + \epsilon_{z})$</li>
+</ul><p>Let us start by expanding all the terms (and cleaning everything up).</p>
+    <p>\begin{array}{rl} z^{*} &amp;=&amp; (x^{*} * y^{*})^{*} \\  &amp;=&amp; (x^{*} y^{*})^{*} \\  &amp;=&amp; (x (1 + \epsilon_{x}) y (1 + \epsilon_{y}))^{*} \\  &amp;=&amp; (xy (1 + \epsilon_{x})(1 + \epsilon_{y}))^{*} \\  &amp;\approx&amp; (xy (1 + \epsilon_{x} + \epsilon_{y}))^{*} \\  &amp;\approx&amp; (xy (1 + \epsilon_{x} + \epsilon_{y}))(1 + \epsilon_{mult}) \\  &amp;\approx&amp; xy (1 + \epsilon_{x} + \epsilon_{y})(1 + \epsilon_{mult}) \\  &amp;\approx&amp; xy (1 + \epsilon_{x} + \epsilon_{y} + \epsilon_{mult}) \\ \end{array}</p>
+    <p>We know how to compute the relative error.</p>
+    <p>\begin{array}{rl} z^{*} - z  &amp;=&amp; \frac{| xy (1 + \epsilon_{x} + \epsilon_{y} + \epsilon_{mult}) - xy |}{xy} \\  &amp;=&amp; \frac{| xy (\epsilon_{x} + \epsilon_{y} + \epsilon_{mult})|}{xy} \\  &amp;=&amp; |\epsilon_{x} + \epsilon_{y} + \epsilon_{mult}| \\ \end{array}</p>
+    <p>Interesting… the only difference is an additional epsilon term (i.e., $\epsilon_{mult}$)</p>
+    <p>$$ \begin{array}{rl}  |\epsilon_{x} + \epsilon_{y}| &amp;vs&amp; |\epsilon_{x} + \epsilon_{y} + \epsilon_{mult}| \\ \end{array} $$</p>
+    <a id="otheroperations"/><h1 id="other-operations">2 Other Operations</h1><p>How do division, addition, and subtraction change? Those can be practice problems!</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Arithmetic%20Error%20Revisited"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

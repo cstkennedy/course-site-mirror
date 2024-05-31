@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Implement a Matrix Solver</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Implement%20a%20Matrix%20Solver"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Implement a Matrix Solver</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#purpose">2 Purpose</a></div><div class="toc-h1"><a href="#what-to-do">3 What to Do</a></div><div class="toc-h2"><a href="#input">3.1 Input</a></div><div class="toc-h2"><a href="#output">3.2 Output</a></div><div class="toc-h1"><a href="#grading">4 Grading</a></div><div class="toc-h1"><a href="#submission">5 Submission</a></div><div class="toc-h1"><a href="#the-initial-pseudocode">6 The Initial Pseudocode</a></div></div><h1 id="overview">1 Overview</h1><p>In this module we discussed Least Squares approximation. Part of the discussion included designing pseudocode for <a class="doc" href="../../Public/matrixSolverPseudoCode/index.html" target="CS417_Public">matrix multiplication</a>. Revisit the pseudocode.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Matrix Multiplication Pseudocode</div>
+<pre><code>def multiply(lhs, rhs):
+
+    # let result be a lhs.rows by rhs.columns matrix
+
+    for i in 0...result.rows
+        for j in 0...result.cols
+            for k in 0...lhs.cols
+              result[i][j] += lhs[i][k] * rhs[k][j]
+
+    return result
+</code></pre>
+</blockquote><p>If you did not finish <a class="doc" href="../../Public/matrixSolverPseudoCode/index.html#write-the-code" target="CS417_Public">implementing this code</a> either implement it… or make use of NumPy’s <code>np.array</code>.</p>
+    <p>In this <em>ungraded</em> practice exercise you will:</p>
+    <ol>
+  <li>Select a programming language (Python 3.11+ is strongly encouraged).</li>
+  <li>Reformulate pseudocode for use with your selected language.</li>
+  <li>Implement the <em>refined</em> pseudocode in your selected language.</li>
+</ol><h1 id="purpose">2 Purpose</h1><p>As a Computer Science student, you have been various software design methodologies (e.g., stepwise refinement) and mathematical problems (e.g., systems of equations as matrices). In this exercise you will take pseudocode, implement it, and analyze its complexity (temporal and spatial).</p>
+    <a id="whattodo"/><h1 id="what-to-do">3 What to Do</h1><ol>
+  <li>
+    <p>Start by creating a README file (either <code>.md</code> or <code>.txt</code>). Use the provided  template to start:</p>
+    
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Sample ReadMe.md</div>
+    <pre><code class="markdown"># Getting Started
+
+**Language:** {selected_language_here:}
+
+# My Pseudocode
+
+{insert pseudocode here}
+
+
+# Requirements
+
+{List dependencies and libraries here}
+
+
+# Compilation &amp; Execution Instructions
+
+{list required commands}
+</code></pre>
+    </blockquote>
+    <p>Each <code>{}</code> represents a placeholder for your content.</p>
+    
+  </li>
+  <li>
+  <p>Complete, document, and test  <a class="doc" href="../../Public/matrixSolverPseudoCode/index.html#write-the-code" target="CS417_Public">your matrix multiplication code</a> or use the NumPy <code>np.array</code>.</p>
+    </li>
+  <li>
+  <p>Take the Gaussian Elimination Pseudocode discussed in  <em><a href="#the-initial-pseudocode">The Initial Pseudocode section</a></em> and rewrite it  to work with your selected language and data structures (e.g., <code>np.array</code>.</p>
+    </li>
+  <li>
+  <p>Place your <em>finalized</em> pseudocode under <code># My Pseudocode</code> in your README file.</p>
+    </li>
+  <li>
+  <p>Implement a matrix solver, based on your updated pseudocode.</p>
+    </li>
+  <li>
+  <p>When you are done… save this code. If you are careful, you will have a  significant chunk of code you need for the semester project! A library you  can use with a quick C++ <code>#include {}</code> or Java <code>import {}</code> or Python <code>from {}
+   import {}</code> is your goal.</p>
+    </li>
+  <li>
+  <p>Package your README file, source code, and build configuration into a single  zip file or tarball.</p>
+    </li>
+</ol><h2 id="input">3.1 Input</h2><p>For this exercise you may hardcode the initialization of your $X$, $X^T$, and $Y$ matrices. Use the matrices from <a class="doc" href="../../Public/approximationExample2/index.html" target="CS417_Public">Quadratic Example</a> as your inputs.</p>
+    <h2 id="output">3.2 Output</h2><p>Your output should be a single line in the form</p>
+    <pre><code>phi_hat = c_0 + c_1 * x + c_2 * x^2
+</code></pre><p>where <code>c_0</code>, <code>c_1</code>, and <code>c_2</code> are the coefficients computed by your code.</p>
+    <h1 id="grading">4 Grading</h1><p>Revisit the standard <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">requirements for Programming Exercises (defined in the syllabus)</a>. In this assignment you will be graded on:</p>
+    <ol>
+  <li>Quality of your pseudocode</li>
+  <li>Quality of your implementation</li>
+  <li>Correctness of your implementation</li>
+  <li>Use of NumPy (where appropriate)</li>
+</ol><h1 id="submission">5 Submission</h1><p>You will submit your solution through Canvas in accordance with the <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">requirements for Programming Exercises (defined in the syllabus)</a>.</p>
+    <hr/><a id="theinitialpseudocode"/><h1 id="the-initial-pseudocode">6 The Initial Pseudocode</h1><blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Initial Pseudocode</div>
+<p><strong>Start</strong></p>
+    
+<ol>
+  <li>Pivot
+    <ol>
+      <li>Search for max $r_{i,j}$</li>
+      <li>Swap row i with row largest</li>
+    </ol>
+  </li>
+  <li>Scale</li>
+  <li>Eliminate</li>
+</ol>
+</blockquote><blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Top Level Pseudocode</div>
+<pre><code># Let `matrix_A` be an n by n matrix with an augmented vector in col n
+def solve(matrix_A):
+
+    # Iterate through all rows
+    for every i in 0 to n-1:
+
+        # Pivot
+        idx &lt;- find_largest_row_by_col(A, col_index, num_rows)
+        swap_row(A, i, idx)
+
+        scale(A, i, num_cols, A[i][i])
+        A[i][i] = 1
+
+        eliminate(A, i, num_rows)
+</code></pre>
+</blockquote><blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Scale</div>
+<pre><code>def scale_row(A, row_idx, num_cols, s):
+
+    for every j in 0 to num_cols:
+        A[row_idx][j] = A[row_idx][j] / s
+
+</code></pre>
+</blockquote><blockquote class="example" id="example6"><div class="exampleTitle">Example 6: Eliminate</div>
+<pre><code>def eliminate(A, src_row_idx, num_cols, num_rows):
+
+    start_col &lt;- src_row_idx
+
+    for every i in (src_row_idx + 1) to num_rows:
+
+        s &lt;- A[i][start_col]
+
+        for every j in start_col to num_cols:
+            A[i][j] = A[i][j] - s * A[src_row_idx][j]
+
+        A[i][start_col] = 0
+
+</code></pre>
+</blockquote><blockquote class="example" id="example7"><div class="exampleTitle">Example 7: Backsolve</div>
+<pre><code>def back_solve(matrix):
+
+    augColIdx &lt;- matrix.cols()  # the augmented column
+    lastRow = matrix.rows() - 1
+
+    for i in lastRow down to 1:
+        for j &lt;- (i - 1) down to 0:
+            s &lt;- matrix[j][i]
+
+            matrix[j][i] -= (s * matrix[i][i])
+            matrix[j][augCol] -= (s * matrix[i][augColIdx])
+</code></pre>
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Implement%20a%20Matrix%20Solver"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

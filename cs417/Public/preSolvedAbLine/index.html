@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Presolved Ab Method for a Line</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Presolved%20Ab%20Method%20for%20a%20Line"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Presolved Ab Method for a Line</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#setting-up">2 Setting Up</a></div><div class="toc-h1"><a href="#making-writing-more-convenient">3 Making Writing More Convenient</a></div><div class="toc-h1"><a href="#solving-the-system">4 Solving the System</a></div><div class="toc-h1"><a href="#taking-stock">5 Taking Stock…</a></div><div class="toc-h1"><a href="#the-actual-final-form">6 The Actual Final Form</a></div></div><h1 id="overview">1 Overview</h1><p>Up until this point… we have worked with two discrete Least Squares Approximation methods:</p>
+    <ul>
+  <li>$[X^TX|X^TY]$</li>
+  <li>$[A|\vec{b}]$</li>
+</ul><p>Suppose we will be computing a few (four or more) lines of best fit. What if we could, instead of solving for $c_0$ and $c_1$ each time, solve for both constants ahead of time?</p>
+    <p>We will denote the number of points with $k$. Keep in mind that $k \ge 2$.</p>
+    <a id="settingup"/><h1 id="setting-up">2 Setting Up</h1><p>We know the definitions of $A$ (a.k.a. $X^{T}X$) and $\vec{b}$ (a.k.a. $X^{T}Y$).</p>
+    <p>$$ A = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{1}(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{1}(x_i) \\ \end{array}\right] $$</p>
+    <p>and</p>
+    <p>$$ \vec{b} = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)f(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)f(x_i) \\ \end{array}\right] $$</p>
+    <p>Since we are working with linear approximation functions… we know that:</p>
+    <ul>
+  <li>$\pi_0 = 1$</li>
+  <li>$\pi_1 = x$</li>
+</ul><p>We can now go from…</p>
+    <p>$$ A\vec{c} = \vec{b} $$</p>
+    <p>to</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{1}(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{1}(x_i) \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)f(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)f(x_i) \\ \end{array}\right] $$</p>
+    <p>If we apply the definitions of $\pi_0$ and $\pi_1$… the expression becomes…</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}(1)(1) &amp; \sum\limits_{i=0}^{k-1}(1)(x_i) \\ \sum\limits_{i=0}^{k-1}(x_i)(1) &amp; \sum\limits_{i=0}^{k-1}(x_i)(x_i) \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}(1)f(x_i) \\ \sum\limits_{i=0}^{k-1}(x_i)f(x_i) \\ \end{array}\right] $$</p>
+    <p>Let us simplify a few of the products.</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1} 1 &amp; \sum\limits_{i=0}^{k-1} x_i \\ \sum\limits_{i=0}^{k-1} x_i &amp; \sum\limits_{i=0}^{k-1}(x_i)^{2} \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}f(x_i) \\ \sum\limits_{i=0}^{k-1}x_i * f(x_i) \\ \end{array}\right] $$</p>
+    <p>The first sum is just the number of points (i.e., $k$).</p>
+    <p>$$ \left[\begin{array}{rr} k &amp; \sum\limits_{i=0}^{k-1} x_i \\ \sum\limits_{i=0}^{k-1} x_i &amp; \sum\limits_{i=0}^{k-1}(x_i)^{2} \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}f(x_i) \\ \sum\limits_{i=0}^{k-1}x_i * f(x_i) \\ \end{array}\right] $$</p>
+    <a id="makingwritingmoreconvenient"/><h1 id="making-writing-more-convenient">3 Making Writing More Convenient</h1><p>Before we start solving for $c_0$ and $c_1$… let us replace the sums with placeholder variables (imagine writing each sum a dozen or so times by hand).</p>
+    <ul>
+  <li>$S_{x_i} = \sum\limits_{i=0}^{k-1} x_i$</li>
+  <li>$S_{x_i^2} = \sum\limits_{i=0}^{k-1}(x_i)^{2}$</li>
+</ul><p>$$ \left[\begin{array}{rr} k &amp; S_{x_i} \\ S_{x_i} &amp; S_{x_i^{2}} \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}f(x_i) \\ \sum\limits_{i=0}^{k-1}x_i * f(x_i) \\ \end{array}\right] $$</p>
+    <a id="solvingthesystem"/><h1 id="solving-the-system">4 Solving the System</h1><p>Let us start with the first two elementary row operations.</p>
+    <ol>
+  <li>$\frac{1}{k} \vec{r_0}$</li>
+  <li>$\frac{1}{S_{x_i}} \vec{r_1}$</li>
+</ol><p>$$ \left[\begin{array}{rr} 1 &amp; \frac{1}{k} S_{x_i} \\ 1 &amp; \frac{1}{S_{x_i}} S_{x_i^{2}} \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \frac{1}{k} \sum\limits_{i=0}^{k-1}f(x_i) \\ \frac{1}{S_{x_i}} \sum\limits_{i=0}^{k-1}x_i * f(x_i) \\ \end{array}\right] $$</p>
+    <p>We will perform one elimination step before switching to a <em>vanilla</em> algebra notation.</p>
+    <p>$$ \left[\begin{array}{rr} 1 &amp; \frac{1}{k} S_{x_i} \\ 0 &amp; \frac{1}{S_{x_i}} S_{x_i^{2}} - \frac{1}{k} S_{x_i} \\ \end{array}\right] \left[\begin{array}{rr} c_0 \\ c_1 \\ \end{array}\right] = \left[\begin{array}{rr} \frac{1}{k} \sum\limits_{i=0}^{k-1}f(x_i) \\ \frac{1}{S_{x_i}} \sum\limits_{i=0}^{k-1}x_i * f(x_i) - \frac{1}{k} \sum\limits_{i=0}^{k-1}f(x_i)\\ \end{array}\right] $$</p>
+    <p>We can rewrite the last row as the algebraic expression it represents…</p>
+    <p>$$ \begin{eqnarray} c_1 \left(\frac{1}{S_{x_i}} S_{x_i^{2}} - \frac{1}{k} S_{x_i}\right)  &amp;=&amp; \frac{1}{S_{x_i}} \sum\limits_{i=0}^{k-1}x_i * f(x_i) - \frac{1}{k} \sum\limits_{i=0}^{k-1}f(x_i)\\ c_1 \left(\frac{S_{x_i}}{S_{x_i}}S_{x_i^{2}} - \frac{S_{x_i}}{k} S_{x_i}\right)  &amp;=&amp; \frac{S_{x_i}}{S_{x_i}} \sum\limits_{i=0}^{k-1}x_i * f(x_i) - \frac{S_{x_i}}{k} \sum\limits_{i=0}^{k-1}f(x_i)\\ c_1 \left(S_{x_i^{2}} - \frac{1}{k} \left(S_{x_i}\right)^{2}\right)  &amp;=&amp; \sum\limits_{i=0}^{k-1}x_i * f(x_i) - \frac{S_{x_i}}{k} \sum\limits_{i=0}^{k-1}f(x_i)\\ c_1 \left(kS_{x_i^{2}} - \frac{k}{k} \left(S_{x_i}\right)^{2}\right)  &amp;=&amp; k\sum\limits_{i=0}^{k-1}x_i * f(x_i) - k\frac{S_{x_i}}{k} \sum\limits_{i=0}^{k-1}f(x_i)\\ c_1 \left(kS_{x_i^{2}} - \left(S_{x_i}\right)^{2}\right)  &amp;=&amp; k\sum\limits_{i=0}^{k-1}x_i * f(x_i) - S_{x_i} \sum\limits_{i=0}^{k-1}f(x_i)\\ c_1  &amp;=&amp; \frac{k\sum\limits_{i=0}^{k-1}x_i * f(x_i) - S_{x_i} \sum\limits_{i=0}^{k-1}f(x_i)}  {kS_{x_i^{2}} - \left(S_{x_i}\right)^{2}} \\ \end{eqnarray} $$</p>
+    <p><strong>I have no desire to ever perform any of that simplification within a matrix!</strong></p>
+    <a id="takingstock"/><h1 id="taking-stock">5 Taking Stock…</h1><p>We now have the slope ($c_1$).</p>
+    <p>$$ c_1  = \frac{k\sum\limits_{i=0}^{k-1}x_i * f(x_i) - S_{x_i} \sum\limits_{i=0}^{k-1}f(x_i)}  {kS_{x_i^{2}} - \left(S_{x_i}\right)^{2}} \\ $$</p>
+    <p>Let us now take the first row of the matrix… and rewrite it algebraically.</p>
+    <p>$$ \begin{eqnarray} c_0 + c_1 \frac{1}{k} S_{x_i}  &amp;=&amp; \frac{1}{k} \sum\limits_{i=0}^{k-1}f(x_i) \\ c_0  &amp;=&amp; \frac{1}{k} \left(\sum\limits_{i=0}^{k-1}f(x_i) - c_1 S_{x_i}\right) \\ \end{eqnarray} $$</p>
+    <p>We could plug in $c_1$ and simplify further, but I prefer solving for $c_1$ first and using that result to compute $c_0$ <em>After all… that is probably the approach used in software.</em></p>
+    <a id="theactualfinalform"/><h1 id="the-actual-final-form">6 The Actual Final Form</h1><p>Using the definitions of the $S$ terms…</p>
+    <p>$$ \begin{eqnarray} c_1  &amp;=&amp; \frac{  k\sum\limits_{i=0}^{k-1}x_i * f(x_i)  - \left(\sum\limits_{i=0}^{k-1} x_i\right) \sum\limits_{i=0}^{k-1}f(x_i)  }  {  k\left(\sum\limits_{i=0}^{k-1} x_{i}^{2}\right)  - \left(\sum\limits_{i=0}^{k-1} x_i\right)^{2}  } \\ \end{eqnarray} $$</p>
+    <p>and</p>
+    <p>$$ \begin{eqnarray} c_0  &amp;=&amp; \frac{1}{k} \left(\sum\limits_{i=0}^{k-1}f(x_i) - c_1 \left(\sum\limits_{i=0}^{k-1} x_i\right)\right) \\ \end{eqnarray} $$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Presolved%20Ab%20Method%20for%20a%20Line"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

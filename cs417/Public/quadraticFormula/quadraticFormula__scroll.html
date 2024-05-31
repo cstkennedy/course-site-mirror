@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Deriving the Quadratic Formula</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Deriving%20the%20Quadratic%20Formula"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Deriving the Quadratic Formula</h1></div><p>This is another instance of a <em>“well-known derivation”</em>. Go to any search engine and enter <em>Deriving the Quadratic Formula by completing the square</em>. You will find a few videos on YouTube that follow a similar process.</p>
+    <hr/><p>The Quadratic Formula is probably one of the most well-known formulae from mathematic (namely algebra). I still find myself saying</p>
+    <blockquote>
+  <p>negative “b” plus or minus the square root of “b-squared” minus four ‘a’ ‘c’ over twice ‘a’</p>
+    
+</blockquote><p>as a pneumonic device. However, until recently I never worked through a complete derivation.</p>
+    <hr/><p>Our goal is to derive:</p>
+    <p>$$ \frac{-b \pm \sqrt{b^{2} - 4ac}}{2a} $$</p>
+    <p>From our math foundations, we know the form of a degree-2 polynomial:</p>
+    <p>$$ \begin{array}{rl} \varphi &amp;=&amp; \sum\limits_{i=0}^{2} c_{i}x^{i} \\  &amp;=&amp; c_0 + c_{1}x +c_{2}x^{2} \\  &amp;=&amp; c + bx + ax^2 \\  &amp;=&amp; ax^2 + bx + c \\ \end{array} $$</p>
+    <p>Take note of the notation. We will use $\sum$, $c_i$ and $\varphi$ throughout the semester… it is just notation.</p>
+    <hr/><p>The first step is to set $\varphi$ equal to zero:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>After we plug in the definition of $\varphi$, we can group some terms together and perform some quick arithmetic.</p>
+    
+</div><p>$$ \begin{array}{rl} \varphi &amp;=&amp; 0 \\ ax^2 + bx + c &amp;=&amp; 0 \\ a(x^2 + \frac{bx}{a}) + c &amp;=&amp; 0 \\ \end{array} $$</p>
+    <p>This form allows us to <em>complete the square</em>:</p>
+    <p>$$ \begin{array}{rl} a(x^2 + \frac{bx}{a}) + c &amp;=&amp; 0 \\ a(x^2 + \frac{bx}{a} + \frac{b^2}{4a^2} - \frac{b^2}{4a^2}) + c &amp;=&amp; 0 \\ a(x^2 + \frac{bx}{a} + \frac{b^2}{4a^2}) - \frac{b^2 a}{4a^2} + c &amp;=&amp; 0 \\ a(x^2 + \frac{bx}{a} + \frac{b^2}{4a^2}) - \frac{b^2}{4a} + c &amp;=&amp; 0 \\ \end{array} $$</p>
+    <p>After completing the square, the rest is algebraic manipulation.</p>
+    <p>$$ \begin{array}{rl} a(x^2 + \frac{bx}{a} + \frac{b^2}{4a^2}) - \frac{b^2}{4a} + c &amp;=&amp; 0 \\ a(x^2 + \frac{bx}{a} + \frac{b^2}{4a^2}) &amp;=&amp; \frac{b^2}{4a} - c \\ a(x + \frac{b}{2a})^2 &amp;=&amp; \frac{b^2}{4a} - c \\ a(x + \frac{b}{2a})^2 &amp;=&amp; \frac{b^2}{4a} - \frac{4ac}{4a} \\ a(x + \frac{b}{2a})^2 &amp;=&amp; \frac{b^2 - 4ac}{4a} \\ (x + \frac{b}{2a})^2 &amp;=&amp; \frac{b^2 - 4ac}{4a^2} \\ \sqrt{(x + \frac{b}{2a})^2} &amp;=&amp; \pm \sqrt{\frac{b^2 - 4ac}{4a^2} } \\ \sqrt{(x + \frac{b}{2a})^2} &amp;=&amp; \pm \frac{\sqrt{b^2 - 4ac} }{\sqrt{4a^2} } \\ (x + \frac{b}{2a}) &amp;=&amp; \frac{\pm \sqrt{b^2 - 4ac} }{2a} \\ x + \frac{b}{2a} &amp;=&amp; \frac{\pm\sqrt{b^2 - 4ac} }{2a} \\ x &amp;=&amp; \frac{-b}{2a} \frac{\pm\sqrt{b^2 - 4ac} }{2a} \\ x &amp;=&amp; \frac{-b \pm \sqrt{b^2 - 4ac} }{2a} \\ \end{array} $$</p>
+    <hr/><p>This should show why analytically solving a problem is better than plugging in numbers, first. We now have a general solution (one you have utilized quite frequently). We will take a similar approach throughout this semester (i.e., we will favour solving the general problem, and defer plugging in numbers).</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Deriving%20the%20Quadratic%20Formula"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

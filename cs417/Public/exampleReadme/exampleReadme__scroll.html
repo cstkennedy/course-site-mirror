@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>ReadMe File Examples</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20ReadMe%20File%20Examples"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">ReadMe File Examples</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#c-example">1 C++ Example</a></div><div class="toc-h1"><a href="#python-example">2 Python Example</a></div></div><p>All code you submit must by accompanied by a Readme file, preferably in markdown format, and named <code>README.md</code></p>
+    <p>For this course, you will need to include:</p>
+    <ul>
+  <li>Any libraries your code requires (e.g., Boost)</li>
+  <li>Compilation instructions (for compile languages)</li>
+  <li>How to run your program</li>
+  <li>Sample output listing</li>
+</ul><a id="cexample"/><h1 id="c-example">1 C++ Example</h1><p>A <code>README.md</code> for a C++ program would take a form similar to:</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: C++ Markdown Source</div>
+<pre><code class="markdown"># Requirements
+
+  * g++ v5.4 or newer
+  * Boost 1.58.0 or newer
+    * The `boost/multiprecision/float128.hpp` header must be available
+  * Make
+
+## Installed Boost Packages
+
+For development the following boost packages were installed.
+
+```
+libboost-date-time1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-filesystem1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-iostreams1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-python1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-regex1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-system1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-test-dev/xenial,now 1.58.0.1ubuntu1 amd64 [installed]
+libboost-test1.58-dev/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-test1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost1.58-dev/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost1.58-doc/xenial-updates,xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 all [installed]
+```
+
+This listing was obtained by running `apt list --installed | grep boost`.
+
+
+# Compilation
+
+The code can be compiled with the provided makefile using the standard `make`
+command.
+
+If compiling the code manually, or integrating into a larger program, include
+the following flags:
+
+```
+FLAGS=-std=c++17 -fsanitize=address -fuse-ld=gold -Wall -MMD \
+      -fext-numeric-literals -lquadmath #-O3
+```
+
+Note that flag `-fuse-ld=gold` is only required on certain Ubuntu systems due
+to a know bug with g++ 5.x.
+
+
+# Sample Execution &amp; Output
+
+If run without command line arguments, using
+
+```
+./precisionEstimate
+```
+
+the following usage message will be displayed.
+
+```
+Usage: ./precisionEstimate numExecs
+```
+
+If run using 
+
+```
+./precisionEstimate 100000000
+```
+
+output *simliar* to
+
+```
+   0 secs | 1.19209e-07
+   1 secs | 2.22045e-16
+  17 secs | 1.92593e-34
+```
+
+will  be displayed. Note that the precision estimates will vary by
+architecture/system.
+
+</code></pre>
+</blockquote><p>If run through a markdown processor (e.g., in GitLab) this markdown would render as</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: C++ Rendered Markdown</div>
+<h1 id="requirements">Requirements</h1>
+<ul>
+  <li>g++ v5.4 or newer</li>
+  <li>Boost 1.58.0 or newer
+    <ul>
+      <li>The <code>boost/multiprecision/float128.hpp</code> header must be available</li>
+    </ul>
+  </li>
+  <li>Make</li>
+</ul>
+<a id="installedboostpackages"/><h2 id="installed-boost-packages">Installed Boost Packages</h2>
+<p>For development the following boost packages were installed.</p>
+    
+<pre><code>libboost-date-time1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-filesystem1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-iostreams1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-python1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-regex1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-system1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed]
+libboost-test-dev/xenial,now 1.58.0.1ubuntu1 amd64 [installed]
+libboost-test1.58-dev/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost-test1.58.0/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost1.58-dev/xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 amd64 [installed,automatic]
+libboost1.58-doc/xenial-updates,xenial-updates,now 1.58.0+dfsg-5ubuntu3.1 all [installed]
+</code></pre>
+<p>This listing was obtained by running <code>apt list --installed | grep boost</code>.</p>
+    
+<h1 id="compilation">Compilation</h1>
+<p>The code can be compiled with the provided makefile using the standard <code>make</code> command.</p>
+    
+<p>If compiling the code manually, or integrating into a larger program, include the following flags:</p>
+    
+<pre><code>FLAGS=-std=c++17 -fsanitize=address -fuse-ld=gold -Wall -MMD \
+      -fext-numeric-literals -lquadmath #-O3
+</code></pre>
+<p>Note that flag <code>-fuse-ld=gold</code> is only required on certain Ubuntu systems due to a know bug with g++ 5.x.</p>
+    
+<a id="sampleexecutionoutput"/><h1 id="sample-execution-output">Sample Execution &amp; Output</h1>
+<p>If run without command line arguments, using</p>
+    
+<pre><code>./precisionEstimate
+</code></pre>
+<p>the following usage message will be displayed.</p>
+    
+<pre><code>Usage: ./precisionEstimate numExecs
+</code></pre>
+<p>If run using </p>
+    
+<pre><code>./precisionEstimate 100000000
+</code></pre>
+<p>output <em>simliar</em> to</p>
+    
+<pre><code>   0 secs | 1.19209e-07
+   1 secs | 2.22045e-16
+  17 secs | 1.92593e-34
+</code></pre>
+<p>will be displayed. Note that the precision estimates will vary by architecture/system.</p>
+    
+</blockquote><hr/><a id="pythonexample"/><h1 id="python-example">2 Python Example</h1><p>A <code>README.md</code> for a Python program would take a form similar to:</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Python Markdown Source</div>
+<pre><code class="markdown"># Requirements
+
+  * Python 3.7
+
+&gt; This code makes use of the `f"..."` or [f-string
+&gt; syntax](https://www.python.org/dev/peps/pep-0498/). This syntax was
+&gt; introduced in Python 3.6.
+
+
+# Sample Execution &amp; Output
+
+If run without command line arguments, using
+
+```
+./precisionEstimate
+```
+
+the following usage message will be displayed.
+
+```
+Usage: ./estimatePrecision.py num_execs [arbitrary precision]
+```
+
+If run using
+
+```
+./precisionEstimate 1000000
+```
+
+output *simliar* to
+
+```
+           float|  3.7247|2.220446049250313e-16
+ float-type-hint|  3.6731|2.220446049250313e-16
+      Decimal-28| 31.8602|0.999999999999999999999999999
+```
+
+will be generated. Note that the `float` and `float-type-hint` lines may vary.
+
+---
+
+An optional precision command line argument can be supplied to change the
+arbitrary precision used by the Python `decimal` module. For example:
+
+```
+./precisionEstimate 1000000 16
+```
+
+will generate output similar to
+
+```
+           float| 0.3979|2.220446049250313e-16
+ float-type-hint| 0.4053|2.220446049250313e-16
+      Decimal-16| 3.1643|0.999999999999999
+```
+
+</code></pre>
+</blockquote><p>If run through a markdown processor (e.g., in GitLab) this markdown would render as</p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Rendered Python Markdown</div>
+<h1 id="requirements">Requirements</h1>
+<ul>
+  <li>Python 3.7</li>
+</ul>
+<blockquote>
+  <p>This code makes use of the <code>f"..."</code> or <a href="https://www.python.org/dev/peps/pep-0498/">f-string syntax</a>. This syntax was introduced in Python 3.6.</p>
+    
+</blockquote>
+<a id="sampleexecutionoutput"/><h1 id="sample-execution-output">Sample Execution &amp; Output</h1>
+<p>If run without command line arguments, using</p>
+    
+<pre><code>./precisionEstimate
+</code></pre>
+<p>the following usage message will be displayed.</p>
+    
+<pre><code>Usage: ./estimatePrecision.py num_execs [arbitrary precision]
+</code></pre>
+<p>If run using</p>
+    
+<pre><code>./precisionEstimate 1000000
+</code></pre>
+<p>output <em>simliar</em> to</p>
+    
+<pre><code>           float|  3.7247|2.220446049250313e-16
+ float-type-hint|  3.6731|2.220446049250313e-16
+      Decimal-28| 31.8602|0.999999999999999999999999999
+</code></pre>
+<p>will be generated. Note that the <code>float</code> and <code>float-type-hint</code> lines may vary.</p>
+    
+<hr/>
+<p>An optional precision command line argument can be supplied to change the arbitrary precision used by the Python <code>decimal</code> module. For example:</p>
+    
+<pre><code>./precisionEstimate 1000000 16
+</code></pre>
+<p>will generate output similar to</p>
+    
+<pre><code>           float| 0.3979|2.220446049250313e-16
+ float-type-hint| 0.4053|2.220446049250313e-16
+      Decimal-16| 3.1643|0.999999999999999
+</code></pre>
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20ReadMe%20File%20Examples"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

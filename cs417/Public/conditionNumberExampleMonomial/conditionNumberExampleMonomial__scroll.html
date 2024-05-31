@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number Example - A Simple Monomial</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20A%20Simple%20Monomial"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number Example - A Simple Monomial</h1><h2 class="author">Thomas J. Kennedy</h2></div><p>Suppose we are interested in the condition number of a monomial, not just one monomial, but all monomials…</p>
+    <p>$$ f(x) = b x^n $$</p>
+    <p>where</p>
+    <ul>
+  <li>$b \in \mathbb{R}$</li>
+  <li>$x \in \mathbb{R}$</li>
+  <li>$n \ne 0$</li>
+</ul><p>We will assume the general form of the condition number, i.e., we will not address $x = 0$ or $f(x) = 0$.</p>
+    <hr/><p>Computing the condition number is fairly quick… once we recall that</p>
+    <p>$$ \begin{eqnarray} f^\prime(x) &amp;=&amp; \frac{d}{dx}(b x^n)\\  &amp;=&amp; bnx^{n-1}\\ \end{eqnarray} $$</p>
+    <blockquote>
+  <p><strong>Recall the various properties of exponents</strong></p>
+    
+  <p>Do not forget that $x^n * x^m = x^{n+m}$.</p>
+    
+</blockquote><p>The condition number can be computed fairly quickly…</p>
+    <p>$$ \begin{eqnarray} (cond\phantom{1}f)(x)  &amp;=&amp; \left| \frac{xf^\prime(x)}{f(x)} \right|\\  &amp;=&amp; \left| \frac{x * bnx^{n-1}}{bx^n}\right|\\  &amp;=&amp; \left| \frac{x * x^{n-1}}{x^n}\right|\\  &amp;=&amp; \left| \frac{nx^{n}}{x^n}\right|\\ (cond\phantom{1}f)(x) &amp;=&amp; \left| n \right|\\ \end{eqnarray} $$</p>
+    <p>Interesting… <em>does the result make sense?</em> This result indicates that the power (exponent) of a monomial determines its conditioning. <em>This is a useful result to keep in mind.</em></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20A%20Simple%20Monomial"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

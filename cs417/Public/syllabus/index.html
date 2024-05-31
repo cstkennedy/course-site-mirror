@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>CS 417 (Summer 2024)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20CS%20417%20%28%40semester%40%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">CS 417 (Summer 2024)</h1><h2 class="author">Thomas J. Kennedy</h2><div class="date">Last modified: Apr 30, 2024</div></div><div class="toc">Contents:<div class="toc-h1"><a href="#basic-course-information">1 Basic Course Information</a></div><div class="toc-h2"><a href="#catalog-description">1.1 Catalog Description</a></div><div class="toc-h2"><a href="#overall-description">1.2 Overall Description</a></div><div class="toc-h2"><a href="#prerequisites">1.3 Prerequisites</a></div><div class="toc-h2"><a href="#when-and-where">1.4 When and Where</a></div><div class="toc-h2"><a href="#instructors">1.5 Instructors</a></div><div class="toc-h1"><a href="#required-materials">2 Required Materials</a></div><div class="toc-h2"><a href="#textbooks">2.1 Textbooks</a></div><div class="toc-h2"><a href="#supplemental-materials">2.2 Supplemental Materials</a></div><div class="toc-h2"><a href="#technology-requirements">2.3 Technology Requirements</a></div><div class="toc-h1"><a href="#course-objectives">3 Course Objectives</a></div><div class="toc-h1"><a href="#tentative-course-topics">4 (Tentative) Course Topics</a></div><div class="toc-h1"><a href="#course-schedule">5 Course Schedule</a></div><div class="toc-h1"><a href="#grading">6 Grading</a></div><div class="toc-h2"><a href="#exams">6.1 Exams</a></div><div class="toc-h2"><a href="#incomplete-grades">6.2 Incomplete Grades</a></div><div class="toc-h1"><a href="#expectations">7 Expectations</a></div><div class="toc-h1"><a href="#course-policies">8 Course Policies</a></div><div class="toc-h2"><a href="#class-attendance">8.1 Class Attendance</a></div><div class="toc-h2"><a href="#classroom-conduct">8.2 Classroom Conduct</a></div><div class="toc-h2"><a href="#due-dates-late-submissions">8.3 Due Dates &amp; Late Submissions</a></div><div class="toc-h2"><a href="#submission-written-exercises-">8.4 Submission (Written Exercises)</a></div><div class="toc-h2"><a href="#scroll-down">8.5 Scroll Down</a></div><div class="toc-h2"><a href="#submission-programming-exercises-">8.6 Submission (Programming Exercises)</a></div><div class="toc-h2"><a href="#academic-honesty">8.7 Academic Honesty</a></div><div class="toc-h1"><a href="#university-policies">9 University Policies</a></div><div class="toc-h2"><a href="#code-of-student-conduct-and-academic-integrity">9.1 Code of Student Conduct and Academic Integrity</a></div><div class="toc-h2"><a href="#honor-pledge">9.2 Honor Pledge</a></div><div class="toc-h2"><a href="#university-email-policy">9.3 University Email Policy</a></div><div class="toc-h2"><a href="#withdrawal">9.4 Withdrawal</a></div><div class="toc-h2"><a href="#educational-accessibility">9.5 Educational Accessibility</a></div></div><a id="basiccourseinformation"/><h1 id="basic-course-information">1 Basic Course Information</h1><p>The course schedule and website are located at <a href="https://www.cs.odu.edu/~tkennedy/cs417/latest">https://www.cs.odu.edu/~tkennedy/cs417/latest</a>.</p>
+    <a id="catalogdescription"/><h2 id="catalog-description">1.1 Catalog Description</h2><p>Algorithms and software for fundamental problems in scientific computing. Topics: properties of floating point arithmetic, linear systems of equations, matrix factorizations, stability of algorithms, conditioning of problems, least-squares problems, eigenvalue computations, numerical integration and differentiation, nonlinear equations, iterative solution of linear systems.</p>
+    <a id="overalldescription"/><h2 id="overall-description">1.2 Overall Description</h2><p>Computer Science involves a fair bit of math and logic. However, most students have a misplaced fear of or frustration with mathematics…</p>
+    <ol>
+  <li>
+  <p>Many students look at a math problem, see unfamiliar notation, and <em>psyche  themselves out</em>.</p>
+    </li>
+  <li>
+  <p>Many students hear the word <em>“proof”</em> and have no idea where to start.</p>
+    </li>
+</ol><p>My overarching goals are…</p>
+    <ol>
+  <li>
+  <p>to help you build the intuition that you need to make use of your existing  math knowledge.</p>
+    </li>
+  <li>
+  <p>to help you develop an intuition for constructing and analyzing proofs.</p>
+    </li>
+  <li>
+  <p>to develop a natural curiosity along with a strong foundation for further  mathematical endeavors.</p>
+    </li>
+</ol><h2 id="prerequisites">1.3 Prerequisites</h2><p>Students are expected to have a strong foundation in mathematics and programming:</p>
+    <ol>
+  <li><strong>Math 316</strong> - Good understanding of calculus and linear algebra.</li>
+  <li><strong>CS 250 or CS 251 or CS 253</strong> - Programming skills in a language such as: C/C++, Python, Rust, or Java.</li>
+</ol><a id="generalprogrammingknowledge"/><h3 id="general-programming-knowledge">1.3.1 General Programming Knowledge</h3><p>Students should be familiar with certain basic programming techniques that are largely independent of any specific programming language:</p>
+    <ul>
+  <li>using editors, compilers and other basic software development tools.</li>
+  <li>basic software design (i.e., stepwise refinement and top-down design)</li>
+  <li>software testing, including the use of scaffolding code (stubs and drivers), selection of test cases for black-box testing, and head to head testing.</li>
+  <li>debugging, including the use of debugging output, the use of automatic debuggers to set breakpoints and trace program execution, and the general process of reasoning backwards from failure locations to the faulty code responsible for the failure.</li>
+</ul><a id="ccjavapythonorrustknowledge"/><h3 id="c-c-java-python-or-rust-knowledge">1.3.2 C, C++, Java, Python, or Rust Knowledge</h3><p>I will assume that you are familiar with the basics of C, C++, Java, Python, or Rust. This includes:</p>
+    <ul>
+  <li>the various statements and control-flow constructs,</li>
+  <li>the built-in data types,</li>
+  <li>the use of arrays, pointers, pointers to arrays, and linked lists,</li>
+  <li>the use and writing of functions, and</li>
+  <li>the basic use of structs and/or classes for implementing  abstract data types.</li>
+</ul><a id="generalcomputerliteracy"/><h3 id="general-computer-literacy">1.3.3 General Computer Literacy</h3><p>You will be studying techniques in this course for preparing professional-quality software documentation. The key embedded word in “software documentation” is “document”. Students taking this course should be able to use word processors and other common tools to produce good quality documents, including mixing text and graphics in a natural and professional manner.</p>
+    <a id="whenandwhere"/><h2 id="when-and-where">1.4 When and Where</h2><ul>
+  <li><strong>Location:</strong> Zoom (refer to Course Collaboration Tool in  Canvas)</li>
+  <li><strong>Time:</strong> Monday and Wednesday from 2:00pm to 3:55pm</li>
+</ul><h2 id="instructors">1.5 Instructors</h2><p>Mr. Thomas Kennedy &amp; Dr. Nikos Chrisochoides</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left"><strong>Instructor</strong> </th>
+      <th align="left"><strong>Office</strong> </th>
+      <th align="left"><strong>Phone #</strong> </th>
+      <th align="left"><strong>Email</strong> </th>
+      <th align="left"><strong>Home Page &amp; Office Hours</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Thomas J. Kennedy </td>
+      <td align="left">Dragas 1100D </td>
+      <td align="left">757.683.7725 </td>
+      <td align="left"><a href="mailto:tkennedy@cs.odu.edu">tkennedy@cs.odu.edu</a> </td>
+      <td align="left"><a href="https://www.cs.odu.edu/~tkennedy">https://www.cs.odu.edu/~tkennedy</a> </td>
+    </tr>
+  </tbody>
+</table><p>Important: All email related to this course should have the phrase <strong>CS 417</strong> somewhere in the subject line. This flags your message in my mailbox for faster attention.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>This is my general email policy. However, this is usually $O(n)$ (i.e., an upper bound).</p>
+    
+</div><p>I try to respond to all (properly marked) messages</p>
+    <ul>
+  <li>before I leave campus each day (Monday through Friday)</li>
+  <li>within 48 on weekends &amp; holidays.</li>
+</ul><p><strong>Any delays in replying to email will be noted in a Canvas Announcement.</strong></p>
+    <a id="officehours"/><h3 id="office-hours">1.5.1 Office Hours</h3><p>My general office hours are available at <a href="https://www.cs.odu.edu/~tkennedy/">https://www.cs.odu.edu/~tkennedy/</a>. Instructions for scheduling a formal appointment are listed on the same page and <a class="doc" href="../../Public/officeHours/index.html" target="CS417_Public">here</a>. My office hours consist of web-conference (Zoom) appointments.</p>
+    <p>General questions about course content and reports of website problems should normally be asked in the Forums on Canvas or via email.</p>
+    <a id="requiredmaterials"/><h1 id="required-materials">2 Required Materials</h1><h2 id="textbooks">2.1 Textbooks</h2><p><strong>Class notes are available on Canvas and the course site</strong>. The required <strong>Chapter Texts</strong> are provided through Canvas.</p>
+    <a id="supplementalmaterials"/><h2 id="supplemental-materials">2.2 Supplemental Materials</h2><p><strong>Supplemental texts are optional:</strong></p>
+    <ol>
+  <li>
+  <p>(Optional) Elementary Numerical Analysis: An Algorithmic Approach, by Samuel Daniel Conte, Carl De Boor</p>
+    </li>
+  <li>
+  <p>(Optional) Numerical Analysis: An Introduction, By Walter Gautschi.</p>
+    </li>
+  <li>
+  <p>(Optional) Data Structures and Algorithms in Python Book by Michael H. Goldwasser, Michael T. Goodrich, and Roberto Tamassia</p>
+    </li>
+  <li>
+  <p>(Optional) Advanced Calculus: Second Edition by David V. Widder</p>
+    </li>
+</ol><a id="technologyrequirements"/><h2 id="technology-requirements">2.3 Technology Requirements</h2><a id="computeraccounts"/><h3 id="computer-accounts">2.3.1 Computer Accounts</h3><p>Students will need an account on the CS Dept. Linux network to participate in this class. This account is unrelated to any University-wide account you may have from ODU’s Information Technology Services (ITS).</p>
+    <p>If you have had a CS Unix account in the recent past, you should find it still active with your login name, password, and files unchanged. If you have had an account and it has not been restored, contact the CS Dept systems staff at <a href="mailto:root@cs.odu.edu">root@cs.odu.edu</a> requesting that it be restored.</p>
+    <p>If you do not yet have such an account, go to the <a href="https://www.cs.odu.edu/">CS Dept. home page</a> and look for “Account Creation” under “Online Services”. All students in this course are responsible for making sure they have a working CS Unix account <strong>prior to</strong> the second week of class.</p>
+    <a id="courseobjectives"/><h1 id="course-objectives">3 Course Objectives</h1><p>This course is designed as an introduction to the basics of numerical analysis. At the end of this course students will be able to:</p>
+    <ol>
+  <li>Examine the impact of finite arithmetic on computation.</li>
+  <li>Formulate numerical approximation problems and investigate their solutions via programming.</li>
+  <li>Investigate the relationship between mathematical models and their matrix representations.</li>
+  <li>Synthesize solutions from simpler parts.</li>
+  <li>Design algorithms and prove their correctness using theory/analysis as building blocks.</li>
+  <li>Examine the spatial complexity, temporal complexity, and computational complexity of numerical solvers.</li>
+  <li>Implement numerical software using existing libraries.</li>
+  <li>Test and verify the correctness of their own codes using model problems and principles from theory.</li>
+  <li>Utilize vocabulary and terminology used by engineers and applied mathematicians.</li>
+  <li>Summarize the literature and utilize basic software packages on numerical approximation.</li>
+  <li>Discuss research issues in numerical computing.</li>
+</ol><a id="tentativecoursetopics"/><h1 id="tentative-course-topics">4 (Tentative) Course Topics</h1><p><strong>Part I*</strong></p>
+    <ol>
+  <li>MACHINE ARITHMETIC AND RELATED MATTERS
+    <ul>
+      <li>Machine Arithmetic and Rounding</li>
+      <li>The Condition of a Problem and Algorithm</li>
+    </ul>
+  </li>
+  <li>APPROXIMATION
+    <ul>
+      <li>Least Squares Approximation</li>
+    </ul>
+  </li>
+  <li>INTERPOLATION
+    <ul>
+      <li>Polynomial Interpolation</li>
+      <li>Approximation and Interpolation by Spline Functions</li>
+    </ul>
+  </li>
+  <li>NONLINEAR EQUATIONS
+    <ul>
+      <li>Examples, Iteration, Convergence, and Efficiency</li>
+      <li>Method of False Position</li>
+      <li>Secant Method</li>
+      <li>Newton’s Method</li>
+    </ul>
+  </li>
+</ol><hr/><p><strong>Part II</strong></p>
+    <ol>
+  <li>NUMERICAL DIFFERENTIATION AND INTEGRATION
+    <ul>
+      <li>Numerical Differentiation</li>
+      <li>Numerical Integration</li>
+    </ul>
+  </li>
+</ol><hr/><p><strong>Topics of Interest (Time Permitting)</strong></p>
+    <ol>
+  <li>MATRIX COMPUTATIONS – SYSTEMS OF LINEAR EQUATIONS
+    <ul>
+      <li>Gauss Elimination and LU Factorization: Basic Algorithms</li>
+      <li>Iterative Methods: Basic Algorithms</li>
+    </ul>
+  </li>
+</ol><p><strong>The topics covered and time spent on each topic may change based on class performance and class pacing.</strong></p>
+    <a id="courseschedule"/><h1 id="course-schedule">5 Course Schedule</h1><p>The course schedule is available in Canvas under <em>Modules</em> and <em>Calendar</em>. An alternate schedule/outline can be accessed at <a href="https://www.cs.odu.edu/~tkennedy/cs417/latest/Directory/outline/index.html">https://www.cs.odu.edu/~tkennedy/cs417/latest/Directory/outline/index.html</a>.</p>
+    <h1 id="grading">6 Grading</h1><p>Final grades will be computed using the following weights:</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left"> </th>
+      <th align="right"><strong>CS 417</strong> </th>
+      <th align="right"><strong>CS 517</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><strong>Homework</strong> </td>
+      <td align="right">30% </td>
+      <td align="right">25% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Machine Assignments</strong> </td>
+      <td align="right">-- </td>
+      <td align="right">5% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Exam 1</strong> </td>
+      <td align="right">15% </td>
+      <td align="right">15% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Exam 2</strong> </td>
+      <td align="right">15% </td>
+      <td align="right">15% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Semester Project</strong> </td>
+      <td align="right">10% </td>
+      <td align="right">10% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Final Exam</strong> </td>
+      <td align="right">30% </td>
+      <td align="right">30% </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Total</strong> </td>
+      <td align="right">100% </td>
+      <td align="right">100% </td>
+    </tr>
+  </tbody>
+</table><p>Final course grades will be assigned based on the standard 10-point scale <sup>1</sup>:</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left"><strong>Point Range</strong> </th>
+      <th align="left"><strong>Letter Grade</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">90 – 100 </td>
+      <td align="left">A </td>
+    </tr>
+    <tr>
+      <td align="left">80 – 89 </td>
+      <td align="left">B </td>
+    </tr>
+    <tr>
+      <td align="left">70 – 79 </td>
+      <td align="left">C </td>
+    </tr>
+    <tr>
+      <td align="left">60 – 69 </td>
+      <td align="left">D </td>
+    </tr>
+    <tr>
+      <td align="left">59 and Below </td>
+      <td align="left">F </td>
+    </tr>
+  </tbody>
+</table><ol>
+  <li>
+  <p>I will apply pluses (+) and minuses (-) to letter grades as appropriate.</p>
+    </li>
+  <li>
+  <p><strong>CS417 students are encouraged to complete Machine Assignments. 5% of your Machine Assignment average will be added to your Final Grade.</strong></p>
+    </li>
+  <li>
+  <p>Your Final Exam percentage can be used to replace your Exam 1 or Exam 2  grade… if your Final Exam percentage is higher. <em>Note that both Exam 1 and  Exam 2 can potentially be replaced.</em></p>
+    </li>
+</ol><h2 id="exams">6.1 Exams</h2><p>Exams will be administered online through Canvas.</p>
+    <a id="incompletegrades"/><h2 id="incomplete-grades">6.2 Incomplete Grades</h2><p>A grade of “I” indicates assigned work yet to be completed in a given course, or absence from the final examination, and is assigned only upon instructor approval of a student request. The “I” grade may be awarded only in exceptional circumstances beyond the student’s control. The “I” grade becomes an “F” if not removed by the day grades are due for following term based on specific criteria: <a href="https://ww1.odu.edu/academics/academic-records/grades/incompletes-withdraws-zgrades">Incomplete, Withdraws and Z grades.</a>.</p>
+    <h1 id="expectations">7 Expectations</h1><p>This course covers theory oriented and math oriented topics and problems. You are expected to review required mathematics, programming, and theory as directed. If whilst reviewing you would like direction or clarification contact the instructor (via email or in the discusion board).</p>
+    <p>We discuss various notations (for math and pseudocode) in this course. Keep in  mind <em>“That it is just notation.”</em> Familiarizing oneself with unfamiliar notations is a skill we will endeaver to develop this semester.</p>
+    <p><strong>If you have questions… Ask the instructor</strong> The cliché <em>“If you have a question… at least one of your classmates has the same question.”</em> is true (especially this semester).</p>
+    <a id="coursepolicies"/><h1 id="course-policies">8 Course Policies</h1><a id="classattendance"/><h2 id="class-attendance">8.1 Class Attendance</h2><p>During lectures, we will be covering material from my notes. Lecture will also consist of the exploration of several real world problems not covered in any book. I may assign (or announce through Canvas) a reading assignment or thinking assignment at the end of each lecture.</p>
+    <p>You are responsible for the contents of all lectures. Ideally, I expect you to attend lecture and to arrive on time. If you must miss a class, you are responsible for all material (e.g., lecture and assignments). I expect you to watch the recorded lecture within 24 hours.</p>
+    <a id="classroomconduct"/><h2 id="classroom-conduct">8.2 Classroom Conduct</h2><p>Please be respectful of your classmates and instructor by minimizing distractions during class. Cell phones must be turned off during class.</p>
+    <a id="duedateslatesubmissions"/><h2 id="due-dates-late-submissions">8.3 Due Dates &amp; Late Submissions</h2><p>I do not accept late work. Exceptions to this and other grading policies will be made only in situations of unusual and unforeseeable circumstances beyond your control, and such arrangements must be made prior to the due date in any situations where the conflict is foreseeable.</p>
+    <a id="submissionwrittenexercises"/><h2 id="submission-written-exercises-">8.4 Submission (Written Exercises)</h2><p>All written exercises must be submitted through Canvas in PDF format. Each such submission must take the form of a single multi-page PDF document. <strong>Failure to follow these requirements will result in a zero.</strong></p>
+    <p>All work must be readable. Make sure that all submitted PDFs are readable, e.g.,</p>
+    <ul>
+  <li>content is not cut off</li>
+  <li>writing (or text) is not faded (i.e., too light to read)</li>
+</ul><p>Problems must be submitted in order. Any scans with the problems listed out of order will result in a zero.</p>
+    <p><strong>Show your work.</strong> Partial credit will not be awarded if:</p>
+    <ul>
+  <li>intermediary steps are not shown</li>
+  <li>intermediary steps are not legible</li>
+</ul><p>If there is insufficient work to show how you arrived at an answer, you will not receive full credit.</p>
+    <a id="scrolldown"/><h2 id="scroll-down">8.5 Scroll Down</h2><p><strong>Make sure to scroll down. Most exercises (Homework Assignments, Machine Assignments, and Exams) consist of multiple pages.</strong></p>
+    <a id="submissionprogrammingexercises"/><h2 id="submission-programming-exercises-">8.6 Submission (Programming Exercises)</h2><p>All programming exercises (e.g., Machine Assignments) must be submitted as a single zip file (zip) or tarball (tar.gz, tar, or tgz). Unless explicitly stated in the prompt, other formats will not be accepted. Each submission must include:</p>
+    <ol>
+  <li>A brief <a class="doc" href="../../Public/exampleReadme/index.html" target="CS417_Public">ReadMe file</a> that specifies how to compile and  run your code.</li>
+  <li>Makefiles (or equivalent build files) for any compilable code.
+    <ul>
+      <li>For C/C++, I recommend make or Cmake</li>
+      <li>For Java, I recommend Gradle</li>
+      <li>For Rust, stick with Cargo</li>
+      <li>For Python, no build file is required. Python is an interpreted language</li>
+    </ul>
+  </li>
+</ol><p>IDE (e.g., Code::Blocks, Eclipse, or VSCode) projects are <strong>not</strong> build files. No credit (i.e., zero points) will be awarded for any compilable code submitted without an appropriate build file.</p>
+    <p>All code must follow best practices, including:</p>
+    <ul>
+  <li>Documentation</li>
+  <li>Indentation and spacing</li>
+  <li>Naming conventions</li>
+  <li>Top-down design (i.e., no monolithic functions)</li>
+  <li>D.R.Y</li>
+  <li>Language specific best practices</li>
+</ul><a id="permittedlanguages"/><h3 id="permitted-languages">8.6.1 Permitted Languages</h3><p>You may used any combination of C, C++, Java, Python (3.8+), and Rust. All other languages must be discussed with the instructor before assignment/project submission.</p>
+    <p>Extra consideration will be given to <strong>novel solutions (e.g., those written in a functional language)</strong>.</p>
+    <a id="academichonesty"/><h2 id="academic-honesty">8.7 Academic Honesty</h2><p>Everything turned in for grading in this course must be your own work.</p>
+    <p>The instructor reserves the right to question a student orally or in writing and to use his evaluation of the student’s understanding of the assignment and of the submitted solution as evidence of cheating. Violations will be reported to the Office of Student Conduct &amp; Academic Integrity for consideration for possible punitive action.</p>
+    <p>Students who contribute to violations by sharing their code/designs with others may be subject to the same penalties.</p>
+    <ul>
+  <li>Students are expected to use standard Unix protection mechanisms (<code>chmod</code>) to  keep their assignments from being read by their classmates. Failure to do so will result in grade penalties, at the very least.</li>
+</ul><p>This policy is <span class="emph">not</span> intended to prevent students from providing legitimate assistance to one another. Students are encouraged to seek/provide one another aid in learning to use the operating system, in issues pertaining to the programming language, or to general issues relating to the course subject matter.</p>
+    <blockquote>
+  <p>Students should avoid, however, explicit discussion of approaches to solving a particular programming assignment, and under no circumstances should students show one another their code for an ongoing assignment, nor discuss such code in detail.</p>
+    
+</blockquote><p><strong>Use of Online Resources</strong></p>
+    <p>You may <strong>not</strong> post details of course assignments, projects, or tests at online Forums, Bulletin Boards, Homework sites, etc., soliciting help.</p>
+    <p>You may use information that you have not solicited but have located, subject to the following restrictions:</p>
+    <ul>
+  <li>
+    <p>Just as when writing a paper, if you use someone else’s ideas, you must cite  your sources appropriately. Within code, such citations appear in comments.</p>
+    
+    <p>Example:</p>
+    
+    <pre><code>&#x22ee;
+double x = 23.0;
+double xsqrt = sqrt(x);
+// Search algorithm based upon code by S Zeil at
+// https://www.cs.odu.edu/~zeil/cs361/latest/Public/functionAnalysis/index.html#orderedsequentialsearch
+int loc = 0;
+while (loc &lt; arraySize &amp;&amp; numbers[loc] &lt; xsqrt)
+&#x22ee;
+</code></pre>
+  </li>
+  <li>
+    <p>Just as when writing a paper, if you use someone else’s words (code), you  must cite your sources appropriately <strong>and</strong> mark the quoted text. Within  code, such citations appear in comments.</p>
+    
+    <p>Example:</p>
+    
+    <pre><code>&#x22ee;
+double x = 23.0;
+double xsqrt = sqrt(x);
+
+// Begin quoted code from  S Zeil at
+// https://www.cs.odu.edu/~zeil/cs361/latest/Public/functionAnalysis/index.html#orderedsequentialsearch
+int loc = 0;
+while (loc &lt; listLength &amp;&amp; list[loc] &lt; searchItem)
+{
+    ++loc;
+}
+// End quoted code
+
+&#x22ee;
+</code></pre>
+  </li>
+  <li>
+  <p>Failure to appropriately cite any such “found code” will be taken as evidence  of plagiarism.</p>
+    </li>
+  <li>
+  <p>The overall principle stated in the first sentence of this section remains in  effect. “Everything turned in for grading in this course must be your own  work.” If the bulk of your assignment, code, paper, etc., are  copied, even with appropriate citation, to the degree that, in the judgment of  the instructor, you have not demonstrated your own knowledge of the course  material, you will receive a zero for that exercise.</p>
+    </li>
+</ul><a id="universitypolicies"/><h1 id="university-policies">9 University Policies</h1><a id="codeofstudentconductandacademicintegrity"/><h2 id="code-of-student-conduct-and-academic-integrity">9.1 Code of Student Conduct and Academic Integrity</h2><p>The Office of Student Conduct &amp; Academic Integrity (OSCAI) oversees the administration of the student conduct system, as outlined in the Code of Student Conduct. Old Dominion University is committed to fostering an environment that is: safe and secure, inclusive, and conducive to academic integrity, student engagement, and student success. The University expects students and student organizations/groups to uphold and abide by standards included in the <a href="https://ww1.odu.edu/about/policiesandprocedures/bov/bov1500/1530">Code of Student Conduct</a>. These standards are embodied within a set of core values that include personal and academic integrity, fairness, respect, community, and responsibility. </p>
+    <a id="honorpledge"/><h2 id="honor-pledge">9.2 Honor Pledge</h2><p>By attending Old Dominion University, you have accepted the responsibility to abide by the Honor Pledge: </p>
+    <blockquote>
+  <p>I pledge to support the Honor System of Old Dominion University. I will refrain from any form of academic dishonesty or deception, such as cheating or plagiarism. I am aware that as a member of the academic community it is my responsibility to turn in all suspected violations of the Honor Code. I will report to a hearing if summoned. </p>
+    
+</blockquote><a id="universityemailpolicy"/><h2 id="university-email-policy">9.3 University Email Policy</h2><p><strong>Reformatted to follow <a href="https://ww1.odu.edu/about/policiesandprocedures/computing/standards/11/02">https://ww1.odu.edu/about/policiesandprocedures/computing/standards/11/02</a>.</strong></p>
+    <a id="studentemail"/><h3 id="student-email">9.3.1 Student Email</h3><p>With the increasing reliance and acceptance of electronic communication, email is considered an official means for University communication. Old Dominion University provides each student an email account for the purposes of teaching and learning, research, administration, and service. It is important that all students are aware of the expectations associated with email use as outlined in the <a href="https://ww1.odu.edu/about/policiesandprocedures/computing/standards/11/02">Student Email Standard.</a></p>
+    <a id="emailaccountactivation"/><h3 id="email-account-activation">9.3.2 Email Account Activation</h3><p>It is the responsibility of every eligible student to activate MIDAS, the Monarch Identification and Authorization System, in order to obtain email access.</p>
+    <a id="expectationsregardinguseofemail"/><h3 id="expectations-regarding-use-of-email">9.3.3 Expectations Regarding Use of Email</h3><p>The email account provided by the University is considered to be an official point of contact for correspondence. Students are expected to check their official e-mail account on a frequent and consistent basis in order to stay current with University communications. Mail sent to the ODU email address may include notification of University-related actions, including academic, financial, and disciplinary actions. For more information about student email, please visit <a href="https://www.odu.edu/academics/student-computing" target="_blank">Student Computing.</a> </p>
+    <a id="educationalusesofemail"/><h3 id="educational-uses-of-email">9.3.4 Educational Uses of Email</h3><p>University offices and instructors cannot validate that a communication coming by email is from an ODU student unless it comes from a valid ODU email address. If students send mail from non-ODU email accounts (e.g., Hotmail or Yahoo), faculty and staff are not obligated to respond and may request that official e-mail accounts be used.</p>
+    <h2 id="withdrawal">9.4 Withdrawal</h2><p>Enrollment in this course indicates your acceptance of its teaching focus, requirements, and policies. Please review the syllabus and the course requirements as soon as possible. If you believe that the nature of this course does not meet your interests, needs or expectations, if you are not prepared for the amount of work involved – or if you anticipate assignment deadlines or adherence to course policies will constitute an unacceptable hardship for you – you should drop the course by the drop/add deadline, which is listed in the <a href="https://www.odu.edu/academics/calendar" target="_blank">ODU Schedule of Classes</a>. Visit the <a href="https://www.odu.edu/registrar" target="_blank">Office of the University Registrar</a> for more information.</p>
+    <a id="educationalaccessibility"/><h2 id="educational-accessibility">9.5 Educational Accessibility</h2><p>Old Dominion University is committed to ensuring equal access to all qualified students with disabilities in accordance with the Americans with Disabilities Act. The Office of Educational Accessibility (OEA) is the campus office that works with students who have disabilities to provide and/or arrange reasonable accommodations.</p>
+    <ul>
+  <li>
+  <p>If you experience a disability which will impact your ability to access any  aspect of my class, please present me with an accommodation letter from OEA  so that we can work together to ensure that appropriate accommodations are  available to you.</p>
+    </li>
+  <li>
+  <p>If you feel that you will experience barriers to your ability to learn and/or  testing in my class but do not have an accommodation letter, please consider  scheduling an appointment with OEA to determine if academic accommodations are  necessary.</p>
+    </li>
+</ul><p>The Office of Educational Accessibility is located at 1021 Student Success Center and their phone number is (757) 683-4655. Additional information is available at the <a href="http://www.odu.edu/educationalaccessibility/" target="_blank">OEA website</a></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20CS%20417%20%28%40semester%40%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

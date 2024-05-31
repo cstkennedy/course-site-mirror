@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Semester Project - Input Library and Language Selection</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20Input%20Library%20and%20Language%20Selection"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Semester Project - Input Library and Language Selection</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#deliverables">1 Deliverables</a></div><div class="toc-h1"><a href="#handling-input">2 Handling Input</a></div></div><p><strong>If you have not already done so… <a class="doc" href="../../Assts/project-cpu-temps/index.html" target="CS417_Assts">read the Semester Project Description</a></strong></p>
+    <h1 id="deliverables">1 Deliverables</h1><p>Submit a <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">single archive</a> that contains a/an:</p>
+    <ol>
+  <li>updated <code>README.md</code></li>
+  <li>input library in your selected language</li>
+</ol><a id="handlinginput"/><h1 id="handling-input">2 Handling Input</h1><p>Your first steps should be to:</p>
+    <ol>
+  <li>
+  <p>Select the input library that matches your language of choice from  <a href="https://github.com/cstkennedy/cs417-examples/tree/master/SemesterProject-CPU-Temps">https://github.com/cstkennedy/cs417-examples/tree/master/SemesterProject-CPU-Temps</a>.</p>
+    </li>
+  <li>
+  <p>Preprocess the <a class="doc" href="../../Assts/project-cpu-temps/index.html" target="CS417_Assts">Semester Project</a> input data into  a usable form.</p>
+    </li>
+</ol><p>Consider the following table. Each column would represent a single “array.”</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>This table is a conceptual visualization of the data. You may select any combination data structures, e.g., ADTS (classes or structs), arrays, lists, vectors, or maps.</p>
+    
+</div><table>
+  <thead>
+    <tr>
+      <th align="right">Time (sec) </th>
+      <th align="left">Core 0 </th>
+      <th align="left">Core 1 </th>
+      <th align="left">Core 2 </th>
+      <th align="left">Core 3 </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="left">61.0 </td>
+      <td align="left">63.0 </td>
+      <td align="left">50.0 </td>
+      <td align="left">58.0 </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="left">80.0 </td>
+      <td align="left">81.0 </td>
+      <td align="left">68.0 </td>
+      <td align="left">77.0 </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="left">62.0 </td>
+      <td align="left">63.0 </td>
+      <td align="left">52.0 </td>
+      <td align="left">60.0 </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="left">83.0 </td>
+      <td align="left">82.0 </td>
+      <td align="left">70.0 </td>
+      <td align="left">79.0 </td>
+    </tr>
+    <tr>
+      <td align="right">120 </td>
+      <td align="left">68.0 </td>
+      <td align="left">69.0 </td>
+      <td align="left">58.0 </td>
+      <td align="left">65.0 </td>
+    </tr>
+  </tbody>
+</table><p><strong>Conceptually,</strong> this “table” can be represented by five vectors (or similar data structure), e.g.,</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Data Structures: C++</div>
+<pre><code class="C++">std::vector&lt;int&gt; time = {};
+std::vector&lt;double&gt; readings_core_0 = {};
+std::vector&lt;double&gt; readings_core_1 = {};
+std::vector&lt;double&gt; readings_core_2 = {};
+std::vector&lt;double&gt; readings_core_3 = {};
+</code></pre>
+</blockquote><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Data Structures: Java</div>
+<pre><code class="C++">int[] time = new int[numberOfReadings];
+double[] readings_core_0 = new double[numberOfReadings]; 
+double[] readings_core_1 = new double[numberOfReadings]; 
+double[] readings_core_2 = new double[numberOfReadings]; 
+double[] readings_core_3 = new double[numberOfReadings]; 
+</code></pre>
+</blockquote><blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Data Structures: Python</div>
+<pre><code class="python">time = []
+readings_core_0 = []
+readings_core_1 = []
+readings_core_2 = []
+readings_core_3 = []
+</code></pre>
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20Input%20Library%20and%20Language%20Selection"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>@Title@</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20%40Title%40"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">@Title@</h1></div><h1 id="setup">1 Setup</h1><a id="matrixx"/><h2 id="matrix-x">1.1 Matrix X</h2><p>$$ \left[\begin{array}{rr} 1 &amp; 0\\ 1 &amp; 1\\ 1 &amp; 2\\ 1 &amp; 3\\ 1 &amp; 4\\ 1 &amp; 5\\ 1 &amp; 6\\ 1 &amp; 7\\ 1 &amp; 8\\ 1 &amp; 9\\ 1 &amp; 10\\ \end{array}\right] $$</p>
+    <a id="matrixy"/><h2 id="matrix-y">1.2 Matrix Y</h2><p>$$ \left[\begin{array}{r} 0\\ 1\\ 4\\ 9\\ 16\\ 25\\ 36\\ 49\\ 64\\ 81\\ 100\\ \end{array}\right] $$</p>
+    <a id="matrixxt"/><h2 id="matrix-xt">1.3 Matrix XT</h2><p>$$ \left[\begin{array}{rrrrrrrrrrr} 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\ 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6 &amp; 7 &amp; 8 &amp; 9 &amp; 10\\ \end{array}\right] $$</p>
+    <a id="matrixxtx"/><h2 id="matrix-xtx">1.4 Matrix XTX</h2><p>$$ \left[\begin{array}{rr} 11 &amp; 55\\ 55 &amp; 385\\ \end{array}\right] $$</p>
+    <a id="matrixxty"/><h2 id="matrix-xty">1.5 Matrix XTY</h2><p>$$ \left[\begin{array}{r} 385\\ 3025\\ \end{array}\right] $$</p>
+    <a id="augmentedmatrixxtxxty"/><h2 id="augmented-matrix-xtx-xty">1.6 Augmented Matrix XTX|XTY</h2><p>$$ \left[\begin{array}{rr|r} 11 &amp; 55 &amp; 385\\ 55 &amp; 385 &amp; 3025\\ \end{array}\right] $$</p>
+    <a id="gaussianelimination"/><h1 id="gaussian-elimination">2 Gaussian Elimination</h1><a id="iteration0"/><h2 id="iteration-0">2.1 Iteration 0</h2><h3 id="pivot">2.1.1 Pivot</h3><p>$$ \left[\begin{array}{rr|r} 55 &amp; 385 &amp; 3025\\ 11 &amp; 55 &amp; 385\\ \end{array}\right] $$</p>
+    <h3 id="scale">2.1.2 Scale</h3><p>$$ \left[\begin{array}{rr|r} 1 &amp; 7 &amp; 55\\ 11 &amp; 55 &amp; 385\\ \end{array}\right] $$</p>
+    <h3 id="elimination">2.1.3 Elimination</h3><p>$$ \left[\begin{array}{rr|r} 1 &amp; 7 &amp; 55\\ 0 &amp; -22 &amp; -220\\ \end{array}\right] $$</p>
+    <a id="iteration1"/><h2 id="iteration-1">2.2 Iteration 1</h2><h3 id="pivot">2.2.1 Pivot</h3><p>$$ \left[\begin{array}{rr|r} 1 &amp; 7 &amp; 55\\ 0 &amp; -22 &amp; -220\\ \end{array}\right] $$</p>
+    <h3 id="scale">2.2.2 Scale</h3><p>$$ \left[\begin{array}{rr|r} 1 &amp; 7 &amp; 55\\ 0 &amp; 1 &amp; 10\\ \end{array}\right] $$</p>
+    <h3 id="elimination">2.2.3 Elimination</h3><p>$$ \left[\begin{array}{rr|r} 1 &amp; 7 &amp; 55\\ 0 &amp; 1 &amp; 10\\ \end{array}\right] $$</p>
+    <h1 id="solution">3 Solution</h1><h2 id="matrix">3.1 Matrix</h2><p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; -15\\ 0 &amp; 1 &amp; 10\\ \end{array}\right] $$</p>
+    <h2 id="coefficients">3.2 Coefficients</h2><p>$$c_0 = -15$$ $$c_1 = 10$$</p>
+    <a id="approximationfunctionphi"/><h2 id="approximation-function-phi-">3.3 Approximation Function (phi)</h2><p>$$y^{approx} = -15 + 10x^1$$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20%40Title%40"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

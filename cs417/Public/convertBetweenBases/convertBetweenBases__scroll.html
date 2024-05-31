@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Converting to Base 2</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Converting%20to%20Base%202"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Converting to Base 2</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#decimal-base-10-to-binary-base-2-">1 Decimal (Base 10) to Binary (Base 2)</a></div><div class="toc-h1"><a href="#converting-real-numbers-from-base-10-to-base-2">2 Converting Real Numbers from Base 10 to Base 2</a></div><div class="toc-h1"><a href="#octal-base-8-hexadecimal-base-16-">3 Octal (Base 8) &amp; Hexadecimal (Base 16)</a></div></div><p>In Computer Science we often oscillate between two bases: Base 10 and Base $10_2$ ($10_2 = 2_{10}$).</p>
+    <a id="decimalbase10tobinarybase2"/><h1 id="decimal-base-10-to-binary-base-2-">1 Decimal (Base 10) to Binary (Base 2)</h1><p>Let us start with powers of 2…</p>
+    <p>$$ \begin{array}{rrll} \frac{1}{2} &amp;=&amp; 2^{-1} &amp;=&amp; 0.100_{2} &amp;=&amp; 0.0111111\overline{1}_{2} \\ \frac{1}{4} &amp;=&amp; 2^{-2} &amp;=&amp; 0.010_{2} &amp;=&amp; 0.0011111\overline{1}_{2} \\ \frac{1}{8} &amp;=&amp; 2^{-3} &amp;=&amp; 0.001_{2} &amp;=&amp; 0.0001111\overline{1}_{2} \\ \end{array} $$</p>
+    <p>The third column is not immediately obvious. Let us take a few minutes to prove that:</p>
+    <p>$$ \begin{array}{rrll} \frac{1}{2} &amp;=&amp; 2^{-1} &amp;=&amp; 0.100_{2} &amp;=&amp; 0.0111111\overline{1}_{2} \\ \end{array} $$</p>
+    <p>is true. We will need to use the geometric series formula.</p>
+    <hr/><p>We need to prove that</p>
+    <p>\begin{array}{rl} 0.100_{2} &amp;=&amp; 0.0111111\overline{1}_{2} \\ 2^{-1} &amp;=&amp; 2^{-2} + 2^{-3} + 2^{-4} + \ldots \\ \end{array}</p>
+    <p>Notice how I changed from based to to base 10 and tweaked the right side? We now have a geometric series! We can apply the geometric series formula (after one small tweak).</p>
+    <p>\begin{array}{rl} 2^{-1} &amp;=&amp; 2^{-2} + 2^{-3} + 2^{-4} + \ldots \\ 2^{-1} &amp;=&amp; 2^{-2} \left(2^{0} + 2^{-1} + 2^{-2} + \ldots \right) \\ 2^{-1} &amp;=&amp; 2^{-2} \left( \frac{1}{1-2^{-1}} \right) \\ 2^{-1} &amp;=&amp; 2^{-2} \left( \frac{1}{2^{-1}} \right) \\ 2^{-1} &amp;=&amp; 2^{-2} \left( 2 \right) \\ 2^{-1} &amp;=&amp; 2^{-1} \\ \end{array}</p>
+    <a id="convertingrealnumbersfrombase10tobase2"/><h1 id="converting-real-numbers-from-base-10-to-base-2">2 Converting Real Numbers from Base 10 to Base 2</h1><p><strong>Example 1</strong></p>
+    <p>Convert $\frac{1}{5} = 0.2$ to binary.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right"><strong>Step</strong> </th>
+      <th align="center"><strong>Buffer</strong> </th>
+      <th align="right"><strong>Bit</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="center">$2(0.2) = 0.4$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="center">$2(0.4) = 0.8$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="center">$2(0.8) = 1.6$ </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="center">$2(0.6) = 1.2$ </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="center">$2(0.2) = 0.4$ </td>
+      <td align="right">– </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<p>Starting with step 5, the pattern repeats. We are left with:</p>
+    
+<p>$$ \frac{1}{5} = 0.2_{10} = (0.\overline{0011})_{2} $$</p>
+    
+</div></div><hr/><p><strong>Example 2</strong></p>
+    <p>Convert $\frac{1}{10} = 0.1$ to binary.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right"><strong>Step</strong> </th>
+      <th align="center"><strong>Buffer</strong> </th>
+      <th align="right"><strong>Bit</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="center">$2(0.1) = 0.2$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="center">$2(0.2) = 0.4$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="center">$2(0.4) = 0.8$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="center">$2(0.8) = 1.6$ </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="center">$2(0.6) = 1.2$ </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="center">$2(0.2) = 0.4$ </td>
+      <td align="right">– </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<p>Starting with step 6, the pattern repeats from step (digit) 2. We are left with:</p>
+    
+<p>$$ \frac{1}{10} = 0.1_{10} = (0.0\overline{0011})_{2} $$</p>
+    
+</div></div><hr/><p><strong>Example 2</strong></p>
+    <p>Convert $\frac{1}{7} = 0.\overline{142857}$ to binary.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right"><strong>Step</strong> </th>
+      <th align="center"><strong>Buffer</strong> </th>
+      <th align="right"><strong>Bit</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">1 </td>
+      <td align="center">$2(\frac{1}{7}) = \frac{2}{7}$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="center">$2(\frac{2}{7}) = \frac{4}{7}$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="center">$2(\frac{4}{7}) = \frac{8}{7}$ </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">4 </td>
+      <td align="center">$2(\frac{1}{7}) = \frac{2}{7}$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">5 </td>
+      <td align="center">$2(\frac{2}{7}) = \frac{4}{7}$ </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">6 </td>
+      <td align="center">$2(\frac{4}{7}) = \frac{8}{7}$ </td>
+      <td align="right">– </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<p>Starting with step 6, the pattern repeats from step (digit) 3. We are left with:</p>
+    
+<p>$$ \frac{1}{7} = 0.\overline{142857}_{10} = (0.\overline{001})_{2} $$</p>
+    
+</div></div><a id="octalbase8hexadecimalbase16"/><h1 id="octal-base-8-hexadecimal-base-16-">3 Octal (Base 8) &amp; Hexadecimal (Base 16)</h1><p>Both Octal and Hexadecimal numbers are shorthand for binary. Octal works with 3 bits and hexadecimal works with 4 bits.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="center"><strong>Binary Bits</strong> </th>
+      <th align="center"><strong>Octal Digit</strong> </th>
+      <th align="right"><strong>Base 10</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">000 </td>
+      <td align="center">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="center">001 </td>
+      <td align="center">1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="center">010 </td>
+      <td align="center">2 </td>
+      <td align="right">2 </td>
+    </tr>
+    <tr>
+      <td align="center">011 </td>
+      <td align="center">3 </td>
+      <td align="right">3 </td>
+    </tr>
+    <tr>
+      <td align="center">100 </td>
+      <td align="center">4 </td>
+      <td align="right">4 </td>
+    </tr>
+    <tr>
+      <td align="center">101 </td>
+      <td align="center">5 </td>
+      <td align="right">5 </td>
+    </tr>
+    <tr>
+      <td align="center">110 </td>
+      <td align="center">6 </td>
+      <td align="right">6 </td>
+    </tr>
+    <tr>
+      <td align="center">111 </td>
+      <td align="center">7 </td>
+      <td align="right">7 </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="center"><strong>Binary Bits</strong> </th>
+      <th align="center"><strong>Hexadecimal Digit</strong> </th>
+      <th align="right"><strong>Base 10</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">0000 </td>
+      <td align="center">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="center">0001 </td>
+      <td align="center">1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="center">0010 </td>
+      <td align="center">2 </td>
+      <td align="right">2 </td>
+    </tr>
+    <tr>
+      <td align="center">0011 </td>
+      <td align="center">3 </td>
+      <td align="right">3 </td>
+    </tr>
+    <tr>
+      <td align="center">0100 </td>
+      <td align="center">4 </td>
+      <td align="right">4 </td>
+    </tr>
+    <tr>
+      <td align="center">0101 </td>
+      <td align="center">5 </td>
+      <td align="right">5 </td>
+    </tr>
+    <tr>
+      <td align="center">0110 </td>
+      <td align="center">6 </td>
+      <td align="right">6 </td>
+    </tr>
+    <tr>
+      <td align="center">0111 </td>
+      <td align="center">7 </td>
+      <td align="right">7 </td>
+    </tr>
+    <tr>
+      <td align="center">1000 </td>
+      <td align="center">8 </td>
+      <td align="right">8 </td>
+    </tr>
+    <tr>
+      <td align="center">1001 </td>
+      <td align="center">9 </td>
+      <td align="right">9 </td>
+    </tr>
+    <tr>
+      <td align="center">1010 </td>
+      <td align="center">A </td>
+      <td align="right">10 </td>
+    </tr>
+    <tr>
+      <td align="center">1011 </td>
+      <td align="center">B </td>
+      <td align="right">11 </td>
+    </tr>
+    <tr>
+      <td align="center">1100 </td>
+      <td align="center">C </td>
+      <td align="right">12 </td>
+    </tr>
+    <tr>
+      <td align="center">1101 </td>
+      <td align="center">D </td>
+      <td align="right">13 </td>
+    </tr>
+    <tr>
+      <td align="center">1110 </td>
+      <td align="center">E </td>
+      <td align="right">14 </td>
+    </tr>
+    <tr>
+      <td align="center">1111 </td>
+      <td align="center">F </td>
+      <td align="right">15 </td>
+    </tr>
+  </tbody>
+</table>
+</div></div><p>Anytime I do back-of-the-envelope conversions in the middle of a problem, these tables are involved.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Converting%20to%20Base%202"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

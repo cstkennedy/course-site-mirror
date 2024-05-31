@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Least Squares - More Formal Notation</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20More%20Formal%20Notation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Least Squares - More Formal Notation</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#tl-dr">1 TL;DR</a></div><div class="toc-h1"><a href="#formalizing-notation">2 Formalizing Notation</a></div><div class="toc-h1"><a href="#basis-functions">3 Basis Functions</a></div></div><a id="tldr"/><h1 id="tl-dr">1 TL;DR</h1><p>Given a collection of discrete points we need to find a line (polynomial of degree one) of best fit. Since more than two points will be included, it is extremely unlikely to have a single line pass perfectly through every point (i.e., for all points to be collinear). Instead a <em>line of best fit</em> is computed. While most cases use a line, it is possible</p>
+    <ul>
+  <li>
+  <p>for a polynomial of any degree to be used as an approximation function (provided a sufficient number of points).</p>
+    </li>
+  <li>
+  <p>to extend the problem to 3 or more spatial dimensions.</p>
+    </li>
+</ul><a id="formalizingnotation"/><h1 id="formalizing-notation">2 Formalizing Notation</h1><p>So far we have discussed three functions:</p>
+    <ul>
+  <li>$f(x)$ or $f$ - the unknown function to be approximated</li>
+  <li>$\varphi$ - a possible approximation function</li>
+  <li>$\hat{\varphi}$ - the best possible approximation function</li>
+</ul><p>We need to find the best possible approximation function</p>
+    <p>$$ \hat{\varphi} $$</p>
+    <p>out of all approximation functions</p>
+    <p>$$ \Phi $$</p>
+    <p>that minimizes error. In the next module we will define the weighted L2-Norm</p>
+    <p>\[ ||f - \hat{\varphi}|| \]</p>
+    <p>and use it to formally derive a more rigorous form of Least Squares Approximation.</p>
+    <a id="basisfunctions"/><h1 id="basis-functions">3 Basis Functions</h1><p>So far, we have defined $\varphi$ as</p>
+    <p>\[ \begin{align} \varphi &amp; = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + … + c_{n-2} x^{n-2} + c_{n-1} x^{n-1} + c_n x^n \\  &amp; = \sum_{i=0}^{n} c_i x^i \\ \end{align} \]</p>
+    <p>This can be generalized by factoring out the <strong>basis functions</strong>.</p>
+    <p>\[ \begin{align} \varphi &amp; = c_0 \pi_0 + c_1 \pi_1 + c_2 \pi_2 + c_3 \pi_3 + … + c_{n-2} \pi_{n-2} + c_{n-1} \pi_{n-1} + c_n \pi_n \\  &amp; = \sum_{i=0}^{n} c_i \pi_i \\ \end{align} \]</p>
+    <p>For the problems solved thus far the <strong>polynomial basis functions</strong> would be defined as:</p>
+    <p>\[ \begin{align} \pi_0 &amp; = x^0 \\ \pi_1 &amp; = x^1 \\ \pi_2 &amp; = x^2 \\ \pi_3 &amp; = x^3 \\ \pi_0 &amp; = x^4 \\ \vdots &amp; = \vdots \\ \pi_{n-1} &amp; = x^{n-1} \\ \pi_{n} &amp; = x^n \\ \end{align} \]</p>
+    <p>Note the qualifier <strong>polynomial</strong> before the most recent use of the term <strong>basis functions</strong>. Thus far, examples have focused on linear combinations of monomials (e.g., $c_i x^i$). However, different <strong>basis functions</strong> (e.g., $sin(x)$ or $e^x$) can be used instead (if appropriate).</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20More%20Formal%20Notation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

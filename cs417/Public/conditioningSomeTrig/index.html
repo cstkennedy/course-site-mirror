@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Some Trigonometry (Thinking Assignment)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Some%20Trigonometry%20%28Thinking%20Assignment%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Some Trigonometry (Thinking Assignment)</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#tools-of-the-trigonometry-trade">1 Tools of the Trigonometry Trade</a></div><div class="toc-h1"><a href="#conditioning-of-sin-x-">2 Conditioning of sin(x)</a></div><div class="toc-h1"><a href="#thinking-assignments">3 Thinking Assignments</a></div></div><p>So far we have focused on relatively benign functions (polynomials, monomials, logarithms, and exponentials). For these functions we generally examined behavior as:</p>
+    <ul>
+  <li>$x \to \infty$</li>
+  <li>$x \to 0$</li>
+  <li>$x \to -\infty$</li>
+</ul><p>Let us select two relatively simple trig functions: $sin(x)$ and $cos(x)$. Our normal analysis method <em>falls short</em>. Trigonometric (trig) functions are periodic. We must:</p>
+    <ol>
+  <li>identify the size of one period (cycle).</li>
+  <li>examine the behavior (by looking for minima, maxima, and asymptotes).</li>
+  <li>generalize our analysis to all periods.</li>
+</ol><a id="toolsofthetrigonometrytrade"/><h1 id="tools-of-the-trigonometry-trade">1 Tools of the Trigonometry Trade</h1><p>Anytime I work with trigonometry (real numbers or complex numbers), I draw/write the unit circle. This time… I will draw it as a table:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Recall that this table applies to the basic forms of the trig functions (i.e., without scaling factors).</p>
+    
+</div><table>
+  <thead>
+    <tr>
+      <th align="center">$\theta$ </th>
+      <th align="right">$x$ </th>
+      <th align="right">$y$ </th>
+      <th align="right">$cos(\theta)$ </th>
+      <th align="right">$sin(\theta)$ </th>
+      <th align="right">$tan(\theta)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">$0$ </td>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="center">$\frac{\pi}{2}$ </td>
+      <td align="right">0 </td>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">1 </td>
+      <td align="right">– </td>
+    </tr>
+    <tr>
+      <td align="center">$\pi$ </td>
+      <td align="right">-1 </td>
+      <td align="right">0 </td>
+      <td align="right">-1 </td>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="center">$\frac{3\pi}{2}$ </td>
+      <td align="right">0 </td>
+      <td align="right">-1 </td>
+      <td align="right">0 </td>
+      <td align="right">-1 </td>
+      <td align="right">– </td>
+    </tr>
+    <tr>
+      <td align="center">$2\pi$ </td>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">1 </td>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+  </tbody>
+</table><p>Once we reach $\theta = 2\pi$ the table starts to repeat (i.e., we add $2\pi$ to each of our previous values).</p>
+    <a id="conditioningofsinx"/><h1 id="conditioning-of-sin-x-">2 Conditioning of sin(x)</h1><div class="noFloat"> </div><div class="sidebar pct50">
+<p>The <em>p</em> characters on the x-axis represent $\pi$. Some web browsers may not properly render the SVG image.</p>
+    
+</div><p>Let us examine</p>
+    <p>$$f(x) = cos(x)$$</p>
+    <p>We know that the derivative is</p>
+    <p>$$f’(x) = -sin(x)$$</p>
+    <p>Let us take a quick look at $cos(x)$ and $-sin(x)$.</p>
+    <p><img alt="sin and cos" src="./plot.svg"/></p>
+    <p>Let us examine the period $x \in [0, 2\pi]$ and use the general form of the condition number</p>
+    <p>$$ (cond \, f)(x) = \Bigg|\frac{xf’(x)}{f(x)}\Bigg|  = \Big| -xtan(x) \Big| $$</p>
+    <p>Using this <em>general form</em> we must restrict our domains of analysis to those where $x \neq 0$ and $cos(x) \neq 0$. Let us take a quick moment to sketch, and examine the behavior, of both $tan(x)$ and $-xtan(x)$</p>
+    <p><img alt="-xtan(x)" src="./plot2.svg"/></p>
+    <p>Now we need to carefully partition our domain; ($-xtan(x)$) is not exactly periodic.</p>
+    <a id="thinkingassignments"/><h1 id="thinking-assignments">3 Thinking Assignments</h1><p>As thinking assignments:</p>
+    <ol>
+  <li>Complete the analysis started in the previous section (i.e., define  subdomains and bound the condition number)</li>
+  <li>Complete the analysis for cases where $x = 0$.</li>
+  <li>Complete the analysis for cases where $f(x) = 0$.</li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Some%20Trigonometry%20%28Thinking%20Assignment%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

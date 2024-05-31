@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Semester Project - CPU Temps</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20CPU%20Temps"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Semester Project - CPU Temps</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview-milestones">1 Overview - Milestones</a></div><div class="toc-h1"><a href="#overview-problem-background">2 Overview - Problem Background</a></div><div class="toc-h1"><a href="#input-format">3 Input Format</a></div><div class="toc-h2"><a href="#additional-input-data">3.1 Additional Input Data</a></div><div class="toc-h2"><a href="#output-format">3.2 Output Format</a></div><div class="toc-h1"><a href="#sample-execution-output">4 Sample Execution &amp; Output</a></div><div class="toc-h2"><a href="#sample-output">4.1 Sample Output</a></div><div class="toc-h1"><a href="#programming-requirements-constraints">5 Programming Requirements &amp; Constraints</a></div><div class="toc-h2"><a href="#arguments-execution">5.1 Arguments &amp; Execution</a></div><div class="toc-h2"><a href="#architecture">5.2 Architecture</a></div><div class="toc-h2"><a href="#documentation-requirements">5.3 Documentation Requirements</a></div></div><a id="overviewmilestones"/><h1 id="overview-milestones">1 Overview - Milestones</h1><p>The Semester Project has intermediary milestones (in addition to the final submission):</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>You may change your selected programming language at any point during the Semester Project. However, your final deliverable must be complete.</p>
+    
+</div><ol>
+  <li>
+  <p><a class="doc" href="../../Assts/project-milestone-input/index.html" target="CS417_Assts"><strong>Semester Project - Input Library and Language Selection</strong></a></p>
+    </li>
+  <li>
+  <p><a class="doc" href="../../Assts/project-milestone-piecewise-linear/index.html" target="CS417_Assts"><strong>Semester Project - Piecewise Linear Interpolation</strong></a></p>
+    </li>
+  <li>
+  <p><a class="doc" href="../../Assts/project-milestone-least-squares/index.html" target="CS417_Assts"><strong>Semester Project - Least Squares Approximation</strong></a></p>
+    </li>
+  <li>
+  <p><a class="doc" href="../../Assts/project-milestone-final/index.html" target="CS417_Assts"><strong>Semester Project (Finished)</strong></a></p>
+    </li>
+</ol><a id="overviewproblembackground"/><h1 id="overview-problem-background">2 Overview - Problem Background</h1><p>As a Computer Scientist, I have a number of interests. Many of these interests overlap. While designing this project, I happened to be batch encoding some videos. I decided to write a quick script to grab CPU temperature data every 30 seconds.</p>
+    <p>Each of the encoding jobs ran for 5 to 10 hours. If you look at the data you see four temperatures for each reading. My CPU is a 4-core (8 thread) Intel i7-6700K. I found myself interested in not only the behavior of the readings, but also in the temperature differences between the 4 CPU cores.</p>
+    <p>I initially gathered three (3) sets of data.</p>
+    <div class="splitColumns"><div class="leftColumn">
+<ul>
+  <li><a href="./Public/sensors-2018.12.26.txt">sensors-2018.12.26.txt</a></li>
+  <li><a href="./Public/sensors-2019.01.26.txt">sensors-2019.01.26.txt</a></li>
+  <li><a href="./Public/sensors-2019.02.09.txt">sensors-2019.02.09.txt</a></li>
+</ul>
+</div><div class="rightColumn">
+<ul>
+  <li><a href="./Public/sensors-2018.12.26-no-labels.txt">sensors-2018.12.26-no-labels.txt</a></li>
+  <li><a href="./Public/sensors-2019.01.26-no-labels.txt">sensors-2019.01.26-no-labels.txt</a></li>
+  <li><a href="./Public/sensors-2019.02.09-no-labels.txt">sensors-2019.02.09-no-labels.txt</a></li>
+</ul>
+</div></div><p>I generated three (3) graphs (using <a href="http://www.gnuplot.info/">Gnuplot</a>):</p>
+    <ul>
+  <li><a href="./Public/sensors-2018.12.26.svg">sensors-2018.12.26.svg</a></li>
+  <li><a href="./Public/sensors-2019.01.26.svg">sensors-2019.01.26.svg</a></li>
+  <li><a href="./Public/sensors-2019.02.09.svg">sensors-2019.02.09.svg</a></li>
+</ul><p>Click on each item to view either the graph.</p>
+    <a id="inputformat"/><h1 id="input-format">3 Input Format</h1><p>Data takes the form of temperatures in a <code>txt</code> file. All data points are whitespace delimited. For example, suppose we have 5 temperature readings.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Sample Input with Labels</div>
+<pre><code>+61.0°C +63.0°C +50.0°C +58.0°C
++80.0°C +81.0°C +68.0°C +77.0°C
++62.0°C +63.0°C +52.0°C +60.0°C
++83.0°C +82.0°C +70.0°C +79.0°C
++68.0°C +69.0°C +58.0°C +65.0°C
+</code></pre>
+</blockquote><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Sample Input without Labels</div>
+<pre><code>61.0 63.0 50.0 58.0
+80.0 81.0 68.0 77.0
+62.0 63.0 52.0 60.0
+83.0 82.0 70.0 79.0
+68.0 69.0 58.0 65.0
+</code></pre>
+</blockquote><p>Both examples would be a possible input files. Each line represents temperature readings from 4 processor cores. Readings are taken every 30 seconds. In this example:</p>
+    <ul>
+  <li>line 1 is 0 <em>sec</em></li>
+  <li>line 2 is 30 <em>sec</em>,</li>
+  <li>line 3 is 60 <em>sec</em>.</li>
+  <li>line 4 is 90 <em>sec</em>.</li>
+  <li>line 5 is 120 <em>sec</em>.</li>
+</ul><p>In practice… we need to look at each of the four cores independently. This means that each input file is really four (4) sets of temperature data</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Temperature Readings by CPU Core</div>
+<div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="right">Core 0 Temperature </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">61.0 </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="right">80.0 </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="right">62.0 </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="right">83.0 </td>
+    </tr>
+    <tr>
+      <td align="right">120 </td>
+      <td align="right">68.0 </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="right">Core 1 Temperature </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">63.0 </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="right">81.0 </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="right">63.0 </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="right">82.0 </td>
+    </tr>
+    <tr>
+      <td align="right">120 </td>
+      <td align="right">69.0 </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<div class="splitColumns"><div class="leftColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="right">Core 2 Temperature </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">50.0 </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="right">68.0 </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="right">52.0 </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="right">70.0 </td>
+    </tr>
+    <tr>
+      <td align="right">120 </td>
+      <td align="right">58.0 </td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="rightColumn">
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="right">Core 3 Temperature </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">58.0 </td>
+    </tr>
+    <tr>
+      <td align="right">30 </td>
+      <td align="right">77.0 </td>
+    </tr>
+    <tr>
+      <td align="right">60 </td>
+      <td align="right">60.0 </td>
+    </tr>
+    <tr>
+      <td align="right">90 </td>
+      <td align="right">79.0 </td>
+    </tr>
+    <tr>
+      <td align="right">120 </td>
+      <td align="right">65.0 </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</blockquote><a id="additionalinputdata"/><h2 id="additional-input-data">3.1 Additional Input Data</h2><p>The <a href="#overview">Overview</a> listed three input files, as an introduction. If you would like more test data…</p>
+    <div class="splitColumns"><div class="leftColumn">
+<ul>
+  <li><a href="Public/sensors-2018.12.26.txt">sensors-2018.12.26.txt</a></li>
+  <li><a href="Public/sensors-2019.01.26.txt">sensors-2019.01.26.txt</a></li>
+  <li><a href="Public/sensors-2019.02.09.txt">sensors-2019.02.09.txt</a></li>
+  <li><a href="Public/sensors-2019.06.07.txt">sensors-2019.06.07.txt</a></li>
+  <li><a href="Public/sensors-2019.06.14.txt">sensors-2019.06.14.txt</a></li>
+  <li><a href="Public/sensors-2019.07.12.txt">sensors-2019.07.12.txt</a></li>
+  <li><a href="Public/sensors-2019.08.04.txt">sensors-2019.08.04.txt</a></li>
+  <li><a href="Public/sensors-2019.08.12.txt">sensors-2019.08.12.txt</a></li>
+  <li><a href="Public/sensors-2019.08.25.txt">sensors-2019.08.25.txt</a></li>
+  <li><a href="Public/sensors-2019.09.07.txt">sensors-2019.09.07.txt</a></li>
+  <li><a href="Public/sensors-2019.12.24.txt">sensors-2019.12.24.txt</a></li>
+  <li><a href="Public/sensors-2019.12.25.txt">sensors-2019.12.25.txt</a></li>
+  <li><a href="Public/sensors-2019.12.26.txt">sensors-2019.12.26.txt</a></li>
+  <li><a href="Public/sensors-2019.12.29.txt">sensors-2019.12.29.txt</a></li>
+  <li><a href="Public/sensors-2020.01.02.txt">sensors-2020.01.02.txt</a></li>
+</ul>
+</div><div class="rightColumn">
+<ul>
+  <li><a href="Public/sensors-2018.12.26-no-labels.txt">sensors-2018.12.26-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.01.26-no-labels.txt">sensors-2019.01.26-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.02.09-no-labels.txt">sensors-2019.02.09-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.06.07-no-labels.txt">sensors-2019.06.07-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.06.14-no-labels.txt">sensors-2019.06.14-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.07.12-no-labels.txt">sensors-2019.07.12-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.08.04-no-labels.txt">sensors-2019.08.04-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.08.12-no-labels.txt">sensors-2019.08.12-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.08.25-no-labels.txt">sensors-2019.08.25-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.09.07-no-labels.txt">sensors-2019.09.07-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.12.24-no-labels.txt">sensors-2019.12.24-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.12.25-no-labels.txt">sensors-2019.12.25-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.12.26-no-labels.txt">sensors-2019.12.26-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2019.12.29-no-labels.txt">sensors-2019.12.29-no-labels.txt</a></li>
+  <li><a href="Public/sensors-2020.01.02-no-labels.txt">sensors-2020.01.02-no-labels.txt</a></li>
+</ul>
+</div></div><a id="outputformat"/><h2 id="output-format">3.2 Output Format</h2><p>All output must be written to text files (one file per core). Each line must take the form:</p>
+    <p>\(x_{k} &lt;= x &lt; x_{k+1}\); \(y_i=c_0 + c_{1} x\) ; <em>type</em></p>
+    <p>where</p>
+    <ul>
+  <li>
+  <p>\(x_{k}\) and \(x_{k+1}\) are the domain in which \(y_k\) is applicable</p>
+    </li>
+  <li>
+  <p>\(y_k\) is the \(k^{th}\) function</p>
+    </li>
+  <li>
+  <p><em>type</em> is either <em>least-squares</em> or <em>interpolation</em></p>
+    </li>
+</ul><div class="noFloat"> </div><div class="sidebar pct50">
+<p><strong>You will have:</strong></p>
+    
+<ul>
+  <li>$n-1$ interpolation lines for each core</li>
+  <li><strong>exactly one least squares approximation line for each core</strong></li>
+</ul>
+</div><p>For the example data in described in <a href="#input-format">Section 2.1 (Input Format)</a> you would generate 4 output files.</p>
+    <ul>
+  <li><code>{basename}-core-0.{txt}</code></li>
+  <li><code>{basename}-core-1.{txt}</code></li>
+  <li><code>{basename}-core-2.{txt}</code></li>
+  <li><code>{basename}-core-3.{txt}</code></li>
+</ul><p>where <code>{basename}</code> is the input file name without the extension (e.g., without the <code>.txt</code> or <code>.dat</code>).</p>
+    <a id="sampleexecutionoutput"/><h1 id="sample-execution-output">4 Sample Execution &amp; Output</h1><a id="sampleoutput"/><h2 id="sample-output">4.1 Sample Output</h2><p>Given the five-line sample input…</p>
+    <div class="details"><span class="summary"><a href="sample-input.txt" target="listing">sample-input.txt</a></span> <input id="but_details_d6e621" onclick="toggleDisplay('_details_d6e621')" type="button" value="+"/><div class="detailPart" id="_details_d6e621"><pre><code id="_details_d6e621_code">61.0 63.0 50.0 58.0
+80.0 81.0 68.0 77.0
+62.0 63.0 52.0 60.0
+83.0 82.0 70.0 79.0
+68.0 69.0 58.0 65.0
+</code></pre></div></div><p>we would end up with four output files…</p>
+    <div class="details"><span class="summary"><a href="sample-input-core-00.txt" target="listing">sample-input-core-00.txt</a></span> <input id="but_details_d6e624" onclick="toggleDisplay('_details_d6e624')" type="button" value="+"/><div class="detailPart" id="_details_d6e624"><pre><code id="_details_d6e624_code">       0 &lt;= x &lt;=       30 ; y =      61.0000 +       0.6333 x ; interpolation
+      30 &lt;= x &lt;=       60 ; y =      98.0000 +      -0.6000 x ; interpolation
+      60 &lt;= x &lt;=       90 ; y =      20.0000 +       0.7000 x ; interpolation
+      90 &lt;= x &lt;=      120 ; y =     128.0000 +      -0.5000 x ; interpolation
+       0 &lt;= x &lt;=      120 ; y =      67.4000 +       0.0567 x ; least-squares
+</code></pre></div></div><div class="details"><span class="summary"><a href="sample-input-core-01.txt" target="listing">sample-input-core-01.txt</a></span> <input id="but_details_d6e626" onclick="toggleDisplay('_details_d6e626')" type="button" value="+"/><div class="detailPart" id="_details_d6e626"><pre><code id="_details_d6e626_code">       0 &lt;= x &lt;=       30 ; y =      63.0000 +       0.6000 x ; interpolation
+      30 &lt;= x &lt;=       60 ; y =      99.0000 +      -0.6000 x ; interpolation
+      60 &lt;= x &lt;=       90 ; y =      25.0000 +       0.6333 x ; interpolation
+      90 &lt;= x &lt;=      120 ; y =     121.0000 +      -0.4333 x ; interpolation
+       0 &lt;= x &lt;=      120 ; y =      69.0000 +       0.0433 x ; least-squares
+</code></pre></div></div><div class="details"><span class="summary"><a href="sample-input-core-02.txt" target="listing">sample-input-core-02.txt</a></span> <input id="but_details_d6e628" onclick="toggleDisplay('_details_d6e628')" type="button" value="+"/><div class="detailPart" id="_details_d6e628"><pre><code id="_details_d6e628_code">       0 &lt;= x &lt;=       30 ; y =      50.0000 +       0.6000 x ; interpolation
+      30 &lt;= x &lt;=       60 ; y =      84.0000 +      -0.5333 x ; interpolation
+      60 &lt;= x &lt;=       90 ; y =      16.0000 +       0.6000 x ; interpolation
+      90 &lt;= x &lt;=      120 ; y =     106.0000 +      -0.4000 x ; interpolation
+       0 &lt;= x &lt;=      120 ; y =      56.0000 +       0.0600 x ; least-squares
+</code></pre></div></div><div class="details"><span class="summary"><a href="sample-input-core-03.txt" target="listing">sample-input-core-03.txt</a></span> <input id="but_details_d6e630" onclick="toggleDisplay('_details_d6e630')" type="button" value="+"/><div class="detailPart" id="_details_d6e630"><pre><code id="_details_d6e630_code">       0 &lt;= x &lt;=       30 ; y =      58.0000 +       0.6333 x ; interpolation
+      30 &lt;= x &lt;=       60 ; y =      94.0000 +      -0.5667 x ; interpolation
+      60 &lt;= x &lt;=       90 ; y =      22.0000 +       0.6333 x ; interpolation
+      90 &lt;= x &lt;=      120 ; y =     121.0000 +      -0.4667 x ; interpolation
+       0 &lt;= x &lt;=      120 ; y =      64.6000 +       0.0533 x ; least-squares
+</code></pre></div></div><p><em>Note</em> that the extra padding zeros for the core numbers are optional.</p>
+    <a id="programmingrequirementsconstraints"/><h1 id="programming-requirements-constraints">5 Programming Requirements &amp; Constraints</h1><p>All code must follow the requirements outlined in the <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">Submission (Programming Exercises)</a> section of the syllabus.</p>
+    <p>Your task is to take the temperature readings and generate for each core:</p>
+    <ol>
+  <li>A piecewise linear interpolation.</li>
+  <li>A global linear least squares approximation.</li>
+  <li><em>(Optional)</em> A cubic spline (or other non-linear) interpolation.</li>
+</ol><a id="argumentsexecution"/><h2 id="arguments-execution">5.1 Arguments &amp; Execution</h2><p>Your program must accept an input filename as the first command line argument. Your program <strong>must NOT</strong> prompt the user for a filename.</p>
+    <h2 id="architecture">5.2 Architecture</h2><p>Your solution must be organized into appropriate “modules” (using each language’s best practices). Start with four modules:</p>
+    <ol>
+  <li>Input (e.g., using the supplied input libraries)</li>
+  <li>Data pre-processing (i.e., structuring the data for analysis)</li>
+  <li>Piecewise Linear Interpolation</li>
+  <li>Least Squares Approximation</li>
+</ol><a id="documentationrequirements"/><h2 id="documentation-requirements">5.3 Documentation Requirements</h2><p>All code must be properly and fully documented using a language appropriate comment style. All functions (including parameters and return types) must be documented.</p>
+    <ol>
+  <li>
+    <p>Doxygen can be used for <em>C++</em>, <em>Java</em>, or <em>JavaScript</em>. Consider the following Doxygen Example:</p>
+    
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: C++ Doxygen Documentation</div>
+    <pre><code class="c++">/**
+ * Retrieve the value stored in three selected Cells
+ *
+ * @param cell1Id numeric id representing the 1st desired cell
+ * @param cell2Id numeric id representing the 2nd desired cell
+ * @param cell3Id numeric id representing the 3rd desired cell
+ *
+ * @return value stored in the Cell
+ *
+ * @pre (cell1Id &gt; 0 &amp;&amp; cell1Id &lt; 10) &amp;&amp;
+ *      (cell2Id &gt; 0 &amp;&amp; cell2Id &lt; 10) &amp;&amp;
+ *      (cell3Id &gt; 0 &amp;&amp; cell3Id &lt; 10)
+ */
+CellTriple get3Cells(int cell1Id, int cell2Id, int cell3Id) const;
+</code></pre>
+    </blockquote>
+  </li>
+  <li>
+    <p>Javadoc can be used for Java. Consider the following Javadoc Example:</p>
+    
+    <blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Javadoc Documentation</div>
+    <pre><code class="java">/**
+ * Multi-thread Coin Flip.
+ *
+ * @param numTrials # flips to simulate
+ * @param numThreads number of threads to use
+ *
+ * @return Completed FlipTasks
+ *
+ * @throws InterruptedException if a thread is stopped prematurely
+ */
+public static FlipTask[] multiThread(long numTrials, int numThreads)
+    throws InterruptedException
+</code></pre>
+    </blockquote>
+  </li>
+  <li>
+    <p>Pydoc or Sphinx can be used for Python. Consider the following Pydoc Example:</p>
+    
+    <blockquote class="example" id="example6"><div class="exampleTitle">Example 6: Python 3 Pydoc Documentation</div>
+    <pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    :param original_temps: an input file
+    :param step_size:      time-step in seconds
+    :param units: True if the input file includes units and False if the file
+                  includes only raw readings (no units)
+
+    :yields: A tuple containing the next time step and a List containing _n_
+             core temps as floating point values (where _n_ is the number of
+             CPU cores)
+    """
+</code></pre>
+    </blockquote>
+    <p>or the following Sphinx Example:</p>
+    
+    <blockquote class="example" id="example7"><div class="exampleTitle">Example 7: Python 3 Sphinx Documentation</div>
+    <pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    Args:
+        original_temps: an input file
+        step_size: time-step in seconds
+        units: True if the input file includes units and False if the file
+            includes only raw readings (no units)
+
+    Yields:
+        A tuple containing the next time step and a List containing _n_
+        core temps as floating point values (where _n_ is the number of
+        CPU cores)
+    """
+</code></pre>
+    </blockquote>
+  </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Semester%20Project%20-%20CPU%20Temps"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

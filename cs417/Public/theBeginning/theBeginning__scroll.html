@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>The Beginning</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">The Beginning</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-big-3">1 The Big-3</a></div><div class="toc-h2"><a href="#it-is-just-notation">1.1 It is Just Notation</a></div><div class="toc-h2"><a href="#left-as-an-exercise-to-the-reader">1.2 Left as an Exercise to the Reader</a></div><div class="toc-h2"><a href="#slightly-inconvenienced-not-overwhelmed">1.3 Slightly Inconvenienced, Not Overwhelmed</a></div><div class="toc-h1"><a href="#a-couple-quick-tricks">2 A Couple Quick Tricks</a></div><div class="toc-h2"><a href="#the-first-n-integers">2.1 The First n Integers</a></div><div class="toc-h1"><a href="#geometric-series">3 Geometric Series</a></div></div><a id="thebig3"/><h1 id="the-big-3">1 The Big-3</h1><p>In C++, when discussing Object Oriented Programming, we cover the Big-3 (or Big-0 or Big-5). These Big-3 eventually become second nature.</p>
+    <p>This course (i.e., CS 417) has its own Big-3:</p>
+    <ol>
+  <li><strong>It is Just Notation</strong>.</li>
+  <li><strong>Left as an Exercise to the Reader</strong>.</li>
+  <li><strong>Slightly Inconvenienced, Not Overwhelmed</strong>.</li>
+</ol><a id="itisjustnotation"/><h2 id="it-is-just-notation">1.1 It is Just Notation</h2><p>Math and Computer Science use many mathematical notations. This includes some Calculus:</p>
+    <p>$$ \int f(x)dx $$ $$ \lim_{x\to\infty} \frac{1}{x}$$ $$ \sum_{i=0}^{\infty} x_i^2 $$ $$ \prod_{i=0}^{10} x_i^2 $$</p>
+    <p>You will see many notations in this course. Some will be familiar… others will be unfamiliar. Throughout this semester we will strive to demystify these notations.</p>
+    <a id="leftasanexercisetothereader"/><h2 id="left-as-an-exercise-to-the-reader">1.2 Left as an Exercise to the Reader</h2><p>Many textbook and academic paper authors skip over certain steps in a problem. You have probably come across the phrase <em>left as an exercise to the reader"</em>. In such cases, the reader is expected to have the necessary foundation to understand the omitted steps.</p>
+    <p>At the start of the semester most of my discussions will include sidebars. I will take a step back, work through the oft omitted steps, and explain the <em>“tricks of the trade”</em>.</p>
+    <p>As you become familiar with the process, I leave working through more of these <em>left as an exercise to the reader</em> steps up to you.</p>
+    <a id="slightlyinconveniencednotoverwhelmed"/><h2 id="slightly-inconvenienced-not-overwhelmed">1.3 Slightly Inconvenienced, Not Overwhelmed</h2><p>Many students look at a math problem, see unfamiliar notation, and <em>psyche themselves out</em>. At the end of this semester you should, at worst, feel slightly inconvenienced, <strong>not</strong> overwhelmed, by such problems.</p>
+    <a id="acouplequicktricks"/><h1 id="a-couple-quick-tricks">2 A Couple Quick Tricks</h1><p>Through this semester we will work with many formulae. This includes:</p>
+    <ol>
+  <li>The sum of the first <em>n</em> integers.</li>
+  <li>The Geometric Series formula.</li>
+</ol><p>These are usually the first two formulae students put on a <em>cheat sheet</em>. Is it possible to derive them? Yes.</p>
+    <a id="thefirstnintegers"/><h2 id="the-first-n-integers">2.1 The First n Integers</h2><p>Suppose we wanted to sum the first 10 integers (1 to 10) or first 100 (1 to 100) integers. As computer scientists we would probably write a couple lines of Python 3 code:</p>
+    <pre><code class="python">print(sum(range(1, 11)))
+print(sum(range(1, 101)))
+</code></pre><p>Of course, we know the naive way to solve this by hand (i.e., on paper): write down all the numbers and compute a running sum.</p>
+    <p>Let use $S_n$ to represent the sum of the first $n$ integers. This allows us to write:</p>
+    <p>$$ S_n = 1 + 2 + 3 + 4 + \dots + (n-2) + (n-1) + n $$</p>
+    <p>Now that we have defined a notation, we can leverage the associativity of addition to write:</p>
+    <p>$$\begin{align} S_n &amp;= 1 + 2 + 3 + 4 + \dots + (n-2) + (n-1) + n \\  &amp;= n +(n-1) + (n-2) + \ldots + 4 + 3 + 2 + 1 \\ \end{align} $$</p>
+    <p>All we did was reverse the ordering. Now we can write:</p>
+    <p>$$\begin{align} 2S_n &amp;= 1 + 2 + 3 + 4 + \dots + (n-2) + (n-1) + n \\  &amp;+ n +(n-1) + (n-2) + \ldots + 4 + 3 + 2 + 1 \\ \end{align} $$</p>
+    <p>We can then group each pair of terms:</p>
+    <p>$$\begin{align} 2S_n &amp;= 1 + 2 + 3 + 4 + \dots + (n-2) + (n-1) + n \\  &amp;+ n +(n-1) + (n-2) + \ldots + 4 + 3 + 2 + 1 \\ \hline 2S_n &amp;= n + 1 + (n-1) + 2 + (n-2) +3 + \ldots + 4 + (n-3) + 3 + (n-2) + 2 + (n-1) + 1 + n \\  &amp;= (n+1) + (n+1) + (n+1) (n+1) + \ldots + (n + 1) + (n + 1) + (n+1) + (n+1) \\ \end{align} $$</p>
+    <p>If we count up all the $(n+1)$ terms we end up with:</p>
+    <p>$$ \begin{align} 2S_n &amp;= n(n+1) \\ S_n &amp;= \frac{n(n+1)}{2} \\ \end{align} $$</p>
+    <p>That is the well known equation for the sum of the first n integers. That allows us to compute:</p>
+    <p>$$ S_{10} = \frac{10*11}{2} = 55 $$</p>
+    <p>and</p>
+    <p>$$ S_{100} = \frac{100*101}{2} = 5050 $$</p>
+    <p>This approach is well known (i.e., it is akin to Newton’s laws of motion).</p>
+    <a id="geometricseries"/><h1 id="geometric-series">3 Geometric Series</h1><p>We can apply a similar set of tricks to derive the geometric series formula. We will restrict ourselves to $r &lt; 1$ and finite series. Suppose we have the series:</p>
+    <p>$$ \begin{align} S &amp;= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} \\  &amp;= 2^{-1} + 2^{-2} + 2^{-3} + 2^{-4} + 2^{-5} \\ \end{align} $$</p>
+    <p>There are two approaches:</p>
+    <ol>
+  <li>Pull out a common $\frac{1}{2}$ and have the series start at 1.</li>
+  <li>Use the $0 = 1 - 1$ trick.</li>
+</ol><p>We will use the second trick in few examples this semester. Let us try the former approach. That leads us to</p>
+    <p>$$ \begin{align} S &amp;= \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \frac{1}{32} \\ S &amp;= 2^{-1} + 2^{-2} + 2^{-3} + 2^{-4} + 2^{-5} \\ S &amp;= \frac{1}{2}(1 + 2^{-1} + 2^{-2} + 2^{-3} + 2^{-4}) \\ \end{align} $$</p>
+    <p>Let us replace $2^{-1}$ with r:</p>
+    <p>$$ \begin{align} S &amp;= r(1 + r^{1} + r^{2} + r^{3} + r^{4}) \\ \end{align} $$</p>
+    <p>and ignore the leading $r$. That leaves us with:</p>
+    <p>$$ \begin{align} S &amp;= 1 + r^{1} + r^{2} + r^{3} + r^{4} + \ldots + r^{n-1} \\ \end{align} $$</p>
+    <p>We would like to eliminate a few terms. We will use the $S - rS$ trick:</p>
+    <p>$$ \begin{align} S &amp;= 1 + r^{1} + r^{2} + r^{3} + r^{4} + \ldots + r^{n-1} \\ -rS &amp;= r^{1} + r^{2} + r^{3} + r^{4} + \ldots + r^{n} \\ \hline S - rS &amp;= 1 - r^n \\ \end{align} $$</p>
+    <p>That leaves us with a couple algebraic manipulations:</p>
+    <p>$$ \begin{align} S - rS &amp;= 1 - r^n \\ (1-r)S &amp;= 1 - r^n \\ S &amp;= \frac{1 - r^n}{1-r} \\ \end{align} $$</p>
+    <p>We can add $a$ as a scaling factor, leaving us with:</p>
+    <p>$$ \begin{align} aS &amp;= a\frac{1 - r^n}{1-r} \\ \end{align} $$</p>
+    <p>We can solve the original problem by letting $n=5$ and $a = 2^{-1}$. That leads us to:</p>
+    <p>$$ \begin{align} 2^{-1}S &amp;= \frac{1}{2}\frac{1 - 2^{-5}}{1-2^{-1}} \\  &amp;= \frac{1}{2}\frac{1 - 2^{-5}}{2^{-1}} \\  &amp;= \frac{1}{2}2(1 - 2^{-5}) \\  &amp;= (1 - 2^{-5}) \\  &amp;= \frac{32}{32} - \frac{1}{32} \\  &amp;= \frac{31}{32} \\ \end{align} $$</p>
+    <p>This derivation is another <em>“well known”</em> summation trick.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Porting Lambdas/Closures to Rust</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Porting%20Lambdas%2FClosures%20to%20Rust"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Porting Lambdas/Closures to Rust</h1><h2 class="author">Thomas J Kennedy</h2></div><p>I introduced lambdas in CS 330. We used lambdas as helper functions to sort, find a min, find a max, or transform (map) data. If we take a look at CS 330, Review 6 Example 9 we will find a few lambda functions. Let us start with…</p>
+    <pre><code class="c++">it = std::min_element(shapes.begin(), shapes.end(),
+                      [](const auto&amp; lhs, const auto&amp; rhs) {
+                          return (lhs)-&gt;perimeter() &lt; (rhs)-&gt;perimeter();
+                      });
+</code></pre><p>Take note of the lambda. We are immediately passing it in as an argument to std::min. What is its type? One my expect a lambda type to match its return type and arguments (similar to a function pointer. If we extract just the lambda…</p>
+    <pre><code class="c++">[](const auto&amp; lhs, const auto&amp; rhs) {
+    return (lhs)-&gt;perimeter() &lt; (rhs)-&gt;perimeter();
+});
+</code></pre><p>We know that <code>auto</code> will expand to <code>std::unique_ptr&lt;Shape&gt;</code> for both arguments. However, lambdas/closure types include the closing scope as part of the type (e.g., enclosing function, method, class, or namespace). In the C++ example, I wanted a transform_if function that took two lambdas. The first was the “skip or no skip” check. The second was the transform operation. Unfortunately the only way for this to work (until the C++20 concepts mechanic is officially added to the C++20 implementations) is to rely on template type deduction and compile-time checking. This led me to…</p>
+    <pre><code class="c++">/**
+ * Implementation of a `transform_if` based on `transform` as documented at
+ * https://en.cppreference.com/w/cpp/algorithm/transform
+ *
+ * @tparam InputIt iterator for the source container
+ * @tparam OutputIt iterator that allows insertion into an output container
+ * @tparam UnaryOp1 boolean function that determines whether include or skip
+ *         source data
+ * @tparam UnaryOp2 function that transforms data
+ *
+ * @todo discuss why this is incomplete
+ */
+template&lt;class InputIt, class OutputIt, class UnaryOp1, class UnaryOp2&gt;
+OutputIt transform_if(InputIt itInputStart,
+                      InputIt itInputEnd,
+                      OutputIt itOutput,
+                      UnaryOp1 conditionOperation,
+                      UnaryOp2 transformOperation)
+{
+    while (itInputStart != itInputEnd) {
+
+        if (conditionOperation(*itInputStart)) {
+            *itOutput++ = transformOperation(*itInputStart);
+        }
+
+        ++itInputStart;
+    }
+
+    return itOutput;
+}
+</code></pre><p>That ends the C++ portion of my explanation.</p>
+    <hr/><p>Let us use Python as a segue. In CS 417/517 we covered non-linear solvers, and I emphasized the importance of type hints/annotations. Let us grab a function…</p>
+    <pre><code class="python">def bisection(f: Callable[[Fraction], Fraction],
+              a: Fraction,
+              b: Fraction) -&gt; Fraction:
+</code></pre><p>Note that <code>Callable</code> annotation. Callable represents any object that takes arguments and returns a value (i.e., behaves as a functions). In Python functions are first level citizens (i.e., they behave a lot like objects). Well… S.O.L.I.D <a href="https://www.cs.odu.edu/~tkennedy/cs330/f20/Public/reviewSOLID/index.html#combining-everything">https://www.cs.odu.edu/~tkennedy/cs330/f20/Public/reviewSOLID/index.html#combining-everything</a>.</p>
+    <p>I defined two closures in my main function. I refactored my code… and moved those two functions into a helper function:</p>
+    <pre><code class="python">def __build_f_df():
+    """
+    Wrapper function that returns two math style functions:
+
+      - f - a function in the form Real -&gt; Real
+      - df - the derivative of f in the form Real -&gt; Real
+    """
+
+    # Function (f) and its derivative (dx)
+    def f(x):
+        return x**2 - 3*x - 4
+
+    def df(x):
+        return 2 * x  - 3
+
+    return (f, df)
+</code></pre><p>The main function makes use of Python’s tuple unpacking mechanic…</p>
+    <pre><code class="python">    math_f, math_df = __build_f_df()
+</code></pre><p>to unpack each lambda into a separate variable.</p>
+    <hr/><p>Now it is time for Rust!</p>
+    <p>I decided to port my Python solvers to Rust, starting with the <code>__build_f_df</code> helper function. Rust defines a <code>where</code> clause for trait bounds. For example:</p>
+    <pre><code class="Rust">fn do_something&lt;T&gt;(thing: T) -&gt; f64
+    where T: Add + Clone + Debug
+</code></pre><p>would enforce that thing realizes (to use the UML class diagram relationship) the Add, Clone, and Debug operations. One would expect that this can be used for something along the lines of…</p>
+    <pre><code class="Rust">fn create_something&lt;T&gt;() -&gt; (T, T)
+    where T: Fn(f64) -&gt; f64
+</code></pre><p><code>T</code> represents any thing that takes a single <code>f64</code> (64 bit floating point number) and returns a single <code>f64</code>. However, for closures, the <code>where</code> clause and <code>impl</code> syntax are not interchangeable (for closures being returned by a function). After digging through documentation and a few Rust blog posts (and some trial and error), I determined that I have to write:</p>
+    <pre><code class="Rust">fn create_something&lt;T&gt;() -&gt; (impl Fn(f64) -&gt; f64, impl Fn(f64) -&gt; f64)
+</code></pre><p>The <code>where</code> clause equivalent…</p>
+    <pre><code class="Rust">fn create_something&lt;T&gt;() -&gt; (F1, F2),
+where
+    F1: impl Fn(f64) -&gt; f64,
+    F2: impl Fn(f64) -&gt; f64
+</code></pre><p>can not be used.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Porting%20Lambdas%2FClosures%20to%20Rust"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

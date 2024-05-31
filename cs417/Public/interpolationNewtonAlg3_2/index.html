@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Newton's Method - Algorithm 3.2</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Newton%27s%20Method%20-%20Algorithm%203.2"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Newton's Method - Algorithm 3.2</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#input">1 Input</a></div><div class="toc-h1"><a href="#formal-pseudocode">2 Formal Pseudocode</a></div><div class="toc-h1"><a href="#adapting-the-pseudocode">3 Adapting the Pseudocode</a></div><div class="toc-h1"><a href="#complexity-analysis">4 Complexity Analysis</a></div><div class="toc-h2"><a href="#spatial">4.1 Spatial</a></div><div class="toc-h2"><a href="#temporal">4.2 Temporal</a></div></div><h1 id="input">1 Input</h1><p>We are given, as input:</p>
+    <p>$$ x_0, x_1, c_2, \ldots, x_n $$</p>
+    <p>and</p>
+    <p>$$ f_0, f_1, f_2, \ldots, fx_n $$</p>
+    <p>where $f_k = f(x_k)$.</p>
+    <p>Which (similar to <a class="doc" href="../../Public/interpolationNewtonAlg3_1/index.html" target="CS417_Public">algorithm 3.1</a>) allows us to write the first two columns of the divide difference table.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="center"> </th>
+      <th align="center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">$x_0 $ </td>
+      <td align="center">$f[x_0]$ </td>
+    </tr>
+    <tr>
+      <td align="center">$x_1 $ </td>
+      <td align="center">$f[x_1]$ </td>
+    </tr>
+    <tr>
+      <td align="center">$x_2 $ </td>
+      <td align="center">$f[x_2]$ </td>
+    </tr>
+    <tr>
+      <td align="center">$\vdots$ </td>
+      <td align="center">$\vdots$ </td>
+    </tr>
+    <tr>
+      <td align="center">$x_n $ </td>
+      <td align="center">$f[x_n]$ </td>
+    </tr>
+  </tbody>
+</table><p>However, there is a hidden assumption that the individual reading the code knows to write the setup code for the $d_i$ values.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Setup</div>
+<p>$$ \begin{array}{l} \text{for } k = 1, 2, 3, \ldots, n \text{ do} &amp; \\ \phantom{4}\phantom{4}  d_i := f(x_i) &amp; \\ \text{end for}\\ \end{array} $$</p>
+    
+</blockquote><a id="formalpseudocode"/><h1 id="formal-pseudocode">2 Formal Pseudocode</h1><p>The actual pseudocode is almost identical to <a class="doc" href="../../Public/interpolationNewtonAlg3_1/index.html" target="CS417_Public">Algorithm 3.1</a>.</p>
+    <p>$$ \begin{array}{l} \text{for } k = 1, 2, 3, \ldots, n \text{ do} &amp; \\ \phantom{4}\phantom{4}  \text{for } i = 0,1 , \ldots, (n-k) \text{ do} &amp; \\ \phantom{4}\phantom{4}\phantom{4}\phantom{4}  d_{i} = \frac{ d_{i+1} - d_{i} }{x_{i+k} - x_{i}} &amp; \\ \phantom{4}\phantom{4} \text{end for}\\ \text{end for}\\ \end{array} $$</p>
+    <a id="adaptingthepseudocode"/><h1 id="adapting-the-pseudocode">3 Adapting the Pseudocode</h1><p>We are now ready to (as before) adapt this pseudocode to our langauge of choosing. Let us start with Python.</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Python</div>
+<pre><code class="python">def alg_31(x_values, d_values):
+    for k in range(1, n+1):
+        for i in range(0, n-k+1):
+            # Note that this next line still needs to be tweaked for a
+            # to-be-selected data structure
+            d[i] = (d[i+1] - d[i]) / (x_i_plus_k - x_i)
+</code></pre>
+</blockquote><p>Rust is a bit nicer since the <code>..=</code> allows us to include the upper bound when writing a loop.</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Rust</div>
+<pre><code class="rust">fn alg_31(x_values: &amp;[f64], d_values: &amp;[f64]) {
+    for k in 1..=n {
+        for i in 0..=n-k {
+            // Note that this next line still needs to be tweaked for a
+            // to-be-selected data structure
+            d[i] = (d[i+1] - d[i]) / (x_i_plus_k - x_i)
+        }
+    }
+}
+</code></pre>
+</blockquote><p>C++ and Java are essentially identical (assuming arrays are used in both).</p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: C++</div>
+<pre><code class="c++">void alg_31(const double* x_values, const double* d_values, const int n)
+{
+    for (int k = 1; k &lt;= n; ++k) {
+        for (i = 0; i &lt;= n-k; ++i) {
+            // Note that this next line still needs to be tweaked for a
+            // to-be-selected data structure
+            d[i] = (d[i+1] - d[i]) / (x_i_plus_k - x_i)
+        }
+    }
+}
+</code></pre>
+</blockquote><blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Java</div>
+<pre><code class="java">void alg_31(final double[] x_values, final double[] d_values)
+{
+    for (int k = 1; k &lt;= n; ++k) {
+        for (i = 0; i &lt;= n-k; ++i) {
+            // Note that this next line still needs to be tweaked for a
+            // to-be-selected data structure
+            d[i] = (d[i+1] - d[i]) / (x_i_plus_k - x_i)
+        }
+    }
+}
+</code></pre>
+</blockquote><a id="complexityanalysis"/><h1 id="complexity-analysis">4 Complexity Analysis</h1><p>Of course… no discussion of algorithms would be complete without discussing performance. In this case… we are interested in tail behavior (i.e., performance for a large number of points).</p>
+    <p><em>Note that complexity analysis is only part of the picture. Considerations such as cache performance, compiler optimizations, data dependencies, and vectorization (e.g., SIMD) cannot be ignored.</em></p>
+    <h2 id="spatial">4.1 Spatial</h2><p>If we examine the data used by the algorithm (i.e., input, intermediary values, and output)…</p>
+    <ul>
+  <li>input x values: n</li>
+  <li>input f-of-x values: n</li>
+  <li>second level $f[x_i, x_j]$</li>
+  <li>third level $f[x_i, x_j, x_k]$</li>
+  <li>$\ldots$</li>
+</ul><p>However, this time everything except the top entry in each row is eventaully overwritten. This time… we end up with</p>
+    <p>$$ n + n + n $$</p>
+    <p>which simplifies to</p>
+    <p>$$ O(3n) $$</p>
+    <p>which then simplifies to</p>
+    <p>$$ O(n) $$</p>
+    <p>…even if we decided to use a fourth array to avoid dealing with array index trickery.</p>
+    <h2 id="temporal">4.2 Temporal</h2><p>Analyzing temporal complexity requires looking at the two loops as one unit…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="center">$k$ </th>
+      <th align="left">Inner Loop </th>
+      <th align="center">Total Iterations </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">1 </td>
+      <td align="left">$0, 1, 2, \ldots (n-1)$ </td>
+      <td align="center">$n$ </td>
+    </tr>
+    <tr>
+      <td align="center">2 </td>
+      <td align="left">$0, 1, 2, \ldots (n-2)$ </td>
+      <td align="center">$n - 1$ </td>
+    </tr>
+    <tr>
+      <td align="center">3 </td>
+      <td align="left">$0, 1, 2, \ldots (n-3)$ </td>
+      <td align="center">$n - 2$ </td>
+    </tr>
+    <tr>
+      <td align="center">$\vdots$ </td>
+      <td align="left">$\vdots$ </td>
+      <td align="center">$\vdots$ </td>
+    </tr>
+    <tr>
+      <td align="center">$n-1$ </td>
+      <td align="left">$0, \ldots, n - (n-1)$ </td>
+      <td align="center">2 </td>
+    </tr>
+    <tr>
+      <td align="center">$n$ </td>
+      <td align="left">$0$ </td>
+      <td align="center">1 </td>
+    </tr>
+  </tbody>
+</table><p>which leads to… $O(n^2)$ by way of $\frac{n(n+1)}{2}$. <strong>This is the same process and result as in Algorithm 3.1.</strong></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Newton%27s%20Method%20-%20Algorithm%203.2"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

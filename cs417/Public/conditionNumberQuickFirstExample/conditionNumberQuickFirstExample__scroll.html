@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number - A Quick First Example</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20-%20A%20Quick%20First%20Example"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number - A Quick First Example</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#approach-1">2 Approach 1</a></div><div class="toc-h1"><a href="#method-2">3 Method 2</a></div></div><h1 id="overview">1 Overview</h1><p>Let us start with a simple function… </p>
+    <p>$$ f(x) = \sqrt{x} $$</p>
+    <p>We will compute the condition number directly and then using the <em>derivative of the natural log trick</em>.</p>
+    <a id="approach1"/><h1 id="approach-1">2 Approach 1</h1><p>Let us start by computing the derivative.</p>
+    <p>$$ \begin{align} f^{\prime}  &amp;= \frac{d}{dx} \sqrt{x} \\  &amp;= \frac{d}{dx} x^{\frac{1}{2}} \\  &amp;= \frac{1}{2}x^{-\frac{1}{2}} \end{align} $$</p>
+    <p>Since we are interested in $x \neq 0$ and $f(x) \neq 0$… we can use the general form of the condition number.</p>
+    <p>$$ \begin{align} (\text{cond }f)(x)  &amp;=  \left|  \frac{x f^{\prime}(x)} {f(x)}  \right|\\  &amp;=  \left|  x f^{\prime}(x) \frac{1}{f(x)}  \right|\\  &amp;=  \left|  x \frac{1}{2}x^{-\frac{1}{2}} \frac{1}{x^{\frac{1}{2}} }  \right|\\  &amp;=  \frac{1}{2}  \left|  x \frac{1}{x^{\frac{1}{2}} } \frac{1}{x^{\frac{1}{2}} }  \right|\\  &amp;=  \frac{1}{2}  \left|  x \frac{1}{x}  \right|\\  &amp;=  \frac{1}{2}  &lt; 1 \therefore \text{well conditioned} \end{align} $$</p>
+    <a id="method2"/><h1 id="method-2">3 Method 2</h1><p>The second approach is to take advantage of the following definition…</p>
+    <p>$$ \frac{d}{dx} \ln{f(x)} = \frac{f^{\prime}(x)}{f(x)} $$</p>
+    <p>This definition often allows us to <em>sidestep</em> some intermediary algebra. Using this trick we can rewrite the general form of the condition number as…</p>
+    <p>$$ \begin{align} (\text{cond }f)(x)  &amp;=  \left|  \frac{x f^{\prime}(x)} {f(x)}  \right|\\  &amp;=  \left|  x\frac{d}{dx}\ln{f(x)}  \right| \end{align} $$</p>
+    <p>Let us evaluate the natural log of $f(x)$</p>
+    <p>$$ \begin{align} \frac{d}{dx}\left(\ln{f(x)}\right)  &amp;=  \frac{d}{dx}\left(\ln{\sqrt{x}}\right) \\  &amp;=  \frac{d}{dx}\left(\ln{x^\frac{1}{2}}\right) \\  &amp;=  \frac{d}{dx}\left(\frac{1}{2}\ln{x}\right) \\  &amp;=  \frac{1}{2}\frac{d}{dx}\ln{x} \\  &amp;=  \frac{1}{2}\frac{\frac{d}{dx}x}{x} \\  &amp;=  \frac{1}{2}\frac{1}{x} \\  &amp;=  \frac{1}{2x} \\ \end{align} $$</p>
+    <p>The next step is to plug the result into our modified condition number formula.</p>
+    <p>$$ \begin{align} (\text{cond }f)(x)  &amp;=  \left|  \frac{x f^{\prime}(x)} {f(x)}  \right|\\  &amp;=  \left|  x\frac{d}{dx}\ln{f(x)}  \right|\\  &amp;=  \left|  x\frac{1}{2x}  \right|\\  &amp;=  \frac{1}{2}  &lt; 1 \therefore \text{well conditioned} \end{align} $$</p>
+    <p>As expected… we end up with the same result as before.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20-%20A%20Quick%20First%20Example"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Reconcile the XTX|XTY and Ab Methods</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Reconcile%20the%20XTX%7CXTY%20and%20Ab%20Methods"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Reconcile the XTX|XTY and Ab Methods</h1><h2 class="author">Thomas J. Kennedy</h2></div><p>Let us try to reconcile the $[X^TX|X^TY]$ and $[A|\vec{b}]$ methods for $k$ points and $\forall_\hat{\varphi}$ where $\hat{\varphi} = c_0 \pi_0 + c_1 \pi_1$ and $\pi_0$, $\pi_1$ are arbitrary monomial basis functions.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>We are about to focus exclusively on linear approximation functions (i.e., only lines). Generalizing this proof to any arbitrary set of polynomial basis functions is left as an exercise to the reader. <strong>It will <del>probably</del> end up on an exam.</strong></p>
+    
+</div><p>We know quite a bit about lines. Let</p>
+    <p>$$\pi_0 = 1$$ $$\pi_1 = x$$</p>
+    <p>and let $f$ be an arbitrary function.</p>
+    <hr/><p>Let us start by constructing $X$, $X^T$ and $Y$. By definition… $X$ takes the form</p>
+    <p>$$ \left[\begin{array}{rr} \pi_{0}(x_0) &amp; \pi_{1}(x_0) \\ \pi_{0}(x_1) &amp; \pi_{1}(x_1) \\ \pi_{0}(x_2) &amp; \pi_{1}(x_2) \\ \vdots &amp; \vdots \\ \pi_{0}(x_{k-2}) &amp; \pi_{1}(x_{k-2}) \\ \pi_{0}(x_{k-1}) &amp; \pi_{1}(x_{k-1}) \\ \end{array}\right] $$</p>
+    <p>That leads to</p>
+    <p>$$ X^T = \left[\begin{array}{rrrrrr} \pi_{0}(x_0) &amp; \pi_{0}(x_1) &amp; \pi_{0}(x_2) &amp; \dots &amp; \pi_{0}(x_{k-2}) \pi_{0}(x_{k-1}) \\ \pi_{1}(x_0) &amp; \pi_{1}(x_1) &amp; \pi_{1}(x_2) &amp; \dots &amp; \pi_{1}(x_{k-2}) \pi_{1}(x_{k-1}) \\ \end{array}\right] $$</p>
+    <p>By definition, $Y$ takes the form</p>
+    <p>$$ \left[\begin{array}{r} f(x_0) \\ f(x_1) \\ f(x_2) \\ \vdots \\ f(x_{k-2}) \\ f(x_{k-1}) \\ \end{array}\right] $$</p>
+    <p>Using these definitions we <em>(after a couple matrix multiplications)</em> end up with</p>
+    <p>$$ X^TX = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)\pi_{1}(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{0}(x_i) &amp; \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)\pi_{1}(x_i) \\ \end{array}\right] = A $$</p>
+    <p>and</p>
+    <p>$$ X^TY = \left[\begin{array}{rr} \sum\limits_{i=0}^{k-1}\pi_{0}(x_i)f(x_i) \\ \sum\limits_{i=0}^{k-1}\pi_{1}(x_i)f(x_i) \\ \end{array}\right] = \vec{b} $$</p>
+    <p><strong>Notice how I used</strong> $\pi_0$ and $\pi_1$ the entire time? I used the line as a starting point to frame the proof in my mind. Once I knew which direction I was going to take, I used $\pi_0$ and $\pi_1$ as arbitrary basis functions.</p>
+    <hr/><p>We now have (and know) general forms of $X^TX$ and $X^TY$… These are the definitions of $A$ and $\vec{b}$, respectively, for two arbitrary monomial basis functions.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Reconcile%20the%20XTX%7CXTY%20and%20Ab%20Methods"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

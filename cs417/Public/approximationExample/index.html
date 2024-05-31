@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Least Squares - A Quick First Example</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20A%20Quick%20First%20Example"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Least Squares - A Quick First Example</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-quick-initial-example">1 A Quick Initial Example</a></div><div class="toc-h2"><a href="#the-set-up">1.1 The Set Up</a></div><div class="toc-h2"><a href="#constructing-xtx-xty">1.2 Constructing XTX|XTY</a></div><div class="toc-h2"><a href="#solving-xtx-xty">1.3 Solving XTX|XTY</a></div><div class="toc-h2"><a href="#final-result">1.4 Final Result</a></div><div class="toc-h1"><a href="#the-other-half">2 The Other Half</a></div><div class="toc-h2"><a href="#the-set-up">2.1 The Set Up</a></div><div class="toc-h2"><a href="#constructing-xtx-xty">2.2 Constructing XTX|XTY</a></div><div class="toc-h2"><a href="#solving-xtx-xty">2.3 Solving XTX|XTY</a></div><div class="toc-h2"><a href="#final-result">2.4 Final Result</a></div><div class="toc-h1"><a href="#tl-dr">3 TL;DR</a></div></div><p>Later in this course we will discuss a more robust form of Least Squares Approximation. However, we will start with the XTX|XTY method.</p>
+    <a id="aquickinitialexample"/><h1 id="a-quick-initial-example">1 A Quick Initial Example</h1><p>First, we will need some input points.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right"><strong>x</strong> </th>
+      <th align="right"><strong>f(x)</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">-2 </td>
+      <td align="right">4 </td>
+    </tr>
+    <tr>
+      <td align="right">-1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">4 </td>
+    </tr>
+  </tbody>
+</table><p>One could guess that $f(x) = x^2$. However, we actually want to do some math (of course, that might just be me).</p>
+    <p>Suppose we want to a line that approximates this (supposedly) unknown function (i.e., $f(x)$) for $x \ge 0$. We want a function in the form</p>
+    <p>\[ \begin{align} \hat{\varphi} &amp; = \sum_{i=0}^{1} c_i x^i \\  &amp; = c_0 + c_1 x \\ \end{align} \]</p>
+    <p>Did you notice the subtle change from $\varphi$ to $\hat{\varphi}$? We need to compute values for both $c_0$ and $c_1$. However, we want the two values that give us the best possible approximation function (i.e., the line with the smallest error).</p>
+    <p>Later in the course we will define this error using</p>
+    <p>\[ ||f - \hat{\varphi}|| \]</p>
+    <p>However, that is a discussion for the next module. For now, we need to define three matrices:</p>
+    <ol>
+  <li>$X$</li>
+  <li>$X^T$</li>
+  <li>$Y$</li>
+</ol><a id="thesetup"/><h2 id="the-set-up">1.1 The Set Up</h2><p>The X matrix is defined by the taking each constant in our approximation function and plugging in each point. For our selected points</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right"><strong>x</strong> </th>
+      <th align="right"><strong>f(x)</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">4 </td>
+    </tr>
+  </tbody>
+</table><p>and selected approximation function</p>
+    <p>\[ \hat{\varphi} = c_0 (1) + c_1 x \]</p>
+    <p>the matrix $X$ will be defined as</p>
+    <p>$$ X = \left[\begin{array}{rr} 1 &amp; 0 \\ 1 &amp; 1 \\ 1 &amp; 2 \\ \end{array}\right] $$</p>
+    <p>The first column is defined by taking each $x$ value and plugging it into $y=1$. The second column is defined by taking each $x$ value and plugging it into $y=x$. For the $Y$ matrix, we need only copy each $y$.</p>
+    <p>$$ Y = \left[\begin{array}{r} 0 \\ 1 \\ 4 \\ \end{array}\right] $$</p>
+    <p>$X^T$ is the transpose of $X$.</p>
+    <p>$$ \left[\begin{array}{rrr} 1 &amp; 1 &amp; 1\\ 0 &amp; 1 &amp; 2\\ \end{array}\right] $$</p>
+    <a id="constructingxtxxty"/><h2 id="constructing-xtx-xty">1.2 Constructing XTX|XTY</h2><p>Once the matrices are defined, $X^{T}X$ and $X^{T}Y$ must be computed. The two matrix multiplications are left as an exercise to the reader (i.e., you).</p>
+    <p>$$ X^{T}X = \left[\begin{array}{rr} 3 &amp; 3\\ 3 &amp; 5\\ \end{array}\right] $$</p>
+    <p>$$ X^{T}Y = \left[\begin{array}{r} 5\\ 9\\ \end{array}\right] $$</p>
+    <p>With both matrices computed, we can construct the $X^TX|X^TY$ augmented matrix. This will, in turn, allow us to compute $c_0$ and $c_1$.</p>
+    <p>$$ [X^{T}X|X^{T}Y] = \left[\begin{array}{rr|r} 3 &amp; 3 &amp; 5\\ 3 &amp; 5 &amp; 9\\ \end{array}\right] $$</p>
+    <a id="solvingxtxxty"/><h2 id="solving-xtx-xty">1.3 Solving XTX|XTY</h2><p>The system, $[X^TX|X^TY]$ can be solved using Gaussian Elimination. We will start with $[X^TX|X^TY]$.</p>
+    <p>$$ \left[\begin{array}{rr|r} 3 &amp; 3 &amp; 5\\ 3 &amp; 5 &amp; 9\\ \end{array}\right] $$</p>
+    <p>Scale row 0 using $\frac{1}{3}r_0$</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 1 &amp; \frac{5}{3}\\ 3 &amp; 5 &amp; 9\\ \end{array}\right] $$</p>
+    <p>Subtract row 0 from row 1 using $r_1 - 3r_0$</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 1 &amp; \frac{5}{3}\\ 0 &amp; 2 &amp; 4\\ \end{array}\right] $$</p>
+    <p>Scale row 1 using $\frac{1}{2}r_1$.</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 1 &amp; \frac{5}{3}\\ 0 &amp; 1 &amp; 2\\ \end{array}\right] $$</p>
+    <p>Backsolve by using $r_0 = r_0-r_1$. This leaves us with our answer.</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; \frac{-1}{3}\\ 0 &amp; 1 &amp; 2\\ \end{array}\right] $$</p>
+    <a id="finalresult"/><h2 id="final-result">1.4 Final Result</h2><p><strong>Coefficients</strong></p>
+    <p>$$c_0 = \frac{-1}{3}$$ $$c_1 = 2$$</p>
+    <p><strong>Approximation Function (phi hat)</strong></p>
+    <p>\[ \hat{\varphi} = \frac{-1}{3} + 2x^1 \]</p>
+    <hr/><a id="theotherhalf"/><h1 id="the-other-half">2 The Other Half</h1><p>Suppose we are now interested in the domain $x \le 0$. We need to construct the same three matrices:</p>
+    <ol>
+  <li>$X$</li>
+  <li>$X^T$</li>
+  <li>$Y$</li>
+</ol><a id="thesetup"/><h2 id="the-set-up">2.1 The Set Up</h2><p>The X matrix is defined by the taking each constant in our approximation function and plugging in each point. For our selected points</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right"><strong>x</strong> </th>
+      <th align="right"><strong>f(x)</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">-2 </td>
+      <td align="right">4 </td>
+    </tr>
+    <tr>
+      <td align="right">-1 </td>
+      <td align="right">1 </td>
+    </tr>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+  </tbody>
+</table><p>and selected (linear/polynomial) approximation function</p>
+    <p>\[ \hat{\varphi} = c_0 (1) + c_1 x \]</p>
+    <p>the matrix $X$ will be defined as</p>
+    <p>$$ X = \left[\begin{array}{rr} 1 &amp; -2 \\ 1 &amp; -1 \\ 1 &amp; 0 \\ \end{array}\right] $$</p>
+    <p>The first column is defined by taking each $x$ value and plugging it into $y=1$. The second column is defined by taking each $x$ value and plugging it into $y=x$. For the $Y$ matrix, we need only copy each $y$.</p>
+    <p>$$ Y = \left[\begin{array}{r} 4 \\ 1 \\ 0 \\ \end{array}\right] $$</p>
+    <p>$X^T$ is the transpose of $X$.</p>
+    <p>$$ \left[\begin{array}{rrr} 1 &amp; 1 &amp; 1\\ -2 &amp; -1 &amp; 0\\ \end{array}\right] $$</p>
+    <a id="constructingxtxxty"/><h2 id="constructing-xtx-xty">2.2 Constructing XTX|XTY</h2><p>Once the matrices are defined, $X^{T}X$ and $X^{T}Y$ must be computed. The two matrix multiplications are left as an exercise to the reader (i.e., you).</p>
+    <p>$$ X^{T}X = \left[\begin{array}{rr} 3 &amp; -3\\ -3 &amp; 5\\ \end{array}\right] $$</p>
+    <p>$$ X^{T}Y = \left[\begin{array}{r} 5\\ -9\\ \end{array}\right] $$</p>
+    <p>With both matrices computed, we can construct the $[X^TX|X^TY]$ augmented matrix. This will, in turn, allow us to compute $c_0$ and $c_1$.</p>
+    <p>$$ [X^{T}X|X^{T}Y] = \left[\begin{array}{rr|r} 3 &amp; -3 &amp; 5\\ -3 &amp; 5 &amp; -9\\ \end{array}\right] $$</p>
+    <a id="solvingxtxxty"/><h2 id="solving-xtx-xty">2.3 Solving XTX|XTY</h2><p>The system, $[X^TX|X^TY]$ can be solved using Gaussian Elimination. We will start with $[X^TX|X^TY]$.</p>
+    <p>$$ \left[\begin{array}{rr|r} 3 &amp; -3 &amp; 5\\ -3 &amp; 5 &amp; -9\\ \end{array}\right] $$</p>
+    <p>Add row 0 to row 1 using $r_1 + r_0$</p>
+    <p>$$ \left[\begin{array}{rr|r} 3 &amp; -3 &amp; 5\\ 0 &amp; 2 &amp; -4\\ \end{array}\right] $$</p>
+    <p>Scale row 1 using $\frac{1}{2}r_1$ and row 0 using $\frac{1}{3}r_0$.</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; -1 &amp; \frac{5}{3}\\ 0 &amp; 1 &amp; -2\\ \end{array}\right] $$</p>
+    <p>Add $r_1$ to $r_0$ ($r_0=r_1 + r_0$).</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; \frac{5}{3} - \frac{6}{3}\\ 0 &amp; 1 &amp; -2\\ \end{array}\right] $$</p>
+    <p>…after simplifying we have</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; \frac{-1}{3}\\ 0 &amp; 1 &amp; -2\\ \end{array}\right] $$</p>
+    <a id="finalresult"/><h2 id="final-result">2.4 Final Result</h2><p><strong>Coefficients</strong></p>
+    <p>$$c_0 = \frac{-1}{3}$$ $$c_1 = -2$$</p>
+    <p><strong>Approximation Function (phi hat)</strong></p>
+    <p>\[ \hat{\varphi} = -\frac{1}{3} - 2x \]</p>
+    <a id="tldr"/><h1 id="tl-dr">3 TL;DR</h1><p>Given a collection of discrete points we need to find a line (polynomial of degree one) of best fit. Since more than two points will be included, it is impossible to have a single line pass perfectly through every point. Instead a <em>line of best fit</em> is computed. While most cases use a line, it is possible</p>
+    <ul>
+  <li>
+  <p>for a polynomial of any degree to be used as an approximation function (provided a sufficient number of points).</p>
+    </li>
+  <li>
+  <p>to extend the problem to 3 or more spatial dimensions.</p>
+    </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20-%20A%20Quick%20First%20Example"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number Example - Square Root</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Square%20Root"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number Example - Square Root</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#computing-the-condition-number">2 Computing the Condition Number</a></div></div><h1 id="overview">1 Overview</h1><p>Let us examine a more interesting function… </p>
+    <p>$$ f(x) = \sqrt{1 + x} - \sqrt{x} $$</p>
+    <p>We know that the derivative can be computed directly.</p>
+    <p>$$ \begin{align} f^{\prime}(x)  &amp;= \frac{d}{dx}\left(\sqrt{1 + x} - \sqrt{x}\right) \\  &amp;= \frac{d}{dx}\left(\sqrt{1 + x}\right) - \frac{d}{dx}\left(\sqrt{x}\right) \\  &amp;= \frac{1}{2\sqrt{1 + x}} - \frac{1}{2\sqrt{x}} \\  &amp;= \frac{\sqrt{x}}{\sqrt{x}}\frac{1}{2\sqrt{1 + x}} - \frac{\sqrt{1 + x}}{\sqrt{1 + x}}\frac{1}{2\sqrt{x}} \\  &amp;= \frac{\sqrt{x}}{2\sqrt{x}\sqrt{1 + x}} - \frac{\sqrt{1 + x}}{2\sqrt{x}\sqrt{1 + x}} \\  &amp;= \frac{\left(\sqrt{x} - \sqrt{1 + x}\right)}{2\sqrt{x}\sqrt{1 + x}}\\ \end{align} $$</p>
+    <p><em>Finding a common denominator is not required.</em> However, it will allow for a nice cancellation.</p>
+    <a id="computingtheconditionnumber"/><h1 id="computing-the-condition-number">2 Computing the Condition Number</h1><p>We can compute the general form of the condition number ($x \ne 0$ and $f(x) \ne 0$) using…</p>
+    <p>$$ \begin{align} (\text{cond }f)(x)  &amp;=  \left|  \frac{x f^{\prime}(x)}{f(x)}  \right|\\  &amp;=  \left|  \frac{x\left(\sqrt{x} - \sqrt{1 + x}\right)}{2\sqrt{x}\sqrt{1 + x}}  \times  \frac{1}{\sqrt{1 + x} - \sqrt{x}}  \right|\\  &amp;=  \left|  \frac{x}{2\sqrt{x}\sqrt{1 + x}}  \right|\\  &amp;=  \left|  \frac{\sqrt{x}}{2\sqrt{1 + x}}  \right|\\  &amp;=  \frac{1}{2}  \left|  \frac{\sqrt{x}}{\sqrt{1 + x}}  \right|\\  &amp;\to  \frac{1}{2}  \left|  \frac{\to 0}{\to 1}  \right| \to 0 \text{ as } x \to 0\\ \end{align} $$</p>
+    <p>While the condition number is not zero… it is definitely <em>less than one</em>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Square%20Root"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

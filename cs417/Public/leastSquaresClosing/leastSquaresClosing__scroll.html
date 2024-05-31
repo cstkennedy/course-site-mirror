@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Least Squares Closing Thoughts - Continuous Error</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20Closing%20Thoughts%20-%20Continuous%20Error"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Least Squares Closing Thoughts - Continuous Error</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#what-about-the-continuous-case-">1 What About The Continuous Case?</a></div><div class="toc-h2"><a href="#evaluating-some-integrals-i-e-having-some-fun-">1.1 Evaluating Some Integrals (i.e., Having Some Fun)</a></div><div class="toc-h2"><a href="#updating-solving-a-b">1.2 Updating &amp; Solving A|b</a></div><div class="toc-h2"><a href="#final-result">1.3 Final Result</a></div><div class="toc-h1"><a href="#evaluating-the-error">2 Evaluating the Error</a></div></div><a id="whataboutthecontinuouscase"/><h1 id="what-about-the-continuous-case-">1 What About The Continuous Case?</h1><p>What about the continuous case?</p>
+    <ul>
+  <li>I am no longer limitted to picking points.</li>
+  <li>I can use $ x \in [0, \alpha]$ where $\alpha &gt; 0$.</li>
+</ul><p>Let us try to approximate $f(x) = 2x^2$ once more. This time for the entire domain $[0, \alpha]$. We will use a different set of basis functions this time…</p>
+    <p>$\pi_0 = 1$ and $\pi_1 = x$.</p>
+    <p>Using these two basis functions our approximation function takes the form:</p>
+    <p>\[\begin{align} \hat{\varphi} &amp;= c_0 + c_1 x \ \end{align} \]</p>
+    <p>We have shifted from a discrete set of points (discrete) to an entire domain (continuous). For the continuous case, we will be working with integrals.</p>
+    <p>$$ \left[\begin{array}{rr|r} \int\limits_{0}^{\alpha} \pi_{0} \pi_{0} dx &amp; \int\limits_{0}^{\alpha} \pi_{0} \pi_{1}dx &amp; \int\limits_{0}^{\alpha} \pi_{0}fdx \\ \int\limits_{0}^{\alpha} \pi_{1} \pi_{0} dx &amp; \int\limits_{0}^{\alpha} \pi_{1} \pi_{1}dx &amp; \int\limits_{0}^{\alpha} \pi_{1}fdx \\ \end{array}\right] $$</p>
+    <p>Notice how I jumped straight to the augmented $[A|\vec{b}]$ matrix? The setup mirrors the discrete process. Based on a quick count, we have six integrals to evaluate.</p>
+    <a id="evaluatingsomeintegralsiehavingsomefun"/><h2 id="evaluating-some-integrals-i-e-having-some-fun-">1.1 Evaluating Some Integrals (i.e., Having Some Fun)</h2><p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{0}^{2}dx &amp;=&amp; \int\limits_{0}^{\alpha} 1dx  &amp;=&amp; \left.x\right\vert_{x=0}^{\alpha}  &amp;=&amp; \alpha \\ \end{align} $$</p>
+    <hr/><p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{0}\pi_{1}dx &amp;=&amp; \int\limits_{0}^{\alpha} xdx  &amp;=&amp; \left. \frac{1}{2}x^2 \right\vert_{x=0}^{\alpha}  &amp;=&amp; \frac{1}{2}\alpha^2\\ \end{align} $$</p>
+    <p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{1}\pi_{0}dx &amp;=&amp; \int\limits_{0}^{\alpha}\pi_{0}\pi_{1}dx  &amp;=&amp; \frac{1}{2}\alpha^2\\ \end{align} $$</p>
+    <hr/><p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{1}\pi_{1}dx &amp;=&amp; \int\limits_{0}^{\alpha} x^2dx  &amp;=&amp; \left. \frac{1}{3}x^3 \right\vert_{x=0}^{\alpha}  &amp;=&amp; \frac{1}{3}\alpha^3\\ \end{align} $$</p>
+    <hr/><p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{0}fdx &amp;=&amp; \int\limits_{0}^{\alpha} 2x^2dx  &amp;=&amp; \left. \frac{2}{3}x^3 \right\vert_{x=0}^{\alpha}  &amp;=&amp; \frac{2}{3}\alpha^3\\ \end{align} $$</p>
+    <hr/><p>$$ \begin{align} \int\limits_{0}^{\alpha}\pi_{1}fdx &amp;=&amp; \int\limits_{0}^{\alpha} 2x^3dx  &amp;=&amp; \left. \frac{1}{2}x^4 \right\vert_{x=0}^{\alpha}  &amp;=&amp; \frac{1}{2}\alpha^4\\ \end{align} $$</p>
+    <a id="updatingsolvingab"/><h2 id="updating-solving-a-b">1.2 Updating &amp; Solving A|b</h2><p>Now that we have evaluated all six integrals, we can take</p>
+    <p>$$ \left[\begin{array}{rr|r} \int\limits_{0}^{\alpha} \pi_{0} \pi_{0} dx &amp; \int\limits_{0}^{\alpha} \pi_{0} \pi_{1}dx &amp; \int\limits_{0}^{\alpha} \pi_{0}fdx \\ \int\limits_{0}^{\alpha} \pi_{1} \pi_{0} dx &amp; \int\limits_{0}^{\alpha} \pi_{1} \pi_{1}dx &amp; \int\limits_{0}^{\alpha} \pi_{1}fdx \\ \end{array}\right] $$</p>
+    <p>and plug in in our results.</p>
+    <p>$$ \left[\begin{array}{rr|r} \alpha &amp; \frac{1}{2}\alpha^{2} &amp; \frac{2}{3}\alpha^{3} \\ \frac{1}{2}\alpha^{2} &amp; \frac{1}{3}\alpha^{3} &amp; \frac{1}{2}\alpha^{4} \\ \end{array}\right] $$</p>
+    <p>And… now we solve the system. Let us start by scaling both rows using:</p>
+    <ul>
+  <li>$r_0 = \alpha^{-1}r_0$</li>
+  <li>$r_1 = 2\alpha^{-2}r_1$</li>
+</ul><p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{1}{2}\alpha &amp; \frac{2}{3}\alpha^{2} \\ 1 &amp; \frac{2}{3}\alpha &amp; \alpha^{2} \\ \end{array}\right] $$</p>
+    <p>The second step is elimination ($r_1 = r_1 - r_0$).</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>$\frac{2}{3} - \frac{1}{2} = \frac{4}{6} - \frac{3}{6} = \frac{1}{6}$</p>
+    
+</div><p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{1}{2}\alpha &amp; \frac{2}{3}\alpha^{2} \\ 0 &amp; \frac{1}{6}\alpha &amp; \frac{1}{3}\alpha^{2} \\ \end{array}\right] $$</p>
+    <p>And… let us scale row 1 using $r_1 = \frac{6}{\alpha}$.</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{1}{2}\alpha &amp; \frac{2}{3}\alpha^{2} \\ 0 &amp; 1 &amp; 2\alpha \\ \end{array}\right] $$</p>
+    <hr/><p>The last step is to backsolve. Since this is a 2x2 matrix (i.e., with 2 unknowns) we need a single elimination, $r_0 = r_0 - \frac{1}{2}\alpha r_1$.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>$\frac{2}{3} - \frac{3}{3} = \frac{-1}{3}$</p>
+    
+</div><p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; \frac{-1}{3}\alpha^{2} \\ 0 &amp; 1 &amp; 2\alpha \\ \end{array}\right] $$</p>
+    <a id="finalresult"/><h2 id="final-result">1.3 Final Result</h2><p><strong>Coefficients</strong></p>
+    <p>$$c_0 = -\frac{1}{3}\alpha^2$$ $$c_1 = 2\alpha$$</p>
+    <p><strong>Approximation Function (phi hat)</strong></p>
+    <p>\[\begin{align} \hat{\varphi}(\alpha,x) &amp; = -\frac{1}{3}\alpha^2 + 2\alpha x \\ \end{align} \]</p>
+    <p>Notice how $\hat{\varphi}$ is now a function of $\alpha$ and $x$? What we have is a function that can be used to approximate the domain $[0, \alpha]$ for and $\alpha$. Since $\alpha \in \mathbb{R}_{\geq 0}$ that is an infinite number of functions.</p>
+    <a id="evaluatingtheerror"/><h1 id="evaluating-the-error">2 Evaluating the Error</h1><p>How do we evaluate the error when using $ \hat{\varphi}(\alpha,x) = -\frac{1}{3}\alpha^2 + 2\alpha x $ to approximate $ f(x) = 2x^2 $ for $x \geq 0$?</p>
+    <p>We need to use $||f - \hat{\varphi}(\alpha,x)||^2$. Look familiar? Hopefully it does. This is the error metric we defined for least squares. It is also what we used to derive the normal equations and define $[A\vec{c}|\vec{b}]$.</p>
+    <p>We will use the same tricks as before (e.g., properties of inner products).</p>
+    <p>\[\begin{align} ||f - \hat{\varphi}(\alpha,x)||^2 &amp; = (f-\hat{\varphi}, f-\hat{\varphi}) \\  &amp; = (\hat{\varphi}, \hat{\varphi}) - 2(\hat{\varphi}, f) + (f, f) \\  &amp; = \int_{\mathbb{R}} \hat{\varphi}^2 d\lambda  - 2\int_{\mathbb{R}} \hat{\varphi}fd\lambda  + \int_{\mathbb{R}} f^2 d\lambda \\  &amp; = \int\limits_{x=0}^{\alpha} \hat{\varphi}^2 dx  - 2\int\limits_{x=0}^{\alpha} \hat{\varphi}fdx  + \int\limits_{x=0}^{\alpha} f^2 dx \\ \end{align} \]</p>
+    <p>That leaves us with three Riemann integrals. And no… I am not going to leave the three integrals as <em>an exercise to the reader</em>. Let us take a moment and collect the pieces we will need.</p>
+    <p>$$ \hat{\varphi}(\alpha,x) = -\frac{1}{3}\alpha^2 + 2\alpha x $$ and $$ f(x) = 2x^2 $$</p>
+    <p>Let us plug in $\hat{\varphi}$ and $f$, then continue…</p>
+    <p>\[\begin{align} ||f - \hat{\varphi}(\alpha,x)||^2 &amp;= \int\limits_{x=0}^{\alpha} \hat{\varphi}^2 dx  - 2\int\limits_{x=0}^{\alpha} \hat{\varphi}fdx  + \int\limits_{x=0}^{\alpha} f^2 dx \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\int\limits_{x=0}^{\alpha} 2x^{2}(-\frac{1}{3}\alpha^2 + 2\alpha x)dx  + \int\limits_{x=0}^{\alpha} (2x^2)^2 dx \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\int\limits_{x=0}^{\alpha} (-\frac{2}{3}\alpha^2x^2 + 4\alpha x^3)dx  + \int\limits_{x=0}^{\alpha} 4x^4 dx \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx +\int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big)  + \int\limits_{x=0}^{\alpha} 4x^4 dx \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx +\int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big)  + \left. \frac{4}{5}x^5 \right\vert_{x=0}^{\alpha} \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx +\int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big)  + \frac{4}{5}(\alpha^{5} - 0^{5}) \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx +\int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big)  + \frac{4}{5}\alpha^{5} \\ \end{align} \]</p>
+    <p>Notice how I evaluated the rightmost integral immediately? I see no reason to delay a quick integral ($4x^4$ can be integrated with the power rule). However, the remaining three integrals require <del>a little</del> more legwork. These are also where most mistakes will be made.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Do not forget that $\alpha$ is a constant. We can pull it out from under the integral (along with other constants).</p>
+    
+</div><p>Let us tackle the middle two integrals simultaneously.</p>
+    <p>\[ \begin{align} -2\int\limits_{x=0}^{\alpha} \hat{\varphi}fdx  &amp;= -2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx + \int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big) \\  &amp; = -2\Big(-2\alpha^{2}\int\limits_{x=0}^{\alpha} \frac{1}{3}x^{2} dx + 4\alpha \int\limits_{x=0}^{\alpha} x^3dx \Big) \\  &amp; = -2\Big(-2\alpha^{2}\big(\frac{1}{9}x^{3}\big\vert_{x=0}^{\alpha} \big) + 4\alpha\big(\frac{1}{4} x^4 \big\vert_{x=0}^{\alpha}\big) \Big) \\  &amp; = -2\Big(-\frac{2}{9}\alpha^{2}x^{3}\big\vert_{x=0}^{\alpha} + \alpha x^4\big\vert_{x=0}^{\alpha} \Big) \\  &amp; = -2\Big(-\frac{2}{9}\alpha^{2}\alpha^{3} + \alpha \alpha^4\Big) \\  &amp; = -2\Big(-\frac{2}{9}\alpha^{5} + \alpha^{5}\Big) \\  &amp; = -2\Big(\frac{7}{9}\alpha^{5}\Big) \\  &amp; = -\frac{14}{9}\alpha^{5} \\ \end{align} \]</p>
+    <p>We can now update our larger overall equation.</p>
+    <p>\[\begin{align} E^{2}(\alpha,x) &amp;= ||f - \hat{\varphi}(\alpha,x)||^2 \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - 2\Big(\int\limits_{x=0}^{\alpha} -\frac{2}{3}\alpha^{2}x^{2} dx +\int\limits_{x=0}^{\alpha} 4\alpha x^3dx \Big)  + \frac{4}{5}\alpha^{5} \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - \frac{14}{9}\alpha^{5}  + \frac{4}{5}\alpha^{5} \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - \frac{70}{45}\alpha^{5}  + \frac{36}{45}\alpha^{5} \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - \frac{34}{45}\alpha^{5} \end{align} \]</p>
+    <p>We are now left with one integral. We could expand the $(…)^2$ then integrate. However, let us review u-substitution. We will start by defining u.</p>
+    <p>$$ u = (-\frac{1}{3}\alpha^2 + 2\alpha x) $$</p>
+    <p>That leads to</p>
+    <p>\[ \begin{align} du &amp; = 2\alpha dx \\ \frac{1}{2\alpha} du &amp; = dx \\ \end{align} \]</p>
+    <p>It is time to finish the last integral!</p>
+    <p>\[ \begin{align} \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  &amp;= \frac{1}{2\alpha}\int\limits_{x=0}^{\alpha} u^2 du \\  &amp;= \frac{1}{2\alpha}\frac{1}{3}u^{3} \vert_{x=0}^{\alpha} \\  &amp;= \frac{1}{6\alpha}u^{3} \vert_{x=0}^{\alpha} \\  &amp;= \frac{1}{6\alpha}(-\frac{1}{3}\alpha^2 + 2\alpha x)^{3} \vert_{x=0}^{\alpha} \\  &amp;= \frac{1}{6\alpha}\Big((-\frac{1}{3}\alpha^2 + 2\alpha (\alpha))^{3} -(-\frac{1}{3}\alpha^2 + 2\alpha (0))^{3}\Big) \\  &amp;= \frac{1}{6\alpha}\Big((-\frac{1}{3}\alpha^2 + 2\alpha^{2})^{3} -(-\frac{1}{3}\alpha^2)^{3}\Big) \\  &amp;= \frac{1}{6\alpha}\Big((-\frac{1}{3}\alpha^2 + \frac{6}{3}\alpha^{2})^{3} -(-\frac{1}{3})^{3}\alpha^6\Big) \\  &amp;= \frac{1}{6\alpha}\Big(\big(\frac{5}{3}\alpha^{2}\big)^{3} + \frac{1}{27}\alpha^6\Big) \\  &amp;= \frac{1}{6\alpha}\Big(\frac{125}{27}\alpha^{6} + \frac{1}{27}\alpha^6\Big) \\  &amp;= \frac{1}{6}\Big(\frac{126}{27}\alpha^{5}\Big) \\  &amp;= \Big(\frac{21}{27}\alpha^{5}\Big) \\  &amp;= \frac{7}{9}\alpha^{5} \\ \end{align} \]</p>
+    <p>We can now make one last update our larger overall equation.</p>
+    <p>\[\begin{align} E^{2}(\alpha,x) &amp;= ||f - \hat{\varphi}(\alpha,x)||^2 \\ &amp; = \int\limits_{x=0}^{\alpha} (-\frac{1}{3}\alpha^2 + 2\alpha x) ^ 2 dx  - \frac{34}{45}\alpha^{5} \\ &amp; = \frac{7}{9}\alpha^{5} - \frac{34}{45}\alpha^{5} \\ &amp; = \frac{35}{45}\alpha^{5} - \frac{34}{45}\alpha^{5} \\ &amp; = \frac{1}{45}\alpha^{5} \end{align} \]</p>
+    <p>That leaves us with</p>
+    <p>$$ E^{2}(\alpha,x) = \frac{1}{45}\alpha^{5} $$</p>
+    <p>If we let $\alpha = 3$ our linear approximation function</p>
+    <p>\[\begin{align} \hat{\varphi}(\alpha,x) &amp; = -\frac{1}{3}\alpha^2 + 2\alpha x \\ \end{align} \]</p>
+    <p>has an error</p>
+    <p>\[\begin{align} E^{2}(3,x) &amp;= \frac{1}{45}(3)^{5} \\ &amp;= \frac{1}{5 * (3)^2}(3)^5 \\ &amp;= \frac{1}{5} (3)^3 \\ &amp;= \frac{1 * 27}{5} \\ &amp;= \frac{27}{5} \\ &amp;= 5.4\\ \end{align} \]</p>
+    <p>If we take the square root…</p>
+    <p>\[\begin{align} E(3,x) &amp;= \sqrt{\frac{27}{5}} \\ E(3,x) &amp;= \sqrt{5.4} \\ &amp; \approx 2.3 \end{align} \]</p>
+    <p>That is the smallest error we can have using a line to approximate $2x^2$ for $0 \leq x \leq 3$.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20Closing%20Thoughts%20-%20Continuous%20Error"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

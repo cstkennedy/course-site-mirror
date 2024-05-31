@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Machine Assignment 3</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Machine%20Assignment%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Machine Assignment 3</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h1"><a href="#input">2 Input</a></div><div class="toc-h1"><a href="#output">3 Output</a></div><div class="toc-h1"><a href="#your-tasks">4 Your Tasks</a></div><div class="toc-h1"><a href="#files">5 Files</a></div><div class="toc-h1"><a href="#grading">6 Grading</a></div><div class="toc-h1"><a href="#submitting">7 Submitting</a></div></div><p>This document outlines the basic structure of an <em>Assignment Prompt</em>.</p>
+    <a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>Write a program to compute an approximate value for the derivative of $f(x)$ using the finite difference formula</p>
+    <p>$$ f^\prime(x) \approx \frac{f(x+h)-f(x)}{h} $$</p>
+    <h1 id="input">2 Input</h1><p>There is no input to this program. All values and functions will be hardcoded.</p>
+    <p>We will use</p>
+    <ul>
+  <li>$f(x) = \sin(x)$</li>
+  <li>$x = 1$</li>
+</ul><h1 id="output">3 Output</h1><p>Your output should be similar to…</p>
+    <pre><code>|  h   |       x       | Approx. f'(x) |  Known f'(x)  |  Abs. Error   |
+|:----:|--------------:|--------------:|--------------:|--------------:|
+|2^-01 |    1.00000000 |    0.31204800 |    0.54030231 |    0.22825430 |
+|2^-02 |    1.00000000 |    0.43005454 |    0.54030231 |    0.11024777 |
+|2^-03 |    1.00000000 |    0.48637287 |    0.54030231 |    0.05392943 |
+|2^-04 |    1.00000000 |    0.51366321 |    0.54030231 |    0.02663910 |
+</code></pre><p>However, unlike this abbreviated example you must complete up to (2^{-30}).</p>
+    <p><strong>Note…</strong> that your output format must be the same. That actual values that you compute may differ due to finite precision.</p>
+    <a id="yourtasks"/><h1 id="your-tasks">4 Your Tasks</h1><p>For $h=\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \dots \frac{1}{2^{30}}$ </p>
+    <ol>
+  <li>
+    <p>Compute an approximate value (<code>Approx. f'(x)</code>) for $f^{\prime}(x)$ using…</p>
+    
+    <p>$$ f^\prime(x) \approx \frac{sin(1+h)-sin(1)}{h} $$</p>
+    
+  </li>
+  <li>
+  <p>Compute the known value for $f^{\prime}(x)$ (<code>Known f'(x)</code>) using  <code>cos(1)</code>. <em>Note… that you can compute this value once and reuse it.</em></p>
+    </li>
+  <li>
+  <p>Compute the absolute error (<code>Abs. Error</code>) between the values computed in  the previous two (2) steps.</p>
+    </li>
+</ol><p>Generate a summary of your results.</p>
+    <ol>
+  <li>
+  <p>Approximate <code>eps</code> using the <a class="doc" href="../../Public/precisionIntro/index.html#estimating-machine-precision" target="CS417_Public">Cleve Moler Algorithm</a>.</p>
+    </li>
+  <li>
+  <p>Compute $\sqrt{eps}$.</p>
+    </li>
+  <li>
+    <p>Plot <code>h</code> (x-axis) vs <code>Abs. Error</code> (y-axis).</p>
+    
+    <ol>
+      <li>
+      <p>Set both axes (x-axis and y-axis) to logarithmic scales</p>
+    </li>
+      <li>
+      <p>You may generate the graph as part of your program or using a separate  program (e.g., Excel or Desmos).</p>
+    </li>
+    </ol>
+  </li>
+  <li>
+    <p>Examine the graph and answer the following…</p>
+    
+    <ol>
+      <li>
+      <p>What is the minimum value for the magnitude of the error?</p>
+    </li>
+      <li>
+      <p>How does it compare to $\sqrt{eps}$?</p>
+    </li>
+    </ol>
+  </li>
+  <li>
+    <p>Include your findings in your zip file as one of (or a combination of)  the following…</p>
+    
+    <ol>
+      <li>
+      <p>Output generated by running your program.</p>
+    </li>
+      <li>
+      <p>An Excel file with the graph.</p>
+    </li>
+      <li>
+      <p>An image file (e.g., PNG or SVG) containing your graph.</p>
+    </li>
+      <li>
+      <p>Part of your <code>README.md</code> file.</p>
+    </li>
+    </ol>
+  </li>
+</ol><h1 id="files">5 Files</h1><p>There are no starting files provided for this exercise.</p>
+    <h1 id="grading">6 Grading</h1><p>Refer to the rubric attached to the Machine Assignment within Canvas.</p>
+    <h1 id="submitting">7 Submitting</h1><p>You will submit a single zip or tar archive as outlined in <a class="doc" href="../../Public/syllabus/index.html#submission-programming-exercises-" target="CS417_Public">Section 8.6 Submission (Programming Exercises) of the syllabus</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Machine%20Assignment%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

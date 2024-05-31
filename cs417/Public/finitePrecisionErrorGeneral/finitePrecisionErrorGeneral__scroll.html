@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Finite Precision & Error... in General</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Finite%20Precision%20%26%20Error...%20in%20General"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Finite Precision &amp; Error... in General</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#representing-numbers-in-general">1 Representing Numbers… in General</a></div><div class="toc-h2"><a href="#smallest-mantissa">1.1 Smallest Mantissa</a></div><div class="toc-h2"><a href="#largest-mantissa">1.2 Largest Mantissa</a></div><div class="toc-h2"><a href="#representing-real-numbers">1.3 Representing Real Numbers</a></div><div class="toc-h2"><a href="#convenient-notation">1.4 Convenient Notation</a></div><div class="toc-h1"><a href="#smallest-number-and-largest-number">2 Smallest Number and Largest Number</a></div><div class="toc-h2"><a href="#the-mantissa-pieces">2.1 The Mantissa Pieces</a></div><div class="toc-h2"><a href="#mantissa-bounds">2.2 Mantissa Bounds</a></div><div class="toc-h2"><a href="#the-exponent-pieces">2.3 The Exponent Pieces</a></div><div class="toc-h2"><a href="#exponent-bounds">2.4 Exponent Bounds</a></div><div class="toc-h2"><a href="#putting-the-pieces-together">2.5 Putting the Pieces Together</a></div><div class="toc-h1"><a href="#bounding-relative-error">3 Bounding Relative Error</a></div><div class="toc-h2"><a href="#absolute-error">3.1 Absolute Error</a></div><div class="toc-h2"><a href="#relative-error">3.2 Relative Error</a></div></div><p>We have examined numbers in base 2:</p>
+    <ul>
+  <li>determined the smallest and largest numbers that can be represented</li>
+  <li>derived an upper bound for the absolute error $|x - x^{*}|$.</li>
+  <li>derived an upper bound for the relative error $\frac{|x - x^{*}|}{|x|}$.</li>
+</ul><p>Now… we need to generalize. <strong>Why?</strong> It turns out that these analyses are also useful in base 10. Think back to significant digits, rounding, and scientific notation from your prior math and science coursework. </p>
+    <a id="representingnumbersingeneral"/><h1 id="representing-numbers-in-general">1 Representing Numbers… in General</h1><p>In any base (greater than 2), the digits $b_i$ (i<sup>th</sup> mantissa digit/bit) and $s_i$ (i<sup>th</sup> exponent digit/bit) will fall in the range $[0, \beta-1]$. It is useful to use ordered set notation:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Normal sets (e.g., $\{0, 1\}$) guarantee uniqueness. There are no duplicate entries. Normal Sets are unordered. An <em>ordered set</em> guarantees uniqueness <em>and</em> ordering.</p>
+    
+</div><p>$b_i, s_i \in &lt;0, 1, 2, \ldots, \beta-1&gt;$</p>
+    <p>Consider base 2 and base 10:</p>
+    <ul>
+  <li>base 2 - $&lt;0, 1&gt;$</li>
+  <li>base 10 - $&lt;0, 1, 2, 3, 4, 5, 6, 7, 8, \beta-1&gt;$ where $\beta-1 = 9$.</li>
+</ul><a id="smallestmantissa"/><h2 id="smallest-mantissa">1.1 Smallest Mantissa</h2><p>We are interested in the smallest possible mantissa for any base, $\beta \ge 2$. Naively, one might write $0.0$. However, we are interested in the smallest <em>non-zero</em> mantissa. This leads to</p>
+    <p>$\frac{1}{\beta} = 0.10000000000\ldots$</p>
+    <p>The normalization constraint requires that the first digit (i.e., $b_{-1}$) after the decimal place be non-zero. For all numeric bases two or greater, the smallest digit is $1$.</p>
+    <a id="largestmantissa"/><h2 id="largest-mantissa">1.2 Largest Mantissa</h2><p>Think about the largest number in…</p>
+    <ul>
+  <li>Base 2 - $0.1111\ldots$</li>
+  <li>Base 8 - $0.7777\ldots$</li>
+  <li>Base 10 - $0.9999\ldots$</li>
+  <li>Base 16 - $0.FFFF\ldots$</li>
+</ul><p>Do you notice a pattern? The largest digit in any base is always the base minus 1 (i.e., $\beta - 1$).</p>
+    <a id="representingrealnumbers"/><h2 id="representing-real-numbers">1.3 Representing Real Numbers</h2><p>Let $x^{*}$ (read as “x-star” or “x-chop”) represent a number that is subject to finite precision (i.e., must be stored using a finite number of digits/bits).</p>
+    <p>$x^{*} = \pm \left( \sum\limits_{i=1}^t b_{-i} \beta^{-i} \right) * \beta^{e^{*}}$ where $e^{*} = \pm \sum\limits_{i=1}^s s_{i} \beta^{i}$</p>
+    <p>Let us break this notation down…</p>
+    <p>$$\sum\limits_{i=1}^t b_{-i} \beta^{-i}$$</p>
+    <p>represents the mantissa (i.e., the digits to <em>the right</em> of the decimal place). The number $t$ represents the number of mantissa digits.</p>
+    <p>$$\pm \sum\limits_{i=1}^s s_{i} \beta^{i} $$</p>
+    <p>represents the exponent digits. The number $s$ represents the number of exponent digits. Keep in mind that similar to <em>traditional</em> base-10 scientific notation the sign (positive or negative) determines whether a <em>left</em> or <em>right</em> shift should occur.</p>
+    <a id="convenientnotation"/><h2 id="convenient-notation">1.4 Convenient Notation</h2><p>We can use a convenient notation to capture $x$ and $x^{*}$.</p>
+    <p>$$ x^{*} \in \mathbb{R}(t,s) $$</p>
+    <p>$x^{*}$ is a real number that can be represented by $t$ mantissa digits and $s$ exponent digits. $x$ is more interesting…</p>
+    <p>$$ x \in \mathbb{R}(\infty,\infty) $$</p>
+    <p>$x$ is a real number for which we have access to infinite precision (i.e., infinite digits). </p>
+    <a id="smallestnumberandlargestnumber"/><h1 id="smallest-number-and-largest-number">2 Smallest Number and Largest Number</h1><p>We know that $x^{*}$ is defined as</p>
+    <p>$x^{*} = \pm \left( \sum\limits_{i=1}^t b_{-i} \beta^{-i} \right) * \beta^{e^{*}}$ where $e^{*} = \pm \sum\limits_{i=1}^s s_{i} \beta^{i}$</p>
+    <p>Our goal is to determine the lower limit (smallest number) and upper limit (largest number) that can be represented. Let us find four (4) values:</p>
+    <ul>
+  <li>smallest possible mantissa</li>
+  <li>largest possible mantissa</li>
+  <li>largest positive exponent, $|e|$</li>
+  <li>“smallest” possible exponent, $-|e|$</li>
+</ul><a id="themantissapieces"/><h2 id="the-mantissa-pieces">2.1 The Mantissa Pieces</h2><p>The smallest possible non-zero mantissa is </p>
+    <p>$$ \beta^{-i} = \frac{1}{\beta} $$</p>
+    <p>by the <strong>normalization</strong> constraint. That is the first piece of the puzzle. The largest possible mantissa is next. Let us start with…</p>
+    <p>$$ \sum\limits_{i=1}^t b_{-i} \beta^{-i} $$</p>
+    <p>To obtain the largest number… we need the <em>largest possible</em> digit in every position. That leads to $b_{-i} = (\beta - 1) \phantom{2} \forall i$… which leads to…</p>
+    <p>$$(\beta - 1 ) \left(\sum\limits_{i=1}^t \beta^{-i}\right)$$</p>
+    <p>The sum can be evaluated using the geometric series formula.</p>
+    <p>$$ \frac{\alpha(1-r^k)}{(1-r)} $$</p>
+    <p>where</p>
+    <ul>
+  <li>$k = t$</li>
+  <li>$r = \beta^{-1}$</li>
+  <li>$\alpha = \beta^{-1}$</li>
+</ul><p>Applying the geometric series formula results in…</p>
+    <p>$$ \begin{eqnarray} (\beta - 1 ) \left(\sum\limits_{i=1}^t \beta^{-i}\right)  &amp;=&amp; \frac{\beta^{-1}(1- \beta^{-t})(\beta - 1 )}{1 - \beta^{-1}}\\  &amp;=&amp; \frac{\beta^{-1}(\beta - 1)(1- \beta^{-t})}{1 - \beta^{-1}}\\  &amp;=&amp; \frac{(1 - \beta^{-1})(1- \beta^{-t})}{1 - \beta^{-1}}\\  &amp;=&amp; (1- \beta^{-t}) \end{eqnarray} $$</p>
+    <a id="mantissabounds"/><h2 id="mantissa-bounds">2.2 Mantissa Bounds</h2><p>The mantissa ($f$) bounds can be written succinctly.</p>
+    <p>$$ \beta^{-1} \le f \le 1 - \beta^{-t} $$</p>
+    <a id="theexponentpieces"/><h2 id="the-exponent-pieces">2.3 The Exponent Pieces</h2><p>The exponent portion of a real number is defined as…</p>
+    <p>$\beta^{e^{*}}$ where $e^{*} = \pm \sum\limits_{i=1}^s s_{i} \beta^{i} $</p>
+    <p>We are interested in $max(|e^{*}|)$. Let us set $s_i = \beta - 1$ for all $i$ (or using math notation… $\forall_i$ let $s_i = \beta - 1$).</p>
+    <p>$$ \begin{eqnarray} |e^{*}| &amp;=&amp; |\pm \sum\limits_{i=1}^s s_{i} \beta^{i}| \\ |e^{*}| &amp;=&amp; \sum\limits_{i=1}^s s_{i} \beta^{i} \\ |e^{*}| &amp;\le&amp; \sum\limits_{i=1}^s (\beta - 1) \beta^{i} \\ |e^{*}| &amp;\le&amp; \frac{(\beta - 1)(1 - \beta^{s})}{1 - \beta} \\ |e^{*}| &amp;\le&amp; \frac{(\beta - 1)(1 - \beta^{s})}{-(\beta - 1)} \\ |e^{*}| &amp;\le&amp; -(1 - \beta^{s})\\ |e^{*}| &amp;\le&amp; \beta^{s} - 1 \\ \end{eqnarray} $$</p>
+    <p><strong>Note how the geometric series formula was applied</strong>:</p>
+    <ul>
+  <li>$k = s$</li>
+  <li>$\alpha = -1$</li>
+  <li>$\beta - 1 = -(1 - \beta)$</li>
+</ul><p>Note the result…</p>
+    <p>$$ max(|e|) = \beta^{s} - 1 $$</p>
+    <p>This is the largest <em>magnitude</em> for an exponent. This leads to…</p>
+    <p>$$ min(\beta^{e^*}) = \beta^{-(\beta^{s} - 1)} $$</p>
+    <p>and</p>
+    <p>$$ max(\beta^{e^*}) =  \beta^{\beta^{s} - 1} $$</p>
+    <p>as the largest and smallest possible $\beta^{e^*}$ terms, respectively</p>
+    <a id="exponentbounds"/><h2 id="exponent-bounds">2.4 Exponent Bounds</h2><p>The exponent ($\beta^{e^*})$ bounds can be written succinctly.</p>
+    <p>$$ \beta^{-(\beta^{s} - 1)} \le \beta^e \le \beta^{\beta^{s} - 1} $$</p>
+    <a id="puttingthepiecestogether"/><h2 id="putting-the-pieces-together">2.5 Putting the Pieces Together</h2><p>Combining the minimum and maximum terms from the mantissa analysis and exponent analysis leads to…</p>
+    <p>$$ \beta^{-1}\beta^{-(\beta^{s} - 1)} \le x^{*} \le (1 - \beta^{-t})\beta^{\beta^{s} - 1} $$</p>
+    <p>If we let $\beta = 2$… the result matches our previous <em>base-2</em> analysis.</p>
+    <p>$$ 2^{-1}2^{-(2^{s} - 1)} \le x^{*} \le (1 - 2^{-t})2^{2^{s} - 1} $$</p>
+    <hr/><a id="boundingrelativeerror"/><h1 id="bounding-relative-error">3 Bounding Relative Error</h1><p>Now… it is time to derive an upper bound for the error between $x$ and $x^*$. We know that (by definition):</p>
+    <p>$$ x^{*} = \pm \left( \sum\limits_{i=1}^t b_{-i} \beta^{-i} \right) * \beta^{e^{*}} $$</p>
+    <p>where </p>
+    <p>$$ e^{*} = \pm \sum\limits_{i=1}^s s_{i} \beta^{i} $$</p>
+    <p>and</p>
+    <p>$$ x = \pm \left( \sum\limits_{i=1}^{\infty} b_{-i} \beta^{-i} \right) * \beta^{e^{*}} $$</p>
+    <p>where </p>
+    <p>$$e = \pm \sum\limits_{i=1}^{\infty} s_{i} \beta^{i} $$</p>
+    <p>The difference comes down to finite (i.e., limited) precision, i.e., $x^* \in \mathbb{R}(t, s)$ vs $x \in \mathbb{R}(\infty, \infty)$. </p>
+    <a id="absoluteerror"/><h2 id="absolute-error">3.1 Absolute Error</h2><p>Relative error is defined as $\frac{|x-x^*|}{|x|}$. Let us start with the numerator… which happens to be absolute error!</p>
+    <p>$$ \left| x - x^{*} \right| = \left| \sum\limits_{i=0}^{\infty} b_{-i}\beta^{-i} * \beta^{e} - \sum\limits_{i=0}^{k} b_{-i}\beta^{-i} * \beta^{e^{*}} \right| $$</p>
+    <p>Let…</p>
+    <ul>
+  <li>$b_{-i} = b_{-i}^{*}$ for $i \le k$ (truncation)</li>
+  <li>$e = e^{*}$ (same magnitude)</li>
+</ul><p>These two “small” observations lead to…</p>
+    <p>$$ \begin{eqnarray} \left| x - x^{*} \right| &amp;=&amp; \left| \sum\limits_{i=0}^{k} b_{-i}\beta^{-i} * \beta^{e} + \sum\limits_{i=k+1}^{\infty} b_{-i}\beta^{-i} * \beta^{e} - \sum\limits_{i=0}^{k} b_{-i}\beta^{-i}* \beta^{e} \right| \\ &amp;=&amp; \left| \sum\limits_{i=0}^{k} b_{-i}\beta^{-i} + \sum\limits_{i=k+1}^{\infty} b_{-i}\beta^{-i} - \sum\limits_{i=0}^{k} b_{-i}\beta^{-i} \right| \beta^{e} \\ &amp;=&amp; \left| \sum\limits_{i=k+1}^{\infty} b_{-i}\beta^{-i} \right| \beta^{e} \\ \end{eqnarray} $$</p>
+    <p>Now… we need to bound the error by using the largest possible mantissa. Letting $b_{-i} = (\beta - 1)$ for all $i$ leads to</p>
+    <p>$$ \begin{eqnarray} \left| x - x^{*} \right| &amp;=&amp; \left| \sum\limits_{i=k+1}^{\infty} b_{-i}\beta^{-i} \right| \beta^{e} \\ &amp;\le&amp; \left| \sum\limits_{i=k+1}^{\infty} (\beta - 1) \beta^{-i} \right| \beta^{e} \\ &amp;\le&amp; \left| (\beta - 1) \sum\limits_{i=k+1}^{\infty}\beta^{-i} \right| \beta^{e} \\ &amp;\le&amp; \left| (\beta - 1) \beta^{-k} \sum\limits_{i=1}^{\infty}\beta^{-i} \right| \beta^{e} \\ &amp;\le&amp; \left| (\beta - 1) \beta^{-k - 1} \sum\limits_{i=0}^{\infty}\beta^{-i} \right| \beta^{e} \\ \end{eqnarray} $$</p>
+    <p>Now we need to tackle the sum</p>
+    <p>$$ \sum\limits_{i=0}^{\infty}\beta^{-i} $$</p>
+    <p>We can use the geometric series formula for a convergent infinite series..</p>
+    <p>$S_{\infty} = \frac{1}{1-r}$ iff $|r| &lt; 1$</p>
+    <p>In this case… $r = \beta^{-1}$.</p>
+    <p>$$ \begin{eqnarray} S_{\infty} &amp;=&amp; \frac{1}{1-r} \\  &amp;=&amp; \frac{1}{1 - \frac{1}{\beta}} \frac{\beta}{\beta}  &amp;=&amp; \frac{\beta}{\beta - 1} \end{eqnarray} $$</p>
+    <p>Using this result leads to…</p>
+    <p>$$ \begin{eqnarray} \left| x - x^{*} \right| &amp;\le&amp; \left| (\beta - 1) \beta^{-k - 1} \left(\frac{\beta}{\beta - 1}\right) \right| \beta^{e} \\ &amp;\le&amp; \left| \beta^{-k - 1} \beta \right| \beta^{e} \\ &amp;\le&amp; \left| \beta^{-k} \right| \beta^{e} \\ &amp;\le&amp; \beta^{-k}\beta^{e} \\ \end{eqnarray} $$</p>
+    <p>The worst case error (i.e., upper bound for error) can be written as…</p>
+    <p>$$ \left| x - x^{*} \right| \le \beta^{-k}\beta^{e} $$</p>
+    <a id="relativeerror"/><h2 id="relative-error">3.2 Relative Error</h2><p>We know that relative error is defined as</p>
+    <p>$$ \frac{|x - x^*|}{|x|} $$</p>
+    <p>From the absolute error derivation, we know that</p>
+    <p>$$ \left| x - x^{*} \right| \le \beta^{-k}\beta^{e} $$</p>
+    <p>That leads to…</p>
+    <p>$$ \frac{|x - x^*|}{|x|} \le \frac{\left|\beta^{-k}\beta^{e}\right|}{min(|x|) * \beta^{e}} $$</p>
+    <p>Notice how $|x|$ became $min(|x|)$. We are bounding the bound. As |x| gets smaller, the error gets larger. The smallest legal non-zero mantissa is $\beta^{-1}$.</p>
+    <p>$$ \begin{eqnarray} \frac{|x - x^*|}{|x|} &amp;\le&amp; \frac{\left|\beta^{-k}\beta^{e}\right|}{min(|x|) * \beta^e} \\ &amp;\le&amp; \frac{\left|\beta^{-k}\beta^{e}\right|}{\beta^{-1}\beta^e} \\ &amp;\le&amp; \frac{\left|\beta^{-k}\right|}{\beta^{-1}} \\ &amp;\le&amp; \beta\left|\beta^{-k}\right| \\ &amp;\le&amp; \beta\beta^{-k} \\ &amp;\le&amp; \beta^{-k + 1} \\ \end{eqnarray} $$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Finite%20Precision%20%26%20Error...%20in%20General"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Interpolation vs Least Squares Approximation</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Interpolation%20vs%20Least%20Squares%20Approximation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Interpolation vs Least Squares Approximation</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#least-squares-approximation">1 Least Squares Approximation</a></div><div class="toc-h1"><a href="#why-interpolation-">2 Why Interpolation?</a></div><div class="toc-h1"><a href="#let-us-try-that-again-in-plain-english">3 Let Us Try that Again… In Plain English</a></div></div><a id="leastsquaresapproximation"/><h1 id="least-squares-approximation">1 Least Squares Approximation</h1><p>We spent quite a bit of time discussing Least Squares Approximation. In total we discussed the following methods…</p>
+    <ol>
+  <li>
+  <p>$$[X^TX|X^TY]$$</p>
+    </li>
+  <li>
+  <p>$$[A|\vec{b}]$$</p>
+    </li>
+  <li>
+  <p>$$\frac{\partial}{\partial c_k} \int\limits_{\mathbb{R}} \left(f - \hat{\varphi}\right)^2$$</p>
+    </li>
+  <li>
+  <p>Presolved $$[A|\vec{b}]$$ for a line</p>
+    </li>
+</ol><p>While we discussed four methods for deriving $\hat{\varphi}$… all four methods were really different notations for the same techniques. <em>Note that our focus here is on Least Squares Approximation as applied to discrete data</em>.</p>
+    <p><strong>Least Squares Approximation is a single method.</strong></p>
+    <a id="whyinterpolation"/><h1 id="why-interpolation-">2 Why Interpolation?</h1><p>Least Squares Approximation captures the behavior of a set of data. Interpolation <em>also</em> captures the behavior of a set of data. However,</p>
+    <ul>
+  <li>
+  <p>Least Squares Approximation focuses on global behavior (the entire collection of data)</p>
+    </li>
+  <li>
+  <p>Interpolation focuses on local behavior (around and at individual points)</p>
+    </li>
+</ul><p><strong>Interpolation refers to a collection of techniques…</strong> with a common invariant.</p>
+    <blockquote>
+  <p>The error at every input point must be zero. Given a polynomial $p(x)$, the polynomial must be equal to $f(x)$ at every input point ($x_0, x_1, \ldots, x_n$). This invariant is often written as</p>
+    
+  <p>$$ \forall_{x_k} p(x_k) = f(x_k) $$</p>
+    
+  <p>This notation is read as <em>for all $x_k$ $p(x_k)$ must be equal to $f(x_k)$.</em></p>
+    
+</blockquote><a id="letustrythatagaininplainenglish"/><h1 id="let-us-try-that-again-in-plain-english">3 Let Us Try that Again… In Plain English</h1><p>Least Squares Approximation can be thought of as…</p>
+    <blockquote>
+  <p><em>We have a memory of a pieces of a picture and want to capture the idea as inspired by the pieces</em></p>
+    
+</blockquote><p>Interpolation can be though of as…</p>
+    <blockquote>
+  <p><em>We have pieces of a picture and want to fill in the blanks… while preserving the orignal pieces and trying to figure out should be around each piece.</em></p>
+    
+</blockquote></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Interpolation%20vs%20Least%20Squares%20Approximation"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

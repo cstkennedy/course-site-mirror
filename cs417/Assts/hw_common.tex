@@ -1,0 +1,50 @@
+\documentclass[a4paper]{article}
+
+%% if you use PostScript figures in your article
+%% use the graphics package for simple commands
+%% \usepackage{graphics}
+%% or use the graphicx package for more complicated commands
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs}
+%%\usepackage{caption}
+%%\usepackage{subcaption}
+%% or use the epsfig package if you prefer to use the old commands
+%% \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+%\usepackage{algpseudocode}
+%% The amsthm package provides extended theorem environments
+%%\usepackage{amsthm}
+\usepackage{mathrsfs}
+
+%% The numcompress package shorten the last page in references.
+%% `nodots' option removes dots from firstnames in references.
+% \usepackage[nodots]{numcompress}
+\renewcommand{\arraystretch}{1.4}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage[top=0.15in, bottom=1.0in, left=0.55in, right=0.55in]{geometry}
+
+\newcommand{\blankpage}{
+\newpage
+\thispagestyle{plain} % empty
+\mbox{}
+}
+
+\newcommand{\includegeneralinstructions}{
+\section*{General Instructions}
+\begin{itemize}
+  \item Submit your solution no later than 11:59pm ET on the due date.
+  \item Show all work (i.e., all intermediary steps). Partial credit will not be awarded if:
+    \begin{itemize}
+      \item intermediary steps are not shown.
+      \item intermediary steps are not legible.
+    \end{itemize}
+\end{itemize}
+}

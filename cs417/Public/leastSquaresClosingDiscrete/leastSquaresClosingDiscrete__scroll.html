@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Least Squares Closing Thoughts - Discrete</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20Closing%20Thoughts%20-%20Discrete"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Least Squares Closing Thoughts - Discrete</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#another-example">1 Another Example</a></div><div class="toc-h2"><a href="#the-setup">1.1 The Setup</a></div><div class="toc-h2"><a href="#solving-the-system">1.2 Solving the System</a></div><div class="toc-h1"><a href="#final-result">2 Final Result</a></div><div class="toc-h1"><a href="#error-">3 Error?</a></div></div><p>We now have a few more tools available to us. It is now possible to skip the initial $X^T * X$ and $X^T * Y$ matrix multiplications.</p>
+    <a id="anotherexample"/><h1 id="another-example">1 Another Example</h1><p>Suppose we wanted to compute a discrete approximation for $f(x) = 2x^2$ where $x \ge 0$ using four points.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right"><strong>x</strong> </th>
+      <th align="right"><strong>f(x)</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">2 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">8 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">18 </td>
+    </tr>
+  </tbody>
+</table><p>We will stick with a line. This leads to two basis functions:</p>
+    <p>$\pi_0 = 1$ and $\pi_1 = x$.</p>
+    <p>Using these two basis functions our approximation function takes the form:</p>
+    <p>$$ [\begin{align} \hat{\varphi} &amp;= \sum_{i=0}^{1} c_i \pi_i \\  &amp;= \sum_{i=0}^{1} c_i x^i \\  &amp;= c_0 + c_1 x \ \end{align} $$</p>
+    <p>We could use the $[X^TX|X^TY]$ method… Let us try the $A\vec{c}|b$ method instead.</p>
+    <a id="thesetup"/><h2 id="the-setup">1.1 The Setup</h2><p>Our $A$ matrix is defined as</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^3 \pi_{0}(x_i) \pi_{0}(x_i) &amp; \sum\limits_{i=0}^3 \pi_{0}(x_i) \pi_{1}(x_i) \\ \sum\limits_{i=0}^3 \pi_{1}(x_i) \pi_{0}(x_i) &amp; \sum\limits_{i=0}^3 \pi_{1}(x_i) \pi_{1}(x_i) \\ \end{array}\right] $$</p>
+    <p>Since $\pi_0 = 1$ this simplifies to</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^3 1 &amp; \sum\limits_{i=0}^3 \pi_{1}(x_i) \\ \sum\limits_{i=0}^3 \pi_{1}(x_i) &amp; \sum\limits_{i=0}^3 \pi_{1}(x_i) \pi_{1}(x_i) \\ \end{array}\right] $$</p>
+    <p>And… if we apply $\pi_1 = x$ we end up with</p>
+    <p>$$ \left[\begin{array}{rr} \sum\limits_{i=0}^3 1 &amp; \sum\limits_{i=0}^3 x_i \\ \sum\limits_{i=0}^3 x_i &amp; \sum\limits_{i=0}^3 (x_i)^2 \\ \end{array}\right] $$</p>
+    <p>Well… $\sum\limits_{i=0}^3 1 = 4$. Hooray! That is one small sum eliminated.</p>
+    <p>$$ \left[\begin{array}{rr} 4 &amp; \sum\limits_{i=0}^3 x_i \\ \sum\limits_{i=0}^3 x_i &amp; \sum\limits_{i=0}^3 (x_i)^2 \\ \end{array}\right] $$</p>
+    <p>If we plug in all the $x_i$ values and compute the sums, we have</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Sanity check the intermediary arithmetic (i.e., evaluate the sums).</p>
+    
+</div><p>$$ \left[\begin{array}{rr} 4 &amp; 6 \\ 6 &amp; 14 \\ \end{array}\right] $$</p>
+    <p>That leaves $\vec{b}$, which is defined as</p>
+    <p>$$ \left[\begin{array}{r} \sum\limits_{i=0}^3 \pi_{0}(x_i) f(x_i) \\ \sum\limits_{i=0}^3 \pi_{1}(x_i) f(x_i) \\ \end{array}\right] $$</p>
+    <p>which becomes</p>
+    <p>$$ \left[\begin{array}{r} \sum\limits_{i=0}^3 f(x_i) \\ \sum\limits_{i=0}^3 x_i * f(x_i) \\ \end{array}\right] $$</p>
+    <p>Once we plug in our input points, we end up with</p>
+    <p>$$ \left[\begin{array}{r} 28 \\ 72 \\ \end{array}\right] $$</p>
+    <p>That allows us to construct an augmented matrix.</p>
+    <p>$$ \left[\begin{array}{rr|r} 4 &amp; 6 &amp; 28 \\ 6 &amp; 14 &amp; 72 \\ \end{array}\right] $$</p>
+    <a id="solvingthesystem"/><h2 id="solving-the-system">1.2 Solving the System</h2><p>Let us continue using Gaussian Elimination.</p>
+    <p>$$ \left[\begin{array}{rr|r} 4 &amp; 6 &amp; 28 \\ 6 &amp; 14 &amp; 72 \\ \end{array}\right] $$</p>
+    <p>Our first step is to scale both rows using $r_0 = \frac{1}{4}r_0$ and $r_1 = \frac{1}{6}r_1$</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{3}{2} &amp; 7 \\ 1 &amp; \frac{7}{3} &amp; 12 \\ \end{array}\right] $$</p>
+    <p>Next $r_1 = r_1 - r_0$</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>$\frac{7}{3} - \frac{3}{2} = \frac{14}{6} - \frac{9}{6} = \frac{5}{6}$</p>
+    
+</div><p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{3}{2} &amp; 7 \\ 0 &amp; \frac{5}{6} &amp; 5 \\ \end{array}\right] $$</p>
+    <p>Our next step is to scale row 1, $r_1 = \frac{6}{5}r_1$</p>
+    <p>$$ \left[\begin{array}{rr|r} 1 &amp; \frac{3}{2} &amp; 7 \\ 0 &amp; 1 &amp; 6 \\ \end{array}\right] $$</p>
+    <p>The final step is to backsolve using $r_0 = r_0 - \frac{3}{2}r_1$</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>$7 - \frac{3}{2}6 = 7 - 9 = -2$</p>
+    
+</div><p>$$ \left[\begin{array}{rr|r} 1 &amp; 0 &amp; -2 \\ 0 &amp; 1 &amp; 6 \\ \end{array}\right] $$</p>
+    <a id="finalresult"/><h1 id="final-result">2 Final Result</h1><p><strong>Coefficients</strong></p>
+    <p>$$c_0 = -2$$ $$c_1 = 6$$</p>
+    <p><strong>Approximation Function (phi hat)</strong></p>
+    <p>$$ \begin{align} \hat{\varphi} &amp; = -2 * x^0 + 6 * x^1 \\  &amp; = -2 + 6x \end{align} $$</p>
+    <a id="error"/><h1 id="error-">3 Error?</h1><p>We have discussed a few examples of Continuous Least Squares Approximation Error. What about… Discrete Least Squares Approximation Error?</p>
+    <p>The error can be evaluated using</p>
+    <p>$$ \begin{eqnarray} E^2(x)  &amp;=&amp; ||f(x) - \hat{\varphi}(\alpha,x)|| \\  &amp;=&amp; \int\limits_{\mathbb{R}} \left(f - \hat{\varphi} \right)^2 d\lambda(x) \\  &amp;=&amp;  \int\limits_{\mathbb{R}} f^2 d\lambda(x)  -2\int\limits_{\mathbb{R}} \hat{\varphi}f d\lambda(x)  +\int\limits_{\mathbb{R}} \hat{\varphi}^2 d\lambda(x) \\  &amp;=&amp;  \int\limits_{\mathbb{R}} \hat{\varphi}^2 d\lambda(x)  -2\int\limits_{\mathbb{R}} \hat{\varphi}f d\lambda(x)  + \int\limits_{\mathbb{R}} f^2 d\lambda(x) \\  &amp;=&amp;  \sum\limits_{i=0}^{n-1} \hat{\varphi}^2(x_i)  -2\sum\limits_{i=0}^{n-1} \hat{\varphi}(x_i)f(x_i)  + \sum\limits_{i=0}^{n-1} f^2(x_i) \\ \end{eqnarray} $$</p>
+    <p><strong>Take note of the change to sums at the very end.</strong> In this case the Riemann-Stieltjes integrals collapse to summations, not Riemann integrals.</p>
+    <p>We know that</p>
+    <p>$$ \begin{align} \hat{\varphi} &amp; = -2 + 6x \end{align} $$</p>
+    <p>Let us take…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right"><strong>x</strong> </th>
+      <th align="right"><strong>f(x)</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">2 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">8 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">18 </td>
+    </tr>
+  </tbody>
+</table><p>and… add a few columns.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="right">$x$ </th>
+      <th align="right">$f(x)$ </th>
+      <th align="right">$\hat{\varphi}(x)$ </th>
+      <th align="right">$\hat{\varphi}(x)f(x)$ </th>
+      <th align="right">$\hat{\varphi}^2(x)$ </th>
+      <th align="right">$f^2(x)$ </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">0 </td>
+      <td align="right">0 </td>
+      <td align="right">-2 </td>
+      <td align="right">0 </td>
+      <td align="right">4 </td>
+      <td align="right">0 </td>
+    </tr>
+    <tr>
+      <td align="right">1 </td>
+      <td align="right">2 </td>
+      <td align="right">4 </td>
+      <td align="right">8 </td>
+      <td align="right">16 </td>
+      <td align="right">4 </td>
+    </tr>
+    <tr>
+      <td align="right">2 </td>
+      <td align="right">8 </td>
+      <td align="right">10 </td>
+      <td align="right">80 </td>
+      <td align="right">100 </td>
+      <td align="right">64 </td>
+    </tr>
+    <tr>
+      <td align="right">3 </td>
+      <td align="right">18 </td>
+      <td align="right">16 </td>
+      <td align="right">288 </td>
+      <td align="right">256 </td>
+      <td align="right">324 </td>
+    </tr>
+  </tbody>
+</table><p>We can now evaluate the sums…</p>
+    <p>$$ \begin{eqnarray} E^2(x)  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  -2\sum\limits_{i=0}^{n} \hat{\varphi}(x_i)f(x_i)  + \sum\limits_{i=0}^{n} f^2(x_i) \\  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  -2\sum\limits_{i=0}^{n} \hat{\varphi}(x_i)f(x_i)  + \left(0 + 4 + 64 + 324\right) \\  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  -2\sum\limits_{i=0}^{n} \hat{\varphi}(x_i)f(x_i)  + 392 \\  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  -2\left(0 + 8 + 80 + 288\right)  + 392 \\  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  -2\left(376\right)  + 392 \\  &amp;=&amp;  \sum\limits_{i=0}^{n} \hat{\varphi}^2(x_i)  + 1144 \\  &amp;=&amp;  \left(4 + 16 + 100 + 256\right)  + 1144 \\  &amp;=&amp;  376  + 1144 \\  &amp;=&amp;  1520 \\ \end{eqnarray} $$</p>
+    <p>We therefore know that…</p>
+    <p>$$ \begin{eqnarray} E(x)  &amp;=&amp;  \sqrt{1520} \\  &amp;=&amp;  \sqrt{40 \times 38} \\  &amp;=&amp;  \sqrt{4 \times 10 \times 2 \times 19} \\  &amp;=&amp;  \sqrt{4 \times 5 \times 2 \times 2 \times 19} \\  &amp;=&amp;  \sqrt{4 \times 5 \times 4 \times 19} \\  &amp;=&amp;  \sqrt{16 \times 5 \times 19} \\  &amp;=&amp;  4\sqrt{5 \times 19} \\  &amp;=&amp;  4\sqrt{95} \\ \end{eqnarray} $$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Least%20Squares%20Closing%20Thoughts%20-%20Discrete"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,464 @@
+{ "mapping" : 
+  [
+    {
+      "doc" : "Assts",
+      "url" : "Protected/Assts/index.html"
+    },
+    {
+      "doc" : "Book",
+      "url" : "Protected/Book/index.html"
+    },
+    {
+      "doc" : "MachineAssignment-01",
+      "url" : "Assts/MachineAssignment-01/index.html"
+    },
+    {
+      "doc" : "MachineAssignment-02",
+      "url" : "Assts/MachineAssignment-02/index.html"
+    },
+    {
+      "doc" : "MachineAssignment-03",
+      "url" : "Assts/MachineAssignment-03/index.html"
+    },
+    {
+      "doc" : "Reviews417",
+      "url" : "Protected/Reviews417/index.html"
+    },
+    {
+      "doc" : "aQuickWarmUp1",
+      "url" : "Public/aQuickWarmUp1/index.html"
+    },
+    {
+      "doc" : "approximationExample",
+      "url" : "Public/approximationExample/index.html"
+    },
+    {
+      "doc" : "approximationExample2",
+      "url" : "Public/approximationExample2/index.html"
+    },
+    {
+      "doc" : "approximationNotation",
+      "url" : "Public/approximationNotation/index.html"
+    },
+    {
+      "doc" : "approximationWhirlwindIntroduction",
+      "url" : "Public/approximationWhirlwindIntroduction/index.html"
+    },
+    {
+      "doc" : "arithmeticError1",
+      "url" : "Public/arithmeticError1/index.html"
+    },
+    {
+      "doc" : "arithmeticError2",
+      "url" : "Public/arithmeticError2/index.html"
+    },
+    {
+      "doc" : "arithmeticErrorBounding",
+      "url" : "Protected/arithmeticErrorBounding/index.html"
+    },
+    {
+      "doc" : "arithmeticErrorGeneralized",
+      "url" : "Protected/arithmeticErrorGeneralized/index.html"
+    },
+    {
+      "doc" : "asstInCanvas",
+      "url" : "Assts/asstInCanvas/index.html"
+    },
+    {
+      "doc" : "asstPlaceholder",
+      "url" : "Assts/asstPlaceholder/index.html"
+    },
+    {
+      "doc" : "binaryArithmeticByHand",
+      "url" : "Public/binaryArithmeticByHand/index.html"
+    },
+    {
+      "doc" : "cancellationError",
+      "url" : "Protected/cancellationError/index.html"
+    },
+    {
+      "doc" : "canvasGrades",
+      "url" : "Public/canvasGrades/index.html"
+    },
+    {
+      "doc" : "communications",
+      "url" : "Public/communications/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleBookIntegral",
+      "url" : "Public/conditionNumberExampleBookIntegral/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleExponential",
+      "url" : "Public/conditionNumberExampleExponential/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleLine",
+      "url" : "Public/conditionNumberExampleLine/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleLn",
+      "url" : "Public/conditionNumberExampleLn/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleMonomial",
+      "url" : "Public/conditionNumberExampleMonomial/index.html"
+    },
+    {
+      "doc" : "conditionNumberExamplePolynomial",
+      "url" : "Public/conditionNumberExamplePolynomial/index.html"
+    },
+    {
+      "doc" : "conditionNumberExampleSqrt",
+      "url" : "Public/conditionNumberExampleSqrt/index.html"
+    },
+    {
+      "doc" : "conditionNumberExponent",
+      "url" : "Public/conditionNumberExponent/index.html"
+    },
+    {
+      "doc" : "conditionNumberMatrices",
+      "url" : "Protected/conditionNumberMatrices/index.html"
+    },
+    {
+      "doc" : "conditionNumberProduct",
+      "url" : "Public/conditionNumberProduct/index.html"
+    },
+    {
+      "doc" : "conditionNumberQuickFirstExample",
+      "url" : "Public/conditionNumberQuickFirstExample/index.html"
+    },
+    {
+      "doc" : "conditionNumberSum",
+      "url" : "Public/conditionNumberSum/index.html"
+    },
+    {
+      "doc" : "conditionNumberVectorFunctions",
+      "url" : "Public/conditionNumberVectorFunctions/index.html"
+    },
+    {
+      "doc" : "conditioningSomeTrig",
+      "url" : "Public/conditioningSomeTrig/index.html"
+    },
+    {
+      "doc" : "convertBetweenBases",
+      "url" : "Public/convertBetweenBases/index.html"
+    },
+    {
+      "doc" : "cosSolverExample",
+      "url" : "Public/cosSolverExample/index.html"
+    },
+    {
+      "doc" : "example3-1.mmd",
+      "url" : "Public/pseudocodeMatrix/example3-1.mmd.html"
+    },
+    {
+      "doc" : "exampleReadme",
+      "url" : "Public/exampleReadme/index.html"
+    },
+    {
+      "doc" : "finitePrecisionErrorBase2",
+      "url" : "Public/finitePrecisionErrorBase2/index.html"
+    },
+    {
+      "doc" : "finitePrecisionErrorGeneral",
+      "url" : "Public/finitePrecisionErrorGeneral/index.html"
+    },
+    {
+      "doc" : "homework3.mmd",
+      "url" : "Protected/solutions/homework3.mmd.html"
+    },
+    {
+      "doc" : "interpolationBeginning",
+      "url" : "Public/interpolationBeginning/index.html"
+    },
+    {
+      "doc" : "interpolationCubicSplineExample",
+      "url" : "Protected/interpolationCubicSplineExample/index.html"
+    },
+    {
+      "doc" : "interpolationError",
+      "url" : "Protected/interpolationError/index.html"
+    },
+    {
+      "doc" : "interpolationErrorDerivation",
+      "url" : "Protected/interpolationErrorDerivation/index.html"
+    },
+    {
+      "doc" : "interpolationErrorExampleLinear",
+      "url" : "Protected/interpolationErrorExampleLinear/index.html"
+    },
+    {
+      "doc" : "interpolationErrorExampleQuadratic",
+      "url" : "Protected/interpolationErrorExampleQuadratic/index.html"
+    },
+    {
+      "doc" : "interpolationLagrange",
+      "url" : "Protected/interpolationLagrange/index.html"
+    },
+    {
+      "doc" : "interpolationNewtonAlg3_1",
+      "url" : "Public/interpolationNewtonAlg3_1/index.html"
+    },
+    {
+      "doc" : "interpolationNewtonAlg3_2",
+      "url" : "Public/interpolationNewtonAlg3_2/index.html"
+    },
+    {
+      "doc" : "interpolationNewtonsMethod",
+      "url" : "Protected/interpolationNewtonsMethod/index.html"
+    },
+    {
+      "doc" : "interpolationPiecewiseLinear",
+      "url" : "Public/interpolationPiecewiseLinear/index.html"
+    },
+    {
+      "doc" : "interpolationSplines",
+      "url" : "Protected/interpolationSplines/index.html"
+    },
+    {
+      "doc" : "interpolationTakingStock",
+      "url" : "Protected/interpolationTakingStock/index.html"
+    },
+    {
+      "doc" : "interpolationVsLeastSquares",
+      "url" : "Public/interpolationVsLeastSquares/index.html"
+    },
+    {
+      "doc" : "introPost",
+      "url" : "Assts/introPost/index.html"
+    },
+    {
+      "doc" : "introductionOverview",
+      "url" : "Public/introductionOverview/index.html"
+    },
+    {
+      "doc" : "leastSquaresClosing",
+      "url" : "Public/leastSquaresClosing/index.html"
+    },
+    {
+      "doc" : "leastSquaresClosingDiscrete",
+      "url" : "Public/leastSquaresClosingDiscrete/index.html"
+    },
+    {
+      "doc" : "leastSquaresConsiderations",
+      "url" : "Public/leastSquaresConsiderations/index.html"
+    },
+    {
+      "doc" : "leastSquaresDerivation",
+      "url" : "Protected/leastSquaresDerivation/index.html"
+    },
+    {
+      "doc" : "leastSquaresExampleSinx",
+      "url" : "Public/leastSquaresExampleSinx/index.html"
+    },
+    {
+      "doc" : "leastSquaresExampleXSqrd",
+      "url" : "Public/leastSquaresExampleXSqrd/index.html"
+    },
+    {
+      "doc" : "leastSquaresFoundations0Overview",
+      "url" : "Protected/leastSquaresFoundations0Overview/index.html"
+    },
+    {
+      "doc" : "leastSquaresFoundations1",
+      "url" : "Protected/leastSquaresFoundations1/index.html"
+    },
+    {
+      "doc" : "leastSquaresFoundations2ApplyingProperties",
+      "url" : "Protected/leastSquaresFoundations2ApplyingProperties/index.html"
+    },
+    {
+      "doc" : "leastSquaresImpactOfPointSelection",
+      "url" : "Protected/leastSquaresImpactOfPointSelection/index.html"
+    },
+    {
+      "doc" : "leastSquaresUsingAMonomial",
+      "url" : "Public/leastSquaresUsingAMonomial/index.html"
+    },
+    {
+      "doc" : "leastSquaresUsingHigherDegree",
+      "url" : "Public/leastSquaresUsingHigherDegree/index.html"
+    },
+    {
+      "doc" : "leastSquaresUsingLowerDegree",
+      "url" : "Public/leastSquaresUsingLowerDegree/index.html"
+    },
+    {
+      "doc" : "matrixSolverExercise",
+      "url" : "Assts/matrixSolverExercise/index.html"
+    },
+    {
+      "doc" : "matrixSolverPseudoCode",
+      "url" : "Public/matrixSolverPseudoCode/index.html"
+    },
+    {
+      "doc" : "moduleSummary_01",
+      "url" : "Public/moduleSummary_01/index.html"
+    },
+    {
+      "doc" : "moduleSummary_02",
+      "url" : "Public/moduleSummary_02/index.html"
+    },
+    {
+      "doc" : "moduleSummary_03",
+      "url" : "Public/moduleSummary_03/index.html"
+    },
+    {
+      "doc" : "moduleSummary_04",
+      "url" : "Public/moduleSummary_04/index.html"
+    },
+    {
+      "doc" : "moduleSummary_05",
+      "url" : "Public/moduleSummary_05/index.html"
+    },
+    {
+      "doc" : "moduleSummary_06",
+      "url" : "Public/moduleSummary_06/index.html"
+    },
+    {
+      "doc" : "moduleSummary_07",
+      "url" : "Public/moduleSummary_07/index.html"
+    },
+    {
+      "doc" : "moduleSummary_08",
+      "url" : "Public/moduleSummary_08/index.html"
+    },
+    {
+      "doc" : "moduleSummary_09",
+      "url" : "Public/moduleSummary_09/index.html"
+    },
+    {
+      "doc" : "moduleSummary_10",
+      "url" : "Public/moduleSummary_10/index.html"
+    },
+    {
+      "doc" : "navigation",
+      "url" : "Directory/navigation/index.html"
+    },
+    {
+      "doc" : "nonLinearSolverPseudoCodeDisussion",
+      "url" : "Protected/nonLinearSolverPseudoCodeDisussion/index.html"
+    },
+    {
+      "doc" : "officeHours",
+      "url" : "Public/officeHours/index.html"
+    },
+    {
+      "doc" : "outline",
+      "url" : "Directory/outline/index.html"
+    },
+    {
+      "doc" : "policies",
+      "url" : "Directory/policies/index.html"
+    },
+    {
+      "doc" : "polynomialSolverExample",
+      "url" : "Public/polynomialSolverExample/index.html"
+    },
+    {
+      "doc" : "portingToRust.mmd",
+      "url" : "Public/solverDiscussion/portingToRust.mmd.html"
+    },
+    {
+      "doc" : "preSolvedAbLine",
+      "url" : "Public/preSolvedAbLine/index.html"
+    },
+    {
+      "doc" : "precisionIntro",
+      "url" : "Public/precisionIntro/index.html"
+    },
+    {
+      "doc" : "project-cpu-temps",
+      "url" : "Assts/project-cpu-temps/index.html"
+    },
+    {
+      "doc" : "project-milestone-final",
+      "url" : "Assts/project-milestone-final/index.html"
+    },
+    {
+      "doc" : "project-milestone-input",
+      "url" : "Assts/project-milestone-input/index.html"
+    },
+    {
+      "doc" : "project-milestone-least-squares",
+      "url" : "Assts/project-milestone-least-squares/index.html"
+    },
+    {
+      "doc" : "project-milestone-piecewise-linear",
+      "url" : "Assts/project-milestone-piecewise-linear/index.html"
+    },
+    {
+      "doc" : "pseudocodeMatrix",
+      "url" : "Public/pseudocodeMatrix/index.html"
+    },
+    {
+      "doc" : "quadraticFormula",
+      "url" : "Public/quadraticFormula/index.html"
+    },
+    {
+      "doc" : "reconcileXTXAb",
+      "url" : "Public/reconcileXTXAb/index.html"
+    },
+    {
+      "doc" : "repeatedOperations",
+      "url" : "Public/repeatedOperations/index.html"
+    },
+    {
+      "doc" : "reviewFinitePrecision",
+      "url" : "Protected/reviewFinitePrecision/index.html"
+    },
+    {
+      "doc" : "reviewResources",
+      "url" : "Public/reviewResources/index.html"
+    },
+    {
+      "doc" : "solidHpc",
+      "url" : "Protected/solidHpc/index.html"
+    },
+    {
+      "doc" : "solutions",
+      "url" : "Protected/solutions/index.html"
+    },
+    {
+      "doc" : "solverDiscussion",
+      "url" : "Public/solverDiscussion/index.html"
+    },
+    {
+      "doc" : "support",
+      "url" : "Public/support/index.html"
+    },
+    {
+      "doc" : "syllabus",
+      "url" : "Public/syllabus/index.html"
+    },
+    {
+      "doc" : "tempDir",
+      "url" : "Public/tempDir/index.html"
+    },
+    {
+      "doc" : "theBeginning",
+      "url" : "Public/theBeginning/index.html"
+    },
+    {
+      "doc" : "theConditionNumber",
+      "url" : "Public/theConditionNumber/index.html"
+    },
+    {
+      "doc" : "tools",
+      "url" : "Public/tools/index.html"
+    },
+    {
+      "doc" : "twoIsPrime.mmd",
+      "url" : "Public/aQuickWarmUp1/twoIsPrime.mmd.html"
+    },
+    {
+      "doc" : "unfamiliarNotation",
+      "url" : "Public/unfamiliarNotation/index.html"
+    },
+    {
+      "doc" : "unfamiliarNotationMountainStory",
+      "url" : "Public/unfamiliarNotationMountainStory/index.html"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Number Example - Exponent</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Exponent"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Number Example - Exponent</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#two-methods">1 Two Methods</a></div><div class="toc-h2"><a href="#compute-f-x-">1.1 Compute f’(x)</a></div><div class="toc-h2"><a href="#natural-log-trick">1.2 Natural Log Trick</a></div><div class="toc-h1"><a href="#computing-the-condition-number">2 Computing the Condition Number</a></div><div class="toc-h1"><a href="#examining-behavior">3 Examining Behavior</a></div></div><p>Suppose we are interested in the condition number of the exponential function.</p>
+    <p>$$ f(x) = \alpha e^{bx} $$</p>
+    <p>We will use the general form of the condition number.</p>
+    <p>$$ (cond\phantom{1}f)(x) = \left|\frac{xf^\prime(x)}{f(x)} \right| $$</p>
+    <a id="twomethods"/><h1 id="two-methods">1 Two Methods</h1><a id="computefx"/><h2 id="compute-f-x-">1.1 Compute f’(x)</h2><p>We can compute the derivative of</p>
+    <p>$$ f(x) = \alpha e^{bx} $$</p>
+    <p>directly using the exponent rule.</p>
+    <p>$$ f^\prime(x) = \alpha b e^{bx} $$</p>
+    <a id="naturallogtrick"/><h2 id="natural-log-trick">1.2 Natural Log Trick</h2><p>Sometimes… the <em>natural log trick</em> can simplify the algebra. The natural log trick used the derivative of the natural log, i.e., </p>
+    <p>$$ \frac{d}{dx}\ln(f(x)) = \frac{f^\prime(x)}{f(x)} $$</p>
+    <p>Let use use the natural log trick for $f(x) = \alpha e^{bx}$:</p>
+    <p>$$ \begin{eqnarray} \frac{d}{dx}\ln(\alpha e^{bx})  &amp;=&amp; \frac{d}{dx}\left(\ln(\alpha) + \ln(e^{bx})\right) \\  &amp;=&amp; \frac{d}{dx}\left(\ln(\alpha)\right) + \frac{d}{dx}\left(\ln(e^{bx})\right) \\  &amp;=&amp; \frac{d}{dx}\left(\ln(e^{bx})\right) \\  &amp;=&amp; \frac{d}{dx}\left(bx\right) \\  &amp;=&amp; b \\ \end{eqnarray} $$</p>
+    <p>The <em>natural log trick</em> often allows a problem to be simplified algebraically (through properties of the natural log) before computing any deviates.</p>
+    <a id="computingtheconditionnumber"/><h1 id="computing-the-condition-number">2 Computing the Condition Number</h1><p>Now… we can plug the result into the condition number formula.</p>
+    <p>$$ \begin{eqnarray} (cond\phantom{1}f)(x) &amp;=&amp; \left|\frac{xf^\prime(x)}{f(x)} \right| \\  &amp;=&amp; \left|x b \right| \\  &amp;=&amp; |x|*|b|\\ \end{eqnarray} $$</p>
+    <a id="examiningbehavior"/><h1 id="examining-behavior">3 Examining Behavior</h1><p>Suppose we are interested in three cases:</p>
+    <ul>
+  <li>$x \to 0$</li>
+  <li>$x \to \infty$</li>
+  <li>$x \to -\infty$</li>
+</ul><p>As $x$ approaches 0.. the condition number also approaches zero. </p>
+    <p>$$ \lim_{x \to 0} = \lim_{x \to 0} |xb| \to 0 \therefore \text{Well Conditioned} $$</p>
+    <p>As $x$ approaches infinity.. the condition number also approaches infinity.</p>
+    <p>$$ \lim_{x \to \infty} = \lim_{x \to \infty} |xb| \to \infty \therefore \text{Ill Conditioned} $$</p>
+    <p>The third case (i.e., $x \to -\infty$) is simliar to $x \to \infty$.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Number%20Example%20-%20Exponent"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

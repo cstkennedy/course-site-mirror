@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Interpolation - The Beginning</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Interpolation%20-%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Interpolation - The Beginning</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#interpolation-vs-least-squares-approximation">1 Interpolation vs. Least Squares Approximation</a></div><div class="toc-h1"><a href="#interpolation-error">2 Interpolation Error</a></div><div class="toc-h1"><a href="#linear-interpolation-forms">3 Linear Interpolation Forms</a></div><div class="toc-h1"><a href="#introducing-the-lagrange-form">4 Introducing the Lagrange Form</a></div><div class="toc-h1"><a href="#polynomial-forms">5 Polynomial Forms</a></div><div class="toc-h2"><a href="#power-form">5.1 Power Form</a></div><div class="toc-h2"><a href="#shifted-power-form">5.2 Shifted Power Form</a></div><div class="toc-h2"><a href="#nested-form">5.3 Nested Form</a></div></div><p>Take some time to explore the interactive example. Note that the:</p>
+    <ul>
+  <li>blue line represents an interpolation function: $p_1(x)$</li>
+  <li>green line represents some “unknown” function: $f(x)$</li>
+  <li>red line represents error at some point: $k$</li>
+</ul><iframe frameborder="0" height="500" src="https://www.desmos.com/calculator/av5cwch8eu?embed" style="border: 1px solid #ccc" width="100%">
+</iframe><a id="interpolationvsleastsquaresapproximation"/><h1 id="interpolation-vs-least-squares-approximation">1 Interpolation vs. Least Squares Approximation</h1><p>At first glance one might say… “But that is just Least Squares Approximation!”</p>
+    <p><strong>However, interpolation requires that the interpolation/interpolating function passes throught all input points exactly.</strong></p>
+    <p>$$ \forall x_i \phantom{2} f(x_i) = p(x_i) $$</p>
+    <p>Least Squares Approximation does <strong>not</strong> have the “$f(x_i) = p(x_i)$” requirement. </p>
+    <a id="interpolationerror"/><h1 id="interpolation-error">2 Interpolation Error</h1><p>We still need to examine at least a couple interpolation methods before examining interpolation error. For the moment… let us make a note of the <em>Interpolation Error Formula</em>.</p>
+    <p>$$ f(x) - p_n(x) = \frac{f^{(n+1)}(\xi(x))}{(n+1)!} \prod\limits_{i=0}^{n}(x - x_i) $$</p>
+    <p>In a future lecture we will discuss each term. For now… let us make four notes:</p>
+    <ul>
+  <li>$e(x) = f(x) - p(x)$ is the error (do not split the terms)</li>
+  <li>$n$ is the polynomial degree</li>
+  <li>$f^{(n+1)}$ is the $n+1^{th}$ derivative of $f$</li>
+  <li>$\xi(x)$ requires a review of Rolle’s Theorem</li>
+</ul><p>If we have a line… the formula becomes… $$ f(x) - p_1(x) = \frac{f^{(2)}(\xi(x))}{2} (x - x_0)(x - x_1) $$</p>
+    <a id="linearinterpolationforms"/><h1 id="linear-interpolation-forms">3 Linear Interpolation Forms</h1><div class="noFloat"> </div><div class="sidebar pct50">
+<p><strong>Note that:</strong></p>
+    
+<ul>
+  <li>$f_0$ is shorthand for $f(x_0)$</li>
+  <li>$f_1$ is shorthand for $f(x_1)$</li>
+</ul>
+</div><p>We know from previous discussions that (after a little algebra) $p_1(x)$ can be written as…</p>
+    <p>$$ p_1(x) = \frac{f_1 - f_0}{x_1 - x_0} (x - x_0) + f_0 $$</p>
+    <p>This happens to be… Newton’s Form of the Interpolation Polynomial for a line.</p>
+    <a id="introducingthelagrangeform"/><h1 id="introducing-the-lagrange-form">4 Introducing the Lagrange Form</h1><p>If we perform a little algebraic manipulation…</p>
+    <p>$$ \begin{eqnarray} p_1(x)  &amp;=&amp;  \frac{f_1 - f_0}{x_1 - x_0} (x - x_0) + f_0 \\  &amp;=&amp;  \frac{(x - x_0)f_1 - (x - x_0)f_0}{x_1 - x_0} + f_0 \\  &amp;=&amp;  \frac{(x - x_0)f_1 - (x - x_0)f_0}{x_1 - x_0} + \frac{x_1 - x_0}{x_1 - x_0}f_0 \\  &amp;=&amp;  \frac{(x - x_0)f_1 - (x - x_0)f_0 + (x_1 - x_0)f_0 }{x_1 - x_0} \\  &amp;=&amp;  \frac{(x - x_0)f_1 + (x_1 - x_0)f_0 - (x - x_0)f_0}{x_1 - x_0} \\  &amp;=&amp;  \frac{(x - x_0)f_1 + \Big((x_1 - x_0) - (x - x_0)\Big)f_0}{x_1 - x_0} \\  &amp;=&amp;  \frac{(x - x_0)f_1 + \Big(x_1 - x_0 - x + x_0\Big)f_0}{x_1 - x_0} \\  &amp;=&amp;  \frac{(x - x_0)f_1 + (x_1 - x)f_0}{x_1 - x_0} \\  &amp;=&amp;  \frac{(x - x_0)f_1}{x_1 - x_0}  + \frac{(x_1 - x)f_0}{x_1 - x_0} \\  &amp;=&amp;  \frac{(x_1 - x)}{x_1 - x_0} f_0  + \frac{x - x_0}{x_1 - x_0} f_1 \\  &amp;=&amp;  \frac{(-1)}{(-1)}\frac{(x_1 - x)}{x_1 - x_0} f_0  + \frac{x - x_0}{x_1 - x_0} f_1 \\  &amp;=&amp;  \frac{x - x_1}{x_0 - x_1} f_0  + \frac{x - x_0}{x_1 - x_0} f_1 \\ \end{eqnarray} $$</p>
+    <p>We end up with the Lagrange Form of the Interpolation Polynomial for a line.</p>
+    <a id="polynomialforms"/><h1 id="polynomial-forms">5 Polynomial Forms</h1><p>As we discuss interpolation methods varying polynomials form will be encountered (beyond the familiar power form).</p>
+    <p><strong>Note that the constants (e.g., $c_i, \alpha_i, b_i$) in each example are placeholders for real numbers</strong></p>
+    <a id="powerform"/><h2 id="power-form">5.1 Power Form</h2><p>The power form is the most familiar.</p>
+    <p>$$ \begin{eqnarray} p_n(x)  = \sum\limits_{k=0}^{n}c_k x^k  = c_0x^0 + c_1 x^1 + c_2 x^2 + \cdots + c_n x^n \end{eqnarray} $$</p>
+    <p>This form is ideal when taking derivatives, e.g.,</p>
+    <p>$$ \begin{eqnarray} \frac{d}{dx}p_n(x)  &amp;=&amp; \frac{d}{dx}\left(\sum\limits_{k=0}^{n}c_k x^k\right)  &amp;=&amp; \frac{d}{dx}\left(c_0x^0 + c_1 x^1 + c_2 x^2 + \cdots + c_n x^n\right) \\  &amp;=&amp; \sum\limits_{k=0}^{n}\frac{d}{dx}\left(c_k x^k\right)  &amp;=&amp; \frac{d}{dx}c_0x^0 + \frac{d}{dx}c_1 x^1 + \frac{d}{dx}c_2 x^2 + \cdots + \frac{d}{dx}c_n x^n \\ \end{eqnarray} $$</p>
+    <p>The power form is also ideal when integrating, e.g.,</p>
+    <p>$$ \begin{eqnarray} \int p_n(x) dx  &amp;=&amp; \int\left(\sum\limits_{k=0}^{n}c_k x^k\right)dx  &amp;=&amp; \int\left(c_0x^0 + c_1 x^1 + c_2 x^2 + \cdots + c_n x^n\right)dx \\  &amp;=&amp; \sum\limits_{k=0}^{n} \int c_k x^k dx  &amp;=&amp; \int c_0x^0 dx + \int c_1 x^1 dx + \int c_2 x^2 dx+ \cdots + \int c_n x^n dx \\ \end{eqnarray} $$</p>
+    <a id="shiftedpowerform"/><h2 id="shifted-power-form">5.2 Shifted Power Form</h2><p>The shifted power form does is not quite as nice to work with. It is, however, useful when expressing polynomials in terms of sums, products, or points.</p>
+    <p>$$ \begin{eqnarray} p_n(x)  = c_0 + c_1(x - \alpha_1) + c_2(x - \alpha_2)^2 + \cdots + c_n(x - \alpha_n)^n \end{eqnarray} $$</p>
+    <a id="nestedform"/><h2 id="nested-form">5.3 Nested Form</h2><p>The nested form can reduce the number of repeated multiplications.</p>
+    <p>$$ \begin{eqnarray} p_n(x)  = c_0 + (x - b_1)\Big(c_1 + (x - b_2)\Bigg(\cdots \end{eqnarray} $$</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Interpolation%20-%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>

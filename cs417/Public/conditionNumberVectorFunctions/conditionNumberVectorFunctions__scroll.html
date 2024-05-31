@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Condition Numbers - Vector Functions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Numbers%20-%20Vector%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Condition Numbers - Vector Functions</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#vector-norms">1 Vector Norms</a></div><div class="toc-h1"><a href="#properties-of-vector-norms">2 Properties of Vector Norms</a></div><div class="toc-h1"><a href="#condition-number-of-a-vector-function">3 Condition Number of a Vector Function</a></div><div class="toc-h2"><a href="#two-well-known-vector-functions">3.1 Two Well-Known Vector Functions</a></div><div class="toc-h1"><a href="#a-quick-example">4 A Quick Example</a></div><div class="toc-h1"><a href="#a-very-specific-case">5 A Very Specific Case</a></div><div class="toc-h1"><a href="#relationship-to-the-scaler-condition-number">6 Relationship to the “Scaler” Condition Number</a></div><div class="toc-h2"><a href="#a-quick-change-of-notation">6.1 A Quick Change of Notation</a></div><div class="toc-h2"><a href="#using-norm-definitions">6.2 Using Norm Definitions</a></div></div><p>All of our <em>Condition Number</em> discussions have focused on functions within the 2D plane (i.e., x-y coordinates). While functions in the form $f(x)$ have been the most common… the condition number can be defined for functions over multiple values, e.g.,</p>
+    <p>$$ f(x,y) = \sqrt{x^2 + y^2} $$</p>
+    <a id="vectornorms"/><h1 id="vector-norms">1 Vector Norms</h1><p>To discuss the conditioning of vector functions… we first need to discuss <em>vector norms</em> and their properties.</p>
+    <p>We are interested in $L_1$, $L_2$, and $L_{\infty}$ norms:</p>
+    <p>$$ L_{1} = \sum\limits_{0}^{n - 1} \left| x_i \right| $$</p>
+    <p>$$ L_{2} = \sqrt{\sum\limits_{0}^{n - 1} \left| x_i \right|^{2}} $$</p>
+    <p>where $n$ is the cardinality of the vector (i.e., the number of dimensions). You probably noticed that I skipped the $L_{\infty}$ norm. It has a succinent (and slightly less <em>approachable</em>) definition.</p>
+    <p>$$ L_{\infty} = \max_{0 \leq i \leq n-1}\left|x_i\right| $$</p>
+    <p>which I prefer to write as</p>
+    <p>$$ L_{\infty} = \max\{|x_0|, |x_1|, x_2|, \ldots |x_{n-1}|\} $$</p>
+    <a id="propertiesofvectornorms"/><h1 id="properties-of-vector-norms">2 Properties of Vector Norms</h1><ol>
+  <li>$||\vec{x}|| \geq 0$ if $\vec{x} \neq 0$</li>
+  <li>$||c\vec{x}|| = c||\vec{x}||$ for $c \in \mathbb{R}$</li>
+  <li>$||\vec{x} + \vec{y}|| \leq ||\vec{x}|| + ||\vec{y}||$</li>
+  <li>$||\vec{x} - \vec{y}|| \geq ||\vec{x}|| - ||\vec{y}||$</li>
+</ol><a id="conditionnumberofavectorfunction"/><h1 id="condition-number-of-a-vector-function">3 Condition Number of a Vector Function</h1><p>The condition number of a vector function is defined using the $L_{\infty}$-norm and the Jacobian Matrix.</p>
+    <p>$$ (cond f)(x)  = \frac{||\vec{x}||_{\infty} ||f^{\prime}(\vec{x})||_{\infty}}  {||f(\vec{x})||_{\infty}} \ $$</p>
+    <p>where $f^{\prime}$ is the Jacobian Matrix.</p>
+    <p>$$ f^{\prime}(\vec{x})  = \left[\begin{array}{cccc}  \frac{\partial f_1}{\partial x_{1}}  &amp; \frac{\partial f_1}{\partial x_{2}}  &amp; \ldots  &amp; \frac{\partial f_1}{\partial x_{n-1}} \\  \frac{\partial f_2}{\partial x_{1}}  &amp; \frac{\partial f_2}{\partial x_{2}}  &amp; \ldots  &amp; \frac{\partial f_2}{\partial x_{n-1}} \\  \vdots  &amp; \vdots  &amp; \ddots  &amp; \vdots \\  \frac{\partial f_{n-1}}{\partial x_{1}}  &amp; \frac{\partial f_{n-1}}{\partial x_{2}}  &amp; \ldots  &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}} \\ \end{array}\right] $$</p>
+    <a id="twowellknownvectorfunctions"/><h2 id="two-well-known-vector-functions">3.1 Two Well-Known Vector Functions</h2><p>There are two well-known vector functions… In fact you have used the quite a few times in Math and Physics problems.</p>
+    <p>The first equation is used to convert from Cartesian Coordinates to Polar Coordinates.</p>
+    <p>$$ f(x, y) =  \left[\begin{array}{c}  \sqrt{x^2 + y^2} \\  \arctan\left(\frac{y}{x}\right)  \end{array}\right] $$</p>
+    <p>… although we are usually only interested in distance from the origin (i.e., the first piece).</p>
+    <p>The second equation is used to convert from Polar Coordinates to Cartesian Coordinates.</p>
+    <p>$$ f(r, \theta) =  \left[\begin{array}{c}  |r|\cos\theta \\  |r|\sin\theta \\  \end{array}\right] $$</p>
+    <a id="aquickexample"/><h1 id="a-quick-example">4 A Quick Example</h1><p>For our example… we will use </p>
+    <p>$$ \vec{x} = \left[\begin{array}{c}  x \\  y \end{array}\right] $$</p>
+    <p>and</p>
+    <p>$$ f(\vec{x}) =  \left[\begin{array}{c}  \sqrt{x^2 + y^2}  \end{array}\right] $$</p>
+    <p>Let us start with $f^{\prime}$:</p>
+    <p>$$ f^{\prime}(\vec{x})  =  \left[\begin{array}{cc}  \frac{\partial}{\partial x_{1}} \sqrt{x^2 + y^2}  &amp; \frac{\partial f_1}{\partial x_{2}} \sqrt{x^2 + y^2}  \end{array}\right] \\  =  \left[\begin{array}{cc}  \frac{2x}{2\sqrt{x^2 + y^2}}  &amp; \frac{2y}{2\sqrt{x^2 + y^2}}  \end{array}\right] \\  =  \left[\begin{array}{cc}  \frac{x}{\sqrt{x^2 + y^2}}  &amp; \frac{y}{\sqrt{x^2 + y^2}}  \end{array}\right] \\ $$</p>
+    <p>Now… we can plug everything into the definition… </p>
+    <p>$$ \begin{eqnarray}{rl} \text{(}cond f)(x)  &amp;=&amp; \frac{||\vec{x}||_{\infty} ||f^{\prime}(\vec{x})||_{\infty}}  {||f(\vec{x})||_{\infty}} \\  &amp;=&amp; \frac{  ||\vec{x}||_{\infty}  \left|\left|  \left[\begin{array}{cc}  \frac{x}{\sqrt{x^2 + y^2}}  &amp; \frac{y}{\sqrt{x^2 + y^2}}  \end{array}\right]  \right|\right|_{\infty}  }  {||\sqrt{x^2 + y^2}||_{\infty}} \\  &amp;=&amp;  \frac{\max\left(|x|,|y|\right)  \max\left(  \left|\frac{x}{\sqrt{x^2 + y^2}} \right|,  \left|\frac{y}{\sqrt{x^2 + y^2}} \right|  \right)  }  {\max\left(\left|\sqrt{x^2 + y^2}\right|\right)} \end{eqnarray} $$</p>
+    <p>Maybe… we should have evaluated the $L_{\infty}$ Norms first. But… we can simplify this expression further. We know that:</p>
+    <ol>
+  <li>The square roots are all non-negative (since $x^2 + y^2 \geq 0$)</li>
+  <li>The square roots can be factored out of the numerator</li>
+</ol><p>$$ \begin{eqnarray} \text{(}cond f)(x)  &amp;=&amp;  \frac{\max\left(|x|,|y|\right)  \max\left(  \left|\frac{x}{\sqrt{x^2 + y^2}} \right|,  \left|\frac{y}{\sqrt{x^2 + y^2}} \right|  \right)  }  {\max\left(\left|\sqrt{x^2 + y^2}\right|\right)} \\  &amp;=&amp;  \frac{\frac{1}{\sqrt{x^2 + y^2}} \max\left(|x|,|y|\right)  \max\left(  \left|\frac{x}{1} \right|,  \left|\frac{y}{1} \right|  \right)  }  {\max\left(\left|\sqrt{x^2 + y^2}\right|\right)} \\  &amp;=&amp;  \frac{\frac{1}{\sqrt{x^2 + y^2}}  \max\left(|x|,|y|\right)  \max\left(\left|x\right|,\left|y\right|\right)  }  {\max\left(\left|\sqrt{x^2 + y^2}\right|\right)} \\  &amp;=&amp;  \frac{\frac{1}{\sqrt{x^2 + y^2}}  \max\left(|x|,|y|\right)  \max\left(\left|x\right|,\left|y\right|\right)  }  {\sqrt{x^2 + y^2}} \\  &amp;=&amp;  \frac{\max\left(|x|,|y|\right)  \max\left(\left|x\right|,\left|y\right|\right)  }  {x^2 + y^2} \\  &amp;=&amp;  \frac{\left(\max\left(|x|,|y|\right)\right)^2}  {x^2 + y^2} \\ \end{eqnarray} $$</p>
+    <p>And… that is our simplified condition number.</p>
+    <a id="averyspecificcase"/><h1 id="a-very-specific-case">5 A Very Specific Case</h1><p>Let us use the general solution for a <em>not-quite-randomly</em> selected point: $(4,5)$.</p>
+    <p>$$ \begin{eqnarray} \text{(}cond f)(x)  &amp;=&amp;  \frac{\left(\max\left(|x|,|y|\right)\right)^2}  {x^2 + y^2} \\  &amp;=&amp;  \frac{\left(\max\left(|4|,|5|\right)\right)^2}  {4^2 + 5^2} \\  &amp;=&amp;  \frac{\left(\max\left(4,5\right)\right)^2}  {16 + 25} \\  &amp;=&amp;  \frac{5^2}  {16 + 25} \\  &amp;=&amp;  \frac{25}  {41} \\  &amp;\leq&amp; 1 \end{eqnarray} $$</p>
+    <a id="relationshiptothescalerconditionnumber"/><h1 id="relationship-to-the-scaler-condition-number">6 Relationship to the “Scaler” Condition Number</h1><p>We now have two condition number definitions… one for vector functions ($f: \mathbb{R}^m \to \mathbb{R}^n$)…</p>
+    <p>$$ (cond f)(x)  = \frac{||\vec{x}||_{\infty} ||f^{\prime}(\vec{x})||_{\infty}}  {||f(\vec{x})||_{\infty}} \ $$</p>
+    <p>and one for functions on scaler values ($f: \mathbb{R} \to \mathbb{R}$)…</p>
+    <p>$$ (cond f)(x)  = \left|\frac{x f^{\prime}(x)}  {f(\vec{x})}\right| \ $$</p>
+    <p>We can actual show that if we have:</p>
+    <ol>
+  <li>a vector with single element</li>
+  <li>a vector function with a single sub-function</li>
+</ol><p>that both definitions are equivalent.</p>
+    <a id="aquickchangeofnotation"/><h2 id="a-quick-change-of-notation">6.1 A Quick Change of Notation</h2><p>Let us rewrite the Condition Number defintion for vector functions.</p>
+    <p>$$ (cond v)(r)  = \frac{||\vec{r}||_{\infty} ||v^{\prime}(\vec{r})||_{\infty}}  {||v(\vec{r})||_{\infty}} \ $$</p>
+    <p>Why change $f$ to $v$ and $x$ to $r$? Subscripts… we can forgo subscripts. Let us define $v$ and $\vec{r}$ as</p>
+    <p>$$ v = [f(x)] $$</p>
+    <p>and</p>
+    <p>$$ \vec{r} = [x] $$</p>
+    <p>We now have two vectors… one that contains a single real number (i.e., $x$) and one that contains a function ($f$) on that element.</p>
+    <a id="usingnormdefinitions"/><h2 id="using-norm-definitions">6.2 Using Norm Definitions</h2><p>If we apply the definition of the $L_{\infty}$-Norm to each term…</p>
+    <p>$$ \begin{eqnarray} ||\vec{r}||_{\infty}  &amp;=&amp;  ||[x]||_{\infty} \\  &amp;=&amp;  \max(|x|) \\ \end{eqnarray} $$</p>
+    <p>$$ \begin{eqnarray} ||v||_{\infty}  &amp;=&amp;  ||[f(x)]||_{\infty} \\  &amp;=&amp;  \max(|f(x)|) \\ \end{eqnarray} $$</p>
+    <p>$$ \begin{eqnarray} ||v^\prime||_{\infty}  &amp;=&amp;  ||[f(x)]||_{\infty} \\  &amp;=&amp;  \max(\left|\frac{\partial}{\partial x}f(x)\right|) \\ \end{eqnarray} $$</p>
+    <p>Note that since</p>
+    <ol>
+  <li>$f(x)$ is a function on a scaler value</li>
+  <li>$\vec{r}$ contains a single element</li>
+</ol><p>we can simplify the last norm a bit more.</p>
+    <p>$$ \begin{eqnarray} ||v^\prime||_{\infty}  &amp;=&amp;  ||[f(x)]||_{\infty} \\  &amp;=&amp;  \max(\left|\frac{\partial}{\partial x}f(x)\right|) \\  &amp;=&amp;  \max(\left|\frac{d}{d x}f(x)\right|) \\  &amp;=&amp;  \max(\left|f^{\prime}(x)\right|) \\ \end{eqnarray} $$</p>
+    <p>We can use each of the definitions in the <em>Condition Number</em> formula.</p>
+    <p>$$ \begin{eqnarray} (cond\phantom{1}v)(\vec{r})  &amp;=&amp;  \frac{||\vec{r}||_{\infty} ||v^{\prime}(\vec{r})||_{\infty}}  {||v(\vec{r})||_{\infty}} \\  &amp;=&amp;  \frac{\max(|x|) \max(\left|f^{\prime}(x)\right|)}  {\max(\left|f(x)\right|)} \\ \end{eqnarray} $$</p>
+    <p>The max of a single value is that value… </p>
+    <p>$$ \begin{eqnarray} (cond\phantom{1}v)(\vec{r})  &amp;=&amp;  \frac{\max(|x|) \max(\left|f^{\prime}(x)\right|)}  {\max(\left|f(x)\right|)} \\  &amp;=&amp;  \frac{|x| * \left|f^{\prime}(x)\right|}  {\left|f(x)\right|} \\ \end{eqnarray} $$</p>
+    <p>And… we can use the properties of the absolute value to get…</p>
+    <p>$$ \begin{eqnarray} (cond\phantom{1}v)(\vec{r})  &amp;=&amp;  \frac{|x| * \left|f^{\prime}(x)\right|}  {\left|f(x)\right|} \\  &amp;=&amp;  \frac{\left|x f^{\prime}(x)\right|}  {\left|f(x)\right|} \\  &amp;=&amp;  \left|  \frac{x f^{\prime}(x)}  {f(x)} \right|\\ \end{eqnarray} $$</p>
+    <p>And… we now have the familiar form of the <em>Condition Number</em>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS417%2C%20Condition%20Numbers%20-%20Vector%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2023, Old Dominion Univ.</div></body></html>
