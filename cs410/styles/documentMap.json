@@ -1,0 +1,228 @@
+{ "mapping" : 
+  [
+    {
+      "doc" : "Assts",
+      "url" : "Protected/Assts/index.html"
+    },
+    {
+      "doc" : "communications",
+      "url" : "Public/communications/index.html"
+    },
+    {
+      "doc" : "contactYourGroup",
+      "url" : "Assts/contactYourGroup/index.html"
+    },
+    {
+      "doc" : "cpiHistory",
+      "url" : "Public/cpiHistory/index.html"
+    },
+    {
+      "doc" : "designContribution",
+      "url" : "Assts/designContribution/index.html"
+    },
+    {
+      "doc" : "designDeliverables",
+      "url" : "Assts/designDeliverables/index.html"
+    },
+    {
+      "doc" : "designFormal",
+      "url" : "Assts/designFormal/index.html"
+    },
+    {
+      "doc" : "enhancements",
+      "url" : "Public/enhancements/index.html"
+    },
+    {
+      "doc" : "evalPreviousProject",
+      "url" : "Assts/evalPreviousProject/index.html"
+    },
+    {
+      "doc" : "feasibilityContent_01",
+      "url" : "Assts/feasibilityContent_01/index.html"
+    },
+    {
+      "doc" : "feasibilityContent_02",
+      "url" : "Assts/feasibilityContent_02/index.html"
+    },
+    {
+      "doc" : "feasibilityContent_03",
+      "url" : "Assts/feasibilityContent_03/index.html"
+    },
+    {
+      "doc" : "feasibilityContent_04",
+      "url" : "Assts/feasibilityContent_04/index.html"
+    },
+    {
+      "doc" : "feasibilityContent_05",
+      "url" : "Assts/feasibilityContent_05/index.html"
+    },
+    {
+      "doc" : "feasibilityContribution",
+      "url" : "Assts/feasibilityContribution/index.html"
+    },
+    {
+      "doc" : "feasibilityDeliverables",
+      "url" : "Assts/feasibilityDeliverables/index.html"
+    },
+    {
+      "doc" : "feasibilityFormal",
+      "url" : "Assts/feasibilityFormal/index.html"
+    },
+    {
+      "doc" : "finalExam",
+      "url" : "Assts/finalExam/index.html"
+    },
+    {
+      "doc" : "forumProfessionalism",
+      "url" : "Assts/forumProfessionalism/index.html"
+    },
+    {
+      "doc" : "groupEval1",
+      "url" : "Assts/groupEval1/index.html"
+    },
+    {
+      "doc" : "groupEval2",
+      "url" : "Assts/groupEval2/index.html"
+    },
+    {
+      "doc" : "groupWebsite",
+      "url" : "Public/groupWebsite/index.html"
+    },
+    {
+      "doc" : "introPost",
+      "url" : "Assts/introPost/index.html"
+    },
+    {
+      "doc" : "lab1Draft",
+      "url" : "Assts/lab1Draft/index.html"
+    },
+    {
+      "doc" : "lab1Foundation",
+      "url" : "Assts/lab1Foundation/index.html"
+    },
+    {
+      "doc" : "lab1Outline",
+      "url" : "Assts/lab1Outline/index.html"
+    },
+    {
+      "doc" : "lcd",
+      "url" : "Public/lcd/index.html"
+    },
+    {
+      "doc" : "lectureRecordingsOrientation",
+      "url" : "Public/lectureRecordingsOrientation/index.html"
+    },
+    {
+      "doc" : "navigation",
+      "url" : "Directory/navigation/index.html"
+    },
+    {
+      "doc" : "officeHours",
+      "url" : "Public/officeHours/index.html"
+    },
+    {
+      "doc" : "outline",
+      "url" : "Directory/outline/index.html"
+    },
+    {
+      "doc" : "peerPresentationEval",
+      "url" : "Assts/peerPresentationEval/index.html"
+    },
+    {
+      "doc" : "policies",
+      "url" : "Directory/policies/index.html"
+    },
+    {
+      "doc" : "presQuals",
+      "url" : "Public/presQuals/index.html"
+    },
+    {
+      "doc" : "prototypeContribution",
+      "url" : "Assts/prototypeContribution/index.html"
+    },
+    {
+      "doc" : "prototypeDeliverables",
+      "url" : "Assts/prototypeDeliverables/index.html"
+    },
+    {
+      "doc" : "prototypeFormal",
+      "url" : "Assts/prototypeFormal/index.html"
+    },
+    {
+      "doc" : "riskAnalysis",
+      "url" : "Public/riskAnalysis/index.html"
+    },
+    {
+      "doc" : "risks",
+      "url" : "Public/risks/index.html"
+    },
+    {
+      "doc" : "schedule",
+      "url" : "Public/schedule/index.html"
+    },
+    {
+      "doc" : "selfEval1",
+      "url" : "Assts/selfEval1/index.html"
+    },
+    {
+      "doc" : "societalProbPost",
+      "url" : "Assts/societalProbPost/index.html"
+    },
+    {
+      "doc" : "societalProbPresentation",
+      "url" : "Assts/societalProbPresentation/index.html"
+    },
+    {
+      "doc" : "societalProbRefinement",
+      "url" : "Assts/societalProbRefinement/index.html"
+    },
+    {
+      "doc" : "softwareDesign",
+      "url" : "Public/softwareDesign/index.html"
+    },
+    {
+      "doc" : "support",
+      "url" : "Public/support/index.html"
+    },
+    {
+      "doc" : "syllabus",
+      "url" : "Public/syllabus/index.html"
+    },
+    {
+      "doc" : "taskBreakdown",
+      "url" : "Public/taskBreakdown/index.html"
+    },
+    {
+      "doc" : "tempDir",
+      "url" : "Public/tempDir/index.html"
+    },
+    {
+      "doc" : "trackingWorkGitLab",
+      "url" : "Public/trackingWorkGitLab/index.html"
+    },
+    {
+      "doc" : "users",
+      "url" : "Public/users/index.html"
+    },
+    {
+      "doc" : "websiteFinal",
+      "url" : "Assts/websiteFinal/index.html"
+    },
+    {
+      "doc" : "websiteInitial",
+      "url" : "Assts/websiteInitial/index.html"
+    },
+    {
+      "doc" : "websiteUpdate_01",
+      "url" : "Assts/websiteUpdate_01/index.html"
+    },
+    {
+      "doc" : "websiteUpdate_02",
+      "url" : "Assts/websiteUpdate_02/index.html"
+    },
+    {
+      "doc" : "websiteUpdate_03",
+      "url" : "Assts/websiteUpdate_03/index.html"
+    }
+  ]
+}

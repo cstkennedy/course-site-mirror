@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Feasibility Deliverable Overview</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS410%2C%20Feasibility%20Deliverable%20Overview"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Feasibility Deliverable Overview</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#the-societal-problem">2 The Societal Problem</a></div><div class="toc-h2"><a href="#problem-statement">2.1 Problem Statement</a></div><div class="toc-h2"><a href="#problem-characteristics">2.2 Problem Characteristics</a></div><div class="toc-h2"><a href="#current-process-flow">2.3 Current Process Flow</a></div><div class="toc-h1"><a href="#solution">3 Solution</a></div><div class="toc-h2"><a href="#solution-statement">3.1 Solution Statement</a></div><div class="toc-h2"><a href="#solution-process-flow">3.2 Solution Process Flow</a></div><div class="toc-h2"><a href="#what-it-will-do">3.3 What it Will Do</a></div><div class="toc-h2"><a href="#what-it-will-not-do">3.4 What it Will Not Do</a></div><div class="toc-h2"><a href="#competition-matrix">3.5 Competition Matrix</a></div><div class="toc-h1"><a href="#development-tools">4 Development Tools</a></div><div class="toc-h1"><a href="#major-functional-components">5 Major Functional Components</a></div><div class="toc-h2"><a href="#major-functional-components-diagram">5.1 Major Functional Components Diagram</a></div><div class="toc-h1"><a href="#risks">6 Risks</a></div><div class="toc-h1"><a href="#appendix">7 Appendix</a></div><div class="toc-h2"><a href="#real-world-product-vs-prototype-table">7.1 Real World Product vs Prototype Table</a></div><div class="toc-h1"><a href="#your-immediate-tasks">8 Your (Immediate) Tasks</a></div></div><h1 id="overview">1 Overview</h1><p>These deliverables will be discussed during recitation and are subject to change at instructor discretion. While this document outlines the main deliverables for the <strong>completed</strong> Feasibility Presentation… your team will be developing the materials over the next few <strong>weeks</strong>. This is merely an overview.</p>
+    <a id="thesocietalproblem"/><h1 id="the-societal-problem">2 The Societal Problem</h1><a id="problemstatement"/><h2 id="problem-statement">2.1 Problem Statement</h2><p>The <strong>Problem Statement</strong> is a description of some process (or operation) that can be improved. It is</p>
+    <ul>
+  <li>
+  <p>succinct - the minimum amount of language is used (i.e., any unnecessary words, sub-phrases, or sub-statements are pruned).</p>
+    </li>
+  <li>
+  <p>complete - the full context that an observer needs to understand the problem is captured by the statement.</p>
+    </li>
+  <li>
+  <p>unambiguous - any one reading the statement will walk away with the same understanding. <em>If you show the statement to twenty (20) different people… all of them will agree on the overall meaning.</em></p>
+    </li>
+</ul><p>You will find that this is very similar to writing requirements in an SRS.</p>
+    <a id="problemcharacteristics"/><h2 id="problem-characteristics">2.2 Problem Characteristics</h2><p>These are statistics, quotes, or additional context that serve to justify a software solution for the selected problem.</p>
+    <p><strong>Motivate the need for a software solution.</strong></p>
+    <a id="currentprocessflow"/><h2 id="current-process-flow">2.3 Current Process Flow</h2><p>A flowchart that summarizes the steps that a person would currently take using available tools and technology (i.e., the current process).</p>
+    <p>At the end of the day… we need to capture:</p>
+    <ol>
+  <li>Steps that can be automated</li>
+  <li>Steps that can be partially automated</li>
+  <li>Steps that are repetitive</li>
+  <li>Steps that are tedious</li>
+  <li>Steps that are subject to error</li>
+  <li>Shortcomings in the current process</li>
+</ol><h1 id="solution">3 Solution</h1><a id="solutionstatement"/><h2 id="solution-statement">3.1 Solution Statement</h2><p>Analogous to the Problem Statement. The Problem Statement succinctly, unambiguously, and completely states what the Societal Problem actually is.</p>
+    <p>The Solution Statement succinctly, unambiguously, and completely states what the software-based solution will be:</p>
+    <ol>
+  <li>Type of software that will be built (e.g., smartphone app, web app,  desktop application)</li>
+  <li>What will the software do at a very high level (i.e., how would I explain  to a friend, family member, or acquaintance?)</li>
+</ol><a id="solutionprocessflow"/><h2 id="solution-process-flow">3.2 Solution Process Flow</h2><p>This is another flowchart (one that serves as a complement to the <a href="#current-process-flow">current process flow</a>). It must summarize and show how the Real World Product (RWP) will change (improve) the overall process.</p>
+    <p>When you are building and presenting this flowchart…</p>
+    <ol>
+  <li>Emphasize what has changed</li>
+  <li>Described how that change is beneficial</li>
+  <li>Summarize any automation (fully automated and partially automated)</li>
+  <li>Use color to highlight steps that have changed (do not forget a key)</li>
+</ol><p>Keep in mind that if a process has <em>too many steps to show in a single diagram</em>… start with a high-level view and split the discussion into a sequence of smaller diagrams that <em>zoom in</em> on the different sub-sequences within the process. <strong>Be sure to discuss this with your teacher and team.</strong></p>
+    <p>If you find yourself spending more than four (4) minutes on the Current Process Flow… give some consideration to splitting diagram discussion. </p>
+    <a id="whatitwilldo"/><h2 id="what-it-will-do">3.3 What it Will Do</h2><p>This is a slightly more detailed breakdown of features and functionality. Think of this as an initial clarification of our Solution Statement. A short list of goals and sub-problems.</p>
+    <a id="whatitwillnotdo"/><h2 id="what-it-will-not-do">3.4 What it Will Not Do</h2><p>What problems (more aptly aspects of the problem) will we not address? …why?</p>
+    <a id="competitionmatrix"/><h2 id="competition-matrix">3.5 Competition Matrix</h2><p>The <strong>Competition Matrix</strong> focuses on four (4) questions:</p>
+    <ol>
+  <li>What solutions already exist?</li>
+  <li>What features and functionality do existing solutions offer?</li>
+  <li>What features and functionality do existing solutions <strong>not</strong> offer?</li>
+  <li>How do will <strong>our</strong> solution compare?</li>
+</ol><p>One thing that arises out of this process… is the notion of <strong>direct</strong> and <strong>indirect</strong> competitors.</p>
+    <ul>
+  <li>
+  <p>A direct competitor is something that offers a comparable service or solution that may be selected over our product (e.g., Firefox vs Google Chrome). <strong>Must be listed in our competition matrix.</strong></p>
+    </li>
+  <li>
+  <p>An indirect competitor is something that offers functionality similar to a portion our product (Khan Academy vs YouTube Channel). <strong>Acknowleging that it exists and clarifying why it is not a true competitor.</strong></p>
+    </li>
+</ul><p><em>Note… make sure that our product lists in the first column after feature.</em></p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Feature </th>
+      <th align="center"><strong>Rust</strong> </th>
+      <th align="center">C++ </th>
+      <th align="center">Java </th>
+      <th align="center">Python </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Supports multiple constructors </td>
+      <td align="center"> </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+      <td align="center"> </td>
+    </tr>
+    <tr>
+      <td align="left">Objects created in Heap Memory </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+    </tr>
+    <tr>
+      <td align="left">Objects created on the Stack </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+      <td align="center"> </td>
+      <td align="center"> </td>
+    </tr>
+    <tr>
+      <td align="left">Compiles to native code </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+      <td align="center"><em>with GraalVM</em> </td>
+      <td align="center"> </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Compiler handles memory allocation/deallocation</strong> </td>
+      <td align="center">Yes </td>
+      <td align="center"> </td>
+      <td align="center">Yes </td>
+      <td align="center">Yes </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Supports Generic Programming</strong> </td>
+      <td align="center"><em>Traits</em> </td>
+      <td align="center">Templates/Concepts </td>
+      <td align="center">Yes (with Type Erasure) </td>
+      <td align="center">Protocols </td>
+    </tr>
+  </tbody>
+</table><p>We want to emphasize:</p>
+    <ol>
+  <li>Our claims to fame, i.e.,
+    <ol>
+      <li>what we are doing</li>
+      <li>what we are doing better</li>
+      <li>what we are not doing</li>
+    </ol>
+  </li>
+  <li>Our main features</li>
+  <li>Who we are (i.e., show that we are not just <em>doing one thing better</em> or  doing <em>all the things</em>)</li>
+</ol><p>Let us keep the following rules in mind…</p>
+    <ol>
+  <li>
+  <p>Features and functionality must be listed in the left-most column.</p>
+    </li>
+  <li>
+  <p>Our RWP must be listed in the second column. <strong>(It should be clear who we  are.)</strong></p>
+    </li>
+  <li>
+  <p>Leave cells/entries blank if it does not apply to our solution or a  competitor. </p>
+    </li>
+  <li>
+  <p>Use a symbol (e.g., a check) to indicate when something does apply.</p>
+    </li>
+  <li>
+  <p>Use an asterisk or the word “partial” if a feature is only partially  available.</p>
+    </li>
+</ol><a id="developmenttools"/><h1 id="development-tools">4 Development Tools</h1><p>What tools and software will your team use during development. These are not <strong>part</strong> of what you are building.</p>
+    <p>You will start with:</p>
+    <ul>
+  <li>
+  <p><strong>Integrated Development Environment (IDE)</strong> - this will probably be <a href="https://code.visualstudio.com/">VSCode</a>.</p>
+    </li>
+  <li>
+  <p><strong>Version Control</strong> - this will be Git through GitHub.</p>
+    </li>
+  <li>
+  <p><strong>Continuous Integration (CI) and Continuous Deployment (CD)</strong> - this will be GitHub Actions &amp; Workflows</p>
+    </li>
+</ul><p>Eventually we will list:</p>
+    <ul>
+  <li>
+  <p><strong>Selected Language (Backend)</strong> - this will usually be Python or JavaScript (via Node.js)</p>
+    </li>
+  <li>
+  <p><strong>Selected Language (Frontend)</strong> - this will usually be some combination of HTML, CSS, and JavaScript</p>
+    </li>
+  <li>
+  <p><strong>Testing Framework(s)</strong> - this has usually ended up as PyTest or unittest for Python and Jest for JavaScript</p>
+    </li>
+  <li>
+  <p><strong>Documentation Tool</strong> - this is usually pydoc for Python, JSDoc for JavaScript, and Javadoc for Java</p>
+    </li>
+</ul><a id="majorfunctionalcomponents"/><h1 id="major-functional-components">5 Major Functional Components</h1><p>Software and technologies that will form our tech stack. The most common tech stack (historically speaking) was the LAMP stack:</p>
+    <ul>
+  <li><strong>L</strong> for Linux (Operating System)</li>
+  <li><strong>A</strong> for Apache (Web Server)</li>
+  <li><strong>M</strong> for MySQL (Database)</li>
+  <li><strong>P</strong> for PHP (Server Side Language)</li>
+</ul><p>More recently the use of</p>
+    <ul>
+  <li>
+  <p><strong>L</strong> - Docker and Docker Compose have decreased the importance of the selected operating system.</p>
+    </li>
+  <li>
+  <p><strong>A</strong> - Django and Flask (in Python) and Node.js (in JavaScript) have supplanted Apache as <strong>The Webserver</strong>. <em>Note that while NGINX is quite common… it is more than just a webserver and is beyond the scope of this discussion.</em></p>
+    </li>
+  <li>
+  <p><strong>M</strong> - PostgreSQL has become the <em>goto</em> for relational databases over MySQL. MongoDB and Firebase are the <em>goto</em> choices for NoSQL databases. SQLite exists for local applications.</p>
+    </li>
+  <li>
+  <p><strong>P</strong> - Python and Server-Side JavaScript have supplanted PHP.</p>
+    </li>
+</ul><a id="majorfunctionalcomponentsdiagram"/><h2 id="major-functional-components-diagram">5.1 Major Functional Components Diagram</h2><p>This is a diagram that shows would tools and technologies your software will require. This will include:</p>
+    <ul>
+  <li>Off-The-Shelf software</li>
+  <li>Off-The-Shelf hardware (if applicable)</li>
+  <li>What we will build</li>
+</ul><p>The diagram should communicate:</p>
+    <ol>
+  <li>
+  <p>What technologies currently exist and will be used as part of our product</p>
+    </li>
+  <li>
+  <p>What components and functionality we need to build (software)</p>
+    </li>
+  <li>
+  <p>What is <strong>in the box</strong></p>
+    </li>
+</ol><h1 id="risks">6 Risks</h1><p>These are any issues or problems that we will encounter. Our categories of interest include:</p>
+    <ol>
+  <li>
+  <p>Customer &amp; End User</p>
+    </li>
+  <li>
+  <p>Technical</p>
+    </li>
+  <li>
+  <p>Security</p>
+    </li>
+  <li>
+  <p>Legal</p>
+    </li>
+</ol><p>Slides will need to describe each risk, the probability of each risk, and the impact of each risk. The scale will be from 1 (lowest) to 5 (highest).</p>
+    <p>Each risk will be accompanied by a description of how that risk will be mitigated (Mitigation) and how that impact and probability will decrease.</p>
+    <p><strong>We will discuss risks in more detail during a future lecture.</strong></p>
+    <h1 id="appendix">7 Appendix</h1><p>Material in this section does not apply to the Feasibility Presentation and, if present in your slide deck, should be located in an Appendix section after your References slide.</p>
+    <a id="realworldproductvsprototypetable"/><h2 id="real-world-product-vs-prototype-table">7.1 Real World Product vs Prototype Table</h2><p>This is is a table with four (4) columns:</p>
+    <ol>
+  <li>
+  <p><strong>Features &amp; Functionality</strong> - This column lists features and functionality  discussed in the presentation materials (e.g., the Competition Matrix).</p>
+    </li>
+  <li>
+  <p><strong>RWP</strong> - This column indicates that the feature or functionality will be  present in the RWP.</p>
+    </li>
+  <li>
+  <p><strong>Prototype (Planned)</strong> - This column indicates whether a feature or  functionality will be present in the prototype. The word “partially” may  be used of part if the feature will be available.</p>
+    </li>
+  <li>
+  <p><strong>Prototype (Actual)</strong> - This column tracks any changes to prototype  functionality and features based on lessons learned throught CS 411W. This  column is usually not present in CS 410 presentations.</p>
+    </li>
+</ol><a id="yourimmediatetasks"/><h1 id="your-immediate-tasks">8 Your (Immediate) Tasks</h1><p>As a team…</p>
+    <ol>
+  <li>
+  <p>Create a slide deck in Google Slides.</p>
+    </li>
+  <li>
+  <p>Make sure everyone has edit access.</p>
+    </li>
+  <li>
+  <p>Create a placeholder slide for each of the deliverables listed within this  document.</p>
+    </li>
+  <li>
+  <p>Complete the <em>Title</em> slide.</p>
+    </li>
+  <li>
+    <p>Complete a <em>Team Bio</em> slide.</p>
+    
+    <p>Populate this slide with an entry for each team member (name and photo).</p>
+    
+  </li>
+  <li>
+    <p>Create an <em>Elevator Pitch</em> slide.</p>
+    
+    <p>Provide a high-level overview of the software to be built.</p>
+    
+  </li>
+  <li>
+  <p>Create a <em>Table of Contents</em> slide.</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS410%2C%20Feasibility%20Deliverable%20Overview"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2024, Old Dominion Univ.</div></body></html>

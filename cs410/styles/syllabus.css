@@ -1,0 +1,18 @@
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+table, th, td {
+    border-style: solid;
+    border-width: 1px;
+}
+
+tr td:first-child {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 4px;
+}

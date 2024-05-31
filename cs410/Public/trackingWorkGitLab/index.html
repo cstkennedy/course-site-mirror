@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Tracking Work in GitLab</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS410%2C%20Tracking%20Work%20in%20GitLab"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Tracking Work in GitLab</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#getting-started-setting-up-a-repository">1 Getting Started - Setting Up a Repository</a></div><div class="toc-h1"><a href="#getting-started-adding-team-members">2 Getting Started - Adding Team Members</a></div><div class="toc-h1"><a href="#setting-up-a-task-board">3 Setting Up a Task Board</a></div><div class="toc-h1"><a href="#adding-issues">4 Adding Issues</a></div></div><p>In CS 350… you tracked work on a semester project using OpenProject (or Redmine). GitLab provides a similar utility (i.e., an issue/task tracker).</p>
+    <p>You will need to create a repository on the CS GitLab server, <a href="https://git.cs.odu.edu/">https://git.cs.odu.edu/</a>. You will need to log in using your CS account.</p>
+    <a id="gettingstartedsettinguparepository"/><h1 id="getting-started-setting-up-a-repository">1 Getting Started - Setting Up a Repository</h1><p>Start by creating a Git Repository:</p>
+    <ol>
+  <li>Navigate to <a href="https://git.cs.odu.edu/">https://git.cs.odu.edu/</a>.</li>
+  <li>Log in.</li>
+  <li>Click the green <em>New Project</em> button.</li>
+</ol><p>You will be prompted to fill out a few pieces of information.</p>
+    <p><img alt="New Project" src="newProject.png"/></p>
+    <p>You need only fill out two pieces of information:</p>
+    <ol>
+  <li><em>Project name</em></li>
+  <li><em>Visibility Level</em></li>
+</ol><p>For your project name… enter <code>Year-Semester-Color</code>. For example, team gold during the Fall 2020 semester would enter <code>2020-Fall-Gold</code>. Set the <em>Visibility Level</em> to private. You will need to add your instructor and team members in a later step.</p>
+    <p>Go ahead and select the <em>Initialize repository with a README</em> checkbox. While you will not need to worry about the README now… it will come in handy later.</p>
+    <a id="gettingstartedaddingteammembers"/><h1 id="getting-started-adding-team-members">2 Getting Started - Adding Team Members</h1><p>To add team members to your project… navigate to your repository. Select <em>Members</em> from the sidebar. On the resulting page enter each person’s CS Account.</p>
+    <p><img alt="Grant Access" src="grantAccess.png"/></p>
+    <p>Make sure to set each person’s role to <em>Maintainer</em>.</p>
+    <a id="settingupataskboard"/><h1 id="setting-up-a-task-board">3 Setting Up a Task Board</h1><p>To navigate to the Task Board:</p>
+    <ol>
+  <li>Click <em>Issues</em> in the sidebar.</li>
+  <li>Click <em>Boards</em></li>
+</ol><p>Let us ignore the default <em>Developement</em> board. Let us create a separate task board called <em>Presentation Preparation</em>.</p>
+    <ol>
+  <li>Click the dropdown menu in the top left of the page.</li>
+  <li>Select <em>Create new board</em>.</li>
+  <li>Enter <em>Presentation Preparation</em> as the board name.</li>
+</ol><p>Now we need to set up task categories… You may opt to use your own categories. However, we will set up the following for the sake of this example:</p>
+    <ol>
+  <li>Open</li>
+  <li>Assigned</li>
+  <li>In Progress</li>
+  <li>Under Review/Discussion</li>
+  <li>Closed</li>
+</ol><p>The <em>Open</em> and <em>Closed</em> categories are added by default. </p>
+    <p><img alt="New Label" src="newLabel.png"/></p>
+    <p>To add the remaining categories, you will need to create lists:</p>
+    <ol>
+  <li>Click <em>Add list</em>.</li>
+  <li>Enter a list name.</li>
+  <li>Select a color.</li>
+  <li>Click <em>Create</em>.</li>
+</ol><p>An example repository is available at <a href="https://git.cs.odu.edu/tkennedy/2020-fall-demo/-/boards/302">https://git.cs.odu.edu/tkennedy/2020-fall-demo/-/boards/302</a>.</p>
+    <a id="addingissues"/><h1 id="adding-issues">4 Adding Issues</h1><p>To add an issue… Click the plus button in the <em>Open</em> column, enter a title, and click the submit button.</p>
+    <p><img alt="New Issue" src="newIssue.png"/></p>
+    <p>To edit the issue, click on the title. You will be presented with a page with a description box and a sidebar.</p>
+    <p><img alt="Issue Updates" src="issueUpdates.png"/></p>
+    <p>The sidebar contains options to set assignees and due dates. You can update each issue by dragging it between columns in the task board.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS410%2C%20Tracking%20Work%20in%20GitLab"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2018-2024, Old Dominion Univ.</div></body></html>
