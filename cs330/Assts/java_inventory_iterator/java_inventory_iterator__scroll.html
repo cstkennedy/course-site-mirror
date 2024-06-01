@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Item Inventory (Iterator)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Iterator%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Item Inventory (Iterator)</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#before-you-start">1 Before You Start</a></div><div class="toc-h1"><a href="#no-more-linked-lists-only-iterators-abstraction-">2 No More Linked Lists… Only Iterators &amp; Abstraction!</a></div><div class="toc-h1"><a href="#the-problem">3 The Problem</a></div><div class="toc-h2"><a href="#input">3.1 Input</a></div><div class="toc-h2"><a href="#output">3.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">4 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">5 Mechanics</a></div><div class="toc-h2"><a href="#packages">5.1 Packages</a></div><div class="toc-h2"><a href="#gradle-wrapper">5.2 Gradle Wrapper</a></div><div class="toc-h2"><a href="#compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</a></div><div class="toc-h2"><a href="#compiling-and-running-the-tests">5.4 Compiling and Running the Tests</a></div><div class="toc-h1"><a href="#files">6 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">7 Grading</a></div><div class="toc-h1"><a href="#submitting">8 Submitting</a></div><div class="toc-h1"><a href="#hints">9 Hints</a></div></div><p>Read the <a class="doc" href="../../Public/submitting/index.html" target="CS330_Public">general instructions on turning in assignments</a>. <strong>There is no precompiled solution provided for this assignment.</strong></p>
+    <a id="beforeyoustart"/><h1 id="before-you-start">1 Before You Start</h1><p>Make sure you understand the logic of Assignment 1. You will be re-implementing it with <em>iterators</em>. Before you start working:</p>
+    <ol>
+  <li>Make sure you understand the <a href="https://github.com/cstkennedy/cs330-examples">Review-03 Examples</a>.</li>
+  <li><strong>Watch the Assignment 1 Review</strong></li>
+</ol><a id="nomorelinkedlistsonlyiteratorsabstraction"/><h1 id="no-more-linked-lists-only-iterators-abstraction-">2 No More Linked Lists… Only Iterators &amp; Abstraction!</h1><p><strong>This assignment deals with the same problem as <a class="doc" href="../../Assts/java_inventory_llist/index.html" target="CS330_Assts">Assignment 1</a>.</strong> You are no longer working with a <em>linked list</em> or any low-level data structures for aggregate data. You will be working with iterators directly or indirectly (depending on how much <em>abstraction</em> you choose).</p>
+    <a id="theproblem"/><h1 id="the-problem">3 The Problem</h1><p>This assignment deals with a program that places items into separate inventories. This is similar to placing items into chests in <a href="https://minecraft.net/">Minecraft</a>. This assignment is similar to:</p>
+    <h2 id="input">3.1 Input</h2><p>The program reads data from two files, <em>itemsList-0x.txt</em> and <em>inventoryList-0x.txt</em>. File extensions on Linux may be arbitrary–i.e., these files could have been named with <em>.dat</em> as the extensions.</p>
+    <p>The first file, <em>itemsList-0x.txt</em>, lists all possible items. Each line represents one item in the form <em>id name</em>.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Sample itemsList-0x.txt</div>
+<pre><code>0 Air
+1 HP Potion
+2 MP Potion
+5 Iron Ore
+3 Bow Tie
+4 Dirt
+6 Diamond Ore
+7 Iron Ingot
+8 Diamond
+9 Diamond Block
+</code></pre>
+</blockquote><p>The second file, <em>inventoryList-0x.txt</em>, lists each individual inventory–or storage chest–followed by a list of items.</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Sample inventoryList-0x.txt</div>
+<pre><code># 5
+- 1 10
+- 2  5
+- 3  2
+# 6
+- 4  3
+- 5 27
+- 6 44
+- 7 55
+- 8  1
+- 9  4
+- 4  3
+# 2
+- 2  5
+- 9  4
+- 8  1
+- 5  2
+- 10 5
+</code></pre>
+</blockquote><p>Each line preceded by <em>#</em> denotes the start of a new inventory. Each line preceded by <code>-</code> denotes an item. The program creates a new inventory each time a <code>#</code> is encountered.</p>
+    <p>When a <code>-</code> is encountered, a stack of items, <code>ItemStack</code>, is created. The <code>ItemStack</code> is placed in the <code>Inventory</code> based on the following rules:</p>
+    <ol>
+  <li>If the Inventory is empty, store the <code>ItemStack</code>, and <code>return true</code>.</li>
+  <li>If the Inventory is not empty, examine the Inventory.
+    <ul>
+      <li>If a matching <code>ItemStack</code> is found, merge the two <code>ItemStack</code>s and  <code>return true</code>.</li>
+      <li>If no matching <code>ItemStack</code> is found, store the new <code>ItemStack</code> and  <code>return true</code>.</li>
+    </ul>
+  </li>
+  <li>If the <code>Inventory</code> is full, <code>return false</code>.</li>
+</ol><p>Through the magic of abstraction, this is not one function, but four (4) functions in total. Yes, it does seem unnecessary at first. However, each function does one thing and only one thing. This is an exercise in understanding the thought process behind abstraction, interfaces, and the <code>S</code>/<code>O</code> in <code>S.O.L.I.D</code> in a multi-ADT program.</p>
+    <p>Most of your time will be spent on understanding the abstractions (and interfaces) as opposed to spamming cobblestone blocks… I mean code.</p>
+    <h2 id="output">3.2 Output</h2><p>The output consists of three reports written to standard output, one after the other.</p>
+    <ol>
+  <li>
+  <p>A report listing items that were stored or discarded.</p>
+    </li>
+  <li>
+  <p>A report listing all valid items.</p>
+    </li>
+  <li>
+    <p>Finally, a detailed report is printed. listing data for each inventory:</p>
+    
+    <ul>
+      <li>Maximum Capacity–i.e., total slots.</li>
+      <li>Utilized Capacity–i.e., occupied slots</li>
+      <li>Listing of all items.</li>
+    </ul>
+  </li>
+</ol><p>If the program is run with the provided input files, the following output should be generated…</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Sample Output</div>
+<pre><code>Processing Log:
+ Stored    (10) HP Potion
+ Stored    ( 5) MP Potion
+ Stored    ( 2) Bow Tie
+ Stored    ( 3) Dirt
+ Stored    (27) Iron Ore
+ Stored    (44) Diamond Ore
+ Stored    (55) Iron Ingot
+ Stored    ( 1) Diamond
+ Stored    ( 4) Diamond Block
+ Stored    ( 3) Dirt
+ Stored    ( 5) MP Potion
+ Stored    ( 4) Diamond Block
+ Discarded ( 1) Diamond
+ Discarded ( 2) Iron Ore
+
+Item List:
+   0 Air
+   1 HP Potion
+   2 MP Potion
+   3 Bow Tie
+   4 Dirt
+   5 Iron Ore
+   6 Diamond Ore
+   7 Iron Ingot
+   8 Diamond
+   9 Diamond Block
+
+Storage Summary:
+ -Used 3 of 5 slots
+  (10) HP Potion
+  ( 5) MP Potion
+  ( 2) Bow Tie
+
+ -Used 6 of 6 slots
+  ( 6) Dirt
+  (27) Iron Ore
+  (44) Diamond Ore
+  (55) Iron Ingot
+  ( 1) Diamond
+  ( 4) Diamond Block
+
+ -Used 2 of 2 slots
+  ( 5) MP Potion
+  ( 4) Diamond Block
+
+</code></pre>
+</blockquote><a id="yourtasks"/><h1 id="your-tasks">4 Your Tasks</h1><p>One of the most important skills in our craft is interpreting error messages. Remember the ones you receive when you attempt to compile the unmodified code.</p>
+    <p>The key abstractions employed in this program are <code>Item</code>, <code>ItemStack</code>, and <code>Inventory</code>. Complete ADT implementations have been provided for the former two.</p>
+    <p>The <code>Inventory</code> class is partially implemented. Your task is to complete the Inventory ADT. The code provided will not run correctly… until you complete all the following methods:</p>
+    <ol>
+  <li><code>Inventory.clone</code></li>
+  <li><code>Inventory.isFull</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.findMatchingItemStack</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.addItemStackNoCheck</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.mergeStacks</code> - refer to documentation in ItemStack.java.</li>
+  <li><code>Inventory.toString</code>. This must generate the Inventory summary.
+    <p><strong>Note there is no formatting that requires <code>String.format</code>. All  spacing consists of hard-coded spaces.</strong></p>
+    
+  </li>
+</ol><p>Employ your <a class="doc" href="../../Public/headToHeadTesting/index.html" target="CS330_Public"><strong>Head-to-Head Testing Skills</strong> from CS 251</a>.</p>
+    <h1 id="mechanics">5 Mechanics</h1><h2 id="packages">5.1 Packages</h2><p>For the sake of simplicity this exercise uses a simple package (i.e., <code>items</code>).</p>
+    <ol>
+  <li>Do <strong>not</strong> change/add any packages or modules to this exercise.</li>
+  <li>Do <strong>not</strong> modify any package lines, e.g.,
+    <pre><code class="java">package items;
+</code></pre>
+  </li>
+</ol><p><strong>If you change the package, you will fail automatically. Is this harsh, yes. However, I have explicitly made part of the assignment using the items package  (<code>package items;</code>).</strong></p>
+    <a id="gradlewrapper"/><h2 id="gradle-wrapper">5.2 Gradle Wrapper</h2><p>I provided you with a Gradle wrapper script.</p>
+    <a id="gradleonlinux"/><h3 id="gradle-on-linux">5.2.1 Gradle on Linux</h3><p>If you are on a Linux machine you… will want to confirm that</p>
+    <pre><code class="console">gradlew
+</code></pre><p>is executable with</p>
+    <pre><code class="console">ls -lah gradlew
+</code></pre><p>You should see something similar to:</p>
+    <pre><code class="console">-rwxr-xr-x 1 tkennedy proxy 5.2K Nov 01 09:39 ./gradlew
+</code></pre><p>\bSidebar</p>
+    <p>This is a good time to review (and practice) a couple Linux commands from CS 252 (i.e., <code>ls</code> and <code>chmod</code>).</p>
+    <p>\eSidebar</p>
+    <p>Take note of the <code>x</code> characters in <code>-rwxr-xr-x</code>. These mean that the script is executable. If you run:</p>
+    <pre><code class="console">./gradlew
+</code></pre><p>and see</p>
+    <pre><code class="console">./gradlew: Permission denied.
+</code></pre><p>you will need to apply what you learned in CS 252. Use <code>chmod</code> to set the permissions. Run</p>
+    <pre><code class="console">chmod u+x gradlew
+</code></pre><a id="gradleonwindows"/><h3 id="gradle-on-windows">5.2.2 Gradle on Windows</h3><p>If you are on <em>Windows</em> you will need to use <code>gradlew.bat</code> from either <em>Command Prompt</em> or <em>Powershell</em>.</p>
+    <a id="compilingandrunningthejavaprogram"/><h2 id="compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</h2><p>If the sample data above is kept in itemList-01.txt and inventoryList-01.txt, to run this program, type:</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/Storage.java itemList-01.txt inventoryList-01.txt
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/Storage.java {item,inventory}List-01.txt
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew run
+</code></pre><p>The latter-most command executes the <code>run</code> target in the Gradle buildfile (which runs the necessary commands for you). This allows us to use fewer keystrokes (which are expensive).</p>
+    <a id="compilingandrunningthetests"/><h2 id="compiling-and-running-the-tests">5.4 Compiling and Running the Tests</h2><p>You should probably run the tests on a Linux machine… You can compile and run the test drivers (including <code>TestInventory</code>) with</p>
+    <pre><code class="console">./gradlew test
+</code></pre><p>If you implemented everything in <code>Inventory</code> correctly you will see:</p>
+    <pre><code class="console">TestStorage &gt; testParseItemList() PASSED
+TestStorage &gt; testParseOneInventory1Basic() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory1Basic() PASSED
+TestStorage &gt; testParseOneInventory2Basic() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    (15) MP Potion
+     Stored    ( 6) Bow Tie
+TestStorage &gt; testParseOneInventory2Basic() PASSED
+TestStorage &gt; testParseOneInventory3Basic() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory3Basic() PASSED
+TestStorage &gt; testParseOneInventory4Basic() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory4Basic() PASSED
+TestStorage &gt; testParseOneInventory5Basic() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+     Discarded (10) Dirt
+     Stored    ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory5Basic() PASSED
+TestStorage &gt; testParseTwoInventories() STANDARD_OUT
+    Processing Log:
+     Stored    (10) HP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 5) MP Potion
+     Stored    ( 2) Bow Tie
+     Stored    ( 2) Bow Tie
+     Discarded (10) Dirt
+     Stored    ( 2) Bow Tie
+TestStorage &gt; testParseTwoInventories() PASSED
+TestInventory &gt; testAddItemAfterFullWithNonStackable() PASSED
+TestInventory &gt; testAddItemAfterFullWithStackable() PASSED
+TestInventory &gt; testAddItemStackNoCheck() PASSED
+TestInventory &gt; testAddItemWithDuplicateItems() PASSED
+TestInventory &gt; testCloneForEmpty() PASSED
+TestInventory &gt; testCloneForNonEmpty() PASSED
+TestInventory &gt; testConstructorSizeN() PASSED
+TestInventory &gt; testDefaultConstructor() PASSED
+TestInventory &gt; testMergeStacks() PASSED
+TestInventory &gt; testToString() PASSED
+TestItemStack &gt; testAddItemsStackable() PASSED
+TestItemStack &gt; testClone() PASSED
+TestItemStack &gt; testDefaultConstructor() PASSED
+TestItemStack &gt; testEqualsWithDifferentClass() PASSED
+TestItemStack &gt; testSecondConstructor() PASSED
+TestItemStack &gt; testToString() PASSED
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>If you see <code>Fail</code> next to non-<code>Inventory</code> lines ignore them and focus on the <code>Inventory</code> Tests.</p>
+    
+<p>If a unit test fails… we are all-but-guaranteed that at least one Integration test will fail.</p>
+    
+<p>The subject of testing (unit testing, integration testing, and bottom-up testing) are topics that will be covered in future discussions.</p>
+    
+</div><p>in your output. Note that you may see quite a few blank lines in the test summary–I omitted them here for brevity.</p>
+    <p>If you see <em>FAILED</em> you must revisit the corresponding function(s). There is a mistake in your code.</p>
+    <p>You may need to run</p>
+    <pre><code class="console">./gradlew clean test
+</code></pre><p>to force a full recompile after making small updates.</p>
+    <h1 id="files">6 Files</h1><p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+  <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-Iterator">starting repository from GitHub</a>  If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    </li>
+  <li>
+  <p>Download a zip file by clicking  <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-Iterator/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget 'https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-Iterator/archive/refs/heads/main.zip'
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">7 Grading</h1><p>Grading for this assignment will be as follows:</p>
+    <ul>
+  <li>Submitting code that compiles and links properly: 10%</li>
+  <li>Submitted <code>Inventory.java</code> passes all tests: 90%</li>
+</ul><a id="testcasesunittestsandsystemtests"/><h3 id="test-cases-unit-tests-and-system-tests-">7.0.1 Test Cases (Unit Tests and System Tests)</h3><p>The tests are broken into:</p>
+    <ul>
+  <li>Test 000 - <em>(Unit Test)</em> Confirm testAddItemStackNoCheck <em>PASSED</em></li>
+  <li>Test 001 - <em>(Unit Test)</em> Confirm testAddItemWithDuplicateItems <em>PASSED</em></li>
+  <li>Test 002 - <em>(Unit Test)</em> Confirm testAddItemAfterFullWithNonStackable <em>PASSED</em></li>
+  <li>Test 002 - <em>(Unit Test)</em> Confirm testAddItemAfterFullWithStackable <em>PASSED</em></li>
+  <li>Test 003 - <em>(Unit Test)</em> Confirm testCloneForEmpty <em>PASSED</em></li>
+  <li>Test 004 - <em>(Unit Test)</em> Confirm testCloneForNonEmpty <em>PASSED</em></li>
+  <li>Test 006 - <em>(Unit Test)</em> Confirm testMergeStacks <em>PASSED</em></li>
+  <li>Test 007 - <em>(Unit Test)</em> Confirm testToString <em>PASSED</em></li>
+  <li>Test 008 - <em>(System Test)</em> Run the entire program and check the output (**including** formatting and spacing).</li>
+</ul><h1 id="submitting">8 Submitting</h1><p>Files to Submit:</p>
+    <ul>
+  <li><code>Inventory.java</code> (i.e., your version of the Inventory ADT Implementation)</li>
+</ul><p>Note that your submitted code must compile correctly on our Linux servers with the other code in that directory, using the compilation commands generated by the provided Gradle buildfile.</p>
+    <p>Do not alter any of the other source code files, nor change the class interfaces in such a way that the code can only be compiled with some other compiler or some other sequence of commands.</p>
+    <p>To submit your assignment, use the button below.</p>
+    <form>
+    <div>
+        <input onclick="window.open('https://www.cs.odu.edu/~zeil/submit/submit.html?asstinfo=/home/tkennedy/Courses/Websites/cs330//sum24/Assts/java_inventory_iterator/java_inventory_iterator.ini')" type="button" value="Submit this assignment">
+        </input>
+    </div>
+    
+</form><h1 id="hints">9 Hints</h1><p>You have <del>probably</del> almost certainly noticed similarities to Assignment 1. The core logic is the same (e.g., sequential search). The difference comes from the fact that we are writing data structure agonistic code with iterators (i.e., working with iterators instead of a specific data structure).</p>
+    <p>You will find that Inventory has an updated set of data members…</p>
+    <ul>
+  <li>
+  <p><code>capacity</code> is still present as the maximum size.</p>
+    </li>
+  <li>
+  <p><code>this.slots.currentCapacity</code> is gone and replaced with a <code>utilizedSlots()</code> method.</p>
+    </li>
+  <li>
+  <p><code>this.slots.head</code> and <code>this.slots.tail</code> are gone.</p>
+    </li>
+  <li>
+  <p><code>slots</code> is now an <code>ArrayList</code>.</p>
+    </li>
+</ul><p>The <code>addItemStackNoCheck</code> method is now a one-liner…</p>
+    <pre><code class="java">    this.slots.add(/*????*/); // The commented out ???? is a placeholder
+</code></pre><p>The <code>findMatchingItemStack</code> method can be adapted from the Assignment 1 <code>findMatchingItemStack</code> method…</p>
+    <pre><code class="java">    public ItemStack findMatchingItemStack(ItemStack key)
+    {
+        LinkedList.Node&lt;ItemStack&gt; it = this.slots.head;
+
+        while(it != null){
+            if (it.data.equals(????)) {
+                return true;
+            }
+
+            it = it.next;
+        }
+
+        // no match was found
+        return null;
+    }
+</code></pre><p>Let us start with a mapping from <code>LinkedListNode&lt;ItemStack&gt;</code> to <code>Iterator&lt;ItemStack&gt;</code>…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left"><strong>Piece</strong> </th>
+      <th align="left"><strong>Linked List</strong> </th>
+      <th align="left"><strong>Iterator</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Initialization </td>
+      <td align="left"><code>LinkedList.Node&lt;ItemStack&gt; it = this.slots.head;</code> </td>
+      <td align="left"><code>Iterator&lt;ItemStack&gt; it = this.iterator()</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Bound Check </td>
+      <td align="left"><code>it != null</code> </td>
+      <td align="left"><code>it.hasNext()</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Dereference </td>
+      <td align="left"><code>it.data</code> </td>
+      <td align="left"><code>it.next()</code> </td>
+    </tr>
+    <tr>
+      <td align="left">Increment </td>
+      <td align="left"><code>it = it.next</code> </td>
+      <td align="left"><code>it.next()</code> </td>
+    </tr>
+  </tbody>
+</table><p>There is a <strong>one-to-one</strong> correspondence between the loops! We can now write all other loops in the program!</p>
+    <p>Keep in mind that while <em><code>while</code> loops</em> can be used… <em>range-based (for-each) loops</em> can be used instead.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Iterator%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="../../styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="../../styles/highlight.js/highlight.min.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Item Inventory (Linked List)</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Linked%20List%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Item Inventory (Linked List)</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#design-and-s-o-l-i-d">1 Design and S.O.L.I.D</a></div><div class="toc-h1"><a href="#wait-best-practices-are-important-">2 Wait… Best Practices Are Important!</a></div><div class="toc-h1"><a href="#the-problem">3 The Problem</a></div><div class="toc-h2"><a href="#input">3.1 Input</a></div><div class="toc-h2"><a href="#output">3.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">4 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">5 Mechanics</a></div><div class="toc-h2"><a href="#packages">5.1 Packages</a></div><div class="toc-h2"><a href="#gradle-wrapper">5.2 Gradle Wrapper</a></div><div class="toc-h2"><a href="#compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</a></div><div class="toc-h2"><a href="#compiling-and-running-the-tests">5.4 Compiling and Running the Tests</a></div><div class="toc-h1"><a href="#files">6 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">7 Grading</a></div><div class="toc-h2"><a href="#where-is-the-partial-credit-">7.1 Where is the Partial Credit?</a></div><div class="toc-h1"><a href="#submitting">8 Submitting</a></div><div class="toc-h1"><a href="#hints">9 Hints</a></div><div class="toc-h2"><a href="#what-about-email-">9.1 What about Email?</a></div><div class="toc-h1"><a href="#the-hints">10 The Hints</a></div><div class="toc-h2"><a href="#general-notes">10.1 General Notes</a></div><div class="toc-h2"><a href="#allocating-a-new-node">10.2 Allocating a New Node</a></div><div class="toc-h2"><a href="#the-isfull-method">10.3 The isFull Method</a></div><div class="toc-h2"><a href="#the-mergestacks-method">10.4 The mergeStacks Method</a></div><div class="toc-h2"><a href="#the-findmatchingitemstack-method">10.5 The findMatchingItemStack Method</a></div></div><p>Read the <a class="doc" href="../../Public/submitting/index.html" target="CS330_Public">general instructions on turning in assignments</a>. <strong>There is no precompiled solution provided for this assignment.</strong></p>
+    <a id="designandsolid"/><h1 id="design-and-s-o-l-i-d">1 Design and S.O.L.I.D</h1><p>The code in this assignment violates a number of best practices…</p>
+    <ol>
+  <li>S.O.L.I.D</li>
+  <li>D.R.Y</li>
+  <li><em>Data Structure Logic</em> is merged with <em>Business Logic</em></li>
+</ol><p>However, we have to start somewhere. These terms and best practices will be discussed starting in Review 02. <em>The next Assignment will be a lot more fun!</em></p>
+    <a id="waitbestpracticesareimportant"/><h1 id="wait-best-practices-are-important-">2 Wait… Best Practices Are Important!</h1><p>You may be questioning (since best practices are important) why the codebase for this exercise violates best practices… including simple ones. Consider…</p>
+    <ol>
+  <li>
+    <p><strong>encapsulation</strong> - all data members should be <code>private</code> and only  accessible to external code through accessors (e.g., getters) and mutators  (e.g. setters).</p>
+    
+    <p>The <code>LinkedList</code> class has all public fields that you must access directly  in <code>Inventory</code>.</p>
+    
+  </li>
+  <li>
+  <p><strong>static vs non-static inner classes</strong> - the <code>LinkedList.Node</code> class is  both <code>public</code> and <code>static</code> which goes against what was discussed in <em>Review 1</em>.</p>
+    </li>
+  <li>
+    <p><strong>Separation of Concerns</strong> - <code>Inventory</code> will add <code>Node</code>s to a  <code>LinkedList</code> in <code>addItemStackNoCheck</code>.</p>
+    
+    <p>This should be done in <code>LinkedList</code> in a proper codebase.</p>
+    
+  </li>
+  <li>
+  <p><strong>Deep Copy</strong> - there is no <code>Inventory.clone</code> method.</p>
+    </li>
+</ol><p><strong>To understand</strong>… the various rules discussed in both your earlier coursework and in this course… you must see the impact when best practices (rules) are not followed.</p>
+    <a id="theproblem"/><h1 id="the-problem">3 The Problem</h1><p>This assignment deals with a program that places items into separate inventories. This is similar to placing items into chests in <a href="https://minecraft.net/">Minecraft</a>. This assignment is similar to:</p>
+    <h2 id="input">3.1 Input</h2><p>The program reads data from two files, <em>itemsList-0x.txt</em> and <em>inventoryList-0x.txt</em>. File extensions on Linux may be arbitrary–i.e., these files could have been named with <em>.dat</em> as the extensions.</p>
+    <p>The first file, <em>itemsList-0x.txt</em>, lists all possible items. Each line represents one item in the form <em>id name</em>.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Sample itemsList-0x.txt</div>
+<pre><code>0 Air
+1 HP Potion
+2 MP Potion
+5 Iron Ore
+3 Bow Tie
+4 Dirt
+6 Diamond Ore
+7 Iron Ingot
+8 Diamond
+9 Diamond Block
+</code></pre>
+</blockquote><p>The second file, <em>inventoryList-0x.txt</em>, lists each individual inventory–or storage chest–followed by a list of items.</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Sample inventoryList-0x.txt</div>
+<pre><code># 5
+- 1 10
+- 2  5
+- 3  2
+# 6
+- 4  3
+- 5 27
+- 6 44
+- 7 55
+- 8  1
+- 9  4
+- 4  3
+# 2
+- 2  5
+- 9  4
+- 8  1
+- 5  2
+- 10 5
+</code></pre>
+</blockquote><p>Each line preceded by <em>#</em> denotes the start of a new inventory. Each line preceded by <code>-</code> denotes an item. The program creates a new inventory each time a <code>#</code> is encountered.</p>
+    <p>When a <code>-</code> is encountered, a stack of items, <code>ItemStack</code>, is created. The <code>ItemStack</code> is placed in the <code>Inventory</code> based on the following rules:</p>
+    <ol>
+  <li>If the Inventory is empty, store the <code>ItemStack</code>, and <code>return true</code>.</li>
+  <li>If the Inventory is not empty, examine the Inventory.
+    <ul>
+      <li>If a matching <code>ItemStack</code> is found, merge the two <code>ItemStack</code>s and  <code>return true</code>.</li>
+      <li>If no matching <code>ItemStack</code> is found, store the new <code>ItemStack</code> and  <code>return true</code>.</li>
+    </ul>
+  </li>
+  <li>If the <code>Inventory</code> is full, <code>return false</code>.</li>
+</ol><p>Through the magic of abstraction, this is not one function, but four (4) functions in total. Yes, it does seem unnecessary at first. However, each function does one thing and only one thing. This is an exercise in understanding the thought process behind abstraction, interfaces, and the <code>S</code>/<code>O</code> in <code>S.O.L.I.D</code> in a multi-ADT program.</p>
+    <p>Most of your time will be spent on understanding the abstractions (and interfaces) as opposed to spamming cobblestone blocks… I mean code.</p>
+    <h2 id="output">3.2 Output</h2><p>The output consists of three reports written to standard output, one after the other.</p>
+    <ol>
+  <li>
+  <p>A report listing items that were stored or discarded.</p>
+    </li>
+  <li>
+  <p>A report listing all valid items.</p>
+    </li>
+  <li>
+    <p>Finally, a detailed report is printed. listing data for each inventory:</p>
+    
+    <ul>
+      <li>Maximum Capacity–i.e., total slots.</li>
+      <li>Utilized Capacity–i.e., occupied slots</li>
+      <li>Listing of all items.</li>
+    </ul>
+  </li>
+</ol><p>If the program is run with the provided input files, the following output should be generated…</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Sample Output</div>
+<pre><code>Processing Log:
+ Stored (10) HP Potion
+ Stored ( 5) MP Potion
+ Stored ( 2) Bow Tie
+ Stored ( 3) Dirt
+ Stored (27) Iron Ore
+ Stored (44) Diamond Ore
+ Stored (55) Iron Ingot
+ Stored ( 1) Diamond
+ Stored ( 4) Diamond Block
+ Stored ( 3) Dirt
+ Stored ( 5) MP Potion
+ Stored ( 4) Diamond Block
+ Discarded ( 1) Diamond
+ Discarded ( 2) Iron Ore
+
+Item List:
+   0 Air
+   1 HP Potion
+   2 MP Potion
+   3 Bow Tie
+   4 Dirt
+   5 Iron Ore
+   6 Diamond Ore
+   7 Iron Ingot
+   8 Diamond
+   9 Diamond Block
+
+Storage Summary:
+ -Used 3 of 5 slots
+  (10) HP Potion
+  ( 5) MP Potion
+  ( 2) Bow Tie
+
+ -Used 6 of 6 slots
+  ( 6) Dirt
+  (27) Iron Ore
+  (44) Diamond Ore
+  (55) Iron Ingot
+  ( 1) Diamond
+  ( 4) Diamond Block
+
+ -Used 2 of 2 slots
+  ( 5) MP Potion
+  ( 4) Diamond Block
+
+</code></pre>
+</blockquote><a id="yourtasks"/><h1 id="your-tasks">4 Your Tasks</h1><p>One of the most important skills in our craft is interpreting error messages. Remember the ones you receive when you attempt to compile the unmodified code.</p>
+    <p>The key abstractions employed in this program are <code>Item</code>, <code>ItemStack</code>, and <code>Inventory</code>. Complete ADT implementations have been provided for the former two.</p>
+    <p>The <code>Inventory</code> class is partially implemented. Your task is to complete the Inventory ADT. The code provided will not run correctly… until you complete all the following methods:</p>
+    <ol>
+  <li><code>Inventory.isFull</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.findMatchingItemStack</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.addItemStackNoCheck</code> - refer to documentation in Inventory.java.</li>
+  <li><code>Inventory.mergeStacks</code> - refer to documentation in Inventory.java.</li>
+</ol><p>The partial implementation provided assumes that each Inventory will keep track of items in a linked list. You must <strong>not</strong> change this choice of data structure… <strong>unless you want a zero.</strong></p>
+    <h1 id="mechanics">5 Mechanics</h1><h2 id="packages">5.1 Packages</h2><p>For the sake of simplicity this exercise uses a simple package (i.e., <code>items</code>).</p>
+    <ol>
+  <li>Do <strong>not</strong> change/add any packages or modules to this exercise.</li>
+  <li>Do <strong>not</strong> modify any package lines, e.g.,
+    <pre><code class="java">package items;
+</code></pre>
+  </li>
+</ol><p><strong>If you change the package, you will fail automatically. Is this harsh, yes. However, I have explicitly made part of the assignment using the items package  (<code>package items;</code>).</strong></p>
+    <a id="gradlewrapper"/><h2 id="gradle-wrapper">5.2 Gradle Wrapper</h2><p>I provided you with a Gradle wrapper script.</p>
+    <a id="gradleonlinux"/><h3 id="gradle-on-linux">5.2.1 Gradle on Linux</h3><p>If you are on a Linux machine you… will want to confirm that</p>
+    <pre><code class="console">gradlew
+</code></pre><p>is executable with</p>
+    <pre><code class="console">ls -lah gradlew
+</code></pre><p>You should see something similar to:</p>
+    <pre><code class="console">-rwxr-xr-x 1 tkennedy proxy 5.2K Nov 01 09:39 ./gradlew
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>This is a good time to review (and practice) a couple Linux commands from CS 252 (i.e., <code>ls</code> and <code>chmod</code>).</p>
+    
+</div><p>Take note of the <code>x</code> characters in <code>-rwxr-xr-x</code>. These mean that the script is executable. If you run:</p>
+    <pre><code class="console">./gradlew
+</code></pre><p>and see</p>
+    <pre><code class="console">./gradlew: Permission denied.
+</code></pre><p>you will need to apply what you learned in CS 252. Use <code>chmod</code> to set the permissions. Run</p>
+    <pre><code class="console">chmod u+x gradlew
+</code></pre><a id="gradleonwindows"/><h3 id="gradle-on-windows">5.2.2 Gradle on Windows</h3><p>If you are on <em>Windows</em> you will need to use <code>gradlew.bat</code> from either <em>Command Prompt</em> or <em>Powershell</em>.</p>
+    <a id="compilingandrunningthejavaprogram"/><h2 id="compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</h2><p>If the sample data above is kept in itemList-01.txt and inventoryList-01.txt, to run this program, type:</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/Storage.java itemList-01.txt inventoryList-01.txt
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/Storage.java {item,inventory}List-01.txt
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew run
+</code></pre><p>The latter-most command executes the <code>run</code> target in the Gradle buildfile (which runs the necessary commands for you). This allows us to use fewer keystrokes (which are expensive).</p>
+    <a id="compilingandrunningthetests"/><h2 id="compiling-and-running-the-tests">5.4 Compiling and Running the Tests</h2><p>You should probably run the tests on a Linux machine… You can compile and run the test drivers (including <code>TestInventory</code>) with</p>
+    <pre><code class="console">./gradlew test
+</code></pre><p>If you implemented everything in <code>Inventory</code> correctly you will see:</p>
+    <pre><code class="console">TestStorage &gt; testParseItemList() PASSED
+TestStorage &gt; testParseOneInventory1Basic() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored ( 5) MP Potion
+     Stored ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory1Basic() PASSED
+TestStorage &gt; testParseOneInventory2Basic() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored (15) MP Potion
+     Stored ( 6) Bow Tie
+TestStorage &gt; testParseOneInventory2Basic() PASSED
+TestStorage &gt; testParseOneInventory3Basic() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory3Basic() PASSED
+TestStorage &gt; testParseOneInventory4Basic() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory4Basic() PASSED
+TestStorage &gt; testParseOneInventory5Basic() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+     Discarded (10) Dirt
+     Stored ( 2) Bow Tie
+TestStorage &gt; testParseOneInventory5Basic() PASSED
+TestStorage &gt; testParseTwoInventories() STANDARD_OUT
+    Processing Log:
+     Stored (10) HP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 5) MP Potion
+     Stored ( 2) Bow Tie
+     Stored ( 2) Bow Tie
+     Discarded (10) Dirt
+     Stored ( 2) Bow Tie
+TestStorage &gt; testParseTwoInventories() PASSED
+TestInventory &gt; testAddItemAfterFullWithNonStackable() PASSED
+TestInventory &gt; testAddItemAfterFullWithStackable() PASSED
+TestInventory &gt; testAddItemStackNoCheck() PASSED
+TestInventory &gt; testAddItemWithDuplicateItems() PASSED
+TestInventory &gt; testConstructorSizeN() PASSED
+TestInventory &gt; testDefaultConstructor() PASSED
+TestInventory &gt; testToString() PASSED
+TestItemStack &gt; testAddItemsStackable() PASSED
+TestItemStack &gt; testClone() PASSED
+TestItemStack &gt; testDefaultConstructor() PASSED
+TestItemStack &gt; testEqualsWithDifferentClass() PASSED
+TestItemStack &gt; testSecondConstructor() PASSED
+TestItemStack &gt; testToString() PASSED
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>If you see <code>Fail</code> next to non-<code>Inventory</code> lines ignore them and focus on the <code>Inventory</code> Tests.</p>
+    
+<p>If a unit test fails… we are all-but-guaranteed that at least one Integration test will fail.</p>
+    
+<p>The subject of testing (unit testing, integration testing, and bottom-up testing) are topics that will be covered in future discussions.</p>
+    
+</div><p>in your output. Note that you may see quite a few blank lines in the test summary–I omitted them here for brevity.</p>
+    <p>If you see <em>FAILED</em> you must revisit the corresponding function(s). There is a mistake in your code.</p>
+    <p>You may need to run</p>
+    <pre><code class="console">./gradlew clean test
+</code></pre><p>to force a full recompile after making small updates.</p>
+    <h1 id="files">6 Files</h1><p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-LL">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-LL/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running </p>
+    
+    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS330-Inventory-LL/archive/refs/heads/main.zip
+</code></pre>
+    <p>in a Linux terminal </p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">7 Grading</h1><p>Grading for this assignment will be as follows:</p>
+    <ul>
+  <li>
+    <p>Submitting code that compiles and links properly: 10%</p>
+    
+    <p><strong>Code that does not compile cannot earn credit for the tests listed in this section.</strong></p>
+    
+  </li>
+  <li>
+  <p>Program produces correct report output (exact match to my solution): 90%. <em>Note that I am forcing you to practice your head-to-head testing from CS 251. You have a copy of the reference output for each test.</em></p>
+    </li>
+</ul><p>In your grade report… you will see tests numbered 000 through 002. The tests check the report output. </p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Note that the <code>\</code> is a shell trick. When your command is too long to fit on one line… Type <code>\</code> and then press enter. You are then able to continue the command on the next line.</p>
+    
+</div><ul>
+  <li>
+  <p>
+  <p>Test 000 is evaluated using:</p>
+    
+  <pre><code class="console">java -jar build/libs/Storage.jar \
+    src/main/resources/itemList-00.txt \
+    src/main/resources/inventoryList-00.txt 
+</code></pre>with the reference output in the provided <code>ref-output-00.txt</code></p>
+    </li>
+  <li>
+  <p>Test 001 is evaluated using:</p>
+    
+  <pre><code class="console">java -jar build/libs/Storage.jar \
+    src/main/resources/itemList-01.txt \
+    src/main/resources/inventoryList-01.txt 
+</code></pre>
+  <p>with the reference output in the provided <code>ref-output-02.txt</code></p>
+    </li>
+  <li>
+  <p>Test 002 is evaluated using:</p>
+    
+  <pre><code class="console">java -jar build/libs/Storage.jar \
+    src/main/resources/itemList-01.txt \
+    src/main/resources/inventoryList-03.txt 
+</code></pre>
+  <p>with the reference output in the provided <code>ref-output-04.txt</code></p>
+    </li>
+</ul><a id="whereisthepartialcredit"/><h2 id="where-is-the-partial-credit-">7.1 Where is the Partial Credit?</h2><p><strong>Everything in this assignment is a System Test.</strong> I am particularly persnickety with the grading for this exercise. <strong>Every function in this assignment is based on concepts and mechanics covered in CS 251.</strong></p>
+    <p><strong>The overall goal of this assignment is to force you to reinforce your CS 251 foundations, during the first few weeks of the semester.</strong> If you run into issues, have questions, or are not sure where to start… come to office hours… or send me an email.</p>
+    <h1 id="submitting">8 Submitting</h1><p>Files to Submit:</p>
+    <ul>
+  <li><code>Inventory.java</code> (i.e., your version of the Inventory ADT Implementation)</li>
+</ul><p>Your submitted code must compile correctly–on our Linux servers (<code>linux.cs.odu.edu</code>) with the other code (as provided), using the compilation commands generated by the provided makefile. Do not alter any of the other source code files, nor change the Inventory interface in such a way that it can only be compiled with some other compiler or some other sequence of commands.</p>
+    <p>To submit your assignment, use the button below. You will receive a preliminary grade via email (to your ODU email account) and will also be able to check your grade from the course web page <em>Grades</em> button.</p>
+    <form><div><input onclick="window.open('https://www.cs.odu.edu/~zeil/submit/submit.html?asstinfo=/home/tkennedy/Courses/Websites/cs330//sum24/Assts/java_inventory_llist/java_inventory_llist.ini')" type="button" value="Submit this assignment"/></div>
+    </form><h1 id="hints">9 Hints</h1><p>I may have sent you an email with a link to a specific section within <em>Hints</em> of this document. Why? </p>
+    <ol>
+  <li>
+  <p>Formatting in email is <em>interesting</em>.</p>
+    </li>
+  <li>
+  <p>I am familiar with the <em>types</em> of questions that will be asked for each  function.</p>
+    </li>
+  <li>
+  <p>I generally write the same forward when answering larger questions.</p>
+    </li>
+</ol><p>This document is a collection of selected pieces of guidance for each function.</p>
+    <a id="whataboutemail"/><h2 id="what-about-email-">9.1 What about Email?</h2><p>Yes, you can still email me questions. This <em>Hints</em> section is not meant to replace email. It (i.e., this section) is meant as an additional resource.</p>
+    <a id="thehints"/><h1 id="the-hints">10 The Hints</h1><p>If you head straight to this section immediately, instead of trying to figure out your own solution, you are doing yourself a disservice. However, if you get stuck, use this document to get just far enough to continue your work.</p>
+    <p><strong>TL;DR</strong> - Do not use this document as a crutch. Use it to give you a nudge in the right direction.</p>
+    <a id="generalnotes"/><h2 id="general-notes">10.1 General Notes</h2><p>If you are stuck at the beginning, revisit <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-01-Java-Linked-Lists">Review 01 Example 1</a>.</p>
+    <p>This Linked List logic is almost the same. There are two caveats:</p>
+    <ul>
+  <li>
+  <p><code>this.slots.currentSize</code> it the number of used slots (i.e., current number of Nodes in the Linked List). It serves the same role as <code>currentSize</code> in my Review 01 examples.</p>
+    </li>
+  <li>
+  <p><code>capacity</code> - This is number of slots this <code>Inventory</code> can hold, maximum. It is a limit on the number of <code>Node</code>s that may created.</p>
+    </li>
+</ul><a id="allocatinganewnode"/><h2 id="allocating-a-new-node">10.2 Allocating a New Node</h2><p>Due to generics… you will want to use something along lines of…</p>
+    <pre><code class="java">Node&lt;ItemStack&gt; aNewNode = new Node&lt;&gt;(...);
+</code></pre><p>when creating a new <code>Node</code>. This will avoid some of the standard Java <em>type erasure</em> headache.</p>
+    <a id="theisfullmethod"/><h2 id="the-isfull-method">10.3 The isFull Method</h2><p>This is both the easiest and most difficult method on the assignment. Let us start with the declaration from <code>Inventory.java</code>.</p>
+    <pre><code class="java">    /**
+     * Determine if the inventory is considered full.
+     *
+     * @return true if the current size is equal to capacity
+     */
+    public boolean isFull()
+</code></pre><p>Many people tried this as written and got incorrect results. This was technically a typo, but I left it as a starting point. Let us use this to start our discussion.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>Let us revisit <code>this.slots.currentSize</code> and <code>capacity</code>.</p>
+    
+<ul>
+  <li>
+  <p>The <code>this.slots.currentSize</code> attribute represents the number of currently used inventory slots.</p>
+    </li>
+  <li>
+  <p>The <code>capacity</code> attribute represents the size of the <code>Inventory</code>, i.e., the number of slots that can be used <strong>maximum</strong>.</p>
+    </li>
+</ul>
+</div><p>We have three options</p>
+    <pre><code class="java">return this.slots.currentSize &lt; capacity;
+</code></pre><p>or</p>
+    <pre><code class="java">return this.slots.currentSize == capacity;
+</code></pre><p>or</p>
+    <pre><code class="java">return this.slots.currentSize &gt; capacity;
+</code></pre><p>Why these three options? What about <code>&lt;=</code> and <code>&gt;=</code>? These are really combinations of <code>return this.slots.currentSize == capacity;</code> and one of the other two cases.</p>
+    <p>Now it is time for logical thinking. Yes, thinking, planning, and math. No coding. These 3 expressions are known as <em>boolean expressions</em>. They evaluate to <code>true</code> or <code>false</code>.</p>
+    <p>Now back to the task at hand… Which one? Yes, there can only be one (This is a <a href="http://www.imdb.com/title/tt0091203/">Highlander</a> reference). Let us think some more. What does each of these expressions capture?</p>
+    <ol>
+  <li><code>this.slots.currentSize &lt; capacity</code> - Have fewer than the maximum number of slots been used?</li>
+  <li><code>this.slots.currentSize == capacity</code> - Am I using all available slots?</li>
+  <li><code>this.slots.currentSize &gt; capacity</code> - Have I broken the rules? and acquired a Tardis?</li>
+</ol><p>The last case asks <em>Have I used more slots than exist in the Inventory?</em>. This is an invalid case. We can not legally have this case by virtue of the Inventory rules. Success! We have eliminated one choice! We are then left with two choices:</p>
+    <ol>
+  <li><code>this.slots.currentSize &lt; capacity</code> - Have fewer than the maximum number of slots been used?</li>
+  <li><code>this.slots.currentSize == capacity</code> - Am I using all available slots?</li>
+</ol><p>The first case, answers the opposite questions, i.e., <code>isNotFull</code>. It too is eliminated. We are left with the answer:</p>
+    <ol>
+  <li><code>this.slots.currentSize == capacity</code></li>
+</ol><p>The question <em>Am I using all available slots?</em> is an alternative phrasing of <em>Is this Inventory full?</em></p>
+    <p>I will leave adding a <code>return</code> and a <code>;</code> up to you!</p>
+    <a id="themergestacksmethod"/><h2 id="the-mergestacks-method">10.4 The mergeStacks Method</h2><p>This is a one line function. I will leave it up to you…</p>
+    <a id="thefindmatchingitemstackmethod"/><h2 id="the-findmatchingitemstack-method">10.5 The findMatchingItemStack Method</h2><p>Let us start with the documentation from <code>Inventory.java</code></p>
+    <pre><code class="java">    /**
+     * Search through all slots (Nodes in the LinkedList) and look for a
+     * matching ItemStack.
+     *
+     * @param key stack for which the search is being conducted
+     *
+     * @return matching stack if one was found and `null` otherwise
+     */
+    public ItemStack findMatchingItemStack(ItemStack key)
+</code></pre><p>I am going to think for a moment. I need one key piece of insight.</p>
+    <p>I need to traverse every <code>Node</code> in my Linked List. I need my standard Linked List while-loop.</p>
+    <pre><code class="java">LinkedListNode&lt;ItemStack&gt; it = this.slots.head;
+
+while(it != null){
+    // do something with it.data
+
+    it = it.next;
+}
+</code></pre><p>How did I write this loop? This is the standard while loop for traversing a Linked List.</p>
+    <p>We are now left with a placeholder. Let us throw in the line <code>return null</code> and the rest of the function framework:</p>
+    <pre><code class="java">    public ItemStack findMatchingItemStack(ItemStack key)
+    {
+        LinkedListNode&lt;ItemStack&gt; it = this.slots.head;
+
+        while(it != null){
+            // do something with it.data
+
+            it = it.next;
+        }
+
+        // no match was found
+        return null;
+    }
+</code></pre><p>Note that I can not return <code>null</code> until I have examined every node, i.e., after the loop has run. We are now left with our placeholder. We know we need to check a condition. It is time for an if-block. We also know we are returning a value, if we find a match.</p>
+    <pre><code class="java">    public ItemStack findMatchingItemStack(ItemStack key)
+    {
+        LinkedListNode&lt;ItemStack&gt; it = this.slots.head;
+
+        while(it != null){
+            if (it.data.equals(????)) {
+                return true;
+            }
+
+            it = it.next;
+        }
+
+        // no match was found
+        return null;
+    }
+</code></pre><p>Now you are thinking to yourself, <em>is it really that simple?</em>. Yes because I told you how to break the problem down and walk through building the pieces. <strong>This is the skill we are working to improve</strong>, i.e., your ability to apply the same process on your own.</p>
+    <p>The <code>????</code> items represent placeholders. Once you figure those out, you are done with this method.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Linked%20List%29"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>
