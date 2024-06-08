@@ -47,33 +47,93 @@
   <li>
   <p>Output the top author based on number of books written</p>
     </li>
-</ol><h2 id="input">1.1 Input</h2><p>This subsection will describe the input content, format, and overall structure.</p>
-    <blockquote>
-  <pre><code>Isaac Asimov, Prelude to Foundation, Foundation, -2
+</ol><h2 id="input">1.1 Input</h2><p>Input is stored in a text file in the following form…</p>
+    <pre><code>Isaac Asimov, Prelude to Foundation, Foundation, -2
 Isaac Asimov, Forward the Foundation, Foundation, -1
 Isaac Asimov, Foundation, Foundation, 0
-Isaac Asimov, Foundation and Empire Foundation, 2
-Isaac Asimov, Second, Foundation Foundation, 3
+Isaac Asimov, Foundation and Empire, Foundation, 2
+Isaac Asimov, Second, Foundation, Foundation, 3
 Isaac Asimov, Foundation's Edge, Foundation, 4
 Isaac Asimov, Foundation and Earth, Foundation,5 
 Frank Herbert, Dune, Dune, 0
 Frank Herbert, Dune Messiah, Dune, 1
 Frank Herbert, Children of Dune, Dune, 2
-</code></pre>
-</blockquote><p><em>Just in case you are wondering… I am a big fan of Isaac Asimov’s Foundation series and Robots series. Dune… is next on that list.</em></p>
-    <h2 id="output">1.2 Output</h2><p>T.B.W.</p>
-    <a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>You tasks are to implement the following functions…</p>
+</code></pre><p><em>Just in case you are wondering… I am a big fan of Isaac Asimov’s Foundation series and Robots series. Dune… is next on that list.</em></p>
+    <h2 id="output">1.2 Output</h2><p>A single execution of the program will be similar to…</p>
+    <pre><code class="console"><br/>--------------------------------------------------------------------------------
+                                 Full Book List                                 
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5),
+ ('Frank Herbert', 'Dune', 'Dune', 0),
+ ('Frank Herbert', 'Dune Messiah', 'Dune', 1),
+ ('Frank Herbert', 'Children of Dune', 'Dune', 2)]
+
+--------------------------------------------------------------------------------
+                             Books by Isaac Asimov                              
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5)]
+
+--------------------------------------------------------------------------------
+                         Books in the Foundation series                         
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5)]
+
+--------------------------------------------------------------------------------
+                      Book 'Zero' in the Foundation series                      
+--------------------------------------------------------------------------------
+('Isaac Asimov', 'Foundation', 'Foundation', 0)
+
+--------------------------------------------------------------------------------
+                            Books in the Dune series                            
+--------------------------------------------------------------------------------
+[('Frank Herbert', 'Dune', 'Dune', 0),
+ ('Frank Herbert', 'Dune Messiah', 'Dune', 1),
+ ('Frank Herbert', 'Children of Dune', 'Dune', 2)]
+
+--------------------------------------------------------------------------------
+                         Book 'Zero' in the Dune series                         
+--------------------------------------------------------------------------------
+('Frank Herbert', 'Dune', 'Dune', 0)
+
+
+</code></pre><a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>You tasks are to implement the following functions…</p>
     <ol>
   <li>
-  <p><code>get_all_books_by_author</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that author.</p>
+  <p><code>get_all_books_by_author</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that  author.</p>
     </li>
   <li>
-  <p><code>get_all_books_by_series</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that series.</p>
+  <p><code>get_all_books_by_series</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that  series.</p>
     </li>
   <li>
-  <p><code>get_zeroth_book</code> which takes a list og books and a series and returns the  zeroth book in that series.</p>
+  <p><code>get_zeroth_book</code> which takes a list of books and a series and returns the  zeroth book in that series.</p>
     </li>
-</ol><h1 id="mechanics">3 Mechanics</h1><p>You can run the main program with…</p>
+</ol><p>You will notice that each function has a placeholder for pydoc documentation…</p>
+    <pre><code class="python">    """
+    T.B.W.
+    """
+</code></pre><p>Completing the pydoc documentation is optional.</p>
+    <h1 id="mechanics">3 Mechanics</h1><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Note that instead of tabular output… I have opted for the <a href="https://docs.python.org/3/library/pprint.html#pprint.PrettyPrinter">PrettyPrinter</a> module… which can be invaluable when developeing/debugging Python code.</p>
+    
+</div><p>You can run the main program with…</p>
     <pre><code class="console">python3.11 manage_books.py
 </code></pre><p>The test code can be run with…</p>
     <pre><code class="console">python3.11 -m pytest -v tests
@@ -85,18 +145,18 @@ Frank Herbert, Children of Dune, Dune, 2
     <p>You have three choices when starting this assignment:</p>
     <ol>
   <li>
-    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD">starting repository from GitHub</a></p>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Lists">starting repository from GitHub</a></p>
     
     <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
     
   </li>
   <li>
-  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD/archive/refs/heads/main.zip">this link</a></p>
+  <p>Download a zip file by clicking <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Lists/archive/refs/heads/main.zip">this link</a></p>
     </li>
   <li>
     <p>Download a zip file by running</p>
     
-    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-TBD/archive/refs/heads/main.zip
+    <pre><code class="console">wget https://github.com/Old-Dominion-Univ-CS-Dept/2024-Summer-CS263-Lists/archive/refs/heads/main.zip
 </code></pre>
     <p>in a Linux terminal</p>
     
