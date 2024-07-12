@@ -27,3 +27,10 @@ This repository is a mirror of all publicly accessable course materials for:
 })();
 </script>
 <!-- end Google Calendar Appointment Scheduling -->
+
+# Quick Links
+
+This section contains a few *quick links* to resources that require frequent
+access, but are either unwieldy to type manually or buried in a menu.
+
+  - [Kaltura Login](https://odumedia.mediaspace.kaltura.com/my-media)
