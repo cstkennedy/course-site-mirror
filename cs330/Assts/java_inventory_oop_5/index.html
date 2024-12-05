@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Item Inventory (Java) Part 5</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Java%29%20Part%205"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Item Inventory (Java) Part 5</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#mutability">1 Mutability</a></div><div class="toc-h1"><a href="#changes-from-the-previous-assignment">2 Changes From The Previous Assignment</a></div><div class="toc-h1"><a href="#the-problem">3 The Problem</a></div><div class="toc-h2"><a href="#input">3.1 Input</a></div><div class="toc-h2"><a href="#output">3.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">4 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">5 Mechanics</a></div><div class="toc-h2"><a href="#packages">5.1 Packages</a></div><div class="toc-h2"><a href="#gradle-wrapper">5.2 Gradle Wrapper</a></div><div class="toc-h2"><a href="#compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</a></div><div class="toc-h2"><a href="#compiling-and-running-the-tests">5.4 Compiling and Running the Tests</a></div><div class="toc-h1"><a href="#files">6 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">7 Grading</a></div><div class="toc-h1"><a href="#submitting">8 Submitting</a></div></div><p>Review the <a class="doc" href="../../Public/syllabus/index.html#assignments" target="CS330_Public">Assignments section of the Syllabus</a>. <strong>There is no precompiled solution provided for this assignment.</strong></p>
+    <h1 id="mutability">1 Mutability</h1><p>In this iteration of <em>Item Inventory</em>… we are taking a Rust-style approach to objects &amp; mutability.</p>
+    <p>If you examine <code>Armour</code>, <code>Consumable</code>, and <code>Tool</code>… you will find that the setters and <code>clone</code> are gone. The only mutators left are the Constructors. <em>(You will also find that <code>Inventory</code> objects can only be created through an <code>Inventory.Builder</code>.)</em></p>
+    <p>This means that any time we want to change an object… we need to create a new object. For <code>Consumable</code>, <code>Armour</code>, and <code>Tool</code> this means that we will need to use one of the <code>ItemCreationStrategy</code> methods.</p>
+    <p><em>In practice we would need a Builder for each Item subtype. However, we will keep things somewhat manageable for now.</em> We will stick with <code>fromDefault</code>, <code>fromTokens</code>, and <code>fromExisting</code>. Figuring out how to implement these methods without setters will be the core challenge for this exercise.</p>
+    <a id="changesfromthepreviousassignment"/><h1 id="changes-from-the-previous-assignment">2 Changes From The Previous Assignment</h1><p>While the core concepts are the same as in previous assignments, there are changes throughout the codebase. You may (and most definitely should) refer to your work from the <a class="doc" href="../../Assts/java_inventory_oop_4/index.html" target="CS330_Assts">previous assignment</a>.</p>
+    <p>If you copy and paste any code, be careful. Make sure that you…</p>
+    <ul>
+  <li>
+  <p>use <em>getters</em> for any data members that are now <em>private</em>.</p>
+    </li>
+  <li>
+  <p>re-evaluate how to implement the new <code>ItemCreationStrategy.fromTokens</code> methods to use Constructors in place of any <em>now-removed setters</em>.</p>
+    </li>
+  <li>
+  <p>re-evaluate how to implement the new <code>ItemCreationStrategy.fromExisting</code> methods to use Constructors in place of any <em>now-removed setters</em>.</p>
+    </li>
+  <li>
+  <p>re-evaluate how to implement the new <code>ItemCreationStrategy.fromExisting</code> methods to use Constructors in place of now-removed <code>clone</code> methods.</p>
+    </li>
+</ul><a id="theproblem"/><h1 id="the-problem">3 The Problem</h1><p>This assignment deals with a program that places items into separate inventories. This is similar to placing items into chests in <a href="https://minecraft.net/">Minecraft</a>. This assignment is similar to:</p>
+    <ul>
+  <li><a class="doc" href="../../Assts/java_inventory_oop_4/index.html" target="CS330_Assts">Assignment 4</a></li>
+</ul><p>In this assignment, you will once again make use of…</p>
+    <ul>
+  <li>inheritance (e.g., virtual functions)</li>
+  <li>the Strategy Pattern (through the <code>ItemCreationStrategy</code> interface`)</li>
+  <li>unit and integration tests</li>
+  <li>regression testing (as you adapt code from the previous assignment)</li>
+</ul><h2 id="input">3.1 Input</h2><p>The program reads data from one file, <em>items-0x.txt</em>. Each line in this file represents one item. The first item on every line denotes the Item type–the remainder of the line varies by item type.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Sample Input File</div>
+<pre><code>Tool Pickaxe Diamond 100 1 Fortune 5
+Tool Shovel Gold 20 3 Unbreaking 2
+Tool Pickaxe Diamond 100 1 Fortune 5
+Potion Speed-II-Potion Spd*2 1
+Food Tomato Hunger-10 2
+Disposable PotatoCamera ImageQuality-97% 5
+Disposable PotatoCamera ImageQuality-97% 5
+Tool Axe Stone 10 2 Unbreaking 2
+Armour Boots Diamond 100 10 Protection 3 lightning
+Armor Boots Diamond 100 10 FeatherFalling 4 lightning
+</code></pre>
+</blockquote><p>Each Item type is denoted by a keyword:</p>
+    <ul>
+  <li><code>Tool</code> indicates a <code>Tool</code> object.</li>
+  <li><code>Armour</code> and <code>Armor</code> indicate an <code>Armour</code> object.</li>
+  <li><code>Food</code>, <code>Potion</code>, and <code>Disposable</code> indicate a <code>Consumable</code> object.</li>
+</ul><p>After the leading keywords, each line has a distinct structure:</p>
+    <ol>
+  <li>
+  <p>The remainder of a <code>Tool</code> line contains–in order–a <em>name</em>, <em>material</em>,  <em>durability</em>, <em>speed</em>, <em>modifier</em>, and <em>modifier level</em>. <code>Tool</code> Items are  <strong>not</strong> <code>stackable</code>.</p>
+    </li>
+  <li>
+  <p>The remainder of a <code>Armour</code> line contains–in order–a <em>name</em>, <em>material</em>,  <em>durability</em>, <em>defense</em>, <em>modifier</em>, <em>modifier level</em>, and <em>element</em>.  <code>Armour</code> Items are <strong>not</strong> <code>stackable</code>.</p>
+    </li>
+  <li>
+  <p>The remainder of a <code>Consumable</code> line contains–in order–a <em>name</em>, <em>effect</em>,  and <em># uses</em>. <code>Consumable</code> Items are <code>stackable</code>.</p>
+    </li>
+</ol><h2 id="output">3.2 Output</h2><p>If the program is run with the first provided input file, items-01.txt, the following output should be generated…</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Reference Output</div>
+<pre><code>Processing Log:
+ (S) Pickaxe
+ (S) Shovel
+ (S) Pickaxe
+ (S) Speed-II-Potion
+ (S) Tomato
+ (S) PotatoCamera
+ (M) PotatoCamera
+ (S) Axe
+ (S) Boots
+ (S) Boots
+
+Player Storage Summary:
+ -Used  90% of 10 slots
+  Nme: Pickaxe
+  Dur: 100
+  Spd: 1
+  Mtl: Diamond
+  Mdr: Fortune (Lvl 5)
+
+  Nme: Shovel
+  Dur: 20
+  Spd: 3
+  Mtl: Gold
+  Mdr: Unbreaking (Lvl 2)
+
+  Nme: Pickaxe
+  Dur: 100
+  Spd: 1
+  Mtl: Diamond
+  Mdr: Fortune (Lvl 5)
+
+  Nme: Speed-II-Potion
+  Eft: Spd*2
+  Use: 1
+  Qty: 1
+
+  Nme: Tomato
+  Eft: Hunger-10
+  Use: 2
+  Qty: 1
+
+  Nme: PotatoCamera
+  Eft: ImageQuality-97%
+  Use: 5
+  Qty: 2
+
+  Nme: Axe
+  Dur: 10
+  Spd: 2
+  Mtl: Stone
+  Mdr: Unbreaking (Lvl 2)
+
+  Nme: Boots
+  Dur: 100
+  Def: 10
+  Mtl: Diamond
+  Mdr: Protection (Lvl 3)
+  Emt: lightning
+
+  Nme: Boots
+  Dur: 100
+  Def: 10
+  Mtl: Diamond
+  Mdr: FeatherFalling (Lvl 4)
+  Emt: lightning
+</code></pre>
+</blockquote><p>Your output–including labels and spacing–must match the expected output.</p>
+    <a id="yourtasks"/><h1 id="your-tasks">4 Your Tasks</h1><p>The key abstractions employed in this program are:</p>
+    <ul>
+  <li><strong>Data</strong>
+    <ul>
+      <li><code>Inventory</code></li>
+      <li><code>Item</code></li>
+      <li><code>ItemStack</code></li>
+      <li><code>Tool</code></li>
+      <li><code>Armour</code></li>
+      <li><code>Consumable</code></li>
+    </ul>
+  </li>
+  <li><strong>Creation</strong>
+    <ul>
+      <li><code>ToolCreation</code></li>
+      <li><code>ArmourCreation</code></li>
+      <li><code>ConsumableCreation</code></li>
+      <li><code>ItemFactory</code></li>
+    </ul>
+  </li>
+  <li><strong>IO</strong>
+    <ul>
+      <li><code>ItemParser</code></li>
+    </ul>
+  </li>
+</ul><p>Do not change the package lines. <strong>The package lines must remain unchanged.</strong></p>
+    <p>You have a few tasks to complete. For each of <code>Armour</code>, <code>Tool</code>, and <code>Consumable</code>:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>The implementations for each of these functions will be similiar, if not identical, to those in the previous assignment.</p>
+    
+</div><ol>
+  <li>Complete the Default Constructor. <em>(This is already completed… treat it as a hint.)</em></li>
+  <li>Complete the <code>equals</code> method.</li>
+  <li>Complete the <code>hashCode</code> method.</li>
+  <li>Complete the <code>toString</code> method.</li>
+</ol><p>The rules for computing hash codes and checking for equivalence are listed the Javadoc comments (i.e., in comments before the function).</p>
+    <p>For each of <code>ArmourCreation</code>, <code>ConsumableCreation</code>, and <code>ToolCreation</code>:</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p>The implementations for each of the <code>from</code> methods will differ from the previous assignment. Refer to the notes at the top of the prompt.</p>
+    
+</div><ol>
+  <li>Complete the <code>fromDefaults</code> method.</li>
+  <li>Complete the <code>fromExisting</code> method.</li>
+  <li>Complete the <code>fromTokens</code> method.</li>
+  <li>Complete the <code>requiredNumberOfValues</code> method.</li>
+</ol><p>The tasks should be familiar–they were your tasks in <a class="doc" href="../../Assts/java_inventory_oop_4/index.html" target="CS330_Assts">the previous assignment!</a>.</p>
+    <p>Note that I have provided stubs for each of these functions (i.e., the code will compile). However, until you complete these functions, the code will not generate meaningful output.</p>
+    <ul>
+  <li>Take note of any hints in the comments.</li>
+  <li>Revisit the <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-06-Java-Shapes">Review 6 Java Shapes Examples</a>.</li>
+  <li>Revisit the <a href="https://github.com/cstkennedy/cs330-examples/tree/master/Review-15-Python-Strategy-Pattern">Review 15 Python Strategy Pattern Examples</a>.</li>
+</ul><h1 id="mechanics">5 Mechanics</h1><h2 id="packages">5.1 Packages</h2><p>This exercise uses a more standard package.</p>
+    <ol>
+  <li>Do <strong>not</strong> change/add any packages or modules to this exercise.</li>
+  <li>Do <strong>not</strong> modify any package lines, e.g.,
+    <pre><code class="java">package edu.odu.cs.cs330.items;
+</code></pre>
+  </li>
+</ol><p><strong>If you change the package, you will fail automatically.</strong> Is this harsh, yes. However, I have explicitly made part of the assignment using the provided package structure.</p>
+    <a id="gradlewrapper"/><h2 id="gradle-wrapper">5.2 Gradle Wrapper</h2><p>I provided you with a Gradle wrapper script.</p>
+    <a id="gradleonlinux"/><h3 id="gradle-on-linux">5.2.1 Gradle on Linux</h3><p>If you are on a Linux machine you… will want to confirm that</p>
+    <pre><code class="console">gradlew
+</code></pre><p>is executable with</p>
+    <pre><code class="console">ls -lah gradlew
+</code></pre><p>You should see something similar to:</p>
+    <pre><code class="console">-rwxr-xr-x 1 tkennedy proxy 5.2K Nov 01 09:39 ./gradlew
+</code></pre><div class="noFloat">
+ 
+</div>
+    <div class="sidebar pct50">
+
+This is a good time to review (and practice) a couple Linux commands from CS
+252 (i.e., `ls` and `chmod`).
+
+</div>
+    <p>Take note of the <code>x</code> characters in <code>-rwxr-xr-x</code>. These mean that the script is executable. If you run:</p>
+    <pre><code class="console">./gradlew
+</code></pre><p>and see</p>
+    <pre><code class="console">./gradlew: Permission denied.
+</code></pre><p>you will need to apply what you learned in CS 252. Use <code>chmod</code> to set the permissions. Run</p>
+    <pre><code class="console">chmod u+x gradlew
+</code></pre><a id="gradleonwindows"/><h3 id="gradle-on-windows">5.2.2 Gradle on Windows</h3><p>If you are on <em>Windows</em> you will need to use <code>gradlew.bat</code> from either <em>Command Prompt</em> or <em>Powershell</em>.</p>
+    <a id="compilingandrunningthejavaprogram"/><h2 id="compiling-and-running-the-java-program">5.3 Compiling and Running the Java Program</h2><p>If the sample data above is kept in items-01.txt, to run this program, type:</p>
+    <pre><code class="console">./gradlew jar; java -jar build/libs/Storage.jar src/main/resources/items-01.txt 10
+</code></pre><p>or</p>
+    <pre><code class="console">./gradlew run
+</code></pre><p>The latter command executes the <code>run</code> target in the Gradle buildfile (which runs the necessary commands for you). This allows us to use fewer keystrokes (which are expensive).</p>
+    <a id="compilingandrunningthetests"/><h2 id="compiling-and-running-the-tests">5.4 Compiling and Running the Tests</h2><p>You should probably run the tests on a Linux machine… You can compile and run the test drivers (including <code>TestArmour</code>, <code>TestConsumable</code>, and <code>TestTool</code>) with</p>
+    <pre><code class="console">./gradlew test
+</code></pre><p>If you implemented everything correctly you will see:</p>
+    <pre><code class="console">TestStorage &gt; testAllOutput(int) &gt; edu.odu.cs.cs330.TestStorage.testAllOutput(int)[1] PASSED
+TestStorage &gt; testAllOutput(int) &gt; edu.odu.cs.cs330.TestStorage.testAllOutput(int)[2] PASSED
+TestStorage &gt; testAllOutput(int) &gt; edu.odu.cs.cs330.TestStorage.testAllOutput(int)[3] PASSED
+TestStorage &gt; testAllOutput(int) &gt; edu.odu.cs.cs330.TestStorage.testAllOutput(int)[4] PASSED
+TestStorage &gt; testAllOutput(int) &gt; edu.odu.cs.cs330.TestStorage.testAllOutput(int)[5] PASSED
+TestStorage &gt; testParseInvalidNotAnInt() PASSED
+TestStorage &gt; testParseInvalidTooFewArgs() PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[1] PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[2] PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[3] PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[4] PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[5] PASSED
+TestStorage &gt; testParseInvalidZeroOrLess(String) &gt; edu.odu.cs.cs330.TestStorage.testParseInvalidZeroOrLess(String)[6] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[1] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[2] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[3] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[4] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[5] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[6] PASSED
+TestStorage &gt; testParseValid(String) &gt; edu.odu.cs.cs330.TestStorage.testParseValid(String)[7] PASSED
+TestArmour &gt; testDefaultConstructor() PASSED
+TestArmour &gt; testEqualsAndHashCode() PASSED
+TestArmour &gt; testToString() PASSED
+TestConsumable &gt; testDefaultConstructor() PASSED
+TestConsumable &gt; testEquals() PASSED
+TestConsumable &gt; testHashCode() PASSED
+TestConsumable &gt; testToString() PASSED
+TestInventory &gt; testAddItemAfterFullWithNonStackable() PASSED
+TestInventory &gt; testAddItemAfterFullWithStackable() PASSED
+TestInventory &gt; testAddItemStackNoCheck() PASSED
+TestInventory &gt; testAddItemWithDuplicateItems() PASSED
+TestInventory &gt; testConstructorSizeN() PASSED
+TestInventory &gt; testDefaultConstructor() PASSED
+TestInventory &gt; testToString() PASSED
+TestItemStack &gt; testAddItemsNotStackable() PASSED
+TestItemStack &gt; testAddItemsStackable() PASSED
+TestItemStack &gt; testEqualsWithDifferentClass() PASSED
+TestItemStack &gt; testSecondConstructor() PASSED
+TestItemStack &gt; testToString() PASSED
+TestTool &gt; testDefaultConstructor() PASSED
+TestTool &gt; testEqualsAndHashCode() PASSED
+TestTool &gt; testToString() PASSED
+TestArmourCreation &gt; testFromDefaults() PASSED
+TestArmourCreation &gt; testFromExisting() PASSED
+TestArmourCreation &gt; testFromTokens() PASSED
+TestArmourCreation &gt; testRequiredNumberOfValues() PASSED
+TestConsumableCreation &gt; testFromDefaults() PASSED
+TestConsumableCreation &gt; testFromExisting() PASSED
+TestConsumableCreation &gt; testFromTokens() PASSED
+TestConsumableCreation &gt; testRequiredNumberOfValues() PASSED
+TestItemFactory &gt; testCreateItemKeywordKnown() PASSED
+TestItemFactory &gt; testCreateItemKeyworkInvalid() PASSED
+TestItemFactory &gt; testIsKnown() PASSED
+TestItemFactory &gt; testIsNotKnown() PASSED
+TestToolCreation &gt; testFromDefaults() PASSED
+TestToolCreation &gt; testFromExisting() PASSED
+TestToolCreation &gt; testFromTokens() PASSED
+TestToolCreation &gt; testRequiredNumberOfValues() PASSED
+TestItemParser &gt; readItems() PASSED
+TestItemParser &gt; readItemsFromFile() PASSED
+TestItemParser &gt; testStreamItemLineFailMalformedLine() PASSED
+TestItemParser &gt; testStreamItemLineFailUnknownItem() PASSED
+TestItemParser &gt; testStreamItemLineSuccess() PASSED
+</code></pre><div class="noFloat"> </div><div class="sidebar pct50">
+<p>If you see <code>Fail</code> next to Inventory, ItemStack, Storage, ItemParser, or ItemFactory <strong>Integration Tests…</strong> ignore them and focus on the…</p>
+    
+<ul>
+  <li><code>Armour</code>, <code>Tool</code>, and <code>Consumable</code> <strong>Unit Tests</strong></li>
+  <li><code>ArmourCreation</code>, <code>ToolCreation</code> and <code>ConsumableCreation</code> <strong>Integration Tests</strong></li>
+</ul>
+<p>If a unit test fails… we are all-but-guaranteed that at least one Integration test will fail.</p>
+    
+<p>The subject of testing: unit testing, integration testing, and bottom-up testing are topics that will be covered in your <em>Introduction to Software Engineering</em> coursework.</p>
+    
+</div><p>Note that you may see quite a few blank lines in the test summary–I omitted them here for brevity.</p>
+    <p>If you see <em>FAILED</em> you must revisit the corresponding function(s). There is a mistake in your code.</p>
+    <p>You may need to run</p>
+    <pre><code class="console">./gradlew clean test
+</code></pre><p>to force a full recompile after making small updates.</p>
+    <h1 id="files">6 Files</h1><p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+  <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Fall-CS330-Java-Inventory-OOP-5">starting repository from GitHub</a>  If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    </li>
+  <li>
+  <p>Download a zip file by clicking  <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2024-Fall-CS330-Java-Inventory-OOP-5/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget 'https://github.com/Old-Dominion-Univ-CS-Dept/2024-Fall-CS330-Java-Inventory-OOP-5/archive/refs/heads/main.zip'
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">6.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">6.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">7 Grading</h1><p>In the grade report that you receive, you will see tests numbered 000 through 025.</p>
+    <div class="noFloat"> </div><div class="sidebar pct50">
+<p><strong>You can only earn credit for the creation tests if…</strong> you have passed all the tests for the corresponding item class.</p>
+    
+<p>For example… you can only earn credit for <code>ArmourCreation</code> tests if you have passed all the tests for <code>Armour</code>.</p>
+    
+</div><ul>
+  <li>Test 001 evaluates your implementation of <code>Armour.Armour()</code></li>
+  <li>Test 002 evaluates your implementation of <code>Armour.toString</code></li>
+  <li>Test 003 evaluates your implementation of <code>Armour.equals</code></li>
+  <li>Test 004 evaluates your implementation of <code>Armour.hashCode</code></li>
+  <li>Test 005 evaluates your implementation of <code>Consumable.Consumable()</code></li>
+  <li>Test 006 evaluates your implementation of <code>Consumable.toString</code></li>
+  <li>Test 007 evaluates your implementation of <code>Consumable.equals</code></li>
+  <li>Test 008 evaluates your implementation of <code>Consumable.hashCode</code></li>
+  <li>Test 009 evaluates your implementation of <code>Tool.Tool()</code></li>
+  <li>Test 010 evaluates your implementation of <code>Tool.toString</code></li>
+  <li>Test 011 evaluates your implementation of <code>Tool.equals</code></li>
+  <li>Test 012 evaluates your implementation of <code>Tool.hashCode</code></li>
+  <li>Test 013 evaluates your implementation of <code>ArmourCreation.fromDefaults</code></li>
+  <li>Test 014 evaluates your implementation of <code>ArmourCreation.fromExisting</code></li>
+  <li>Test 015 evaluates your implementation of <code>ArmourCreation.fromTokens</code></li>
+  <li>Test 016 evaluates your implementation of <code>ArmourCreation.requiredNumberOfValues</code></li>
+  <li>Test 017 evaluates your implementation of <code>ConsumableCreation.fromDefaults</code></li>
+  <li>Test 018 evaluates your implementation of <code>ConsumableCreation.fromExisting</code></li>
+  <li>Test 019 evaluates your implementation of <code>ConsumableCreation.fromTokens</code></li>
+  <li>Test 020 evaluates your implementation of <code>ConsumableCreation.requiredNumberOfValues</code></li>
+  <li>Test 021 evaluates your implementation of <code>ToolCreation.fromDefaults</code></li>
+  <li>Test 022 evaluates your implementation of <code>ToolCreation.fromExisting</code></li>
+  <li>Test 023 evaluates your implementation of <code>ToolCreation.fromTokens</code></li>
+  <li>Test 024 evaluates your implementation of <code>ToolCreation.requiredNumberOfValues</code></li>
+  <li>Test 025 (System Test) evaluates all classes–i.e., your solution as a whole–including output and output formatting using <code>TestStorage.testAllOutput</code>.</li>
+</ul><p>Of course, you should <strong>already know the results</strong> of each test. Maybe you should use</p>
+    <pre><code class="console">./gradlew test
+</code></pre><h1 id="submitting">8 Submitting</h1><p>Files to Submit:</p>
+    <ul>
+  <li><code>Armour.java</code></li>
+  <li><code>Consumable.java</code></li>
+  <li><code>Tool.java</code></li>
+  <li><code>ArmourCreation.java</code></li>
+  <li><code>ConsumableCreation.java</code></li>
+  <li><code>ToolCreation.java</code></li>
+</ul><p>Note that your submitted code must compile correctly on our Linux servers with the other code in that directory, using the compilation commands generated by the provided Gradle buildfile.</p>
+    <p>Do not alter any of the other source code files, nor change the class interfaces in such a way that the code can only be compiled with some other compiler or some other sequence of commands.</p>
+    <p><strong>Submit your assignment using the assignment page in Canvas.</strong></p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@cs.odu.edu?subject=CS330%2C%20Item%20Inventory%20%28Java%29%20Part%205"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2024, Old Dominion Univ.</div></body></html>
