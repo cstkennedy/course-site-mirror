@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Refactoring & Logic Mistakes</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Logic%20Mistakes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Refactoring &amp; Logic Mistakes</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#wait-mistakes-">1 Wait… Mistakes?</a></div><div class="toc-h1"><a href="#fixing-the-mistake">2 Fixing the Mistake</a></div><div class="toc-h1"><a href="#running-tests">3 Running Tests</a></div><div class="toc-h1"><a href="#running-the-actual-program">4 Running the Actual Program</a></div><div class="toc-h1"><a href="#another-attempt">5 Another Attempt</a></div><div class="toc-h1"><a href="#final-code">6 Final Code</a></div></div><a id="waitmistakes"/><h1 id="wait-mistakes-">1 Wait… Mistakes?</h1><p>We would like to continue the example from the previous lecture, i.e., <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-08/Painting-5-Style" target="_blank">Module-08/Painting-5-Adding</a>.</p>
+    <p>On the first offering of this course… a student pointed out that <code>4 * length
+* width</code> is four (4) times the area of a room’s floor instead of the surface area of the room’s walls.</p>
+    <p>Instead of rewriting the lectures and examples… I figured that this example was the perfect opportunity for a discussion in how code can </p>
+    <ul>
+  <li>be thoroughly tested</li>
+  <li>follow best practices for code style</li>
+  <li>follow best practices such as S.O.L.I.D.</li>
+</ul><p>and still suffer from logic and computation errors.</p>
+    <a id="fixingthemistake"/><h1 id="fixing-the-mistake">2 Fixing the Mistake</h1><p>Let us start in <code>compute_paint.py</code>.</p>
+    <pre><code class="python"><br/>def wall_surface_area(length: float, width: float) -&gt; float:
+    """
+    Compute the surface area of all four walls in a room. For the purposes of
+    this estimation... it is assumed that
+
+      1. each wall is a rectangle with no doorways or windows
+      2. there are four (4) walls in the room
+
+    Args:
+        length: room length
+        width: room width
+
+    Returns:
+        Wall surface area for a single room
+    """
+</code></pre><p>To compute the wall surface area… we need ceiling height. Let us…</p>
+    <ul>
+  <li>update the documentation</li>
+  <li>add height as a parameter</li>
+</ul><pre><code class="python">def wall_surface_area(length: float, width: float, height: float) -&gt; float:
+    """
+    Compute the surface area of all four walls in a room. For the purposes of
+    this estimation... it is assumed that
+
+      1. each wall is a rectangle with no doorways or windows
+      2. there are four (4) walls in the room
+
+    Args:
+        length: room length
+        width: room width
+        height: room (ceiling) height
+
+    Returns:
+        Wall surface area for a single room
+    """
+</code></pre><p>The new computation can then replace the old one…</p>
+    <pre><code class="python">    area_long_wall = length * height
+    area_wide_wall = width * height
+
+    area_four_walls = (2 * area_long_wall) + (2 * area_wide_wall)
+
+    return area_four_walls
+</code></pre><a id="runningtests"/><h1 id="running-tests">3 Running Tests</h1><p>Now… we run into an issue. Almost every test in <code>test_compute_paint.py</code> now fails. Each test needs to be updated to supply the new third (height) argument to <code>wall_surface_area</code>.</p>
+    <pre><code class="console">FAILED tests/test_compute_paint.py::test_wall_surface_area[1-1-4] - \
+  TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+FAILED tests/test_compute_paint.py::test_wall_surface_area[1-2-8] - \
+  TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+FAILED tests/test_compute_paint.py::test_wall_surface_area[2-2-16] - \
+  TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+FAILED tests/test_compute_paint.py::test_wall_surface_area[10-12-480] - \
+  TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+FAILED tests/test_compute_paint.py::test_wall_surface_area[10.5-10-420] - \
+  TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+</code></pre><p>The first step is to update the test data in <code>tests/test_compute_paint.py</code>.</p>
+    <pre><code class="python">test_data = [
+    (1, 1, 1, 4),
+    (1, 2, 8, 48),
+    (2, 2, 8, 64),
+    (10, 12, 8, 352),
+    (10.5, 10, 10, 410),
+]
+</code></pre><p>Take note of how the third element in each tuple now corresponds to height. The fourth element is an updated <em>expected wall surface area</em>.</p>
+    <pre><code class="python">@pytest.mark.parametrize("length, width, height, surface_area", test_data)
+def test_wall_surface_area(length, width, height, surface_area):
+    assert_that(wall_surface_area(length, width, height), close_to(surface_area, 1e-1))
+</code></pre><p>The <code>test_wall_surface_area</code> function needed to have height added in three places…</p>
+    <ul>
+  <li>the <code>parametrize</code> decorator</li>
+  <li>the functions parameters</li>
+  <li>within the call to <code>wall_surface_area</code></li>
+</ul><p>Now… our entire test suite is passing. <em>Note how we picked fixed wall surface areas for use in all other test functions.</em> At the end of the day… the tests in <code>test_compute_paint.py</code> are unit tests (which means each test focuses on a single function).</p>
+    <a id="runningtheactualprogram"/><h1 id="running-the-actual-program">4 Running the Actual Program</h1><p>Now it is time to run the actual program with…</p>
+    <pre><code class="console">python3.11 estimate_paint.py
+</code></pre><p>After entering each value…</p>
+    <pre><code class="console">Enter the room length: 4
+Enter the room width: 5
+Enter the cost per gallon of paint:  27.25
+</code></pre><p>…the program crashes…</p>
+    <pre><code class="console">Traceback (most recent call last):
+  File "Module-08/Painting-6-Logic/estimate_paint.py", line 112, in &lt;module&gt;
+    main()
+  File "Module-08/Painting-6-Logic/estimate_paint.py", line 98, in main
+    area = compute_paint.wall_surface_area(length, width)
+
+TypeError: wall_surface_area() missing 1 required positional argument: 'height'
+</code></pre><p>We need to add a prompt for <code>height</code>. Our first modifications will be in <code>estimate_paint.py</code> within the <code>gather_input</code> function.</p>
+    <pre><code class="python">def gather_input(args: list[str]) -&gt; tuple[float, float, float, float]:
+</code></pre><p>The function now returns a tuple containing four (4) floats.</p>
+    <pre><code class="python">    """
+    Check the supplied `args` for four (4) user supplied arguments (for a total
+    length of 4). If three arguments were not supplied then prompt the used for
+    length (in feet), width (in feet), height (in feet), and price per gallon.
+
+    Args:
+        args: command line arguments to process
+
+    Returns:
+        a four-tuple in the form (length, width, height price_per_gallon)
+    """
+</code></pre><p>The pydoc documentation needs to be updated to include height.</p>
+    <pre><code class="python">    # Command Line Arguments were supplied
+    if len(args) == 5:
+        length = float(args[1])
+        width = float(args[2])
+        height = float(args[3])
+
+        price_per_gallon = float(args[4])
+</code></pre><p>We now need to check for four (4) user-supplied command line arguments</p>
+    <pre><code class="python">    else:
+        length = float(input("Enter the room length: "))
+        width = float(input("Enter the room width: "))
+        height = float(input("Enter the room height: "))
+
+        price_per_gallon = float(input("Enter the cost per gallon of paint:  "))
+</code></pre><p>We need to add an interactive prompt for height.</p>
+    <pre><code class="python">    return length, width, height, price_per_gallon
+</code></pre><p>And… the return statement needs to be modified to include height.</p>
+    <a id="anotherattempt"/><h1 id="another-attempt">5 Another Attempt</h1><p>After updating <code>gather_input</code>… <code>main</code> needs to be updated…</p>
+    <pre><code class="python">    length, width, price_per_gallon = gather_input(sys.argv)
+</code></pre><p>needs to be updated to…</p>
+    <pre><code class="python">    length, width, height, price_per_gallon = gather_input(sys.argv)
+</code></pre><p>That leaves one last line to update… from…</p>
+    <pre><code class="python">    area = compute_paint.wall_surface_area(length, width)
+</code></pre><p>to…</p>
+    <pre><code class="python">    area = compute_paint.wall_surface_area(length, width, height)
+</code></pre><p>The program now runs to completion!</p>
+    <pre><code class="console">Enter the room length: 4
+Enter the room width: 5
+Enter the room height: 8
+Enter the cost per gallon of paint:  27.28
+For 2 coats...
+  You will need to buy 1 gallons of paint.
+  You will spend $ 27.28.
+
+For 3 coats...
+  You will need to buy 2 gallons of paint.
+  You will spend $ 54.56.
+
+For 4 coats...
+  You will need to buy 2 gallons of paint.
+  You will spend $ 54.56.
+</code></pre><a id="finalcode"/><h1 id="final-code">6 Final Code</h1><p>The corrected code can be found in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-08/Painting-6-Logic" target="_blank">Module-08/Painting-6-Logic</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Refactoring%20%26%20Logic%20Mistakes"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

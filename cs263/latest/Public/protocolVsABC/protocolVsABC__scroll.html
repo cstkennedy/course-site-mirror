@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Protocol vs Abstract Base Class</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Protocol%20vs%20Abstract%20Base%20Class"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Protocol vs Abstract Base Class</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-clear-difference">1 A Clear Difference</a></div><div class="toc-h1"><a href="#what-do-we-know-">2 What Do We Know?</a></div><div class="toc-h1"><a href="#what-is-the-benefit-">3 What is the Benefit?</a></div><div class="toc-h1"><a href="#that-sounds-like-an-abstract-base-class">4 That Sounds Like an Abstract Base Class</a></div></div><a id="acleardifference"/><h1 id="a-clear-difference">1 A Clear Difference</h1><p>I spent quite a bit time reading Python <a href="https://peps.python.org/pep-0544/#generic-protocols" target="_blank">PEP 544</a> after the <a href="https://docs.python.org/3/library/typing.html?highlight=protocols#protocols" target="_blank">Typing Module documentation</a>. Let us take a quick look at the <em>Rational and Goals</em> section of PEP 544.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: PEP 544 - Rational and Goals</div>
+<p><strong>This passage was retrieved from <a href="https://peps.python.org/pep-0544/#rationale-and-goals">https://peps.python.org/pep-0544/#rationale-and-goals</a>.</strong></p>
+    
+<p>Currently, <a href="https://peps.python.org/pep-0484/" target="_blank">PEP 484</a> and the <code>typing</code> module <a href="https://peps.python.org/pep-0544/#typing" target="_blank">[typing]</a> define abstract base classes for several common Python protocols such as <code>Iterable</code> and <code>Sized</code>. The problem with them is that a class has to be explicitly marked to support them, which is unpythonic and unlike what one would normally do in idiomatic dynamically typed Python code. For example, this conforms to <a href="https://peps.python.org/pep-0484/" target="_blank">PEP 484</a>:</p>
+    
+<pre><code class="python">from typing import Sized, Iterable, Iterator
+
+class Bucket(Sized, Iterable[int]):
+    ...
+    def __len__(self) -&gt; int: ...
+    def __iter__(self) -&gt; Iterator[int]: ...
+</code></pre>
+<p>The same problem appears with user-defined ABCs: they must be explicitly subclassed or registered. This is particularly difficult to do with library types as the type objects may be hidden deep in the implementation of the library. Also, extensive use of ABCs might impose additional runtime costs.</p>
+    
+<p>The intention of this PEP is to solve all these problems by allowing users to write the above code without explicit base classes in the class definition, allowing <code>Bucket</code> to be implicitly considered a subtype of both <code>Sized</code> and <code>Iterable[int]</code> by static type checkers using structural <a href="https://peps.python.org/pep-0544/#wiki-structural" target="_blank">[wiki-structural]</a> subtyping:</p>
+    
+<pre><code class="python">from typing import Iterator, Iterable
+
+class Bucket:
+    ...
+    def __len__(self) -&gt; int: ...
+    def __iter__(self) -&gt; Iterator[int]: ...
+
+def collect(items: Iterable[int]) -&gt; int: ...
+result: int = collect(Bucket())  # Passes type check
+</code></pre>
+<p>Note that ABCs in <code>typing</code> module already provide structural behavior at runtime, <code>isinstance(Bucket(), Iterable)</code> returns <code>True</code>. The main goal of this proposal is to support such behavior statically. The same functionality will be provided for user-defined protocols, as specified below. The above code with a protocol class matches common Python conventions much better. It is also automatically extensible and works with additional, unrelated classes that happen to implement the required protocol.</p>
+    
+</blockquote><p>Now for the important question… <em>How would we explain this passage in casual conversation?</em> Well… let us find out!</p>
+    <a id="whatdoweknow"/><h1 id="what-do-we-know-">2 What Do We Know?</h1><p>We know that given a base class (e.g., <code>Shape</code>) that any derived class (e.g., <code>Rectangle</code>) must explicitly inherit from the base class. Consider… the following <code>Shape</code> class.</p>
+    <pre><code class="python">from typing import Protocol
+
+
+class Shape(Protocol):
+    """
+    Shape in a 2-D Cartesian Plane
+    """
+
+    def name(self) -&gt; str:
+        raise NotImplementedError()
+
+    def area(self) -&gt; float:
+        raise NotImplementedError()
+
+    def perimeter(self) -&gt; float:
+        raise NotImplementedError()
+</code></pre><p>Take note of the three methods:</p>
+    <ul>
+  <li><code>name</code> - which requires a class to return the name of the .</li>
+  <li><code>area</code> - which requires a class to implement an area computation.</li>
+  <li><code>perimeter</code> - which requires a class to implement a perimeter computation.</li>
+</ul><p>A <code>Rectangle</code> class could be written as…</p>
+    <pre><code class="python">@dataclass
+class Rectangle:
+    length: float = 1
+    width: float = 1
+
+    def name(self) -&gt; str:
+        return "Rectangle"
+
+    def area(self) -&gt; float:
+        return self.length * self.height
+
+    def perimeter(self) -&gt; float:
+        return 2 * (self.length + self.height)
+</code></pre><p>Okay… What is the difference? The first line of the <code>Rectangle</code> class differs:</p>
+    <pre><code class="python">class Rectangle(Shape):
+</code></pre><p>versus</p>
+    <pre><code class="python">class Rectangle:
+</code></pre><p>We no longer need to explicitly mark <code>Rectangle</code> as inheriting from <code>Shape</code>.</p>
+    <a id="whatisthebenefit"/><h1 id="what-is-the-benefit-">3 What is the Benefit?</h1><p>We can write code along the lines of…</p>
+    <pre><code class="python">def get_largest_area_by_shape_name(shapes: list[Shape]) -&gt; tuple[str, float]:
+    """
+    Given a list of shapes:
+
+      1. Identify a set of shape names
+      2. find the largest area for each name
+    """
+
+    pass
+</code></pre><p>The function does not need to know about the specific classes involved, just that those classes provide <code>name</code> and <code>area</code>.</p>
+    <a id="thatsoundslikeanabstractbaseclass"/><h1 id="that-sounds-like-an-abstract-base-class">4 That Sounds Like an Abstract Base Class</h1><p>That is an accurate assessment. However, a Protocol can be defined independent of the class definitions (e.g., you could define a <code>Protocol</code> and have it apply to classes written as part of a separate module or library.</p>
+    <p>Alex Martelli (Fellow of the Python Software Foundation) summarizes the notion in a <a href="https://groups.google.com/g/comp.lang.python/c/CCs2oJdyuzc/m/NYjla5HKMOIJ">post on Google Groups.</a></p>
+    <blockquote>
+  <p>In other words, don’t check whether it IS-a duck: check whether it QUACKS-like-a duck, WALKS-like-a duck, etc, etc, depending on exactly what subset of duck-like behaviour you need to play your language-games with. If the argument fails this specific-ducklyhood-subset-test, then you can shrug, ask “why a duck?” (at least, you can if you’re a Marx Brothers fan and have memorized “Cocoanuts”’ script; Monty Python one-true-wayists will have to find their own simile here), and move on to the next set of tests (why-a-no- chicken immediately comes to mind, but then one would have to ask why it crosses the road, so I think we’d better snip it).</p>
+    
+  <p>…</p>
+    
+  <p>Besides, “explicit is better than implicit”, goes one of Python’s mantras. Just let the client-code explicitly TELL you which kind of argument they are passing you (and doing so through a named argument is simple and readable), and your work drops to zero, while removing no useful functionality whatever from the client. As a little vig, you also avoid trouble in case what the client wants to pass is some tricky object that behaves EITHER as a file connection OR as a db connection (etc, etc) – not all that likely, but, who knows.</p>
+    
+</blockquote><p>This gets us closer to <strong>Interface Segregation (the ‘I’ in SOLID)</strong>. It is much better to define the specific type of behavior we want instead of for a thing.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Protocol%20vs%20Abstract%20Base%20Class"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Building a Linked List - Part 3</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Building%20a%20Linked%20List%20-%20Part%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Building a Linked List - Part 3</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#what-about-our-goal-">1 What About Our Goal?</a></div><div class="toc-h2"><a href="#start-with-dunder-add">1.1 Start with Dunder add</a></div><div class="toc-h2"><a href="#add-support-for-in">1.2 Add Support for “in”</a></div><div class="toc-h1"><a href="#let-us-refactor">2 Let Us Refactor</a></div><div class="toc-h2"><a href="#remove-dunder-str">2.1 Remove Dunder str</a></div><div class="toc-h2"><a href="#dunder-repr-has-a-bug">2.2 Dunder repr Has a Bug</a></div><div class="toc-h1"><a href="#tweaking-node-creation">3 Tweaking Node Creation</a></div><div class="toc-h1"><a href="#one-more-type-annotation">4 One More Type Annotation</a></div><div class="toc-h1"><a href="#that-is-the-end">5 That is “The End”</a></div></div><a id="whataboutourgoal"/><h1 id="what-about-our-goal-">1 What About Our Goal?</h1><p>The previous lecture focused on adding functionality to our <code>LinkedList</code> implementation with the end goal of building a <strong>drop-in replacement for <code>list</code>.</strong></p>
+    <p>We are close… for the moment we need:</p>
+    <ol>
+  <li>
+    <p><code>__contains__</code> to support the <code>in</code> keyword for search, e.g.,</p>
+    
+    <pre><code class="python">if 7 in example_list:
+    print('"7" was found!)
+</code></pre>
+  </li>
+  <li>
+    <p><code>__add__</code> to add two <code>LinkedList</code> objects together</p>
+    
+    <pre><code class="python">ll_1 = LinkedList(range(1, 7))
+ll_2 = LinkedList(range(20, 30))
+
+ll_3 = ll_1 + ll_2
+</code></pre>
+  </li>
+</ol><a id="startwithdunderadd"/><h2 id="start-with-dunder-add">1.1 Start with Dunder add</h2><p>Let us start with <code>__add__</code>. After all… it is built on what we have learned while writing:</p>
+    <ul>
+  <li><code>append</code></li>
+  <li><code>extend</code></li>
+  <li><code>__init__</code></li>
+</ul><p>We can actually implement <code>__add__</code> in <del>three</del> four lines (counting is hard)…</p>
+    <pre><code class="python">    def __add__(self, other: collections.abc.Iterable) -&gt; LinkedList:
+        new_ll = LinkedList()
+        new_ll.extend(self)
+        new_ll.extend(other)
+
+        return new_ll
+</code></pre><p>However, we do not need to start with an empty <code>LinkedList</code>. We can actually use the constructor to grab the first batch of data.</p>
+    <pre><code class="python">    def __add__(self, other: collections.abc.Iterable) -&gt; LinkedList:
+        new_ll = LinkedList(self)
+        new_ll.extend(other)
+
+        return new_ll
+</code></pre><p>Now… we actually have three lines (not counting the blank line)!</p>
+    <blockquote>
+  <p><em>Even though we have not explicity referenced running a <code>LinkedList</code> test suite… the <code>test_add</code> function caught a few mistakes with a tweaked <code>extend</code> implementation (which will be discussed later in this lecture).</em></p>
+    
+</blockquote><p>Did you notice that <code>other</code> has <code>Iterable</code> listed as its type? There is no reason to restrict <code>__add__</code> to two <code>LinkedList</code> objects. If we can iterate over something… we can grab its data.</p>
+    <a id="addsupportforin"/><h2 id="add-support-for-in">1.2 Add Support for “in”</h2><p>Since <code>in</code> returns <code>True</code> if a value in found within a collection… a sequential search should be our initial choice. <em>(Since we have a linked list… a sequentail search is our only choice.)</em></p>
+    <pre><code class="python">    def __contains__(self, value_to_find: Any) -&gt; bool:
+        for entry in self:
+            if entry == value_to_find:
+                return True
+
+        return False
+</code></pre><p>While the initial implementation is correct… why not use <code>any</code>?</p>
+    <pre><code class="python">    def __contains__(self, value_to_find: Any) -&gt; bool:
+        return any(entry == value_to_find for entry in self)
+</code></pre><p>If you have read the docs… you will know that this implementation is similar to what is produced automatically…</p>
+    <blockquote>
+  <p>For objects that don’t define <code>__contains__()</code>, the membership test first tries iteration via <code>__iter__()</code>…</p>
+    
+  <p><em>Retrieved from <a href="https://docs.python.org/3/reference/datamodel.html#object.__contains__">https://docs.python.org/3/reference/datamodel.html#object.__contains__</a></em></p>
+    
+</blockquote><p>However, our implementation does give us a baseline… in case we decide to implement a doubly linked list or a skip list in the future.</p>
+    <a id="letusrefactor"/><h1 id="let-us-refactor">2 Let Us Refactor</h1><p>Now… it is time to start refactoring. Let us start with <code>__str__</code>.</p>
+    <a id="removedunderstr"/><h2 id="remove-dunder-str">2.1 Remove Dunder str</h2><p>While, <code>__str__</code> does produce output and was used for debugging… we now have <code>__repr__</code>. Keep in mind that…</p>
+    <ul>
+  <li>
+  <p><code>__str__</code> is meant to generate <em>presentable</em> production output</p>
+    </li>
+  <li>
+  <p><code>__repr__</code> is meant to generate debugging output for developers</p>
+    </li>
+</ul><p><code>LinkedList</code> is intended to be a used as a drop-in replacement for <code>list</code> across multiple programs. It is a safe assumption that each of those programs will have a different output specification. And… those programs can now access the stored data through <code>LinkedList.Iterator</code>.</p>
+    <p><strong>Let us remove <code>__str__</code>.</strong></p>
+    <a id="dunderreprhasabug"/><h2 id="dunder-repr-has-a-bug">2.2 Dunder repr Has a Bug</h2><p>The <code>test_linked_list.py</code> test suite contains checks for <code>__str__</code> through use of <code>has_string</code> and <code>string_contains_in_order</code> matchers. If a class does not have a <code>__str__</code> these checks examine the output of <code>__repr__</code>.</p>
+    <pre><code class="python">    assert_that(empty_list, has_string("LinkedList()"))
+</code></pre><p>In the case of an empty list… we would expect that <code>__repr__</code> returns </p>
+    <pre><code class="console">"LinkedList()"
+</code></pre><p>However, we end up with…</p>
+    <pre><code class="console">"LinkedList(())"
+</code></pre><p>A quick <em>early return</em> is the (in my opinion) most ideal solution.</p>
+    <pre><code class="python">    def __repr__(self) -&gt; str:
+        if not self:
+            return "LinkedList()"
+
+        inner_data_str = ", ".join(f"{datum!r}" for datum in self)
+
+        return f"LinkedList(({inner_data_str}))"
+</code></pre><p>If the list is empty… we can just return a call to <code>LinkedList()</code>.</p>
+    <a id="tweakingnodecreation"/><h1 id="tweaking-node-creation">3 Tweaking Node Creation</h1><p>The <code>append</code> logic has always bothered me. When analyzing computation complexity… we look at time vs space (i.e., runtime vs memory):</p>
+    <ul>
+  <li>
+  <p>Do we want to use more memory and decrease runtime?</p>
+    </li>
+  <li>
+  <p>Do we want to use less memory at the cost of increased runtime?</p>
+    </li>
+</ul><p>Conditional blocks (e.g., <code>if</code>) have a cost. Let us revisit <code>append</code>.</p>
+    <pre><code class="python">    def append(self, val: Any) -&gt; None:
+        """
+        Add a piece of data (entry) to the end of the list. If the list is
+        currently empty, this new entry will be both the first and last entry
+        in the list.
+
+        Args:
+            val: piece of data to store
+        """
+
+        if not self.head:
+            self.__append_first(val)
+
+        else:
+            self.__append_general(val)
+</code></pre><p>We know for a fact that <code>if not self.head</code> will only evaluate to <code>True</code> when the very first <code>Node</code> is created. What if… we added an <strong>unused</strong> first Node?</p>
+    <pre><code class="python">    def append(self, val: Any) -&gt; None:
+        """
+        Add a piece of data (entry) to the end of the list.
+
+        Args:
+            val: piece of data to store
+        """
+
+        self.__append_general(val)
+</code></pre><p>As long as <code>__init__</code> always adds the <em>placeholder first <code>Node</code></em>… <code>append</code> will always have access to a <em>tail <code>Node</code></em>.</p>
+    <pre><code class="python">    def __init__(self, initial_data: collections.abc.Iterable = None):
+        self.head: Node = None
+        self.tail: Node = None
+        self.length: int = 0  # Do not include the "buffer" Node
+
+        self.__append_first(None)
+
+        # Use extend to add any starting data
+        if initial_data:
+            self.extend(initial_data)
+</code></pre><p><strong>We need to update <code>__iter__</code> to <em>skip</em> to the second <code>Node</code>.</strong></p>
+    <pre><code class="python">    def __iter__(self) -&gt; LinkedList.Iterator:
+        second_node = self.head.next_node
+        return LinkedList.Iterator(starting_node=second_node)
+</code></pre><p>And… the length is wrong. <em>(Note that <code>test_linked_list.py</code> is being run after making each change to identify any oversights).</em> Let us return to <code>__init__</code> and move the <code>__append_first</code> logic.</p>
+    <pre><code class="python">    def __init__(self, initial_data: collections.abc.Iterable = None):
+        self.head: Node = None
+        self.tail: Node = None
+        self.length: int = 0  # Do not include the "buffer" Node
+
+        new_node = LinkedList.Node(data=None)
+
+        self.head = new_node
+        self.tail = new_node
+
+        self.length = 1
+
+        # Use extend to add any starting data
+        if initial_data:
+            self.extend(initial_data)
+</code></pre><p>Ah… <code>self.length</code> was being set to <code>1</code>. Note that <code>length</code> should only be updated when data is stored.</p>
+    <pre><code class="python">    def __init__(self, initial_data: collections.abc.Iterable = None):
+        self.head: Node = None
+        self.tail: Node = None
+        self.length: int = 0  # Do not include the "buffer" Node
+
+        new_node = LinkedList.Node(data=None)
+
+        self.head = new_node
+        self.tail = new_node
+
+        # Use extend to add any starting data
+        if initial_data:
+            self.extend(initial_data)
+</code></pre><p><em>Let us finally fix a type annotation mistake…</em></p>
+    <pre><code class="python">    def __init__(self, initial_data: collections.abc.Iterable = None):
+        self.head: LinkedList.Node = None
+        self.tail: LinkedList.Node = None
+</code></pre><p>And… I think <code>__init__</code> is good enough now. Any further changes would, in my opinion, decrease readabilty. </p>
+    <p>Let us remove <code>__append_general</code> and move all of its logic into <code>append</code>.</p>
+    <a id="onemoretypeannotation"/><h1 id="one-more-type-annotation">4 One More Type Annotation</h1><p>There is one more type annotation to fix, <code>next_node: Node</code>.</p>
+    <pre><code class="python">    @dataclass
+    class Node:
+        data: Any = None
+        next_node: Node = None
+</code></pre><p>Let us use <code>Self</code> instead of writing <code>LinkedList.Node</code>.</p>
+    <pre><code class="python">    @dataclass
+    class Node:
+        data: Any = None
+        next_node: Self = None
+</code></pre><a id="thatistheend"/><h1 id="that-is-the-end">5 That is “The End”</h1><p>While we could continue tweaking our implementation… we are starting to encounter diminishing returns. Our changes thus far have:</p>
+    <ol>
+  <li>increased readability</li>
+  <li>decreased complexity</li>
+  <li>fixed bugs</li>
+  <li>brought us in line with the Python Class Checklist</li>
+</ol><p>If our concern were performance… we would actually be implementing our <code>LinkedList</code> in C or C++ and providing Python bindings (similar to what NumPy and Pandas do).</p>
+    <p>The final (complete) <code>LinkedList</code> class can be found (along with a test suite) in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-10-Linked-List/Example-3">Module-10-Linked-List/Example-3 in the Example Code Repository</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Building%20a%20Linked%20List%20-%20Part%203"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

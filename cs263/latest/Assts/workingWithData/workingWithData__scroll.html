@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Working With Data</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Working%20With%20Data"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Working With Data</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h2"><a href="#input">1.1 Input</a></div><div class="toc-h2"><a href="#output">1.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">2 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">3 Mechanics</a></div><div class="toc-h1"><a href="#files">4 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">5 Grading</a></div><div class="toc-h1"><a href="#submitting">6 Submitting</a></div></div><a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>In an <a class="doc" href="../../Assts/playingWithStrings/index.html" target="CS263_Assts">earlier assignment</a>… I referenced Isaac Asimov and J.R.R. Tolkien with specific note of their grammatical prowess.</p>
+    <p>Suppose we have a list of tuples in the form…</p>
+    <pre><code>(Author, Title, Series, # in Series)
+</code></pre><p>where</p>
+    <ul>
+  <li><code>Series</code> is <code>None</code> if a book is not part of a series</li>
+  <li><code># in Series</code> is <code>0</code> if a book is not part of a series</li>
+</ul><p>We will use the following convention for numbering:</p>
+    <ul>
+  <li>
+  <p><code>0</code> represents the first book in a series</p>
+    </li>
+  <li>
+  <p><code>n</code> is the <code>n-th</code> sequel, e.g., <code>1</code> would be the first sequel in a series</p>
+    </li>
+  <li>
+  <p><code>-m</code> is the <code>m-th</code> prequel where <code>-m</code> is based on in-universe chronology (e.g., <code>-2</code> would take place before <code>-1</code> and <code>-1</code> would take place immediately before the <code>0</code> book).</p>
+    </li>
+</ul><p>We would like to provide the following search and filter options:</p>
+    <ol>
+  <li>
+  <p>Output all books written by a single author</p>
+    </li>
+  <li>
+  <p>Output all books in a given series, in series order</p>
+    </li>
+  <li>
+  <p>List all authors in descending order by number of series written</p>
+    </li>
+  <li>
+  <p>List all authors in descending order by number of books written</p>
+    </li>
+  <li>
+  <p>Output the zeroth book in a series</p>
+    </li>
+  <li>
+  <p>Output the top author based on number of books written</p>
+    </li>
+</ol><h2 id="input">1.1 Input</h2><p>Input is stored in a text file in the following form…</p>
+    <pre><code>Isaac Asimov, Prelude to Foundation, Foundation, -2
+Isaac Asimov, Forward the Foundation, Foundation, -1
+Isaac Asimov, Foundation, Foundation, 0
+Isaac Asimov, Foundation and Empire, Foundation, 2
+Isaac Asimov, Second, Foundation, Foundation, 3
+Isaac Asimov, Foundation's Edge, Foundation, 4
+Isaac Asimov, Foundation and Earth, Foundation,5 
+Frank Herbert, Dune, Dune, 0
+Frank Herbert, Dune Messiah, Dune, 1
+Frank Herbert, Children of Dune, Dune, 2
+</code></pre><p><em>Just in case you are wondering… I am a big fan of Isaac Asimov’s Foundation series and Robots series. Dune… is next on that list.</em></p>
+    <h2 id="output">1.2 Output</h2><p>A single execution of the program will be similar to…</p>
+    <pre><code class="console"><br/>--------------------------------------------------------------------------------
+                                 Full Book List                                 
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5),
+ ('Frank Herbert', 'Dune', 'Dune', 0),
+ ('Frank Herbert', 'Dune Messiah', 'Dune', 1),
+ ('Frank Herbert', 'Children of Dune', 'Dune', 2)]
+
+--------------------------------------------------------------------------------
+                             Books by Isaac Asimov                              
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5)]
+
+--------------------------------------------------------------------------------
+                         Books in the Foundation series                         
+--------------------------------------------------------------------------------
+[('Isaac Asimov', 'Prelude to Foundation', 'Foundation', -2),
+ ('Isaac Asimov', 'Forward the Foundation', 'Foundation', -1),
+ ('Isaac Asimov', 'Foundation', 'Foundation', 0),
+ ('Isaac Asimov', 'Foundation and Empire', 'Foundation', 2),
+ ('Isaac Asimov', 'Second Foundation', 'Foundation', 3),
+ ('Isaac Asimov', "Foundation's Edge", 'Foundation', 4),
+ ('Isaac Asimov', 'Foundation and Earth', 'Foundation', 5)]
+
+--------------------------------------------------------------------------------
+                      Book 'Zero' in the Foundation series                      
+--------------------------------------------------------------------------------
+('Isaac Asimov', 'Foundation', 'Foundation', 0)
+
+--------------------------------------------------------------------------------
+                            Books in the Dune series                            
+--------------------------------------------------------------------------------
+[('Frank Herbert', 'Dune', 'Dune', 0),
+ ('Frank Herbert', 'Dune Messiah', 'Dune', 1),
+ ('Frank Herbert', 'Children of Dune', 'Dune', 2)]
+
+--------------------------------------------------------------------------------
+                         Book 'Zero' in the Dune series                         
+--------------------------------------------------------------------------------
+('Frank Herbert', 'Dune', 'Dune', 0)
+
+
+</code></pre><a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>You tasks are to implement the following functions…</p>
+    <ol>
+  <li>
+  <p><code>get_all_books_by_author</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that  author.</p>
+    </li>
+  <li>
+  <p><code>get_all_books_by_series</code> which takes the list of books and returns an  iterable (e.g., <code>list</code>) that contains only the books written by that  series.</p>
+    </li>
+  <li>
+  <p><code>get_zeroth_book</code> which takes a list of books and a series and returns the  zeroth book in that series.</p>
+    </li>
+</ol><p>You will notice that each function has a placeholder for pydoc documentation…</p>
+    <pre><code class="python">    """
+    T.B.W.
+    """
+</code></pre><p>Completing the pydoc documentation is optional.</p>
+    <h1 id="mechanics">3 Mechanics</h1><div class="noFloat"> </div><div class="sidebar pct50">
+<p>Note that instead of tabular output… I have opted for the <a href="https://docs.python.org/3/library/pprint.html#pprint.PrettyPrinter">PrettyPrinter</a> module… which can be invaluable when developing/debugging Python code.</p>
+    
+</div><p>You can run the main program with…</p>
+    <pre><code class="console">python3.11 manage_books.py
+</code></pre><p>The test code can be run with…</p>
+    <pre><code class="console">python3.11 -m pytest -v tests
+</code></pre><h1 id="files">4 Files</h1><p>There are two (2) files in this assignment:</p>
+    <ul>
+  <li><code>manage_books.py</code></li>
+  <li><code>test/test_manage_books.py</code></li>
+</ul><p>You will be working in <code>manage_books.py</code>. Do not modify the other files.</p>
+    <p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/2025-Spring-CS263-Lists">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking  <a href="https://github.com/2025-Spring-CS263-Lists/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget 'https://github.com/2025-Spring-CS263-Lists/archive/refs/heads/main.zip'
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">5 Grading</h1><p>Your grade will be based on the following criteria…</p>
+    <ul>
+  <li><strong>test 000</strong> - code passes <code>test_get_all_books_by_author</code></li>
+  <li><strong>test 001</strong> - code passes <code>test_get_all_books_by_series</code></li>
+  <li><strong>test 002</strong> - code passes <code>test_get_zeroth_book</code></li>
+</ul><h1 id="submitting">6 Submitting</h1><p>You will submit your completed copy of <code>manage_books.py</code> as a file upload through Canvas.</p>
+    <p>Do not alter any of the other source code files, nor change the module interface.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Working%20With%20Data"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2025, Old Dominion Univ.</div></body></html>

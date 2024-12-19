@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>The C++ and Java Class Checklists</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20The%20C%2B%2B%20and%20Java%20Class%20Checklists"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">The C++ and Java Class Checklists</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#class-checklist-as-a-collection-of-emergent-properties">1 Class Checklist as a Collection of Emergent Properties</a></div><div class="toc-h1"><a href="#focusing-on-c-java">2 Focusing on C++ &amp; Java</a></div></div><a id="classchecklistasacollectionofemergentproperties"/><h1 id="class-checklist-as-a-collection-of-emergent-properties">1 Class Checklist as a Collection of Emergent Properties</h1><p>The class checklist can be though of as a set of emergent properties (or, if you think as the table as a single entity, an emergent property).</p>
+    <p>Depending on your programming background you will be familiar with C++, Java (maybe both C++ and Java). Select (based on your background) either the C++ or Java column. Compare it to the Python column.</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+      <th align="left">Python 3 </th>
+      <th align="left">Rust </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Default Constructor </td>
+      <td align="left">Default Constructor </td>
+      <td align="left"><code>__init__</code> </td>
+      <td align="left"><code>new()</code> or Default trait </td>
+    </tr>
+    <tr>
+      <td align="left">Copy Constructor </td>
+      <td align="left">Clone and/or Copy Constructor </td>
+      <td align="left"><code>__deepcopy__</code> </td>
+      <td align="left">Clone trait </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+      <td align="left"><code>__del__</code> </td>
+      <td align="left">Drop trait </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (Getters) </td>
+      <td align="left">Accessors (<code>@property</code>) </td>
+      <td align="left">Accessors (Getters) </td>
+    </tr>
+    <tr>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Mutators (Setters) </td>
+      <td align="left">Setters (<code>@attribute.setter</code>) </td>
+      <td align="left">Mutators (setters) </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+      <td align="left"><code>__eq__</code> </td>
+      <td align="left">std::cmp::PartialEq trait </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+      <td align="left"><code>__hash__</code> </td>
+      <td align="left">std::cmp::PartialOrd trait </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+      <td align="left"><code>__str__</code> </td>
+      <td align="left">std::fmt::Display trait </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+      <td align="left"><code>__repr__</code> </td>
+      <td align="left">std::fmt::Debug trait </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+      <td align="left"><code>__iter__</code> </td>
+      <td align="left"><code>iter()</code> and <code>iter_mut()</code> </td>
+    </tr>
+  </tbody>
+</table><ol>
+  <li>
+  <p>Think about why so many parallels exist between languages that support  Object Oriented Programming (OOP).</p>
+    </li>
+  <li>
+  <p>Think about the rule <strong>Every Constructor must intialize every attribute  (data member).</strong></p>
+    </li>
+  <li>
+    <p>Think about <a href="https://en.cppreference.com/w/cpp/language/raii">Resource Acquisition is Initialization (RAII) as defined by  cppreference.com</a>:</p>
+    
+    <p><em>Resource Acquisition Is Initialization or RAII, is a C++ programming  technique[1][2] which binds the life cycle of a resource that must be  acquired before use (allocated heap memory, thread of execution, open  socket, open file, locked mutex, disk space, database  connection—anything that exists in limited supply) to the lifetime of an  object.</em> </p>
+    
+    <ul>
+      <li>The Python <code>with</code> context management mechanic is an example of RAII.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Think about output in the context of</p>
+    
+    <ul>
+      <li><code>operator&lt;&lt;</code> in C++</li>
+      <li><code>toString</code> in Java</li>
+      <li><code>__str__</code> in Python 3</li>
+      <li><code>std::fmt::Display::fmt</code> in Rust</li>
+    </ul>
+  </li>
+</ol><a id="focusingoncjava"/><h1 id="focusing-on-c-java">2 Focusing on C++ &amp; Java</h1><p>Let us take our Class Checklist Comparison Table and focus only on C++ and Java.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: C++ &amp; Java Class Checklist Table</div>
+<table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left"><strong>Default Constructor</strong> </td>
+      <td align="left"><strong>Default Constructor</strong> </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Copy Constructor</strong> </td>
+      <td align="left"><strong>Clone and/or Copy Constructor</strong> </td>
+    </tr>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Accessors (Getters)</strong> </td>
+      <td align="left"><strong>Accessors (Getters)</strong> </td>
+    </tr>
+    <tr>
+      <td align="left"><strong>Mutators (Setters)</strong> </td>
+      <td align="left"><strong>Mutators (Setters)</strong> </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+  </tbody>
+</table>
+</blockquote><p>If we look at the table… four rows (listed in bold) are immediately familiar:</p>
+    <ol>
+  <li>
+  <p><strong>Default Constructor</strong> - all objects need to be initialized to some  default state.</p>
+    </li>
+  <li>
+    <p><strong>Copy Constructor &amp; <code>clone</code></strong> - it must be possible to copy all objects.</p>
+    
+    <p><code>clone</code> allows dynamic binding to be leveraged (which is the standard in Java).</p>
+    
+  </li>
+  <li>
+  <p><strong>Accessors &amp; Mutators</strong> - the principles of encapsulation still apply.</p>
+    </li>
+</ol><p>The only difference between C++ and Java for each of these items is syntax. The mechanics and conceptual approach are the same (barring a few pedantic differences).</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: C++ &amp; Java Class Checklist Table - The Remainder I</div>
+<table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Destructor </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left">finalize (deprecated/discouraged) </td>
+    </tr>
+    <tr>
+      <td align="left">Assignment Operator (=) </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Swap </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+  </tbody>
+</table>
+</blockquote><p>If we strip out the four bolded rows, we are left with nine (9) rows. Let us tackle a few…</p>
+    <ol>
+  <li>
+    <p><strong>Destructor vs <code>finalize</code></strong> - In C++ the destructor guarantees memory  deallocation (e.g., calls to <code>delete</code> or <code>delete[]</code>).</p>
+    
+    <p>It is also common to shoehorn in some RAII (e.g., closing a file).  However, <code>finalize</code> is not equivalent or analogous to Destructors (in the  general case).</p>
+    
+  </li>
+  <li>
+  <p><strong>Assignment Operator</strong> - Object variables in Python (and Java) behave a  lot like C++ smart pointers (mostly like <code>std::shared_ptr</code>). Python (or  Java) Garbage collection handles the rest.</p>
+    </li>
+  <li>
+  <p><strong>Swap</strong> - In Python (and Java) object variables are functionally fancy  pointers. A Python (or Java) swap is conceptually a pointer swap.</p>
+    </li>
+</ol><p>We are left with…</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: C++ &amp; Java Class Checklist Table - The Remainder II</div>
+<table>
+  <thead>
+    <tr>
+      <th align="left">C++ </th>
+      <th align="left">Java </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Logical Equivalence Operator (==) </td>
+      <td align="left">equals </td>
+    </tr>
+    <tr>
+      <td align="left">Less-Than / Comes-Before Operator (&lt;) </td>
+      <td align="left">hashCode </td>
+    </tr>
+    <tr>
+      <td align="left">Stream Insertion Operator (&lt;&lt;) </td>
+      <td align="left">toString </td>
+    </tr>
+    <tr>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left"><code>begin()</code> and <code>end()</code> </td>
+      <td align="left"><code>iterator</code> </td>
+    </tr>
+  </tbody>
+</table>
+</blockquote><p>The next two rows are (in my opinion) more interesting:</p>
+    <ol>
+  <li>
+  <p><code>operator==</code> vs <code>equals</code> - barring a few mechanical differences these two  functions are equivalent.</p>
+    </li>
+  <li>
+  <p><code>operator&lt;</code> and <code>hashCode</code> are <strong>not</strong> equivalent. However, they do serve  similar purposes in each language’s built-in libraries.</p>
+    </li>
+</ol><p>We are now left with:</p>
+    <ol>
+  <li>
+  <p><code>operator&lt;&lt;</code> vs <code>toString</code> - these are both output functions (albeit with  a few subtle differences).</p>
+    </li>
+  <li>
+  <p><code>begin</code> and <code>end</code> vs <code>iterator</code> - iterators are the focus of a separate  lecture.</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20The%20C%2B%2B%20and%20Java%20Class%20Checklists"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

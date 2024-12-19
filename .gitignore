@@ -7,3 +7,9 @@ cs417/Protected
 **eoscha2a*
 **.htaccess
 **.htgroup
+
+**.mypy_cache
+**.pytest_cache
+**.__pycache__
+**.pyc
+**/Assts/Public

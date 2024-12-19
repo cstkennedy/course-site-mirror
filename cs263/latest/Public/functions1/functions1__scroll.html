@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Basics of Functions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basics%20of%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Basics of Functions</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#getting-started">2 Getting Started</a></div><div class="toc-h1"><a href="#ambiguity">3 Ambiguity</a></div><div class="toc-h1"><a href="#implementation">4 Implementation</a></div><div class="toc-h1"><a href="#but">5 But…</a></div><div class="toc-h1"><a href="#closing-remarks">6 Closing Remarks</a></div></div><h1 id="overview">1 Overview</h1><p>Functions serve a few purposes, e.g.,</p>
+    <ol>
+  <li>
+  <p>code reuse</p>
+    </li>
+  <li>
+  <p>readability</p>
+    </li>
+  <li>
+  <p>maintainability</p>
+    </li>
+  <li>
+  <p>separation of problems</p>
+    </li>
+</ol><div class="noFloat"> </div><div class="sidebar pct50">
+<p>You will find that I have some opinions regarding paint brands. My first job was working for a painting contractor. <em>I have forgone naming a specifc paint brand here.</em></p>
+    
+</div><p>You have heard most of this rationale before. Let us come up with a problem. How about… painting a house. Suppose that you want to write a program that…</p>
+    <ol>
+  <li>
+    <p>Takes length and width of a room</p>
+    
+    <ul>
+      <li>
+      <p><em>We use four rectangular walls as an estimate and ignore doorways and  soffets.</em></p>
+    </li>
+    </ul>
+  </li>
+  <li>
+  <p>Computes the surface area of the walls</p>
+    </li>
+  <li>
+  <p>Determines how many gallons of paint are needed</p>
+    </li>
+  <li>
+    <p>Determines the cost, taking into account that only whole gallons can be  purchased.</p>
+    
+    <ul>
+      <li>
+      <p><em>Technically quarts can be purchased for some paints, but the color formula often differs.</em></p>
+    </li>
+      <li>
+      <p><em>We will also ignore the possibilty of five (5) gallon buckets.</em></p>
+    </li>
+    </ul>
+  </li>
+</ol><p>We will assume that</p>
+    <ol>
+  <li>
+  <p>one gallon will cover 350 to 400 square feet (sq. ft.)</p>
+    </li>
+  <li>
+  <p>trim (e.g., baseboard, doorjambs, and windowsills are covered by on-hand  trim paint)</p>
+    </li>
+  <li>
+  <p>doors will not be painted</p>
+    </li>
+</ol><a id="gettingstarted"/><h1 id="getting-started">2 Getting Started</h1><p>Our draft main function would likely start off as…</p>
+    <pre><code class="python">def main():
+    # Dimensions in feet
+    length = 12
+    width = 10
+
+    # Price in dollars
+    price_per_gallon = 49.95
+
+    area = compute_wall_surface_area(length, width)
+
+    gallons_required = determine_gallons_required(area)
+
+    min_required, max_required = gallons_required
+    min_cost = min_required * price_per_gallon
+    max_cost = max_required * price_per_gallon
+
+    print(f"You will need to buy {min_required} to {max_required} gallons of paint.")
+    print(f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}")
+
+
+
+if __name__ == "__main__":
+    main()
+</code></pre><p>Our stub computation functions would start off by returning a variant of <code>-1</code>…</p>
+    <pre><code class="python">def compute_wall_surface_area(length, width):
+    return -1
+
+
+def determine_gallons_required(wall_area):
+    return -1, -1
+</code></pre><p>We know that one does no buy negative gallons of paint. Take note of the second function. It will return a two-tuple where the first entry is the minimum number of gallons and the second entry is the maximum number of gallons</p>
+    <h1 id="ambiguity">3 Ambiguity</h1><p>Let us add type hints to the functions. While type hints are not required (nor do they provide a performance benefit)… they do provide documentation. We will know (at a glance) what type of data each function expects for each argument and what type of data each function returns.</p>
+    <pre><code class="python">def compute_wall_surface_area(length: float, width: float) -&gt; float:
+    return -1
+
+
+def determine_gallons_required(wall_area: float) -&gt; tuple[float, float]:
+    return -1, -1
+</code></pre><p>Let us also modify the second function to accept the <code>min_coverage</code> and <code>max_coverage</code> as arguments.</p>
+    <pre><code class="python">def determine_gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[float, float]:
+
+    return -1, -1
+</code></pre><p>Take note of the default argument values. If you come from C++… this mechanic is familiar. In Java… you would end up writing three functions…</p>
+    <ol>
+  <li>one function that sets defaults for <code>min_coverage</code> and <code>max_coverage</code></li>
+  <li>one function that sets defaults for <code>max_coverage</code></li>
+  <li>one function that requires all three (3) arguments</li>
+</ol><h1 id="implementation">4 Implementation</h1><p>We can implement the first function fairly quickly…</p>
+    <pre><code class="python">def compute_wall_surface_area(length: float, width: float) -&gt; float:
+    
+    area_one_wall = length * width
+    area_four_walls = 4 * area_one_wall
+
+    return area_four_walls
+</code></pre><p>The logic is <em>compute the area of one wall and multiply by 4</em>.</p>
+    <blockquote>
+  <p>We should really be documenting these functions with pydoc documentation. However, that is a topic for a future lecture.</p>
+    
+</blockquote><p>The second function can be implemented fairly quickly too…</p>
+    <pre><code class="python">def determine_gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[float, float]:
+
+    max_gallons = math.ceil(wall_area / min_coverage)
+    min_gallons = math.ceil(wall_area / max_coverage)
+
+    return min_gallons, max_gallons
+</code></pre><p>Note the use of the <code>math.ceil</code> function to <em>round</em> to the next integer. And… we have a mistake. We should be returning a <code>tuple</code> of <code>int</code>s…</p>
+    <pre><code class="python">def determine_gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[int, int]:
+</code></pre><p>That is much better.</p>
+    <h1 id="but">5 But…</h1><p>If we run the program <em>as is</em>…</p>
+    <pre><code class="console">You will need to buy 2 to 2 gallons of paint.
+You will spend $ 99.90 to $ 99.90
+</code></pre><p>we see that for a small room the min and max gallons of paint are the same. A <em>10 by 12</em> room is fairly small (about the size of my home office). Let us try something more along the lines of a great room… <em>50 by 40</em>.</p>
+    <pre><code class="console">You will need to buy 20 to 23 gallons of paint.
+You will spend $ 999.00 to $ 1148.85
+</code></pre><p>It would be nice to test this program more thoroughly… and clean up <code>main</code>. However, we will go through that process in a future module. For now… we have reached good stopping point.</p>
+    <p>The final code can be found in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-03/Painting-1" target="_blank">Module-03/Painting-1</a>.</p>
+    <a id="closingremarks"/><h1 id="closing-remarks">6 Closing Remarks</h1><p>Yes… <strong>the wall surface area computation is incorrect.</strong> However, we will leave the correction for a future iteration of the example.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Basics%20of%20Functions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

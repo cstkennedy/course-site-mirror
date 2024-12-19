@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Structure of a Python Program with Tests</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Structure%20of%20a%20Python%20Program%20with%20Tests"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Structure of a Python Program with Tests</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#managing-expectations">1 Managing Expectations</a></div><div class="toc-h1"><a href="#what-types-of-tests-can-be-expected-">2 What Types of Tests Can Be Expected?</a></div><div class="toc-h1"><a href="#what-is-test-driven-development-">3 What is Test Driven Development?</a></div><div class="toc-h1"><a href="#where-will-the-tests-be-located-">4 Where Will the Tests Be Located?</a></div></div><a id="managingexpectations"/><h1 id="managing-expectations">1 Managing Expectations</h1><p>The purpose of this lecture is to describe the structure of a codebase with tests written using either the builtin Python <a href="https://docs.python.org/3/library/unittest.html"><code>unittest</code> module</a> or <a href="https://docs.pytest.org/">the separate PyTest</a> framework.</p>
+    <p>The types of tests, how to write tests (mechanically), and how to write tests (conceptually) are covered in future modules (across multiple lectures).</p>
+    <p><strong>Before we discuss program structure… let us introduce unit tests, integration tests and the TDD process.</strong></p>
+    <a id="whattypesoftestscanbeexpected"/><h1 id="what-types-of-tests-can-be-expected-">2 What Types of Tests Can Be Expected?</h1><p><em>As a quick note… I am a strong proponent of discussing the Rust programming language. While this is not a course in Rust… there are quite a few insights to be gained through carefully curated referenced and snippets.</em></p>
+    <p>The <em>Rust Programming Language</em> has two of (what I consider) to be the best definitions regarding unit and integration tests.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Unit Test Definition</div>
+<p>The purpose of unit tests is to test each unit of code in isolation from the rest of the code to quickly pinpoint where code is and isn’t working as expected.</p>
+    
+<p><em>Retrieved from <a href="https://doc.rust-lang.org/book/ch11-03-test-organization.html">The Rust Programming Language - Chapter 11</a></em></p>
+    
+</blockquote><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Integration Test Definition</div>
+<p>[Integration tests] use your library in the same way any other code would, which means they can only call functions that are part of your library’s public API. Their purpose is to test whether many parts of your library work together correctly. Units of code that work correctly on their own could have problems when integrated, so test coverage of the integrated code is important as well.</p>
+    
+<p><em>Retrieved from <a href="https://doc.rust-lang.org/book/ch11-03-test-organization.html">The Rust Programming Language - Chapter 11</a></em></p>
+    
+</blockquote><p>You can expect to see unit tests and integration tests throughout the course. We will discuss how to write both types of tests in a future module. Writing tests will include discussion of <a href="https://hamcrest.org/" target="_blank">Hamcrest Matchers</a></p>
+    <a id="whatistestdrivendevelopment"/><h1 id="what-is-test-driven-development-">3 What is Test Driven Development?</h1><p>Test Driven Development (TDD) is a workflow where tests drive development. <em>Yes… I just defined TDD using the words “test,” “drive,” and “development.”</em> Let us try again… TDD can be described as a sequence of steps:</p>
+    <ol>
+  <li>
+  <p>Define the interface for a function or class. <em>Write the specification,  not code.</em></p>
+    </li>
+  <li>
+  <p>Write the test code for the interfaces and specifications outlined in the  previous step.</p>
+    </li>
+  <li>
+  <p>Start implementing the code (i.e., writing the function and class logic).</p>
+    </li>
+  <li>
+  <p>Run the test code after implementing a piece of code. <em>This does not need  to be, nor should it be, an entire set of functions or an entire class.</em></p>
+    </li>
+  <li>
+    <p>If the tests for the selected code… </p>
+    
+    <ol>
+      <li>
+      <p><strong>Pass…</strong> return to “step 3” and write the next piece of implementation code.</p>
+    </li>
+      <li>
+      <p><strong>Fail…</strong> revisit the <em>implementation</em>. Locate and correct any mistake(s) and re-run the tests. If the tests continue to fail, double check the test code for mistakes. <strong>Repeat this step until the tests pass.</strong></p>
+    </li>
+    </ol>
+  </li>
+</ol><p><strong>Why did we just discuss TDD?</strong> While TDD and testing is covered in a future module… we are actually starting on “step 3” for most assignments and labs.</p>
+    <a id="wherewillthetestsbelocated"/><h1 id="where-will-the-tests-be-located-">4 Where Will the Tests Be Located?</h1><p>The tests will be located in a <code>tests</code> subdirectory, e.g.,</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Python Program with Tests</div>
+<pre><code>├── linkedlist.py
+├── list_driver.py
+└── tests
+    └── test_linked_list.py
+</code></pre>
+</blockquote><p>Do not worry… linked lists in Python are a few modules away (and far less tedious in Python than in C++ or Java)</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Structure%20of%20a%20Python%20Program%20with%20Tests"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

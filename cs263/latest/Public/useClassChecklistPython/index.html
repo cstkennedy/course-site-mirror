@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Using the Python Class Checklist</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Using%20the%20Python%20Class%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Using the Python Class Checklist</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-initial-class">1 The Initial Class</a></div><div class="toc-h1"><a href="#initial-observations">2 Initial Observations</a></div><div class="toc-h1"><a href="#starting-with-dunder-str">3 Starting with “dunder str”</a></div><div class="toc-h1"><a href="#tackling-dunder-equals-and-dunder-hashcode">4 Tackling “dunder equals” and “dunder hashcode”</a></div><div class="toc-h1"><a href="#interface-completeness">5 Interface Completeness</a></div><div class="toc-h1"><a href="#iterators">6 Iterators</a></div><div class="toc-h1"><a href="#making-a-copy">7 Making a Copy</a></div><div class="toc-h1"><a href="#putting-the-pieces-together">8 Putting the Pieces Together</a></div></div><p>This discussion will focus on the Python Class Checklist, specifically in how to use the Python Class Checklist as a guide to write a <em>complete</em> Python Class.</p>
+    <a id="theinitialclass"/><h1 id="the-initial-class">1 The Initial Class</h1><p>Suppose you are working on a team, and one group member (the team smart aleck) has written a <em>quick-and-dirty</em> <code>Cookbook</code> class.</p>
+    <pre><code class="python">class Cookbook:
+    """
+    A collection of Recipes. This class handles all logic
+    for a cookbook--e.g.,
+      - Adding recipes
+      - Printing recipes
+    """
+
+    MAX_RECIPES = 100;
+
+    def __init__(self):
+        self.recipes = []
+
+    def add_recipe(self, to_add):
+        pass
+</code></pre><p>You are responsible for the <code>Cookbook</code> class code review. What changes does <code>Cookbook</code> need to be considered complete?</p>
+    <p><em>Before reading the remainder of this document, take a few moments to think about what is missing.</em></p>
+    <a id="initialobservations"/><h1 id="initial-observations">2 Initial Observations</h1><p>We know based on the Cross-Language Class Checklist that <code>Cookbook</code> is incomplete.</p>
+    <div class="details"><span class="summary">What observations can we make?</span> <input id="but_details_d6e31" onclick="toggleDisplay('_details_d6e31')" type="button" value="+"/><div class="detailsBody" id="_details_d6e31" style="display: none;">
+<ul>
+  <li>Interface completeness, e.g.,
+    <ul>
+      <li>Do I need an <em>Iterator</em> to access <code>Recipe</code>s?</li>
+    </ul>
+  </li>
+  <li>Missing…
+    <ul>
+      <li><code>__deepcopy__</code></li>
+      <li><code>__eq__</code></li>
+      <li><code>__hash__</code></li>
+      <li><code>__str__</code></li>
+    </ul>
+  </li>
+</ul>
+</div></div><a id="startingwithdunderstr"/><h1 id="starting-with-dunder-str">3 Starting with “dunder str”</h1><p>The <code>__str__</code> (dunder str) method is the most natural function (i.e., it has a clear purpose). There will always be a need to output a custom object. </p>
+    <pre><code class="python">    def __str__(self) -&gt; str:
+        """ 
+        List each Recipe, seperating them with a blank line followed by "---"
+        and a second blank line.
+        """
+        pass
+</code></pre><p>I often forgo pydoc documentation for a <em>dunder</em> function. However, the documentation must always establish the <em>rules</em> of a function. In this case, I need to know what <code>__str__</code> will output.</p>
+    <a id="tacklingdunderequalsanddunderhashcode"/><h1 id="tackling-dunder-equals-and-dunder-hashcode">4 Tackling “dunder equals” and “dunder hashcode”</h1><p>The <code>__eq__</code> method defines how to take two objects and compare them for equivalence. Similar to Java (but different from C++) the <code>rhs</code> argument can be any type. It is not restricted to a <code>Cookbook</code>.</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Implementation Note</div>
+<p>The first step in implementing the <code>__eq__</code> method is usually an <em>instance of</em> check. In the case of <code>Cookbook</code> it does not make sense to compare <code>self</code> (a <code>Cookbook</code>) to <code>rhs</code> if <code>rhs</code> is not a Cookbook.</p>
+    
+<pre><code class="python">    if not isinstance(rhs, Cookbook):
+        return False
+</code></pre>
+</blockquote><pre><code class="python">    def __eq__(self, rhs: Any) -&gt; bool:
+        """ 
+        Compare two cookbooks based on the recipes they contain, ignoring the
+        the order of the recipes.
+       
+        Returns: 
+            True if both this and rhs are Cookbooks with the same recipes and
+            False otherwise
+        """
+
+        return False
+</code></pre><p>The <code>__eq__</code> and <code>__hash__</code> functions are all-but-required to be paired together. Both functions must follow the same rules. In this case, both <code>__eq__</code> and <code>__hash__</code> are based purely on the <code>Recipe</code> objects contained in a `Cookbook.</p>
+    <pre><code class="python">    def __hash__(self) -&gt; int:
+        """
+        Compute the hashcode by combining all recipe hashcodes together.
+        """
+
+        return 0
+</code></pre><a id="interfacecompleteness"/><h1 id="interface-completeness">5 Interface Completeness</h1><p>The initial <code>Cookbook</code> class has an <code>addRecipe</code> function. If the class allows <code>Recipe</code>s to be added, removal of <code>Recipe</code>s should probably be possible too.</p>
+    <pre><code class="python">    def add_recipe(self, to_add: Recipe):
+        """
+        Add a Recipe to the Cookbook.
+
+        Args:
+            to_add recipe to store
+
+        Raises:
+            CookbookFull (to be implemented) error if adding this recipe would
+            reuslt in more than MAX_RECIPES stored in this Cookbook
+        """ 
+
+        pass
+
+    def remove_recipe(self, to_remove: Recipe):
+        """
+        Remove a Recipe.
+
+        Args:
+            to_remove Recipe to remove
+
+        Raises:
+            KeyError if no matching Recipe is found in the Cookbook
+        """
+
+        pass
+</code></pre><p>For most classes that store a collection of objects… I would recommend something similar to renaming…</p>
+    <ul>
+  <li><code>add_recipe</code> to <code>append</code></li>
+  <li><code>remove_recipe</code> to <code>remove</code></li>
+</ul><p>However, I am not sure in this case. Unlike a <code>list</code> or <code>set</code>… a <code>Cookbook</code> is more than just a collection/container. <em>Let us stick with the original names (for now).</em></p>
+    <h1 id="iterators">6 Iterators</h1><p>We need to be able to access each recipe. Condsider how most programs will end up outputting each <code>Recipe</code> or updating a <code>Recipe</code>.</p>
+    <pre><code class="python">    def __iter__(self) -&gt; Iterator[Recipe]:
+        return iter(recipes)
+</code></pre><p>Note that we will end up storing <code>Recipe</code>s is a <code>list</code> or similar container. The <code>iter</code> function allows us to retrieve that collection’s iterator and use it as if it were our own.</p>
+    <a id="makingacopy"/><h1 id="making-a-copy">7 Making a Copy</h1><p>Copies in Python can be tricky. If we were storing literals or immutable types (e.g., <code>int</code>, <code>float</code>, or <code>str</code>) we could (in quite a few cases) forgo implementing a <code>__deepcopy__</code> for a class. However, we are storing <code>Recipe</code> objects (which will likely be mutable). We need to guarantee that if a <code>Cookbook</code> is copied that the copy contains identical and <strong>independent</strong> copies of all <code>Recipe</code> objects.</p>
+    <p><em>Note that the <code>memo</code> argument is required. It is used for cases where an entry (object) might be encountered multiple times during a copy operation.</em></p>
+    <pre><code class="python">    def __deepcopy__(self, memo) -&gt; Cookbook:
+        cpy = Cookbook()
+
+        for recipe in self:
+            cpy.add_recipe(copy.deepcopy(recipe))
+
+        return cpy
+</code></pre><p>Note that the provided implementation can be improved in a few ways (e.g., by accessing <code>cpy.recipes</code> directly). However, this approach captures the logic in a <em>close-to-pseudocode</em> form. The actual implementation will come later.</p>
+    <a id="puttingthepiecestogether"/><h1 id="putting-the-pieces-together">8 Putting the Pieces Together</h1><p>We have discussed the flaws in the <em>initial Cookbook class</em>. Putting the code snippets together is a good opportunity to practice a little Python. I will leave writing the full, complete, and corrected <code>Cookbook</code> class as an exercise to the reader.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Using%20the%20Python%20Class%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

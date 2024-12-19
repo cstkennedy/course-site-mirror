@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Dealing With Exceptions</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Dealing%20With%20Exceptions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Dealing With Exceptions</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-problem">1 The Problem</a></div><div class="toc-h2"><a href="#input">1.1 Input</a></div><div class="toc-h2"><a href="#output">1.2 Output</a></div><div class="toc-h1"><a href="#your-tasks">2 Your Tasks</a></div><div class="toc-h1"><a href="#mechanics">3 Mechanics</a></div><div class="toc-h1"><a href="#files">4 Files</a></div><div class="toc-h2"><a href="#zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</a></div><div class="toc-h2"><a href="#zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</a></div><div class="toc-h1"><a href="#grading">5 Grading</a></div><div class="toc-h1"><a href="#submitting">6 Submitting</a></div></div><a id="theproblem"/><h1 id="the-problem">1 The Problem</h1><p>This time… let us be (more than) a little cheeky. Back in high school… I was <em>that kid</em> in AP Computer Science. I spent $70 on Java book and learned how to build GUIs with the Java swing API. <em>I needed something to do during class after finishing an assignment on the first day.</em></p>
+    <p>One day… I had finished an assignment and asked a classmate to test it. Instead of entering a number (e.g., 7) he entered the corresponding word (e.g., seven). Of course… my program threw an exception. I told him to try again a minute later… this time instead of an exception… there was a dialog box with a fairly tame insult.</p>
+    <p>Let us develop a program that handles various exceptions <em>(albeit without the insults)</em>. Let us deal with…</p>
+    <ul>
+  <li><code>IndexError</code></li>
+  <li><code>ValueError</code></li>
+  <li><code>KeyError</code></li>
+  <li><code>ZeroDivisionError</code></li>
+</ul><p>These are (most of) the exceptions that I encounter when writing Python code. Having some code snippets prepared for reference… can be quite useful.</p>
+    <h2 id="input">1.1 Input</h2><p>There is no input to this program.</p>
+    <h2 id="output">1.2 Output</h2><p>There is no <code>main</code> function in this program. Your work be will evaluated with a test suite within <code>tests/test_exception_snippets.py</code>.</p>
+    <a id="yourtasks"/><h1 id="your-tasks">2 Your Tasks</h1><p>You need to add exception handling to the following functions:</p>
+    <ul>
+  <li><code>outside_list_bounds</code></li>
+  <li><code>parse_an_int</code></li>
+  <li><code>missing_dictionary_key</code></li>
+  <li><code>divide</code></li>
+</ul><p>Each function contains pydoc documentation that summarizes the necessary behavior.</p>
+    <h1 id="mechanics">3 Mechanics</h1><p>You can run the main program with…</p>
+    <pre><code class="console">python3.11 exception_snippets.py
+</code></pre><p>The test code can be run with…</p>
+    <pre><code class="console">python3.11 -m pytest -v tests
+</code></pre><h1 id="files">4 Files</h1><p>There are two (2) files in this assignment:</p>
+    <ul>
+  <li><code>exception_snippets.py</code></li>
+  <li><code>test/test_exception_snippets.py</code></li>
+</ul><p>You will be working in <code>shapes.py</code>. Do not modify the other files.</p>
+    <p>You have three choices when starting this assignment:</p>
+    <ol>
+  <li>
+    <p>Grab a copy of a <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2025-Spring-CS263-Exceptions">starting repository from GitHub</a></p>
+    
+    <p>If you are both familiar with and comfortable with Git &amp; GitHub… I  recommend forking the repository</p>
+    
+  </li>
+  <li>
+  <p>Download a zip file by clicking  <a href="https://github.com/Old-Dominion-Univ-CS-Dept/2025-Spring-CS263-Exceptions/archive/refs/heads/main.zip">this link</a></p>
+    </li>
+  <li>
+    <p>Download a zip file by running</p>
+    
+    <pre><code class="console">wget 'https://github.com/Old-Dominion-Univ-CS-Dept/2025-Spring-CS263-Exceptions/archive/refs/heads/main.zip'
+</code></pre>
+    <p>in a Linux terminal</p>
+    
+  </li>
+</ol><blockquote>
+  <p>Despite some of the frustration Git may have caused in CS 252… Git and GitHub are two tools that:</p>
+    
+  <ol>
+    <li>
+    <p>You will use in CS 350 (and be graded on your understanding of both tools)</p>
+    </li>
+    <li>
+    <p>You will use in your software engineering career after graduation.</p>
+    </li>
+  </ol>
+</blockquote><a id="zipfileonwindowsandmacos"/><h2 id="zip-file-on-windows-and-macos">4.1 Zip File on Windows and macOS</h2><p>If you are on Windows or macOS… use your built-in zip utilities.</p>
+    <a id="zipfileinalinuxterminal"/><h2 id="zip-file-in-a-linux-terminal">4.2 Zip File in a Linux Terminal</h2><p>You can extract a zip file from the Linux Command line using the <code>unzip</code> command, e.g.,</p>
+    <pre><code class="console">unzip NAME_OF_THE_ZIP_FILE_TO_EXTRACT.zip
+</code></pre><h1 id="grading">5 Grading</h1><p>Your grade will be based on the following criteria…</p>
+    <ul>
+  <li><strong>test 000</strong> - code passes <code>test_outside_list_bounds</code></li>
+  <li><strong>test 001</strong> - code passes <code>test_parse_an_int</code></li>
+  <li><strong>test 002</strong> - code passes <code>test_missing_dictionary_key</code></li>
+  <li><strong>test 003</strong> - code passes <code>test_divide</code></li>
+</ul><h1 id="submitting">6 Submitting</h1><p>You will submit your completed copy of <code>exception_snippets.py</code> as a file upload through Canvas.</p>
+    <p>Do not alter any of the other source code files, nor change the module interface.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Dealing%20With%20Exceptions"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2025, Old Dominion Univ.</div></body></html>

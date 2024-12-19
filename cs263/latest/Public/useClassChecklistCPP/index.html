@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Using the C++ Class Checklist</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Using%20the%20C%2B%2B%20Class%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Using the C++ Class Checklist</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#the-initial-class">1 The Initial Class</a></div><div class="toc-h1"><a href="#initial-observations">2 Initial Observations</a></div><div class="toc-h2"><a href="#documentation">2.1 Documentation</a></div><div class="toc-h2"><a href="#typedefs-vs-aliases">2.2 Typedefs vs Aliases</a></div><div class="toc-h1"><a href="#starting-with-display-and-output">3 Starting with display and Output</a></div><div class="toc-h1"><a href="#tackling-operator-and-operator-">4 Tackling operator== and operator&lt;</a></div><div class="toc-h2"><a href="#const-correctness">4.1 Const Correctness</a></div><div class="toc-h2"><a href="#rel-ops-and-the-spaceship-operator">4.2 rel_ops and The Spaceship Operator</a></div><div class="toc-h1"><a href="#interface-completeness">5 Interface Completeness</a></div><div class="toc-h1"><a href="#iterators">6 Iterators</a></div><div class="toc-h1"><a href="#big-3-deep-copies">7 Big-3 &amp; Deep Copies</a></div><div class="toc-h2"><a href="#the-copy-and-swap-idiom">7.1 The Copy-and-Swap Idiom</a></div><div class="toc-h1"><a href="#putting-the-pieces-together">8 Putting the Pieces Together</a></div><div class="toc-h1"><a href="#modern-c-i-e-c-20-move-semantics-">9 Modern C++ (i.e., C++20 &amp; Move Semantics)</a></div><div class="toc-h2"><a href="#big-5">9.1 Big-5</a></div><div class="toc-h2"><a href="#the-big-0">9.2 The Big-0</a></div><div class="toc-h1"><a href="#practice-the-process-a-second-example-">10 Practice the Process (A Second Example)</a></div></div><p>This discussion will focus on the C++ Class Checklist, specifically in how to use the C++ Class Checklist as a guide to write a <em>complete</em> C++ Class.</p>
+    <a id="theinitialclass"/><h1 id="the-initial-class">1 The Initial Class</h1><p>A smart aleck claims that following class is complete:</p>
+    <pre><code class="cpp">/**
+ * A collection of Recipes. This class handles all logic
+ * for a cookbook--e.g.,
+ *   - Adding recipes
+ *   - Printing recipes
+ */
+class Cookbook {
+    private:
+        static const int MAX_RECIPES;
+
+        Recipe* recipes;
+
+    public:
+        typedef Recipe* iterator;
+        typedef const Recipe* const_iterator;
+
+        /**
+         * Create a Cookbook that can contain at most MAX_RECIPES
+         * recipes
+         */
+        Cookbook();
+
+        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes
+         */
+        Cookbook(int r);
+
+        /**
+         * Add a Recipe
+         *
+         * @param to_add new Recipe
+         */
+        void addRecipe(Recipe &amp;to_add);
+};
+</code></pre><p>You are responsible for the <code>Cookbook</code> class code review. What changes does <code>Cookbook</code> need to be considered complete?</p>
+    <p><em>Before reading the remainder of this document, take a few moments to think about what is missing.</em></p>
+    <hr/><a id="initialobservations"/><h1 id="initial-observations">2 Initial Observations</h1><p>We know based on the C++ Class Checklist that <code>Cookbook</code> is incomplete.</p>
+    <p>Is this class <strong>complete</strong>?</p>
+    <div class="details"><span class="summary">What observations can we make?</span> <input id="but_details_d6e31" onclick="toggleDisplay('_details_d6e31')" type="button" value="+"/><div class="detailsBody" id="_details_d6e31" style="display: none;">
+<ul>
+  <li>Interface completeness</li>
+  <li>Const Correctness</li>
+  <li>Big 3</li>
+  <li>Logical Operators</li>
+  <li>Stream Insertion Operator</li>
+  <li>Style
+    <ul>
+      <li>Prefer type aliases over typedefs</li>
+      <li>Missing <code>@param</code>s in Doxygen documentation</li>
+      <li>Missing <code>@return</code>s in Doxygen documentation</li>
+      <li>Missing <code>@pre</code>s in Doxygen documentation</li>
+      <li>Missing <code>@post</code>s in Doxygen documentation</li>
+    </ul>
+  </li>
+</ul>
+</div></div><h2 id="documentation">2.1 Documentation</h2><p>In larger programs proper and complete documentation is important. This is an ideal time to force ourselves into the habit of properly documenting code. I will use a <em>Javadoc / Doxygen</em> style for C++. Other languages have their own conventions (e.g., Pydoc in Python, Rustdoc in Rust, and Javadoc in Java).</p>
+    <p>We will address the missing documentation <a href="https://www.merriam-webster.com/dictionary/in%20situ">in situ</a> as we discuss each function.</p>
+    <a id="typedefsvsaliases"/><h2 id="typedefs-vs-aliases">2.2 Typedefs vs Aliases</h2><p>Let us start by replacing the two <a href="https://en.cppreference.com/w/cpp/language/typedef" target="_blank">typedefs</a></p>
+    <pre><code class="cpp">    public:
+        typedef Recipe* iterator;
+        typedef const Recipe* const_iterator;
+</code></pre><p>with <a href="https://en.cppreference.com/w/cpp/language/type_alias" target="_blank">type aliases</a></p>
+    <pre><code class="cpp">    public:
+        using iterator       = Recipe*;
+        using const_iterator = const Recipe*;
+</code></pre><a id="startingwithdisplayandoutput"/><h1 id="starting-with-display-and-output">3 Starting with display and Output</h1><p>The <code>operator&lt;&lt;</code> method is the most natural function (i.e., it has a clear purpose). There will always be a need to output a custom object. In C++ this is handled by <code>operator&lt;&lt;</code>, which we usually pair with <code>display</code>.</p>
+    <p>The <code>operator&lt;&lt;(std::ostream&amp; outs, const Cookbook&amp; toPrint</code>) function can not be written as a member function. It must either be written as a <code>friend</code> function or an external function. Let us only use <code>friend</code> functions when absolutely necessary.</p>
+    <p>We will start with the <code>display</code> member function.</p>
+    <pre><code class="cpp">        /**
+         * Display the Cookbook with each recipe separated by `\n---\n`.
+         *
+         * @param outs output destination (e.g., cout or a file)
+         */
+        void display(std::ostream&amp; outs) const;
+</code></pre><p>The stream insertion operator (informally called the output operator) is little more than an <code>inline</code>d wrapper function.</p>
+    <pre><code class="cpp">inline
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; outs, const Cookbook&amp; prt)
+{
+    prt.display(outs);
+    return outs;
+}
+</code></pre><p>We can forgo documentation on this function. Its arguments, return type, and name all follow standard C++ convention and practice.</p>
+    <a id="tacklingoperatorandoperator"/><h1 id="tackling-operator-and-operator-">4 Tackling operator== and operator&lt;</h1><p>The C++ <code>operator==</code> compares two objects for equivalence.</p>
+    <pre><code class="Java">    /**
+     * Compare two cookbooks based on the recipes they contain, ignoring the
+     * the order of the recipes.
+     *
+     * @param rhs object against which to compare
+     *
+     * @return true if both this and rhs are Cookbooks with the same recipes
+     */
+     bool operator==(const Cookbook&amp; rhs) const;
+</code></pre><p>In C++, <code>operator&lt;</code> is usually paired with <code>operator==</code> based on requirements of the C++ STL. Both functions must follow the same rules. In this case, both <code>operator==</code> and <code>operator&lt;</code> are based purely on the <code>Recipe</code> objects contained in a <code>Cookbook</code>.</p>
+    <pre><code class="cpp">    /**
+     * Less than (comes-before) Operator
+     *
+     * Compare two cookbooks based on the recipes they contain, ignoring the
+     * the order of the recipes.
+     *
+     *  - If lhs has fewer recipes than rhs, lhs &lt; rhs.
+     *  - If lhs and rhs have the same number of recipes, sort each set of
+     *    recipes then compare each pair of recipes, basing lhs &lt; rhs on the
+     *    first set of non-equal recipes.
+     *
+     * @param rhs Cookbook against which to compare
+     *
+     * @return true if both `this` should be listed before `rhs`
+     */
+    bool operator&lt;(const Cookbook&amp; rhs) const;
+
+</code></pre><p>The documentation is more verbose than I would like. However, it captures the rules for comparison explicitly (i.e., there is no ambiguity in how the comparison must be performed). Verbosity can be addressed in a later revision.</p>
+    <a id="constcorrectness"/><h2 id="const-correctness">4.1 Const Correctness</h2><p>Let us take another look at <code>operator==</code> and <code>operator&lt;</code>.</p>
+    <pre><code class="cpp">    bool operator==(const Cookbook&amp; rhs) const;
+
+    bool operator&lt;(const Cookbook&amp; rhs) const;
+</code></pre><p>Take note of how <code>const</code> appears twice in each method. The first <code>const</code></p>
+    <pre><code class="cpp">const Cookbook&amp; rhs
+</code></pre><p>applies to the argument. The <code>rhs</code> (right-hand side) is passed by <em>constant reference</em>. This gives us direct read-only access to the <code>rhs</code> cookbook. The use of <code>const</code> guarantees that <code>rhs</code> will no be changed during either comparison.</p>
+    <p>The second <code>const</code> (at the end of each function) serves a similar purpose. It (i.e., <code>) const;</code>) guarantees that <code>this</code> Cookbook remains unchanged.</p>
+    <p>Can you imagine writing</p>
+    <pre><code class="cpp"><br/>    Cookbook simple;
+    Cookbook notSimple;
+
+    // Do some stuff
+    // ...
+
+    cout &lt;&lt; simple &lt;&lt; "\n";
+
+    if (simple == notSimple) {
+        cout &lt;&lt; "simple and notSimple are the same" &lt;&lt; "\n";
+    }
+
+    cout &lt;&lt; simple &lt;&lt; "\n";
+</code></pre><p>and getting different output for <code>simple</code> the second time?</p>
+    <a id="relopsandthespaceshipoperator"/><h2 id="rel-ops-and-the-spaceship-operator">4.2 rel_ops and The Spaceship Operator</h2><p>Notice how we did not write functions for <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, or <code>!=</code>? The compiler will take <code>operator==</code> and <code>operator&lt;</code> and build the them for us, if we add</p>
+    <pre><code class="C++">using std::rel_ops;
+</code></pre><p>C++20 plans to deprecate this with the spaceship operator, <code>operator&lt;=&gt;</code>. However, the spaceship operator (three-way comparison operator) requires its own (separate) discussion, in a future lecture.</p>
+    <a id="interfacecompleteness"/><h1 id="interface-completeness">5 Interface Completeness</h1><p>The initial <code>Cookbook</code> class has an <code>addRecipe</code> function. If the class allows <code>Recipe</code>s to be added, removal of <code>Recipe</code>s should probably be possible too.</p>
+    <pre><code class="cpp">    /**
+     * Remove a Recipe.
+     *
+     * @param to_remove recipe to remove from the cookbook
+     *
+     * @pre `to_remove` is present in the cookbook. If `to_remove` is not
+     *  part of this cookbook, this method becomes a no-op (it completes
+     *  silently after performing no removal).
+     */
+    void removeRecipe(const Recipe&amp; to_remove);
+</code></pre><p>This method can probably be written more elegantly with iterators. However, I will leave that approach as an exercise to the reader.</p>
+    <h1 id="iterators">6 Iterators</h1><p>A <code>Cookbook</code> has multiple <code>Recipe</code>s. What design pattern allows us to iterator over a collection? <em>The Iterator Pattern.</em></p>
+    <p>We already have the iterators:</p>
+    <pre><code class="cpp">    public:
+        using iterator       = Recipe*;
+        using const_iterator = const Recipe*;
+</code></pre><p>We need to add <code>begin</code> and <code>end</code> functions. We need one set for the <em>read-write</em> iterator (i.e., <code>iterator</code>) and one set for the <em>read-only</em> iterator (i.e., <code>const_iterator</code>).</p>
+    <pre><code class="cpp">        /**
+         * First Recipe
+         */
+        iterator begin();
+
+        /**
+         * End of Recipe Collection
+         */
+        iterator end();
+
+        /**
+         * First Recipe
+         */
+        const_iterator begin() const;
+
+        /**
+         * End of Recipe Collection
+         */
+        const_iterator end() const;
+</code></pre><p>We could forgo documentation for these four functions. However, it is always a good idea to document over what we are iterating (e.g., <code>Recipe</code> objects).</p>
+    <a id="big3deepcopies"/><h1 id="big-3-deep-copies">7 Big-3 &amp; Deep Copies</h1><p>Unless explicitly not required, we need to guarantee that deep copies are performed. We want to copy the data referenced by pointers (deep copy). We do not want to copy the pointers themselves (shallow copy).</p>
+    <p>We also need to guarantee memory cleanup (i.e., memory deallocation). If we call <code>new</code>, or <code>calloc</code>, or <code>malloc</code>, we need to corresponding calls to <code>delete</code> or <code>free</code> are called.</p>
+    <p>That leads us to the copy constructor and, the familiar, destructor.</p>
+    <pre><code class="cpp">    /**
+     * Copy Constructor.
+     *
+     * @param src Cookbook to copy
+     */
+    Cookbook(const Cookbook&amp; src);
+
+    /**
+     * Destructor
+     */
+    ~Cookbook();
+</code></pre><p>The Copy Constructor handles pass-by-value (a.k.a pass-by-copy). We need to handle assignment, e.g.,</p>
+    <pre><code class="cpp">    Cookbook simpleCookbook;
+    Cookbook aCopy;
+
+    // Do stuff
+    // ...
+
+    aCopy = simpleCookbook;
+</code></pre><p>This is handled by the assignment operator.</p>
+    <pre><code class="cpp">    /**
+     * Assignment Operator
+     */
+    Cookbook&amp; operator=(const Cookbook&amp; rhs);
+</code></pre><p>This is often naively implemented by copying-and-pasting code.</p>
+    <pre><code class="cpp">Cookbook&amp; Cookbook::operator=(const Cookbook&amp; rhs)
+{
+    if (*this != &amp;rhs) {
+        // Copy-and-paste destructor logic
+        // ...
+
+        // Copy-and-paste copy constructor logic
+    }
+
+    return *this;
+}
+</code></pre><a id="thecopyandswapidiom"/><h2 id="the-copy-and-swap-idiom">7.1 The Copy-and-Swap Idiom</h2><p>The <em>Copy-and-Swap Idiom</em> addressed the D.R.Y (Don’t Repeat Yourself) principle. First, we need to change from pass-by-reference</p>
+    <pre><code class="cpp">    /**
+     * Assignment Operator
+     */
+    Cookbook&amp; operator=(const Cookbook&amp; rhs);
+</code></pre><p>to pass-by-copy</p>
+    <pre><code class="cpp">    /**
+     * Assignment Operator
+     */
+    Cookbook&amp; operator=(Cookbook rhs);
+</code></pre><p>The change to pass-by-value forces an implicit call to the Copy Constructor. After adding a quick swap function (which we will implement as a <code>friend</code> function)…</p>
+    <pre><code class="cpp">    friend
+    void swap(Cookbook&amp; lhs, Cookbook&amp; rhs);
+</code></pre><p>we can finish the revising <code>operator=</code>.</p>
+    <pre><code class="cpp">Cookbook&amp; Cookbook::operator=(Cookbook rhs)
+{
+    swap(*this, rhs);
+
+    return *this;
+}
+</code></pre><p>The calls to the Copy Constructor (when creating <code>rhs</code>) and the destructor (after the swap) now happen implicitly. We also get a swap function out of it!</p>
+    <a id="puttingthepiecestogether"/><h1 id="putting-the-pieces-together">8 Putting the Pieces Together</h1><div class="details"><span class="summary">Corrected Cookbook</span> <input id="but_details_d6e357" onclick="toggleDisplay('_details_d6e357')" type="button" value="+"/><div class="detailsBody" id="_details_d6e357" style="display: none;">
+<pre><code class="cpp">using std::rel_ops;
+
+class Cookbook {
+    private:
+        static const int MAX_RECIPES;
+
+        Recipe* recipes;
+
+    public:
+        using iterator       = Recipe*;
+        using const_iterator = const Recipe*;
+
+        /**
+         * Create a Cookbook that can contain at most MAX_RECIPES
+         * recipes.
+         */
+        Cookbook();
+
+        /**
+         * Create a Cookbook that can contain at most _r_
+         * recipes.
+         */
+        Cookbook(int r);
+
+        /**
+         * Copy Constructor.
+         *
+         * @param src Cookbook to copy
+         */
+        Cookbook(const Cookbook&amp; src);
+
+        /**
+         * Destructor.
+         */
+        ~Cookbook();
+
+        /**
+         * Add a Recipe.
+         *
+         * @param to_add new Recipe
+         */
+        void addRecipe(const Recipe&amp; to_add);
+
+        /**
+         * Remove a Recipe.
+         *
+         * @param to_remove recipe to remove from the cookbook
+         *
+         * @pre `to_remove` is present in the cookbook. If `to_remove` is not
+         *  part of this cookbook, this method becomes a no-op (it completes
+         *  silently after performing no removal).
+         */
+        void removeRecipe(const Recipe&amp; to_remove);
+
+        /**
+         * Assignment Operator
+         */
+        Cookbook&amp; operator=(Cookbook rhs);
+
+        /**
+         * Compare two cookbooks based on the recipes they contain, ignoring the
+         * the order of the recipes.
+         *
+         * @param rhs Cookbook against which to compare
+         *
+         * @return true if both this and rhs are Cookbooks with the same recipes
+         */
+        bool operator==(const Cookbook&amp; rhs) const;
+
+        /**
+         * Less than (comes-before) Operator
+         *
+         * Compare two cookbooks based on the recipes they contain, ignoring the
+         * the order of the recipes.
+         *
+         *  - If lhs has fewer recipes than rhs, lhs &lt; rhs.
+         *  - If lhs and rhs have the same number of recipes, sort each set of
+         *    recipes then compare each pair of recipes, basing lhs &lt; rhs on the
+         *    first set of non-equal recipes.
+         *
+         * @param rhs Cookbook against which to compare
+         *
+         * @return true if both `this` should be listed before `rhs`
+         */
+        bool operator&lt;(const Cookbook&amp; rhs) const;
+
+        /**
+         * First Recipe.
+         */
+        iterator begin();
+
+        /**
+         * End of Recipe Collection
+         */
+        iterator end();
+
+        /**
+         * First Recipe.
+         */
+        const_iterator begin() const;
+
+        /**
+         * End of Recipe Collection.
+         */
+        const_iterator end() const;
+
+        /**
+         * Display the Cookbook with each recipe separator by `\n---\n`.
+         *
+         * @param outs output destination (e.g., cout or a file)
+         */
+        void display(std::ostream&amp; outs) const;
+
+        /**
+         * Swap two Cookbooks.
+         *
+         * @param lhs first cookbook
+         * @param rhs second cookbook
+         */
+        friend
+        void swap(Cookbook&amp; lhs, Cookbook&amp; rhs);
+};
+
+inline
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; outs, const Cookbook&amp; prt)
+{
+    prt.display(outs);
+    return outs;
+}
+</code></pre>
+</div></div><a id="modernciec20movesemantics"/><h1 id="modern-c-i-e-c-20-move-semantics-">9 Modern C++ (i.e., C++20 &amp; Move Semantics)</h1><p>C++20 adds <a href="https://en.cppreference.com/w/cpp/language/operator_comparison#Three-way_comparison">the spaceship (three-way comparison) operator</a>, <a href="https://en.cppreference.com/w/cpp/language/default_comparisons">default comparisons</a>, and quite a few other mechanics. <strong>For now we want to focus on the basics</strong>. We will revisit these additions in a later lecture.</p>
+    <p>Move semantics center around <em>lvalues</em> and <em>rvalues</em>. It is extremely useful to understand these two concepts. However, they are beyond the scope of this discussion.</p>
+    <a id="big5"/><h2 id="big-5">9.1 Big-5</h2><p>Move semantics turn the Big-3 into the Big-5. The whole notion of move semantics centers around transient (i.e., temporary) copies.</p>
+    <p>The Big-3 (and <code>swap</code>) from our checklist…</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: Big-3 and Swap</div>
+<pre><code class="C++">        /**
+         * Copy Constructor.
+         *
+         * @param src Cookbook to copy
+         */
+        Cookbook(const Cookbook&amp; src);
+
+        /**
+         * Destructor.
+         */
+        ~Cookbook();
+
+        /**
+         * Assignment Operator
+         */
+        Cookbook&amp; operator=(const Cookbook&amp; rhs);
+
+        /**
+         * Swap two Cookbooks.
+         *
+         * @param lhs first cookbook
+         * @param rhs second cookbook
+         */
+        friend
+        void swap(Cookbook&amp; lhs, Cookbook&amp; rhs);
+</code></pre>
+</blockquote><p>would become the Big-5 (and swap).</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Big-5 and Swap</div>
+<pre><code class="C++">        /**
+         * Copy Constructor.
+         *
+         * @param src Cookbook to copy
+         */
+        Cookbook(const Cookbook&amp; src);
+
+        /**
+         * Move Copy Constructor.
+         *
+         * @param src Cookbook to copy
+         */
+        Cookbook(Cookbook&amp;&amp; src);
+
+        /**
+         * Destructor.
+         */
+        ~Cookbook();
+
+        /**
+         * Assignment Operator
+         */
+        Cookbook&amp; operator=(const Cookbook&amp; rhs);
+
+        /**
+         * Move Assignment Operator
+         */
+        Cookbook&amp; operator=(Cookbook&amp;&amp; rhs);
+
+        /**
+         * Swap two Cookbooks.
+         *
+         * @param lhs first cookbook
+         * @param rhs second cookbook
+         */
+        friend
+        void swap(Cookbook&amp; lhs, Cookbook&amp; rhs);
+</code></pre>
+</blockquote><p><strong>The implementation, which requires a discussion of move semantics and rvalues, is technically outside the scope of this lecture.</strong> The remainder of this section (i.e., <strong>The Big-5</strong>) is optional reading,</p>
+    <p>The rules of the Big-3 still apply. The <em>Copy Constructor</em> and <em>Copy Assignment Operator</em> guarantee deep copies. However, there are a few cases, where we know an object is a transient copy (i.e., immediately after we copy it, it will be deleted anyway). Instead of wasting a copy, move semantics allow data to be stolen.</p>
+    <p>Consider the <code>Book</code> example class. We know that <code>std::string</code> uses dynamic memory interally (as do IngredientList and InstructionList). Instead of copying data in cases where the original will be deleted, we are going to move (i.e., <em>steal</em>) the data.</p>
+    <pre><code class="cpp">Book::Book(Book&amp;&amp; src)                                                                                                  
+    :title(std::move(src.title)),                                                                                          
+     ingredients(std::move(src.ingredients)),                                                                              
+     instructions(std::move(src.ingredients)                                                                                
+{                                                                                                                          
+}                                                                                                                          
+</code></pre><p><code>std::move</code> does what its name suggests, it moves data. Think of it as copying pointers to the new Book, then setting the internal pointers in <code>src</code> (e.g., in <code>src.title</code>) to <code>nullptr</code>.</p>
+    <p>This guarantees that: </p>
+    <ul>
+  <li><code>src</code> still exists</li>
+  <li>all <code>src</code> data is in a valid “zero state”</li>
+  <li>when <code>src</code>’s destructor is called it has no data to delete</li>
+  <li>all data has been relocated to the new <code>Book</code></li>
+</ul><p>We still end up with two objects.</p>
+    <a id="thebig0"/><h2 id="the-big-0">9.2 The Big-0</h2><p>There is an alternative to the Big-3 and Big-5, called the Big-0. The Big-0 will be covered in a future lecture.</p>
+    <hr/><a id="practicetheprocessasecondexample"/><h1 id="practice-the-process-a-second-example-">10 Practice the Process (A Second Example)</h1><p>The same smart aleck presents the following <code>Recipe</code> class:</p>
+    <pre><code class="cpp">typedef std::vector&lt;Ingredient&gt; IngredientList;
+typedef std::vector&lt;std::string&gt; InstructionList;
+
+/**
+ * This class contains all information pertaining to a Recipe
+ */
+class Recipe {
+    private:
+        std::string     title;
+        IngredientList  ingredients;
+        InstructionList instructions;
+
+    public:
+
+        /**
+         * Create an empty Recipe--I can cook this.
+         */
+        Recipe();
+
+        /**
+         * Create a Recipe with a title
+         */
+        Recipe(std::string title);
+
+        /**
+         * Add Ingredients
+         */
+        void addIngredients(IngredientList add);
+
+        /**
+         * Add Instructions
+         */
+        void addInstructions(InstructionList add);
+
+        /**
+         * Retrieve the title
+         */
+        std::string getTitle();
+
+        /**
+         * Change the title
+         */
+        void setTitle(std::string title);
+};
+</code></pre><p>Practice the code review process we followed for the previous <code>Cookbook</code> class.</p>
+    <div class="details"><span class="summary">What observations can we make?</span> <input id="but_details_d6e473" onclick="toggleDisplay('_details_d6e473')" type="button" value="+"/><div class="detailsBody" id="_details_d6e473" style="display: none;">
+<ul>
+  <li>Interface completeness</li>
+  <li>Const Correctness</li>
+  <li>Big 3</li>
+  <li>Logical Operators</li>
+  <li>Stream Insertion Operator</li>
+</ul>
+</div></div><hr/><div class="details"><span class="summary">Corrected Recipe</span> <input id="but_details_d6e489" onclick="toggleDisplay('_details_d6e489')" type="button" value="+"/><div class="detailsBody" id="_details_d6e489" style="display: none;">
+<pre><code class="cpp">using std::rel_ops;
+
+// Let us switch to type aliases
+using IngredientList  = std::vector&lt;Ingredient&gt;;
+using InstructionList = std::vector&lt;std::string&gt;;
+
+class Recipe {
+    private:
+        std::string     title;
+        IngredientList  ingredients;
+        InstructionList instructions;
+
+    public:
+        /**
+         * Create an empty Recipe--I can cook this.
+         */
+        Recipe();
+
+        /**
+         * Create a Recipe with a title
+         */
+        Recipe(std::string title);
+
+        /**
+         * Copy Constructor
+         */
+        Recipe(const Recipe&amp; src);
+
+        /**
+         * Destructor
+         */
+        ~Recipe();
+
+        /**
+         * Add Ingredients
+         */
+        void addIngredients(const IngredientList&amp; add);
+
+        /**
+         * Add Instructions
+         */
+        void addInstructions(const InstructionList&amp; add);
+
+        /**
+         * Retrieve the title
+         */
+        std::string getTitle() const;
+
+        /**
+         * Change the title
+         */
+        void setTitle(std::string title);
+
+        /**
+         * Retrieve a copy of the Ingredient list
+         */
+        IngredientList getIngredients() const;
+
+        /**
+         * Retrieve a copy of the Instruction list
+         */
+        InstructionList getInstructions() const;
+
+        /**
+         * Assignment Operator
+         */
+        Recipe&amp; operator=(const Recipe&amp; rhs);
+
+        /**
+         * Logical Equivalence Operator
+         */
+        bool operator==(const Recipe&amp; rhs) const;
+
+        /**
+         * Less than (comes-before) Operator
+         */
+        bool operator&lt;(const Recipe&amp; rhs) const;
+};
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; outs, const Recipe&amp; prt);
+</code></pre>
+</div></div></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Using%20the%20C%2B%2B%20Class%20Checklist"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

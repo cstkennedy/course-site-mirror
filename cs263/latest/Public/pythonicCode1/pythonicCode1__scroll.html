@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Pythonic Code & "Good" Code</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Pythonic%20Code%20%26%20%22Good%22%20Code"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Pythonic Code &amp; "Good" Code</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#python-enhancement-proposals-peps-">1 Python Enhancement Proposals (PEPs)</a></div><div class="toc-h1"><a href="#community-style-conventions">2 Community Style Conventions</a></div><div class="toc-h1"><a href="#general-language-agnostic-rules">3 General (Language Agnostic) Rules</a></div></div><a id="pythonenhancementproposalspeps"/><h1 id="python-enhancement-proposals-peps-">1 Python Enhancement Proposals (PEPs)</h1><p>There are quite a few <em>“rules”</em> when writing Pythonic code… starting with two <em>Python Enhancement Proposals:</em></p>
+    <ul>
+  <li>Style - <a href="https://www.python.org/dev/peps/pep-0008/" target="_blank">PEP 8</a></li>
+  <li>Zen of Python - <a href="https://www.python.org/dev/peps/pep-0020/" target="_blank">PEP 20</a></li>
+</ul><p>While both of these are an interesting read… you do not need to read either document in its entirety. <em>I prefer to reserve such reading for Friday nights. (Sadly, I am not entirely joking.)</em></p>
+    <a id="communitystyleconventions"/><h1 id="community-style-conventions">2 Community Style Conventions</h1><p>Many rules come from the Python community…</p>
+    <ol>
+  <li>
+    <p>Always have an <code>if __name__ == "__main__"</code>.</p>
+    
+    <p>We discussed the mechanics in <a class="doc" href="../../Public/programStructureBasic/index.html" target="CS263_Public">the basic program structure notes</a>. The impact on Python modules and <code>import</code> statements will be part of future lectures.</p>
+    
+  </li>
+  <li>
+    <p>Use f-strings over <code>.format</code> where possible.</p>
+    
+    <p>A lot of this comes down to readability. Consider…</p>
+    
+    <pre><code class="python">total_cost = sum(prices)
+print("total_cost= {.2f}".format(total_cost))
+</code></pre>
+    <p>which would output something along the lines of…</p>
+    
+    <pre><code>total_cost=7.53
+</code></pre>
+    <p>The f-string version would be written as…</p>
+    
+    <pre><code class="python">total_cost = sum(prices)
+print(f"{total_cost=:.2f}")
+</code></pre>
+    <p>The f-string variant outputs the same result with less (and more readable) code. The formatting sytax will be discussed in upcoming modules.</p>
+    
+  </li>
+  <li>
+    <p>Use <code>with</code> context managers.</p>
+    
+    <p>Think about all the times that you opened a file and forgot to close it (or a socket). Context managers prevent that problem from occurring (Java has incorporated its own version of the mechanic). If you are eager to learn this topic in particular… take a peek at <a class="doc" href="../../Public/contextManagers/index.html" target="CS263_Public">the introduction to context managers</a>.</p>
+    
+  </li>
+  <li>
+    <p>Write pydoc style documentation.</p>
+    
+    <p>This deals with documentation of functions and classes… not inline comments. The <a class="doc" href="../../Public/codeDocumentation1/index.html" target="CS263_Public">code documentation lecture</a> from the upcoming <em>Python Basics I - Variables &amp; Functions</em> will cover a few examples and conventions</p>
+    
+  </li>
+  <li>
+    <p>Use functions and modules.</p>
+    
+    <p>Separate your code into multiple smaller functions that can each be evaluated (by a programmer) and tests (by an automated test suite) for correctness. <em>This is related to the no monolithic function rules covered in most design discussions.</em></p>
+    
+  </li>
+  <li>
+    <p>Avoid global variables.</p>
+    
+    <p>If you need to track state… pass data as explicit arguments into functions or make use of an appropriate design pattern (e.g., the Singleton pattern).</p>
+    
+  </li>
+  <li>
+    <p>Do not always use object-oriented design.</p>
+    
+    <p>Sometimes procedural style or functional style code can be written more quickly, generate more performant code, and result in less boilerplate code.</p>
+    
+    <p><strong>Of course… sometimes mixing paradigms is the best approach.</strong></p>
+    
+  </li>
+  <li>
+  <p>Do not forget about the <a href="https://wiki.python.org/moin/GlobalInterpreterLock" target="_blank">Python GIL</a>.</p>
+    </li>
+</ol><a id="generallanguageagnosticrules"/><h1 id="general-language-agnostic-rules">3 General (Language Agnostic) Rules</h1><p>The usual software engineering practices apply in Python (as one might expect).</p>
+    <ol>
+  <li>
+    <p>Follow Test Driven Development (TDD).</p>
+    
+    <p>Always have a set of automated tests that can be used to evaluate the correctness of your code. A full description of Test Driven Development (TDD) can be found in a <a class="doc" href="../../Public/tdd1/index.html" target="CS263_Public">future lecture</a></p>
+    
+  </li>
+  <li>
+    <p><strong>Use top down design</strong>, and <strong>do not write monolithic functions.</strong></p>
+    
+    <p>These are the conceptual companion to “<strong>Use functions and modules.</strong>”</p>
+    
+  </li>
+  <li>
+    <p>Use a code linter or style checker (e.g., pylint or black).</p>
+    
+    <p>Always have a tool double check your code style or, in the case of <a href="https://black.readthedocs.io/en/stable/" target="_blank">black</a>, fix it for you.</p>
+    
+  </li>
+  <li>
+    <p>Use self-documenting names.</p>
+    
+    <p>If a comment is required to clarify what a variable, function, or class represents… a more apt name should be selected.</p>
+    
+  </li>
+  <li>
+    <p>Remember <em>S.O.L.I.D.</em> and <em>D.R.Y.</em></p>
+    
+    <p>These are both standard design idioms.</p>
+    
+    <ul>
+      <li>
+        <p><strong>SOLID</strong> breaks down as…</p>
+    
+        <ul>
+          <li>
+            <p><strong>S - Single Responsibility Principle</strong></p>
+    
+            <p>Every class, module, or interface has one responsibility (i.e., purpose).</p>
+    
+          </li>
+          <li>
+            <p><strong>O - Open/Closed Principle</strong></p>
+    
+            <p>It should be possible to extend a class, module, or function without modifying the original code.</p>
+    
+          </li>
+          <li>
+            <p><strong>L - Liskov Substitution</strong></p>
+    
+            <p>If I write a function to work with an <code>class</code>, or <code>interface</code>, any object that provides or specializes that <code>class</code> or <code>interface</code> should work. Think about</p>
+    
+            <ul>
+              <li>Using <code>istream</code> instead of <code>ifstream</code> or <code>std::cin</code> in C++</li>
+              <li>Using <code>ostream</code> instead of <code>ofstream</code> or <code>std::cout</code> in C++.</li>
+              <li>Replacing <code>ArrayList&lt;String&gt;</code> with <code>List&lt;String&gt;</code> in the Java.</li>
+              <li>Replacing <code>.stream()</code> with <code>.parallelStream()</code> in the Java.</li>
+              <li>The Java <code>Runnable</code> interface.</li>
+              <li>The Java <code>Listener</code> interface.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>I - Interface Segregation</strong></p>
+    
+            <p>Fight the urge to throw in the kitchen sink. Focus on creating problem specific interfaces, not monolithic kitchen-sink-interfaces. <em>This requires us to codify how to decompose a large problem (high-level design).</em></p>
+    
+          </li>
+          <li>
+            <p><strong>D - Dependency Inversion</strong></p>
+    
+            <p>Modules should not directly handle low-level calls and operations. Consider the C <code>FILE*</code> vs the C++ <code>ofstream</code> and <code>ifstream</code>.</p>
+    
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>D.R.Y.</strong> is arguably more memorable. It stands for…</p>
+    
+        <ul>
+          <li><strong>D</strong>o not (or don’t)</li>
+          <li><strong>R</strong>epeat</li>
+          <li><strong>Y</strong>ourself</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Iterators are magic.</p>
+    
+    <p>This is an interesting one… However, we will see more of what this means when we start writing <code>for</code> loops in an upcoming module.</p>
+    
+  </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Pythonic%20Code%20%26%20%22Good%22%20Code"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

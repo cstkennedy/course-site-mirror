@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>NumPy & Multi-Dimension Arrays - NumPy Magic</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20%26%20Multi-Dimension%20Arrays%20-%20NumPy%20Magic"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">NumPy &amp; Multi-Dimension Arrays - NumPy Magic</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#where-are-we-">1 Where are We?</a></div><div class="toc-h1"><a href="#back-to-main">2 Back to main</a></div><div class="toc-h2"><a href="#getting-x-values-and-y-values">2.1 Getting x_values and y_values</a></div><div class="toc-h2"><a href="#back-to-main">2.2 Back to main</a></div><div class="toc-h1"><a href="#looking-at-solve-matrix">3 Looking at solve_matrix</a></div><div class="toc-h2"><a href="#swapping-the-largest-row">3.1 Swapping the Largest Row</a></div><div class="toc-h1"><a href="#being-persnickety">4 Being Persnickety</a></div><div class="toc-h1"><a href="#the-end-for-real-this-time">5 The End… For Real This Time</a></div></div><a id="wherearewe"/><h1 id="where-are-we-">1 Where are We?</h1><p>In <a class="doc" href="../../Public/numpyMatrixExampleRefactoring/index.html" target="CS263_Public">the previous lecture</a>, we have just finished refactoring the <em>Least Squares Approximation Solver.</em></p>
+    <p>This lecture will focus on a second <em>refactoring pass</em> through the solver code. The <a href="https://github.com/cstkennedy/cs263-examples//blob/main/Module-11/least_squares_better_2.py">code generated in this lecture can be accessed on GitHub</a>.</p>
+    <a id="backtomain"/><h1 id="back-to-main">2 Back to main</h1><p>I am not entirely satisfied with <code>main</code>.</p>
+    <pre><code class="python">def main():
+    points = [(0.0, 0.0), (1.0, 1.0), (2.0, 4.0)]
+
+    # Compute X
+    x_values = [x for x, _ in points]
+    x_values = np.array(x_values)
+    x_values_squared = x_values ** 2
+    matrix_X = np.column_stack((np.ones(len(points)), x_values, x_values_squared))
+
+    # Compute Y
+    matrix_Y = np.array([y for _, y in points])
+</code></pre><p>The first list (i.e., <code>points</code>) represents our input data. We end up creating <code>x_values</code> and <code>y_values</code> based on these points. If this were part of a larger application… the points would come from an input file. Let us introduce a new function that takes the points and returns two lists.</p>
+    <pre><code class="python">def get_x_and_y_values(points: list[tuple[float, float]]) -&gt; tuple[np.array, np.array]:
+    """
+    Take a list of points and return a list of x values and a list of y values
+    """
+
+    x_values = [x for x, _ in points]
+    x_values = np.array(x_values)
+
+    y_values = np.array([y for _, y in points])
+
+    return x_values, y_values
+</code></pre><p>The logic for splitting the points into two <code>np.array</code> objects should its own function.</p>
+    <a id="gettingxvaluesandyvalues"/><h2 id="getting-x-values-and-y-values">2.1 Getting x_values and y_values</h2><p>We can still improve this function. If we take…</p>
+    <pre><code class="python">    x_values = [x for x, _ in points]
+    x_values = np.array(x_values)
+</code></pre><p>the lines can be combined into one…</p>
+    <pre><code class="python">    x_values = np.array([x for x, _ in points])
+</code></pre><p>We can make the same tweak to the line for <code>y_values</code>.</p>
+    <pre><code class="python">    y_values = np.array([y for _, y in points])
+</code></pre><p>The final function ends up as two lines (not including the return).</p>
+    <pre><code class="python">def get_x_and_y_values(points: list[tuple[float, float]]) -&gt; tuple[np.array, np.array]:
+    """
+    Take a list of points and return a list of x values and a list of y values
+    """
+
+    x_values = np.array([x for x, _ in points])
+    y_values = np.array([y for _, y in points])
+
+    return x_values, y_values
+</code></pre><p>But… we can make the process a little cleaner with <code>hsplit</code>. Why not convert the points to an <code>np.array</code> with…</p>
+    <pre><code class="python">np.array(points)
+</code></pre><p>and the split the columns into two lists…</p>
+    <pre><code class="python">    x_values, y_values = np.hsplit(np.array(points), 2)
+</code></pre><p>Note that the <code>2</code> indicates a split into two (2) <code>np.array</code> objects (one for each column).</p>
+    <p>The real final function is actually…</p>
+    <pre><code class="python">def get_x_and_y_values(points: list[tuple[float, float]]) -&gt; tuple[np.array, np.array]:
+    """
+    Take a list of points and return a list of x values and a list of y values
+    """
+
+    x_values, y_values = np.hsplit(np.array(points), 2)
+
+    return x_values, y_values
+</code></pre><a id="backtomain"/><h2 id="back-to-main">2.2 Back to main</h2><p>The output in main is a bit tricky. While <code>.format</code> is useful, we need to center string literals for titles.</p>
+    <pre><code class="python">    print("{:*^40}".format("XTX"))
+</code></pre><p>I believe the string <code>.center</code> member function is a more readable and self-documenting choice.</p>
+    <pre><code class="python">    print("XTX".center(40, "*"))
+</code></pre><p>Let us make that change to every heading and finalize main…</p>
+    <pre><code class="python">def main():
+    points = [(0.0, 0.0), (1.0, 1.0), (2.0, 4.0)]
+
+    x_values, y_values = get_x_and_y_values(points)
+
+    # Compute X and XT
+    x_values_squared = x_values ** 2
+    matrix_X = np.column_stack((np.ones(len(points)), x_values, x_values_squared))
+
+    matrix_XT = matrix_X.transpose()
+
+    # Compute Y
+    matrix_Y = y_values
+
+    # Compute XTX and XTY
+    matrix_XTX = np.matmul(matrix_XT, matrix_X)
+    matrix_XTY = np.matmul(matrix_XT, matrix_Y)
+
+    # Construct augmented XTX|XTY matrix 
+    matrix_XTY = matrix_XTY.reshape(matrix_XTX.shape[0], 1)
+    matrix_augmented = np.hstack((matrix_XTX, matrix_XTY))
+
+    print("XTX".center(40, "*"))
+    print(matrix_XTX)
+
+    print()
+    print("XTY".center(40, "*"))
+    print(matrix_XTY)
+
+    print()
+    print("XTX|XTY".center(40, "*"))
+    print(matrix_augmented)
+
+    solution = solve_matrix(matrix_augmented)
+
+    print()
+    print("Solution".center(40, "*"))
+    print(np.polynomial.Polynomial(solution))
+</code></pre><a id="lookingatsolvematrix"/><h1 id="looking-at-solve-matrix">3 Looking at solve_matrix</h1><p>The <code>solve_matrix</code> itself is little more than a loop where other functions are invoked.</p>
+    <pre><code class="python">def solve_matrix(matrix_augmented: np.array) -&gt; np.array:
+    """
+    Solve a matrix and return the resulting solution vector
+
+    Args:
+        matrix_augmented: an n-by-n matrix with a vector augmented in the
+        right-most column
+
+    Returns:
+        constants c_0, c_1, c_2, ... c_n depending on the number of rows in the
+        supplied matrix
+    """
+
+    # Get the number of rows in the matrix
+    num_rows, _ = matrix_augmented.shape
+
+    for current_row_idx in range(0, num_rows):
+        swap_current_row_with_largest_row(matrix_augmented, current_row_idx)
+        scale_row(matrix_augmented, current_row_idx)
+        eliminate(matrix_augmented, current_row_idx)
+
+    _backsolve(matrix_augmented)
+
+    return matrix_augmented[:, -1].flatten()
+</code></pre><p><strong>There is no refactoring left in this top-level function.</strong></p>
+    <a id="swappingthelargestrow"/><h2 id="swapping-the-largest-row">3.1 Swapping the Largest Row</h2><p>The <code>swap_current_row_with_largest_row</code> can be simplified with some NumPy <strong>magic</strong>. Let us take another look at the <em>find largest row</em> logic.</p>
+    <pre><code class="python">    num_rows, _ = matrix.shape
+
+    # Find the row with the largest column entry
+    row_idx = current_idx
+    largest_idx = row_idx
+    current_col = current_idx
+    for j in range(row_idx + 1, num_rows):
+        if matrix[largest_idx, row_idx] &lt; matrix[j, current_col]:
+            largest_idx = j
+</code></pre><p>The first three lines are variable declarations and definitions. However, the loop itself can be replaced with a call to <code>argmax</code>. This function (i.e., <code>argmax</code>) will return the position (index) of the largest entry in an <code>np.array</code>.</p>
+    <pre><code class="python">        largest_idx = idx + np.argmax(matrix[idx:, :], axis=0)[idx]
+</code></pre><p>Well… that code snippet is clear (as mud). Let us break the code into pieces:</p>
+    <ul>
+  <li>
+  <p><code>axis=0</code> - find the maximum entry in each column.</p>
+    </li>
+  <li>
+  <p><code>matrix_augmented[idx:, :]</code> - search every column in every row, starting at row “<code>idx</code>”.</p>
+    </li>
+  <li>
+  <p>‘[idx]’ - our interest lies with the row for the largest entry in column “<code>idx</code>”.</p>
+    </li>
+  <li>
+  <p><code>idx + np.argmax(</code> - the search started at row “<code>idx</code>” (which is treated as index 0). We need to <em>shift</em> back to the full set of rows.</p>
+    </li>
+</ul><p>That allows us to replace an entire loop with three lines.</p>
+    <pre><code class="python">    # Find the row with the largest column entry
+    idx = current_idx
+    largest_idx = idx + np.argmax(matrix[idx:, :], axis=0)[idx]
+
+    # If the current row is not the largest row then swap
+    if largest_idx != current_idx:
+        matrix[[current_idx, largest_idx], :] = matrix[[largest_idx, current_idx], :]
+</code></pre><p>The remainder of the function can remain unchanged.</p>
+    <a id="beingpersnickety"/><h1 id="being-persnickety">4 Being Persnickety</h1><p>The <code>scale_row</code> function makes use of <code>/=</code>.</p>
+    <pre><code class="python">    scaling_factor = matrix[current_row_idx, current_row_idx]
+    matrix[current_row_idx, :] /= scaling_factor
+</code></pre><p>I would prefer for the division operation to be a multiplication. This can be done with…</p>
+    <pre><code class="python">    scaling_factor = matrix[current_row_idx, current_row_idx]
+    scaling_factor = np.reciprocal(scaling_factor)
+</code></pre><p>or…</p>
+    <pre><code class="python">    scaling_factor = np.reciprocal(matrix[current_row_idx, current_row_idx])
+</code></pre><p>Let us make use of the latter option. The end result is…</p>
+    <pre><code class="python">def scale_row(matrix: np.array, current_row_idx: int) -&gt; None:
+    """
+    Scale every entry of the current row by the value of the corresponding
+    column (e.g., matrix[2,2])
+    """
+
+    scaling_factor = np.reciprocal(matrix[current_row_idx, current_row_idx])
+    matrix[current_row_idx, :] *= scaling_factor
+</code></pre><a id="theendforrealthistime"/><h1 id="the-end-for-real-this-time">5 The End… For Real This Time</h1><p>This is the end of the refactoring journey. The <a href="https://github.com/cstkennedy/cs263-examples//blob/main/Module-11/least_squares_better_2.py">final code can be accessed on GitHub</a>.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20%26%20Multi-Dimension%20Arrays%20-%20NumPy%20Magic"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

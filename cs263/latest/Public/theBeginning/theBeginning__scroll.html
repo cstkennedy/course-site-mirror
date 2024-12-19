@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/video-page.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>The Beginning</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">The Beginning</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#tools-of-the-trade">1 Tools of the Trade</a></div><div class="toc-h1"><a href="#lecture-examples">2 Lecture Examples</a></div><div class="toc-h1"><a href="#questions">3 Questions…</a></div><div class="toc-h1"><a href="#beginning-of-the-semester-concerns">4 Beginning of the Semester Concerns</a></div></div><p>Welcome to CS 263 - Python for Programmers.</p>
+    <p>This course is intended as an introduction to Python for students already familiar another language (with an emphasis on C++ or Java). The overall focus of this course is to prepare to teach you how to apply your existing knowledge to write <em>Pythonic</em> code.</p>
+    <p><strong>If you would prefer to read a written lecture… scroll past the video. The written lecture covers the same material.</strong></p>
+    <iframe allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen="true" class="video" frameborder="0" height="405" id="kaltura_player" mozAllowFullScreen="true" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" src="https://cdnapisec.kaltura.com/p/1509371/sp/150937100/embedIframeJs/uiconf_id/44141721/partner_id/1509371?iframeembed=true&amp;playerId=kaltura_player&amp;entry_id=1_1gleclp5&amp;flashvars[streamerType]=auto&amp;flashvars[localizationCode]=en&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[hotspots.plugin]=1&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&amp;wid=1_lx0u9lr2" title="CS 263 - Course Intro" webkitallowfullscreen="true" width="720">
+</iframe><a id="toolsofthetrade"/><h1 id="tools-of-the-trade">1 Tools of the Trade</h1><p>In this course we will use many tools, including:</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Tool </th>
+      <th align="left">Assignments </th>
+      <th align="left">Lecture </th>
+      <th align="left">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Vim </td>
+      <td align="left">Hopefully </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Git </td>
+      <td align="left">Hopefully </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Unit Testing / TDD </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Pydoc </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Tox </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Pycodestyle / Pylint </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">PlantUML </td>
+      <td align="left">Maybe </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">SDEdit </td>
+      <td align="left">Maybe </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+  </tbody>
+</table><p>A few tools will be used heavily for office hours and questions…</p>
+    <table>
+  <thead>
+    <tr>
+      <th align="left">Tool </th>
+      <th align="left">Assignments </th>
+      <th align="left">Lecture </th>
+      <th align="left">Recordings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">Zoom (Office Hours) </td>
+      <td align="left">✔ </td>
+      <td align="left"> </td>
+      <td align="left"> </td>
+    </tr>
+    <tr>
+      <td align="left">Email </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+    <tr>
+      <td align="left">Questions </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+      <td align="left">✔ </td>
+    </tr>
+  </tbody>
+</table><p>Yes… I do realize that I have listed questions as a tool for answering questions. As much as I would like to make a joke about recursion… This is actually an instance of the <a href="https://en.wikipedia.org/wiki/Socratic_method">Socratic Method</a>.</p>
+    <a id="lectureexamples"/><h1 id="lecture-examples">2 Lecture Examples</h1><p>Most lectures will be based on the <a href="https://github.com/cstkennedy/cs263-examples/">Review (recorded lecture) Examples</a>. If you are curious… take a look at the <a href="https://github.com/cstkennedy/cs263-examples/commits/main">commit history on GitHub</a>. The example code is not stagnant. It is updated every semester.</p>
+    <h1 id="questions">3 Questions…</h1><ol>
+  <li>
+    <p>Do I need to know all the tools listed in <a href="#tools-of-the-trade" target="_blank">Tools of the Trade</a>?</p>
+    
+    <p><em>No.</em> you do not need to know all the tools.</p>
+    
+  </li>
+  <li>
+    <p>Why do you use Vim?</p>
+    
+    <p>The short answer is that… Vim works. I can write code quickly, compile and run code, and switch between languages. Most importantly, I can do everything completely from the keyboard (without the mouse).</p>
+    
+  </li>
+  <li>
+    <p>What is your favorite language?</p>
+    
+    <p>It is currently a tie between Python and Rust… although it is currently Python… at least for today.</p>
+    
+  </li>
+  <li>
+    <p>Can I ask you about a topic not covered in lecture?</p>
+    
+    <p><em>Yes.</em> </p>
+    
+  </li>
+  <li>
+    <p>Who is <a href="https://github.com/rhettinger" target="_blank">Raymond Hettinger</a>?</p>
+    
+    <p>Raymond Hettinger is one of the Python core developers. He is known for his amazing Python talks/lectures.</p>
+    
+  </li>
+</ol><a id="beginningofthesemesterconcerns"/><h1 id="beginning-of-the-semester-concerns">4 Beginning of the Semester Concerns</h1><p>You will hear me discuss and reference topics from various courses, including:</p>
+    <ul>
+  <li>CS 330 - Object Oriented Design &amp; Programming</li>
+  <li>CS 361 - Data Structures &amp; Algorithms</li>
+  <li>CS 381 - Discrete Structures</li>
+  <li>CS 417 - Computational Methods &amp; Software</li>
+</ul><p>Every semester a few students end up terrified that they have missed a required prerequisite course. Before you start second guessing yourself… take a look at the <a class="doc" href="../../Public/syllabus/index.html#prerequisites" target="CS263_Public">prerequisites section of the syllabus</a>. If a course is not listed as a prerequisite… you are not expected to have completed it.</p>
+    <p><strong>Why mention other courses?</strong></p>
+    <p>Computer Science is a broad field. There are many connections between topics and concepts. One of the biggest mistakes anyone can make (especially students and teachers) is to treat a course as <em>existing in a vacuum</em>. Remember two things:</p>
+    <ol>
+  <li>
+  <p>One of our goals is to learn how to see these connections and use them to  solidify understanding in this course and other courses.</p>
+    </li>
+  <li>
+  <p>I enjoy Computer Science (including this course) and have a  penchant to get carried away.</p>
+    </li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20The%20Beginning"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

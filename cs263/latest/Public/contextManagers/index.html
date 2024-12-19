@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Context Managers</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Context%20Managers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Context Managers</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#motivation">1 Motivation</a></div><div class="toc-h1"><a href="#writing-to-a-file">2 Writing to a File</a></div><div class="toc-h1"><a href="#writing-to-a-gzipped-text-file">3 Writing to a Gzipped Text File</a></div><div class="toc-h1"><a href="#reading-from-a-file">4 Reading from a File</a></div></div><h1 id="motivation">1 Motivation</h1><p>Python provides the <code>with</code> statement (construct). This allows the setup and teardown involved in using resources (e.g., files, sockets, and database connections) to be handled elsewhere.</p>
+    <p>This has two main benefits:</p>
+    <ol>
+  <li>There is less boilerplate code.</li>
+  <li>It is impossible to forget to close/deallocate a resource.</li>
+</ol><p>The <code>with</code> construct can be used with many types of resources (e.g., files and network sockets). For this lecture we will focus purely on file IO.</p>
+    <a id="writingtoafile"/><h1 id="writing-to-a-file">2 Writing to a File</h1><p>Suppose that we want to output the numbers one (1) through ninety-nine (99) to a file… along with whether the number is even or odd.</p>
+    <p>To generate such a file, one might write:</p>
+    <blockquote>
+  <p><strong>Python File IO - Basic</strong></p>
+    
+  <pre><code class="python">text_file = open("even_or_odd_file.txt", "w")
+
+for number in range(1, 100):
+    even_or_odd = "even" if number % 2 == 0 else "odd"
+    text_file.write(f"{number} - {even_or_odd}\n")
+</code></pre>
+</blockquote><p>Did you notice the missing <code>fclose(text_file)</code>?</p>
+    <blockquote>
+  <p><strong>Python File IO - Add <code>close</code></strong></p>
+    
+  <pre><code class="python">text_file = open("even_or_odd_file.txt", "w")
+
+for number in range(1, 100):
+    even_or_odd = "even" if number % 2 == 0 else "odd"
+    text_file.write(f"{number} - {even_or_odd}\n")
+
+close(text_file)
+</code></pre>
+</blockquote><p>One small <code>with</code> allows the file close operation can be handled automatically.</p>
+    <blockquote>
+  <p><strong>Python File IO - Using <code>with</code></strong></p>
+    
+  <pre><code class="python">with open("even_or_odd_file.txt", "w") as text_file:
+    for number in range(1, 100):
+        even_or_odd = "even" if number % 2 == 0 else "odd"
+        text_file.write(f"{number} - {even_or_odd}\n")
+</code></pre>
+</blockquote><p>Note the indentation. The file is closed as soon as the indented block under <code>with</code> ends.</p>
+    <a id="writingtoagzippedtextfile"/><h1 id="writing-to-a-gzipped-text-file">3 Writing to a Gzipped Text File</h1><p>This also works for other types of files–including compressed files.</p>
+    <blockquote>
+  <p><strong>Python File IO - Using <code>with</code> and <code>gzip</code></strong></p>
+    
+  <pre><code class="python">import gzip
+
+with gzip.open("even_or_odd_file.txt.gz", "wt") as text_file:
+    for number in range(1, 100):
+        text_file.write(f"{number} - {even_or_odd}\n")
+</code></pre>
+</blockquote><a id="readingfromafile"/><h1 id="reading-from-a-file">4 Reading from a File</h1><p>As one might expect… the <code>with</code> context manager can be used when reading data from a file. </p>
+    <blockquote>
+  <pre><code class="python">import sys
+import pprint as pp
+
+
+def main():
+    input_filename = sys.argv[1]
+
+    with open(input_filename, "r") as input_file:
+        for line in input_file:
+            line = line.strip()
+
+            # Skip blank lines
+            if not line:
+                continue
+
+            tokens = line.split()
+
+            pp.pprint(tokens, indent=2)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+</blockquote><p>This code snippet is one that I found myself writing quite a bit for debugging purposes. The code will:</p>
+    <ol>
+  <li>Open a file</li>
+  <li>Read each line</li>
+  <li>Skip blank lines</li>
+  <li>Split a line into tokens (essentially words)</li>
+  <li>Use the Python <a href="https://docs.python.org/3.11/library/pprint.html">Pretty  Printer</a> to output a  readable list of tokens for each line</li>
+</ol></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Context%20Managers"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

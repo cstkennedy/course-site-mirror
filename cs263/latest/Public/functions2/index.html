@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Functions & Modules</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Functions%20%26%20Modules"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Functions &amp; Modules</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#continuing">1 Continuing…</a></div><div class="toc-h1"><a href="#separating-the-code">2 Separating the Code</a></div><div class="toc-h1"><a href="#renaming-the-functions">3 Renaming the Functions</a></div><div class="toc-h1"><a href="#fixing-the-output">4 Fixing the Output</a></div><div class="toc-h1"><a href="#done-for-the-moment">5 Done… for the Moment</a></div><div class="toc-h1"><a href="#closing-remarks">6 Closing Remarks</a></div></div><h1 id="continuing">1 Continuing…</h1><p>In <a class="doc" href="../../Public/functions1/index.html" target="CS263_Public">the previous lecture</a> we developed a program to compute how many gallons of paint would be required to paint a room. We ended up with two functions. Let us separate the driver (<code>main</code>) and computation functions into two files:</p>
+    <ol>
+  <li>
+  <p><code>main</code> will remain in <code>estimate_paint.py</code></p>
+    </li>
+  <li>
+  <p>the computation functions will be moved to a new file named  <code>compute_paint.py</code></p>
+    </li>
+</ol><a id="separatingthecode"/><h1 id="separating-the-code">2 Separating the Code</h1><p>Let us start by moving the computation functions</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: compute_paint.py</div>
+<pre><code class="python">import math
+
+
+def compute_wall_surface_area(length: float, width: float) -&gt; float:
+
+    area_one_wall = length * width
+    area_four_walls = 4 * area_one_wall
+
+    return area_four_walls
+
+
+def determine_gallons_required(
+    wall_area: float, min_coverage: float = 350, max_coverage: float = 400
+) -&gt; tuple[int, int]:
+
+    max_gallons = math.ceil(wall_area / min_coverage)
+    min_gallons = math.ceil(wall_area / max_coverage)
+
+    return min_gallons, max_gallons
+</code></pre>
+</blockquote><blockquote class="example" id="example2"><div class="exampleTitle">Example 2: estimate_paint.py</div>
+<pre><code class="python">from compute_paint import *
+
+
+def main():
+    # Dimensions in feet
+    length = 50
+    width = 40
+
+    # Price in dollars
+    price_per_gallon = 49.95
+
+    area = compute_wall_surface_area(length, width)
+
+    gallons_required = determine_gallons_required(area)
+
+    min_required, max_required = gallons_required
+    min_cost = min_required * price_per_gallon
+    max_cost = max_required * price_per_gallon
+
+    print(f"You will need to buy {min_required} to {max_required} gallons of paint.")
+    print(f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+</blockquote><p>Take note of the <strong>wildcard import</strong>.</p>
+    <pre><code class="python">from compute_paint import *
+</code></pre><p>These types of imports should always be avoided. The general rule (regardless of language) is <em>import what you need and nothing extra.</em></p>
+    <p>Let us import the two functions that we are actually using…</p>
+    <pre><code class="python">from compute_paint import (compute_wall_surface_area, determine_gallons_required)
+</code></pre><a id="renamingthefunctions"/><h1 id="renaming-the-functions">3 Renaming the Functions</h1><p>Since the module (i.e., <code>compute_paint</code>) contains the two functions… their names are a little redundant…</p>
+    <ul>
+  <li><code>compute_paint.compute_wall_surface_area</code></li>
+  <li><code>compute_paint.determine_gallons_required</code></li>
+</ul><p>If we import the module and use the fully qualified function names…</p>
+    <ul>
+  <li><code>compute_paint.wall_surface_area</code></li>
+  <li><code>compute_paint.gallons_required</code></li>
+</ul><p>the module name becomes part of the documentation!</p>
+    <p>Let us tweak main…</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: estimate_paint.py - Updated Imports</div>
+<pre><code class="python">import compute_paint
+
+
+def main():
+    # Dimensions in feet
+    length = 50
+    width = 40
+
+    # Price in dollars
+    price_per_gallon = 49.95
+
+    area = compute_paint.wall_surface_area(length, width)
+
+    gallons_required = compute_paint.gallons_required(area)
+
+    min_required, max_required = gallons_required
+    min_cost = min_required * price_per_gallon
+    max_cost = max_required * price_per_gallon
+
+    print(f"You will need to buy {min_required} to {max_required} gallons of paint.")
+    print(f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+</blockquote><p>We can also use tuple unpacking to rewrite…</p>
+    <pre><code class="python">    gallons_required = compute_paint.gallons_required(area)
+
+    min_required, max_required = gallons_required
+</code></pre><p>as one line…</p>
+    <pre><code class="python">    min_required, max_required = compute_paint.gallons_required(area)
+</code></pre><p>We should also add the missing period in the second <code>print</code> statement…</p>
+    <pre><code class="python">    print(f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}.")
+</code></pre><a id="fixingtheoutput"/><h1 id="fixing-the-output">4 Fixing the Output</h1><p>I do not like the output…</p>
+    <ol>
+  <li>
+  <p>There should be a <code>get_report</code> function that returns a <code>str</code> that we then  output.</p>
+    </li>
+  <li>
+  <p>There is no logic for the case where the minimum and maximum required  gallons of paint are the same</p>
+    </li>
+</ol><p>Let us start with where to place the new function… <code>estimate_paint.py</code>. The output logic is program specific. Let us establish the practice of separating computational logic from output (and input) logic. </p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: get_report</div>
+<pre><code class="python">def get_report(min_gallons: int, max_gallons: int, price_per_gallon: float) -&gt; str:
+    min_cost = min_gallons * price_per_gallon
+    max_cost = max_gallons * price_per_gallon
+
+    return "\n".join(
+        (
+            f"You will need to buy {min_gallons} to {max_gallons} gallons of paint.",
+            f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}.",
+        )
+    )
+</code></pre>
+</blockquote><p>Take note of the <code>"\n".join((...))</code>. We are taking a tuple of two strings (<code>tuple[str]</code>) and inserting a newline (<code>"\n"</code>) between them. The <code>join</code> function comes up quite a bit in Python.</p>
+    <p>Now… let us add a conditional block to check if <code>min_gallons == max_gallons</code>.</p>
+    <blockquote class="example" id="example5"><div class="exampleTitle">Example 5: get_report - Updated</div>
+<pre><code class="python">def get_report(min_gallons: int, max_gallons: int, price_per_gallon: float) -&gt; str:
+    if min_gallons == max_gallons:
+        gallons = max_gallons
+        cost = gallons * price_per_gallon
+
+        return "\n".join(
+            (
+                f"You will need to buy {gallons} gallons of paint.",
+                f"You will spend $ {cost:.2f}.",
+            )
+        )
+
+    else:
+        min_cost = min_gallons * price_per_gallon
+        max_cost = max_gallons * price_per_gallon
+
+        return "\n".join(
+            (
+                f"You will need to buy {min_gallons} to {max_gallons} gallons of paint.",
+                f"You will spend $ {min_cost:.2f} to $ {max_cost:.2f}.",
+            )
+        )
+
+</code></pre>
+</blockquote><a id="doneforthemoment"/><h1 id="done-for-the-moment">5 Done… for the Moment</h1><p>For the moment… let us consider this example complete. We will revisit it in a few modules for a <em>code review</em> discussion.</p>
+    <p>The final code can be found in <a href="https://github.com/cstkennedy/cs263-examples//tree/main/Module-03/Painting-2" target="_blank">Module-03/Painting-2</a>.</p>
+    <a id="closingremarks"/><h1 id="closing-remarks">6 Closing Remarks</h1><p>Yes… <strong>the wall surface area computation is still incorrect.</strong> However, we will leave the correction for a future iteration of the example.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Functions%20%26%20Modules"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

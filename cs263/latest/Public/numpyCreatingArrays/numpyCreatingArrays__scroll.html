@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>NumPy - Creating Arrays</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20-%20Creating%20Arrays"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">NumPy - Creating Arrays</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#overview">1 Overview</a></div><div class="toc-h1"><a href="#array-from-scratch">2 Array from Scratch</a></div><div class="toc-h1"><a href="#array-from-a-list-or-tuple">3 Array from a List or Tuple</a></div><div class="toc-h1"><a href="#multiple-dimensions">4 Multiple Dimensions</a></div></div><h1 id="overview">1 Overview</h1><p>There are two main ways to initialize NumPy arrays:</p>
+    <ol>
+  <li>Directly in NumPy (e.g., setting everything to zero)</li>
+  <li>Converting a Python <code>list</code> (or similar) structure</li>
+</ol><a id="arrayfromscratch"/><h1 id="array-from-scratch">2 Array from Scratch</h1><p>NumPy arrays can be…</p>
+    <ul>
+  <li>
+    <p>Initialized to all zeroes</p>
+    
+    <pre><code class="python">    array_size = 8
+    zeroes_array = np.zeros(array_size)
+    print(zeroes_array)
+</code></pre>
+  </li>
+  <li>
+    <p>Initialized to all ones</p>
+    
+    <pre><code class="python">    array_size = 12
+    ones_array = np.ones(array_size)
+    print(ones_array)
+</code></pre>
+  </li>
+  <li>
+    <p>Allocated and left uninitialized</p>
+    
+    <pre><code class="python">    # Contents are "whatever happens to be in memory"
+    array_size = 16
+    unitialized_array = np.empty(array_size)
+    print(unitialized_array)
+</code></pre>
+  </li>
+</ul><a id="arrayfromalistortuple"/><h1 id="array-from-a-list-or-tuple">3 Array from a List or Tuple</h1><p>Creating an array from an existing list seems straightforward…</p>
+    <pre><code class="python">    python_list = [2, 4, 8, 16, 32, 64]
+    np_array = np.array(python_list)
+    print(np_array)
+</code></pre><p>However, the resulting array will store <code>int</code>s. To create an array of <code>float</code>s… a decimal point must be included after each number.</p>
+    <pre><code class="python">    python_list = [2., 4., 8., 16., 32., 64.]
+    np_array = np.array(python_list)
+    print(np_array)
+</code></pre><p>You can also be explicit by using the <code>dtype</code> keyword argument…</p>
+    <pre><code class="python">    python_list = [2, 4, 8, 16, 32, 64]
+    np_array = np.array(python_list, dtype=np.double)
+    print(np_array)
+</code></pre><a id="multipledimensions"/><h1 id="multiple-dimensions">4 Multiple Dimensions</h1><p>It is possible to create a matrix (or even a tensor) by providing a multi-level list, e.g.,</p>
+    <pre><code class="python">    matrix = [
+        [3, 2],
+        [2, 5]
+    ]
+
+    matrix = np.array(matrix, dtype=np.double)
+</code></pre></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20NumPy%20-%20Creating%20Arrays"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

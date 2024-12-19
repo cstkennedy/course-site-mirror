@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>String Manipulation & Comparison</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20String%20Manipulation%20%26%20Comparison"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">String Manipulation &amp; Comparison</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#strings-">1 Strings!</a></div><div class="toc-h1"><a href="#a-quick-first-example">2 A Quick First Example</a></div><div class="toc-h1"><a href="#a-second-example">3 A Second Example</a></div><div class="toc-h1"><a href="#is-that-it-">4 Is That It?</a></div></div><a id="strings"/><h1 id="strings-">1 Strings!</h1><p>The Python string (i.e., <code>str</code>) provides <a href="https://docs.python.org/3/library/stdtypes.html#string-methods">quite a few methods</a>. While an exhaustive list is a good <em>cheat sheet</em> to have… we can always bookmark the official <code>str</code> docs. For this lecture… we will start with:</p>
+    <ul>
+  <li><code>str.startswith</code> - returns <code>True</code> if a string starts with a specified prefix string.</li>
+  <li><code>str.endswith</code> - returns <code>True</code> if a string ends with a specified suffix string.</li>
+  <li><code>str.capitialize</code> - returns a new string with the first letter capitalized.</li>
+  <li><code>str.title</code> - returns a new string with each word capitalized.</li>
+  <li><code>str.upper</code> - returns a new string with each letter in uppercase.</li>
+  <li><code>str.lower</code> - returns a new string with each letter in lowercase.</li>
+  <li><code>str.split</code> - split a string at each occurrence of a given substring.</li>
+  <li><code>str.splitlines</code> - split a string at every line ending.</li>
+</ul><p>There are quite a few more methods, but these are the ones that we will use most often.</p>
+    <a id="aquickfirstexample"/><h1 id="a-quick-first-example">2 A Quick First Example</h1><p>I often find myself outputting headings in my example code. In C++ and Java… I have dedicated <code>utilities</code> modules. However, Python does not require one write a dedicated <em>header</em> module.</p>
+    <p>Suppose that we wanted to output a heading</p>
+    <pre><code class="python">    text = "Strings Are Fun!"
+</code></pre><p>that is:</p>
+    <ol>
+  <li>72 characters wide</li>
+  <li>centered</li>
+  <li>preceded by a border consisting of dashes (i.e., <code>-</code>)</li>
+  <li>followed by a border consisting of dashes (i.e., <code>-</code>)</li>
+</ol><p>Centering a string can be done with…</p>
+    <pre><code class="python">    width = 72
+    text = "Strings Are Fun!".center(width)
+</code></pre><p>Take note of the width variable. Since we will be using the value <code>72</code> in multiple places… we want <em>“what 72 is”</em> to unambiguous.</p>
+    <p>If you come from C++ or Java… your first instinct might be to create a new string or use some array trickery. However, this is Python…</p>
+    <pre><code class="python">    border = "-" * width
+</code></pre><p>Python allows us to repeat a string by <em>multiplying</em> the string by an integer. <em>(I prefer Rust’s <code>.repeat</code> syntax.)</em></p>
+    <p>Well… now we can put everything together.</p>
+    <pre><code class="python">def header_demo():
+
+    width = 72
+    border = "-" * width
+
+    text = "Strings Are Fun!".center(width)
+
+    print(border)
+    print(text)
+    print(border)
+
+
+if __name__ == "__main__":
+    header_demo()
+</code></pre><p>Although… I would refactor this code into a reusable function.</p>
+    <pre><code class="python">def get_heading(text: str, width: int, divider: str = "-") -&gt; str:
+    border = "-" * width
+
+    return "\n".join(
+        (
+            border,
+            "Strings Are Fun!".center(width),
+            border
+        )
+    )
+
+
+def main():
+    heading = get_heading(text="Strings Are Fun!", width=72)
+    print(heading)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre><p>This is a perfect to introduce the <code>.join</code> method. The method takes a collection of values (e.g., a <code>list</code> or <code>tuple</code>) and places the specified string (e.g., <code>\n</code> or <code>,</code>) between them.</p>
+    <p><em>You may be wondering if the same result can be achieved with an f-string.</em> Yes… it is possible. However, an f-string only works if we have a one-line title.</p>
+    <a id="asecondexample"/><h1 id="a-second-example">3 A Second Example</h1><p>Suppose that we are implementing a crude answer checker for a fill-in-the-blank question. Consider the following question.</p>
+    <blockquote>
+  <p>A class defines the structure of a type of thing (e.g., <code>Book</code>) while an ______ is an actual thing (e.g., a book on a shelf).</p>
+    
+</blockquote><p>We might start of with a function in the form…</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    if supplied_answer == correct_answer:
+        return True
+    else
+        return False
+</code></pre><p>and then rewrite it as…</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    if supplied_answer == correct_answer:
+        return True
+
+    return False
+</code></pre><p>before finally settling on…</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    return supplied_answer == correct_answer
+</code></pre><p>A naive string equality check would work. However, we know that misspellings are common on exams and quizzes. Let us convert both answers to lowercase.</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    return supplied_answer.lower() == correct_answer.lower()
+</code></pre><p>Let us shorten the variable names and grab the length of the correct answer with <code>len</code>.</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    supplied = supplied_answer.lower()
+    correct = correct_answer.lower()
+
+    correct_length = len(correct)
+
+    return supplied == correct
+</code></pre><p>How about we set the criteria as:</p>
+    <ol>
+  <li>Grab the length of the correct answer.</li>
+  <li>Compare the first <code>length // 2</code> letters of the correct answer and student answer</li>
+  <li>Compare the last <code>length // 2</code> letters of the correct answer and student answer</li>
+  <li>Award credit if the first or last <code>length // 2</code> letter match</li>
+</ol><pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    supplied = supplied_answer.lower()
+    correct = correct_answer.lower()
+
+    num_required_chars = len(correct) // 2
+
+    if supplied.startswith(correct[:num_required_chars]):
+        return True
+
+    if supplied.endswith(correct[-num_required_chars:]):
+        return True
+
+    return False
+</code></pre><p>The slice syntax will be covered when we get to <code>list</code> in a later lecture. However, for now let us note that…</p>
+    <ul>
+  <li>
+  <p><code>correct[:num_required_chars]</code> - starts at zero (0) and grabs every character up to (but not including) <code>num_required_chars</code></p>
+    </li>
+  <li>
+  <p><code>correct[-num_required_chars:]</code> - starts at <code>-num_required_chars</code> and grabs everything up through the end of <code>correct</code></p>
+    </li>
+</ul><p>We should also account for the penchant of students to get carried away on such questions (e.g., write a full sentence when only a word or two was needed).</p>
+    <pre><code class="python">def check_fill_in_the_blank(correct_answer: str, supplied_answer: str) -&gt; bool:
+    supplied = supplied_answer.lower()
+    correct = correct_answer.lower()
+
+    num_required_chars = len(correct) // 2
+
+    if supplied.startswith(correct[:num_required_chars]):
+        return True
+
+    if supplied.endswith(correct[-num_required_chars:]):
+        return True
+
+    if correct in supplied:
+        return True
+
+    return False
+</code></pre><p>This handles the case where we expected <em>“object”</em> as an answer, but the student wrote something along the lines of <em>“The correct answer is object.”</em></p>
+    <p>Note the use of <code>in</code> to check for the occurrence of a substring.</p>
+    <a id="isthatit"/><h1 id="is-that-it-">4 Is That It?</h1><p>We have reached a good stopping point for now. We will see more string manipulation when we discuss working with files.</p>
+    </div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20String%20Manipulation%20%26%20Comparison"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>

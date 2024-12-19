@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><html><head><meta charset="UTF-8"/><link href="../../styles/md-scroll.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><link href="../../styles/md-scroll-ext.css" media="screen, projection, print" rel="stylesheet" type="text/css"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://www.cs.odu.edu/~zeil/styles/highlight.js/styles/googlecode.css" rel="stylesheet"/><script src="https://www.cs.odu.edu/~zeil/styles/highlight.js/highlight.pack.js"> </script><script>hljs.initHighlightingOnLoad();</script><script src="../../styles/md-scroll.js" type="text/javascript"> </script><script src="../../styles/md-scroll-ext.js" type="text/javascript"> </script><script src="../../styles/rawdeflate.js" type="text/javascript"> </script><script src="../../styles/plantuml.js" type="text/javascript"> </script><script src="../../styles/mermaid.min.js" type="text/javascript"> </script><script type="text/javascript">
+             window.MathJax = {
+               tex2jax: {
+               inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+               processEscapes: true
+             }
+           };
+           </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"> </script><title>Code Documentation & Type Hints</title></head><body><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navHeader" id="slideshowControlA0"><table class="navHeader"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Code%20Documentation%20%26%20Type%20Hints"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="mainBody"><div class="titleblock"><h1 class="title">Code Documentation &amp; Type Hints</h1><h2 class="author">Thomas J. Kennedy</h2></div><div class="toc">Contents:<div class="toc-h1"><a href="#a-few-starting-examples">1 A Few Starting Examples</a></div><div class="toc-h2"><a href="#c-">1.1 C++</a></div><div class="toc-h2"><a href="#java">1.2 Java</a></div><div class="toc-h2"><a href="#python">1.3 Python</a></div><div class="toc-h2"><a href="#rust">1.4 Rust</a></div><div class="toc-h1"><a href="#writing-good-documentation">2 Writing Good Documentation</a></div><div class="toc-h2"><a href="#documentation-for-a-new-function">2.1 Documentation for a New Function</a></div><div class="toc-h2"><a href="#function-type-hints">2.2 Function Type Hints</a></div></div><p>Most of your code has probably had quite a few in-line comments. Inline comments are not the focus of this discussion. The focus of this discussion is documentation of classes, functions, and methods.</p>
+    <a id="afewstartingexamples"/><h1 id="a-few-starting-examples">1 A Few Starting Examples</h1><p>I work in few different languages. Throughout my</p>
+    <ul>
+  <li>C++ code you will find <a href="http://www.doxygen.nl/" target="_blank">Doxygen style comments</a>.</li>
+  <li>Java code you will find <a href="https://www.oracle.com/technetwork/java/javase/documentation/index-137868.html" target="_blank">Javadoc style comments</a>.</li>
+  <li>Python code you will find Pydoc style comments.</li>
+  <li>Rust code you will find <a href="https://doc.rust-lang.org/rust-by-example/meta/doc.html" target="_blank">Rustdoc style comments</a>.</li>
+</ul><p>You have definitely been told to “comment your code” in the past, but (probably) in a less formal fashion. </p>
+    <p>Let us start with a few selected documentation examples from my <a href="https://www.cs.odu.edu/~tkennedy/cs330/latest">CS 330</a> and <a href="https://www.cs.odu.edu/~tkennedy/cs417/latest">CS 417</a> notes.</p>
+    <a id="c"/><h2 id="c-">1.1 C++</h2><p>Doxygen can be used for <em>C++</em>. Consider the following Doxygen Example:</p>
+    <blockquote class="example" id="example1"><div class="exampleTitle">Example 1: C++ Doxygen Documentation</div>
+<pre><code class="cpp">/**
+ * Retrieve the value stored in three selected Cells
+ *
+ * @param cell1Id numeric id representing the 1st desired cell
+ * @param cell2Id numeric id representing the 2nd desired cell
+ * @param cell3Id numeric id representing the 3rd desired cell
+ *
+ * @return value stored in the Cell
+ *
+ * @pre (cell1Id &gt; 0 &amp;&amp; cell1Id &lt; 10) &amp;&amp;
+ *      (cell2Id &gt; 0 &amp;&amp; cell2Id &lt; 10) &amp;&amp;
+ *      (cell3Id &gt; 0 &amp;&amp; cell3Id &lt; 10)
+ */
+CellTriple get3Cells(int cell1Id, int cell2Id, int cell3Id) const;
+</code></pre>
+</blockquote><h2 id="java">1.2 Java</h2><p>Javadoc can be used for Java. Consider the following Javadoc Example:</p>
+    <blockquote class="example" id="example2"><div class="exampleTitle">Example 2: Javadoc Documentation</div>
+<pre><code class="java">/**
+ * Multi-thread Coin Flip.
+ *
+ * @param numTrials # flips to simulate
+ * @param numThreads number of threads to use
+ *
+ * @return Completed FlipTasks
+ *
+ * @throws InterruptedException if a thread is stopped prematurely
+ */
+public static FlipTask[] multiThread(long numTrials, int numThreads)
+    throws InterruptedException
+</code></pre>
+</blockquote><h2 id="python">1.3 Python</h2><p>Pydoc or Sphinx can be used for Python. Consider the following Pydoc Example:</p>
+    <blockquote class="example" id="example3"><div class="exampleTitle">Example 3: Python 3 Pydoc Documentation</div>
+<pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    :param original_temps: an input file
+    :param step_size:      time-step in seconds
+    :param units: True if the input file includes units and False if the file
+                  includes only raw readings (no units)
+
+    :yields: A tuple containing the next time step and a List containing _n_
+             core temps as floating point values (where _n_ is the number of
+             CPU cores)
+    """
+</code></pre>
+</blockquote><p>I prefer the Sphinx/Google style for Python.</p>
+    <blockquote class="example" id="example4"><div class="exampleTitle">Example 4: Python 3 Sphinx/Google Style Documentation</div>
+<pre><code class="python3">def parse_raw_temps(original_temps: TextIO,
+                    step_size: int=30, units: bool=True) -&gt; Iterator[Tuple[float, List[float]] ]:
+    """
+    Take an input file and time-step size and parse all core temps.
+
+    Args:
+        original_temps: an input file
+        step_size: time-step in seconds
+        units: True if the input file includes units and False if the file
+            includes only raw readings (no units)
+
+    Yields:
+        A tuple containing the next time step and a List containing _n_
+        core temps as floating point values (where _n_ is the number of
+        CPU cores)
+    """
+</code></pre>
+</blockquote><h2 id="rust">1.4 Rust</h2><blockquote class="example" id="example5"><div class="exampleTitle">Example 5: Rust Documentation</div>
+<pre><code class="rust">///
+/// Take a room and change the flooring
+///
+/// # Arguments
+///
+///   * `original` - House to change
+///
+/// # Returns
+///
+/// House with the updated flooring
+///
+fn upgrade_flooring(original: &amp;House) -&gt; House {
+    //...
+}
+</code></pre>
+</blockquote><p>Rust and Python have similar documentation styles (give or take some <code>markdown</code> formatting). Since we only cover small snippets of Rust in this course (for context), we will forgo a complete <a href="https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html" target="_blank">Rustdoc</a> discussion.</p>
+    <a id="writinggooddocumentation"/><h1 id="writing-good-documentation">2 Writing Good Documentation</h1><p>All code should be properly <em>and fully</em> documented using a language appropriate comment style. All functions (including parameters and return types) must be documented.</p>
+    <a id="documentationforanewfunction"/><h2 id="documentation-for-a-new-function">2.1 Documentation for a New Function</h2><p>Suppose we have just finished writing a quick program to simulate a trick coin (i.e., a coin where heads and tails are not equally probable).</p>
+    <pre><code class="python">def one_flip(p):
+    return True if random.random() &lt; p else False
+
+
+def main():
+
+    num_flips = 8;
+
+    for _i in range(0, num_flips):
+        if one_flip(0.7):
+           print("Heads")
+
+        else:
+            print("Tails")
+
+if __name__ == "__main__":
+    main()
+</code></pre><p>The <code>one_flip</code> function needs a description.</p>
+    <pre><code class="python">def one_flip(p):
+    """
+    Simulate a single coin flip.
+    """
+</code></pre><p>What does <code>p</code> represent? Does it represent the probability of heads or tails?</p>
+    <pre><code class="python">def one_flip(p):
+    """
+    Simulate a single coin flip.
+
+    Args:
+        p: probability of heads in the range [0, 1]
+    """
+</code></pre><p>Now what about the return? We know that <code>bool</code> means a <code>true</code> or <code>false</code>. Which one do I get for heads? Let us add an <code>@return</code>.</p>
+    <pre><code class="python">def one_flip(p):
+    """
+    Simulate a single coin flip.
+
+    Args:
+        p: probability of heads in the range [0, 1]
+
+    Returns:
+        True if the result is heads and False if the result is tails
+    """
+</code></pre><p>There is no more ambiguity or guesswork. Both <code>p</code> and the possible return values are documented.</p>
+    <a id="functiontypehints"/><h2 id="function-type-hints">2.2 Function Type Hints</h2><p>I am a stickler for <a href="https://www.python.org/dev/peps/pep-0484/" target="_blank">type hints…</a></p>
+    <pre><code class="python">def one_flip(p: float) -&gt; bool:
+    """
+    Simulate a single coin flip.
+
+    Args:
+        p: probability of heads in the range [0, 1]
+
+    Returns:
+        True if the result is heads and False if the result is tails
+    """
+</code></pre><p>Now… we know that</p>
+    <ul>
+  <li>
+  <p><code>p</code> is a <code>float</code> (i.e., a real number) and not an <code>int</code></p>
+    </li>
+  <li>
+  <p><code>one_flip</code> returns a <code>bool</code> value</p>
+    </li>
+</ul><p>As general rules, forgo:</p>
+    <ul>
+  <li>listing the types in the pydoc documentation and use type hints instead</li>
+  <li>including type hints if there is any possibility of ambiguity (e.g., using <code>-&gt; None</code>)</li>
+</ul><p>It is possible to annotate variables. However, variables generally have more context, e.g.,</p>
+    <ul>
+  <li>
+    <p>A literal value is assigned to the variable.</p>
+    
+    <pre><code class="python">price = 1.52
+</code></pre>
+  </li>
+  <li>
+    <p>The variable stores the result of a function call (with an annotated return type)</p>
+    
+    <pre><code class="python">new_price = discount_by_10_percent(price)
+</code></pre>
+  </li>
+</ul></div><script>sshowControl0 = { counter: 1,
+             showNumber: 0, max: 1};
+             window.onhashchange = hashHasChanged;</script><div class="navFooter" id="slideshowControl0"><table class="navFooter"><tr class="slideshowcontrol"><td class="slideshowcontrolLeft"/><td class="slideshowcontrolMiddle">
+<a class="imgLink" href="../../Directory/outline/index.html" title="Course home/outline"><img src="../../graphics/home.png"/></a>
+<a href="mailto:tkennedy@odu.edu?subject=CS263%2C%20Code%20Documentation%20%26%20Type%20Hints"><img src="../../graphics/email.png" title="Email to instructor"/></a><span style="margin: 0 32px;"/></td><td class="slideshowcontrolRight"/></tr></table></div><div class="copyright">© 2015-2023, Old Dominion Univ.</div></body></html>
